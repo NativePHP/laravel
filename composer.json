@@ -1,0 +1,76 @@
+{
+    "name": "nativephp/laravel",
+    "description": "Laravel wrapper for the NativePHP framework.",
+    "keywords": [
+        "nativephp",
+        "laravel",
+        "nativephp-laravel"
+    ],
+    "homepage": "https://github.com/nativephp/laravel",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Marcel Pociot",
+            "email": "marcel@beyondco.de",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "spatie/laravel-package-tools": "^1.14.0",
+        "illuminate/contracts": "^10.0"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.0",
+        "nunomaduro/collision": "^7.9",
+        "nunomaduro/larastan": "^2.0.1",
+        "orchestra/testbench": "^8.0",
+        "pestphp/pest": "^2.0",
+        "pestphp/pest-plugin-arch": "^2.0",
+        "pestphp/pest-plugin-laravel": "^2.0",
+        "phpstan/extension-installer": "^1.1",
+        "phpstan/phpstan-deprecation-rules": "^1.0",
+        "phpstan/phpstan-phpunit": "^1.0",
+        "spatie/laravel-ray": "^1.26"
+    },
+    "autoload": {
+        "psr-4": {
+            "Native\\Laravel\\": "src/",
+            "Native\\Laravel\\Database\\Factories\\": "database/factories/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Native\\Laravel\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": "@php ./vendor/bin/testbench package:discover --ansi",
+        "analyse": "vendor/bin/phpstan analyse",
+        "test": "vendor/bin/pest",
+        "test-coverage": "vendor/bin/pest --coverage",
+        "format": "vendor/bin/pint"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+              "Native\\Laravel\\NativeServiceProvider"
+            ],
+            "aliases": {
+                "ContextMenu": "Native\\Laravel\\Facades\\ContextMenu",
+                "Dock": "Native\\Laravel\\Facades\\Dock",
+                "Process": "Native\\Laravel\\Facades\\Process",
+                "Window": "Native\\Laravel\\Facades\\Window"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
