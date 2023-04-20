@@ -2,11 +2,11 @@
 
 namespace Native\Laravel;
 
-use Illuminate\Foundation\Bootstrap\LoadConfiguration;
 use Illuminate\Foundation\Console\ServeCommand;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
+use Native\Laravel\Commands\MinifyApplicationCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -23,6 +23,9 @@ class NativeServiceProvider extends PackageServiceProvider
     {
         $package
             ->name('native-php')
+            ->hasCommands([
+                MinifyApplicationCommand::class,
+            ])
             ->hasConfigFile()
             ->hasRoute('api')
             ->publishesServiceProvider('NativeAppServiceProvider');
@@ -64,5 +67,8 @@ class NativeServiceProvider extends PackageServiceProvider
         ]]);
 
         config(['database.default' => 'nativephp']);
+        config(['session.connection' => 'file']);
+
+        config(['queue.default' => 'database']);
     }
 }

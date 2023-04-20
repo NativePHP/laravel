@@ -6,18 +6,18 @@ use Native\Laravel\Client\Client;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 
-class Window
+class MenuBar
 {
     protected string $url = '';
+    protected string $icon = '';
     protected int $width = 400;
     protected int $height = 400;
+    protected $contextWindow;
     protected bool $alwaysOnTop = false;
-    protected bool $resizable = true;
     protected bool $transparent = false;
-    protected string $titleBarStyle = 'default';
+    protected bool $showDockIcon = false;
     protected string $vibrancy = 'appearance-based';
     protected string $backgroundColor = '#FFFFFF';
-    protected string $title = '';
 
     protected string $id;
 
@@ -33,9 +33,23 @@ class Window
         return new static(new Client());
     }
 
+    public function setLabel(string $label)
+    {
+        $this->client->post('menubar/label', [
+            'label' => $label,
+        ]);
+    }
+
+    public function icon(string $icon): self
+    {
+        $this->icon = $icon;
+
+        return $this;
+    }
+
     public function close($id = null): void
     {
-        $this->client->post('window/close', [
+        $this->client->post('menubar/close', [
             'id' => $id ?? $this->detectId(),
         ]);
     }
@@ -47,9 +61,9 @@ class Window
         return $this;
     }
 
-    public function title(string $title): self
+    public function showDockIcon($value = true): self
     {
-        $this->title = $title;
+        $this->showDockIcon = $value;
 
         return $this;
     }
@@ -62,28 +76,6 @@ class Window
         }
 
         return $this;
-    }
-
-    public function titleBarStyle($style): self
-    {
-        $this->titleBarStyle = $style;
-
-        return $this;
-    }
-
-    public function titleBarHidden(): self
-    {
-        return $this->titleBarStyle('hidden');
-    }
-
-    public function titleBarHiddenInset(): self
-    {
-        return $this->titleBarStyle('hiddenInset');
-    }
-
-    public function titleBarButtonsOnHover(): self
-    {
-        return $this->titleBarStyle('customButtonsOnHover');
     }
 
     public function vibrancy(string $vibrancy): self
@@ -124,27 +116,19 @@ class Window
         return $this;
     }
 
-    public function resizable($resizable = true): static
+    public function create(): void
     {
-        $this->resizable = $resizable;
-
-        return $this;
-    }
-
-    public function open(): void
-    {
-        $this->client->post('window/open', [
+        $this->client->post('menubar', [
             'id' => $this->id,
             'url' => $this->url,
+            'icon' => $this->icon,
             'width' => $this->width,
             'height' => $this->height,
-            'titleBarStyle' => $this->titleBarStyle,
             'vibrancy' => $this->vibrancy,
+            'showDockIcon' => $this->showDockIcon,
             'transparency' => $this->transparent,
             'backgroundColor' => $this->backgroundColor,
             'alwaysOnTop' => $this->alwaysOnTop,
-            'resizable' => $this->resizable,
-            'title' => $this->title,
         ]);
     }
 
@@ -169,11 +153,17 @@ class Window
         ]);
     }
 
-    public function alwaysOnTop($alwaysOnTop): void
+    public function alwaysOnTop($alwaysOnTop = true): self
     {
-        $this->client->post('window/always-on-top', [
-            'id' => $this->detectId(),
-            'alwaysOnTop' => $alwaysOnTop,
-        ]);
+        $this->alwaysOnTop = $alwaysOnTop;
+
+        return $this;
+    }
+
+    public function withContextMenu($menu): self
+    {
+        $this->contextMenu = $menu;
+
+        return $this;
     }
 }

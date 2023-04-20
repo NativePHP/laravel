@@ -5,6 +5,7 @@ namespace Native\Laravel\Menu;
 use Native\Laravel\Client\Client;
 use Native\Laravel\Contracts\MenuItem;
 use Native\Laravel\Enums\RolesEnum;
+use Native\Laravel\Menu\Items\Quit;
 use Native\Laravel\Menu\Items\Event;
 use Native\Laravel\Menu\Items\Link;
 use Native\Laravel\Menu\Items\Role;
@@ -50,6 +51,11 @@ class Menu implements MenuItem
     public function separator(): static
     {
         return $this->add(new Separator());
+    }
+
+    public function quit(): static
+    {
+        return $this->add(new Role(RolesEnum::QUIT));
     }
 
     public function event(string $event, string $text): self
