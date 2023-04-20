@@ -7,6 +7,7 @@ use Native\Laravel\Client\Client;
 class GlobalShortcut
 {
     protected string $key;
+
     protected string $event;
 
     public function __construct(protected Client $client)

@@ -2,21 +2,30 @@
 
 namespace Native\Laravel;
 
-use Native\Laravel\Client\Client;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
+use Native\Laravel\Client\Client;
 
 class Window
 {
     protected string $url = '';
+
     protected int $width = 400;
+
     protected int $height = 400;
+
     protected bool $alwaysOnTop = false;
+
     protected bool $resizable = true;
+
     protected bool $transparent = false;
+
     protected string $titleBarStyle = 'default';
+
     protected string $vibrancy = 'appearance-based';
+
     protected string $backgroundColor = '#FFFFFF';
+
     protected string $title = '';
 
     protected string $id;
@@ -28,7 +37,6 @@ class Window
     }
 
     public static function new(): static
-
     {
         return new static(new Client());
     }

@@ -5,12 +5,10 @@ namespace Native\Laravel\Menu;
 use Native\Laravel\Client\Client;
 use Native\Laravel\Contracts\MenuItem;
 use Native\Laravel\Enums\RolesEnum;
-use Native\Laravel\Menu\Items\Quit;
 use Native\Laravel\Menu\Items\Event;
 use Native\Laravel\Menu\Items\Link;
 use Native\Laravel\Menu\Items\Role;
 use Native\Laravel\Menu\Items\Separator;
-use Illuminate\Support\Facades\Http;
 
 class Menu implements MenuItem
 {
@@ -29,10 +27,10 @@ class Menu implements MenuItem
 
     public function register(): void
     {
-        $items = $this->toArray()["submenu"];
+        $items = $this->toArray()['submenu'];
 
         $this->client->post('menu', [
-            'items' => $items
+            'items' => $items,
         ]);
     }
 
@@ -87,12 +85,12 @@ class Menu implements MenuItem
 
     public function toArray(): array
     {
-        $items = collect($this->items)->map(fn(MenuItem $item) => $item->toArray())->toArray();
+        $items = collect($this->items)->map(fn (MenuItem $item) => $item->toArray())->toArray();
         $label = $this->prepend;
 
         return [
-            "label" => $label,
-            "submenu" => $items,
+            'label' => $label,
+            'submenu' => $items,
         ];
     }
 }

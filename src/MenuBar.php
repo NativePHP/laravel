@@ -2,21 +2,30 @@
 
 namespace Native\Laravel;
 
-use Native\Laravel\Client\Client;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
+use Native\Laravel\Client\Client;
 
 class MenuBar
 {
     protected string $url = '';
+
     protected string $icon = '';
+
     protected int $width = 400;
+
     protected int $height = 400;
+
     protected $contextWindow;
+
     protected bool $alwaysOnTop = false;
+
     protected bool $transparent = false;
+
     protected bool $showDockIcon = false;
+
     protected string $vibrancy = 'appearance-based';
+
     protected string $backgroundColor = '#FFFFFF';
 
     protected string $id;
@@ -28,7 +37,6 @@ class MenuBar
     }
 
     public static function new(): static
-
     {
         return new static(new Client());
     }

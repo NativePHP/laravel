@@ -26,7 +26,7 @@ class Php
         $tokens = PhpToken::tokenize($contents);
         $tokenCount = count($tokens);
 
-        for ($index = 0; $index < $tokenCount; ++$index) {
+        for ($index = 0; $index < $tokenCount; $index++) {
             $token = $tokens[$index];
             $tokenText = $token->text;
 
@@ -69,7 +69,7 @@ class Php
                     && $nextToken->is(T_WHITESPACE)
                 ) {
                     $whitespace .= $nextToken->text;
-                    ++$index;
+                    $index++;
                 }
 
                 // reduce wide spaces
@@ -107,7 +107,7 @@ class Php
     }
 
     /**
-     * @param list<PhpToken> $tokens
+     * @param  list<PhpToken>  $tokens
      */
     private static function findAttributeCloser(array $tokens, int $opener): ?int
     {
@@ -115,7 +115,7 @@ class Php
         $brackets = [$opener];
         $closer = null;
 
-        for ($i = ($opener + 1); $i < $tokenCount; ++$i) {
+        for ($i = ($opener + 1); $i < $tokenCount; $i++) {
             $tokenText = $tokens[$i]->text;
 
             // Allow for short arrays within attributes.
@@ -139,7 +139,7 @@ class Php
     }
 
     /**
-     * @param non-empty-list<PhpToken> $tokens
+     * @param  non-empty-list<PhpToken>  $tokens
      */
     private function retokenizeAttribute(array &$tokens, int $opener): ?array
     {
