@@ -1,0 +1,52 @@
+{
+  "name": "NativePHP",
+  "version": "1.0.0",
+  "description": "An Electron application with Vue",
+  "main": "./out/main/index.js",
+  "author": "example.com",
+  "homepage": "https://www.electronjs.org",
+  "scripts": {
+    "format": "prettier --write .",
+    "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
+    "start": "electron-vite preview",
+    "dev": "electron-vite dev --watch",
+    "build": "electron-vite build",
+    "postinstall": "electron-builder install-app-deps",
+    "build:win": "cross-env npm run build && cross-env electron-builder --win --config",
+    "build:mac": "cross-env npm run build:mac-arm && cross-env npm run build:mac-x86",
+    "build:mac-arm": "cross-env npm run build && cross-env electron-builder --mac --config --arm64",
+    "build:mac-x86": "cross-env npm run build && cross-env electron-builder --mac --config --x64",
+    "build:linux": "cross-env npm run build && cross-env electron-builder --linux --config"
+  },
+  "dependencies": {
+    "@electron-toolkit/preload": "^1.0.3",
+    "@electron-toolkit/utils": "^1.0.2",
+    "@electron/remote": "^2.0.9",
+    "axios": "^1.3.5",
+    "body-parser": "^1.20.2",
+    "electron-context-menu": "^3.6.1",
+    "electron-store": "^8.1.0",
+    "express": "^4.18.2",
+    "fs-extra": "^11.1.1",
+    "get-port": "^5.1.1",
+    "menubar": "^9.3.0",
+    "ps-node": "^0.1.6",
+    "tree-kill": "^1.2.2"
+  },
+  "devDependencies": {
+    "@electron/notarize": "^1.2.3",
+    "@rushstack/eslint-patch": "^1.2.0",
+    "@vitejs/plugin-vue": "^4.1.0",
+    "@vue/eslint-config-prettier": "^7.1.0",
+    "cross-env": "^7.0.3",
+    "electron": "^22.3.4",
+    "electron-builder": "^23.6.0",
+    "electron-vite": "^1.0.21",
+    "eslint": "^8.36.0",
+    "eslint-plugin-vue": "^9.10.0",
+    "less": "^4.1.3",
+    "prettier": "^2.8.7",
+    "vite": "^4.2.1",
+    "vue": "^3.2.47"
+  }
+}
