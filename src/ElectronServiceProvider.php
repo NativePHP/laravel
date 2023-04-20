@@ -2,7 +2,6 @@
 
 namespace Native\Electron;
 
-use Illuminate\Foundation\Console\ServeCommand;
 use Native\Electron\Commands\BuildCommand;
 use Native\Electron\Commands\DevelopCommand;
 use Native\Electron\Commands\QueueWorkerCommand;
