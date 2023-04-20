@@ -38,7 +38,6 @@ export async function appendCookie() {
 }
 
 export async function notifyLaravel(endpoint, payload = {}) {
-    console.log("Notifying Laravel: ", endpoint, payload)
     try {
         await axios.post(`http://localhost:${phpPort}/_native/api/${endpoint}`, payload, {
             headers: {

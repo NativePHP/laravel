@@ -9,11 +9,9 @@ function serveWebsockets() {
   })
 
   phpServer.stdout.on('data', (data) => {
-    console.log(data.toString())
   })
 
   phpServer.stderr.on('data', (data) => {
-    console.error(data.toString())
   })
   return phpServer;
 }

@@ -187,7 +187,7 @@ function startAPIServer() {
                 showSearchWithGoogle: false,
                 showInspectElement: false,
                 prepend: (defaultActions, parameters, browserWindow) => {
-                    return req.body.entries.map(mapMenu)
+                    return req.body.items.map(mapMenu)
                 }
             })
         })
@@ -283,7 +283,7 @@ function startAPIServer() {
         })
 
         httpServer.post('/api/menu', (req, res) => {
-            const menuEntries = req.body.entries.map(mapMenu)
+            const menuEntries = req.body.items.map(mapMenu)
 
             const menu = Menu.buildFromTemplate(menuEntries)
             Menu.setApplicationMenu(menu)

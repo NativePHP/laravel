@@ -97,7 +97,7 @@ function serveApp(secret, apiPort) {
 
         ensureAppFoldersAreAvailable();
 
-        console.log('App Folders are available')
+        console.log('Making sure app folders are available')
 
         const env = {
             NATIVE_PHP_STORAGE_PATH: storagePath,
@@ -106,8 +106,6 @@ function serveApp(secret, apiPort) {
             NATIVE_PHP_RUNNING: true,
             NATIVE_PHP_SECRET: secret
         };
-
-        console.log('Using env: ', env)
 
         const phpOptions = {
             cwd: appPath,
@@ -141,7 +139,6 @@ function serveApp(secret, apiPort) {
 
         phpServer.stdout.on('data', (data) => {
             const match = portRegex.exec(data.toString())
-            console.log("Match: ", match, data.toString());
             if (match) {
                 console.log("PHP Server started on port: ", match[1])
                 const port = match[1]
@@ -154,9 +151,7 @@ function serveApp(secret, apiPort) {
 
         phpServer.stderr.on('data', (data) => {
             const match = portRegex.exec(data.toString())
-            console.error("Match: ", match, data.toString());
             if (match) {
-                console.error("PHP Server started on port: ", match[1])
                 const port = match[1]
                 resolve({
                     port,
