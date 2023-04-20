@@ -9,6 +9,8 @@ const appUrl = process.env.APP_URL;
 const isArm64 = process.argv.includes('--arm64');
 const phpBinary = process.env.NATIVEPHP_PHP_BINARY;
 
+copySync(join(__dirname, '..', '..', 'bin', (isArm64 ? 'arm64' : 'x86'), 'php'), join(__dirname, 'resources', 'php'));
+
 if (isBuilding) {
     console.log('=====================');
     if (isArm64) {
