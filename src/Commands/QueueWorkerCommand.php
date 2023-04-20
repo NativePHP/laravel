@@ -29,19 +29,19 @@ class QueueWorkerCommand extends Command
     {
         $this->info('Starting NativePHP queue worker…');
 
-        $phpBinary = __DIR__ . '/../../resources/js/resources/php';
+        $phpBinary = __DIR__.'/../../resources/js/resources/php';
 
         Process::path(base_path())
             ->env([
                 'APP_PATH' => base_path(),
                 'NATIVE_PHP_RUNNING' => true,
-                'NATIVE_PHP_STORAGE_PATH' => $this->getAppDirectory() . '/storage',
+                'NATIVE_PHP_STORAGE_PATH' => $this->getAppDirectory().'/storage',
                 'NATIVE_PHP_API_URL' => 'http://localhost:'.$this->option('port').'/api/',
-                'NATIVE_PHP_DATABASE_PATH' => $this->getAppDirectory() . '/database/database.sqlite',
+                'NATIVE_PHP_DATABASE_PATH' => $this->getAppDirectory().'/database/database.sqlite',
             ])
             ->forever()
             ->tty()
-            ->run($phpBinary. ' artisan queue:work', function (string $type, string $output) {
+            ->run($phpBinary.' artisan queue:work', function (string $type, string $output) {
                 echo $output;
             });
     }
