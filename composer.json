@@ -65,12 +65,6 @@
             ]
         }
     },
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../native-php-helper"
-        }
-    ],
     "minimum-stability": "dev",
     "prefer-stable": true
 }
