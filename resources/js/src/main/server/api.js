@@ -70,6 +70,16 @@ function startAPIServer() {
             res.sendStatus(200)
         })
 
+        httpServer.post('/api/progress-bar/update', (req, res) => {
+            const {percent} = req.body
+
+            Object.values(windows).forEach((window) => {
+                window.setProgressBar(percent)
+            });
+
+            res.sendStatus(200)
+        })
+
         httpServer.post('/api/dialog', (req, res) => {
             const result = dialog.showOpenDialogSync({
                 title: req.body.title,
@@ -106,9 +116,9 @@ function startAPIServer() {
             const {id, width, height, url, alwaysOnTop, vibrancy, backgroundColor, transparency, icon, showDockIcon} = req.body
 
             if (! showDockIcon) {
-                app.dock.hide();
+                //app.dock.hide();
             } else {
-                app.dock.show();
+                //app.dock.show();
             }
 
             activeMenuBar = menubar({

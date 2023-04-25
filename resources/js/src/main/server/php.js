@@ -10,6 +10,7 @@ import getPort from 'get-port';
 const storagePath = join(app.getPath('userData'), 'storage')
 const databasePath = join(app.getPath('userData'), 'database')
 const databaseFile = join(databasePath, 'database.sqlite')
+const argumentEnv = getArgumentEnv();
 const appPath = getAppPath();
 
 async function getPhpPort() {
@@ -32,10 +33,22 @@ function callPhp(args, options) {
     );
 }
 
+function getArgumentEnv() {
+    const envArgs = process.argv.filter(arg => arg.startsWith('--env.'));
+
+    const env = {};
+    envArgs.forEach(arg => {
+        const [key, value] = arg.slice(6).split('=');
+        env[key] = value;
+    });
+    return env;
+}
+
 function getAppPath() {
     let appPath = join(__dirname, '../../resources/app/').replace('app.asar', 'app.asar.unpacked')
-    if (process.env.NODE_ENV === 'development') {
-        appPath = process.env.APP_PATH;
+
+    if (process.env.NODE_ENV === 'development' || argumentEnv.TESTING == 1) {
+        appPath = process.env.APP_PATH || argumentEnv.APP_PATH;
     }
     return appPath;
 }
