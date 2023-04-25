@@ -13,10 +13,10 @@ class Dock
 
     public function menu(Menu $menu)
     {
-        $items = $menu->toArray()["submenu"];
+        $items = $menu->toArray()['submenu'];
 
         $this->client->post('dock', [
-            'items' => $items
+            'items' => $items,
         ]);
     }
 }

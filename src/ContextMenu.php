@@ -13,10 +13,10 @@ class ContextMenu
 
     public function register(Menu $menu)
     {
-        $items = $menu->toArray()["submenu"];
+        $items = $menu->toArray()['submenu'];
 
         $this->client->post('context', [
-            'entries' => $items
+            'entries' => $items,
         ]);
     }
 }

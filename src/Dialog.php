@@ -7,8 +7,11 @@ use Native\Laravel\Client\Client;
 class Dialog
 {
     protected $title;
+
     protected $defaultPath;
+
     protected $buttonLabel;
+
     protected $properties = [
         'openFile',
     ];
@@ -96,6 +99,7 @@ class Dialog
         if (! in_array('multiSelections', $this->properties)) {
             return $result[0] ?? null;
         }
+
         return $result;
     }
 }

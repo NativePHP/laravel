@@ -15,6 +15,7 @@ class MinifyApplicationCommand extends Command
 
         if (! is_dir($appPath)) {
             $this->error('The app path is not a directory');
+
             return;
         }
 

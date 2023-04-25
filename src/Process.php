@@ -6,7 +6,6 @@ use Native\Laravel\Client\Client;
 
 class Process
 {
-
     public function __construct(protected Client $client)
     {
     }
@@ -28,6 +27,6 @@ class Process
 
     public function fresh(): object
     {
-        return (object)$this->client->get('process')->json();
+        return (object) $this->client->get('process')->json();
     }
 }
