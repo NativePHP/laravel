@@ -67,8 +67,7 @@ class NativeServiceProvider extends PackageServiceProvider
         ]]);
 
         config(['database.default' => 'nativephp']);
-        config(['session.driver' => 'database']);
-        config(['session.connection' => 'nativephp']);
+        config(['session.driver' => 'file']);
 
         config(['queue.default' => 'database']);
     }
