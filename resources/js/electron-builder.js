@@ -2,6 +2,7 @@ const {copySync, removeSync} = require("fs-extra");
 const {join} = require("path");
 const {execSync} = require("child_process");
 const isBuilding = process.env.NATIVEPHP_BUILDING == 1;
+const appId = process.env.NATIVEPHP_APP_ID;
 const appName = process.env.NATIVEPHP_APP_NAME;
 const fileName = process.env.NATIVEPHP_APP_FILENAME;
 const appVersion = process.env.NATIVEPHP_APP_VERSION;
@@ -71,7 +72,7 @@ if (isBuilding) {
 const deepLinkProtocol = 'nativephp';
 
 module.exports = {
-    appId: 'com.electron.app',
+    appId: appId,
     productName: appName,
     directories: {
         buildResources: 'build',

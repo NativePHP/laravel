@@ -30,6 +30,7 @@ class BuildCommand extends Command
                 'NATIVEPHP_BUILDING' => true,
                 'NATIVEPHP_PHP_BINARY' => PHP_BINARY,
                 'NATIVEPHP_APP_NAME' => config('app.name'),
+                'NATIVEPHP_APP_ID' => config('native-php.app_id'),
                 'NATIVEPHP_APP_FILENAME' => Str::slug(config('app.name')),
             ])
             ->forever()
