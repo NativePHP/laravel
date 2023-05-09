@@ -6,7 +6,6 @@ use Native\Laravel\Client\Client;
 
 class Clipboard
 {
-
     public function __construct(protected Client $client)
     {
     }
