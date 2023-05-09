@@ -68,6 +68,8 @@ if (isBuilding) {
 
 }
 
+const deepLinkProtocol = 'nativephp';
+
 module.exports = {
     appId: 'com.electron.app',
     productName: appName,
@@ -94,6 +96,10 @@ module.exports = {
         shortcutName: '${productName}',
         uninstallDisplayName: '${productName}',
         createDesktopShortcut: 'always',
+    },
+    protocols: {
+        name: deepLinkProtocol,
+        schemes: [deepLinkProtocol],
     },
     mac: {
         entitlementsInherit: 'build/entitlements.mac.plist',

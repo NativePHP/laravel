@@ -30,7 +30,11 @@ export function startQueue(apiPort) {
     }
 }
 
-export {serveWebsockets, startAPIServer}
+export function startAPI() {
+    return startAPIServer(randomSecret);
+}
+
+export {serveWebsockets}
 
 export async function appendCookie() {
     const cookie = {url: `http://localhost:${phpPort}`, name: '_php_native', value: randomSecret}

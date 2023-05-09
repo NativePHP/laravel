@@ -5,6 +5,13 @@ import bodyParser from 'body-parser'
 import {notifyLaravel} from '.'
 import getPort from 'get-port';
 import {menubar} from 'menubar';
+import middleware from './api/middleware'
+
+import clipboardRoutes from './api/clipboard'
+import appRoutes from './api/app'
+import screenRoutes from './api/screen'
+import dialogRoutes from './api/dialog'
+import globalShortcutRoutes from './api/globalShortcut'
 
 import {
     app,
@@ -56,16 +63,30 @@ const mapMenu = (menu) => {
     return menu
 }
 
-function startAPIServer() {
+function startAPIServer(randomSecret) {
     return new Promise(async (resolve, reject) => {
         const httpServer = express()
-
+        httpServer.use(middleware(randomSecret));
         httpServer.use(bodyParser.json())
+        httpServer.use('/api/clipboard', clipboardRoutes);
+        httpServer.use('/api/app', appRoutes);
+        httpServer.use('/api/screen', screenRoutes);
+        httpServer.use('/api/dialog', dialogRoutes);
+        httpServer.use('/api/global-shortcuts', globalShortcutRoutes);
 
         httpServer.post('/api/notification', (req, res) => {
             const {title, body} = req.body
 
-            new Notification({title, body}).show()
+            const notification = new Notification({title, body});
+
+            notification.on('click', (event, arg)=>{
+                notifyLaravel('events', {
+                    event: '\\Native\\Laravel\\Events\\Notifications\\NotificationClicked',
+                    payload: []
+                })
+            })
+
+            notification.show()
 
             res.sendStatus(200)
         })
@@ -78,19 +99,6 @@ function startAPIServer() {
             });
 
             res.sendStatus(200)
-        })
-
-        httpServer.post('/api/dialog', (req, res) => {
-            const result = dialog.showOpenDialogSync({
-                title: req.body.title,
-                buttonLabel: req.body.buttonLabel,
-                filters: req.body.filters,
-                properties: req.body.properties
-            })
-
-            res.json({
-                result
-            })
         })
 
         httpServer.get('/api/process', (req, res) => {
@@ -157,19 +165,6 @@ function startAPIServer() {
                 console.log("menubar ready")
             });
         });
-
-        httpServer.post('/api/global-shortcut', (req, res) => {
-            const {key, event} = req.body
-
-            globalShortcut.register(key, () => {
-                notifyLaravel('events', {
-                    event,
-                    payload: []
-                })
-            })
-
-            res.sendStatus(200)
-        })
 
         httpServer.post('/api/window/resize', (req, res) => {
             const {id, width, height} = req.body
@@ -240,11 +235,18 @@ function startAPIServer() {
                     backgroundThrottling: false,
                     spellcheck: false,
                     preload: join(__dirname, '../../../preload/index.js'),
-                    sandbox: false
+                    sandbox: false,
+                    contextIsolation: false,
+                    nodeIntegration: true,
                 }
             })
 
+            window.on('blur', () => {
+                window.webContents.send('window:blur')
+            });
+
             window.on('focus', () => {
+                window.webContents.send('window:focus')
                 notifyLaravel('events', {
                     event: 'App\\Events\\WindowFocused',
                     payload: [window.webContents.getURL()]
