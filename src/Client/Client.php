@@ -14,7 +14,7 @@ class Client
     {
         $this->client = Http::asJson()
             ->baseUrl(config('native-php.api_url', ''))
-            ->timeout(2)
+            ->timeout(60 * 60)
             ->withHeaders([
                 'X-Native-PHP-Secret' => config('native-php.secret'),
             ])
@@ -29,5 +29,10 @@ class Client
     public function post(string $endpoint, array $data = []): Response
     {
         return $this->client->post($endpoint, $data);
+    }
+
+    public function delete(string $endpoint, array $data = []): Response
+    {
+        return $this->client->delete($endpoint, $data);
     }
 }

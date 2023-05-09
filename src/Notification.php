@@ -10,6 +10,8 @@ class Notification
 
     protected string $body;
 
+    protected string $event = '';
+
     public function __construct(protected Client $client)
     {
     }
@@ -26,6 +28,13 @@ class Notification
         return $this;
     }
 
+    public function event(string $event): self
+    {
+        $this->event = $event;
+
+        return $this;
+    }
+
     public function message(string $body): self
     {
         $this->body = $body;
@@ -38,6 +47,7 @@ class Notification
         $this->client->post('notification', [
             'title' => $this->title,
             'body' => $this->body,
+            'event' => $this->event,
         ]);
     }
 }

@@ -68,7 +68,8 @@
                 "ContextMenu": "Native\\Laravel\\Facades\\ContextMenu",
                 "Dock": "Native\\Laravel\\Facades\\Dock",
                 "Process": "Native\\Laravel\\Facades\\Process",
-                "Window": "Native\\Laravel\\Facades\\Window"
+                "Window": "Native\\Laravel\\Facades\\Window",
+                "Clipboard": "Native\\Laravel\\Facades\\Clipboard"
             }
         }
     },

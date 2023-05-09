@@ -4,6 +4,7 @@ namespace Native\Laravel\Compactor;
 
 use PhpToken;
 
+
 class Php
 {
     public function canProcessFile(string $path): bool

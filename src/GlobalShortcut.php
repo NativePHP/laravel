@@ -35,9 +35,16 @@ class GlobalShortcut
 
     public function register(): void
     {
-        $this->client->post('global-shortcut', [
+        $this->client->post('global-shortcuts', [
             'key' => $this->key,
             'event' => $this->event,
+        ]);
+    }
+
+    public function unregister(): void
+    {
+        $this->client->delete('global-shortcuts', [
+            'key' => $this->key,
         ]);
     }
 }

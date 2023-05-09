@@ -10,7 +10,7 @@ class Dialog
 
     protected $defaultPath;
 
-    protected $buttonLabel;
+    protected $buttonLabel = 'Select';
 
     protected $properties = [
         'openFile',
@@ -88,7 +88,7 @@ class Dialog
 
     public function show()
     {
-        $result = $this->client->post('dialog', [
+        $result = $this->client->post('dialog/open', [
             'title' => $this->title,
             'defaultPath' => $this->defaultPath,
             'filters' => $this->filters,
@@ -101,5 +101,16 @@ class Dialog
         }
 
         return $result;
+    }
+
+    public function save()
+    {
+        return $this->client->post('dialog/save', [
+            'title' => $this->title,
+            'defaultPath' => $this->defaultPath,
+            'filters' => $this->filters,
+            'buttonLabel' => $this->buttonLabel,
+            'properties' => array_unique($this->properties),
+        ])->json('result');
     }
 }
