@@ -14,7 +14,7 @@ class OpenedFromURL implements ShouldBroadcastNow
 
     public function __construct(public $url)
     {
-        
+
     }
 
     public function broadcastOn()
