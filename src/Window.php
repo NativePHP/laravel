@@ -10,6 +10,9 @@ class Window
 {
     protected string $url = '';
 
+    protected $x;
+    protected $y;
+
     protected int $width = 400;
 
     protected int $height = 400;
@@ -19,6 +22,12 @@ class Window
     protected bool $resizable = true;
 
     protected bool $transparent = false;
+
+    protected bool $focusable = true;
+
+    protected bool $hasShadow = true;
+
+    protected bool $frame = true;
 
     protected string $titleBarStyle = 'default';
 
@@ -89,6 +98,27 @@ class Window
         return $this->titleBarStyle('hiddenInset');
     }
 
+    public function frameless(): self
+    {
+        $this->frame = false;
+
+        return $this;
+    }
+
+    public function focusable($value = true): self
+    {
+        $this->focusable = $value;
+
+        return $this;
+    }
+
+    public function hasShadow($value = true): self
+    {
+        $this->hasShadow = $value;
+
+        return $this;
+    }
+
     public function titleBarButtonsOnHover(): self
     {
         return $this->titleBarStyle('customButtonsOnHover');
@@ -139,13 +169,26 @@ class Window
         return $this;
     }
 
+    public function position($x, $y): self
+    {
+        $this->x = $x;
+        $this->y = $y;
+
+        return $this;
+    }
+
     public function open(): void
     {
         $this->client->post('window/open', [
             'id' => $this->id,
             'url' => $this->url,
+            'x' => $this->x,
+            'y' => $this->y,
             'width' => $this->width,
             'height' => $this->height,
+            'focusable' => $this->focusable,
+            'hasShadow' => $this->hasShadow,
+            'frame' => $this->frame,
             'titleBarStyle' => $this->titleBarStyle,
             'vibrancy' => $this->vibrancy,
             'transparency' => $this->transparent,
@@ -154,6 +197,20 @@ class Window
             'resizable' => $this->resizable,
             'title' => $this->title,
         ]);
+    }
+
+    public function current()
+    {
+        return (object)$this->client->get('window/current')->json();
+    }
+
+    public function invisibleFrameless(): self
+    {
+        return $this
+            ->frameless()
+            ->transparent()
+            ->focusable(false)
+            ->hasShadow(false);
     }
 
     public function detectId(): ?string
