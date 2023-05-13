@@ -37,10 +37,10 @@ class App
         }
 
         $this->client->post('app/badge-count', [
-            'count' => (int)$count,
+            'count' => (int) $count,
         ]);
 
-        return (int)$count;
+        return (int) $count;
     }
 
     public function addRecentDocument(string $path): void

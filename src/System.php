@@ -6,7 +6,6 @@ use Native\Laravel\Client\Client;
 
 class System
 {
-
     public function __construct(protected Client $client)
     {
     }

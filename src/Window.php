@@ -11,6 +11,7 @@ class Window
     protected string $url = '';
 
     protected $x;
+
     protected $y;
 
     protected int $width = 400;
@@ -201,7 +202,7 @@ class Window
 
     public function current()
     {
-        return (object)$this->client->get('window/current')->json();
+        return (object) $this->client->get('window/current')->json();
     }
 
     public function invisibleFrameless(): self
