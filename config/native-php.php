@@ -11,7 +11,5 @@ return [
 
     'api_url' => env('NATIVE_PHP_API_URL', 'http://localhost:4000/api/'),
 
-    'app_id' => env('NATIVEPHP_APP_ID'),
-
     'provider' => \App\Providers\NativeAppServiceProvider::class,
 ];
