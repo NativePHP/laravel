@@ -199,11 +199,30 @@ function startAPIServer(randomSecret) {
             })
         })
 
+        httpServer.get('/api/window/current', (req, res) => {
+            // const currentWindow = BrowserWindow.getFocusedWindow();
+            const currentWindow = windows[Object.keys(windows)[0]]
+            res.json({
+                id: currentWindow.id,
+                x: currentWindow.getPosition()[0],
+                y: currentWindow.getPosition()[1],
+                width: currentWindow.getSize()[0],
+                height: currentWindow.getSize()[1],
+                title: currentWindow.getTitle(),
+                alwaysOnTop: currentWindow.isAlwaysOnTop(),
+            })
+        });
+
         httpServer.post('/api/window/open', (req, res) => {
             let {
                 id,
+                x,
+                y,
+                frame,
                 width,
                 height,
+                focusable,
+                hasShadow,
                 url,
                 resizable,
                 title,
@@ -223,14 +242,19 @@ function startAPIServer(randomSecret) {
             const window = new BrowserWindow({
                 width: parseInt(width),
                 height: parseInt(height),
+                frame: frame !== undefined ? frame : true,
+                x,
+                y,
                 show: false,
                 title,
-                transparency,
                 backgroundColor,
+                transparent: transparency,
                 alwaysOnTop,
                 resizable,
+                hasShadow,
                 titleBarStyle,
                 vibrancy,
+                focusable,
                 autoHideMenuBar: true,
                 ...(process.platform === 'linux' ? {icon} : {}),
                 webPreferences: {
@@ -242,6 +266,8 @@ function startAPIServer(randomSecret) {
                     nodeIntegration: true,
                 }
             })
+
+            require("@electron/remote/main").enable(window.webContents)
 
             window.on('blur', () => {
                 window.webContents.send('window:blur')
