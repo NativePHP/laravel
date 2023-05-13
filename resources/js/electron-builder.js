@@ -7,6 +7,7 @@ const appName = process.env.NATIVEPHP_APP_NAME;
 const fileName = process.env.NATIVEPHP_APP_FILENAME;
 const appVersion = process.env.NATIVEPHP_APP_VERSION;
 const appUrl = process.env.APP_URL;
+const appAuthor = process.env.NATIVEPHP_APP_AUTHOR;
 const isArm64 = process.argv.includes('--arm64');
 const phpBinary = process.env.NATIVEPHP_PHP_BINARY;
 
@@ -139,6 +140,7 @@ module.exports = {
     extraMetadata: {
         name: fileName,
         homepage: appUrl,
-        version: appVersion
+        version: appVersion,
+        author: appAuthor,
     }
 };
