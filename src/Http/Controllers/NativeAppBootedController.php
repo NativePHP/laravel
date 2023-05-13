@@ -3,6 +3,7 @@
 namespace Native\Laravel\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Native\Laravel\Events\App\ApplicationBooted;
 
 class NativeAppBootedController
 {
@@ -10,6 +11,8 @@ class NativeAppBootedController
     {
         $provider = app(config('native-php.provider'));
         $provider->boot();
+
+        event(new ApplicationBooted());
 
         return response()->json([
             'success' => true,
