@@ -11,6 +11,7 @@ import clipboardRoutes from './api/clipboard'
 import appRoutes from './api/app'
 import screenRoutes from './api/screen'
 import dialogRoutes from './api/dialog'
+import systemRoutes from './api/system'
 import globalShortcutRoutes from './api/globalShortcut'
 
 import {
@@ -72,6 +73,7 @@ function startAPIServer(randomSecret) {
         httpServer.use('/api/app', appRoutes);
         httpServer.use('/api/screen', screenRoutes);
         httpServer.use('/api/dialog', dialogRoutes);
+        httpServer.use('/api/system', systemRoutes);
         httpServer.use('/api/global-shortcuts', globalShortcutRoutes);
 
         httpServer.post('/api/notification', (req, res) => {
