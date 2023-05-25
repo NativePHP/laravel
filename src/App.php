@@ -33,7 +33,7 @@ class App
     public function badgeCount($count = null): int
     {
         if ($count === null) {
-            return $this->client->get('app/badge-count')->json('count');
+            return (int) $this->client->get('app/badge-count')->json('count');
         }
 
         $this->client->post('app/badge-count', [
