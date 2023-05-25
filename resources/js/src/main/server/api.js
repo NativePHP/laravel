@@ -67,7 +67,7 @@ const mapMenu = (menu) => {
 function startAPIServer(randomSecret) {
     return new Promise(async (resolve, reject) => {
         const httpServer = express()
-        httpServer.use(middleware(randomSecret));
+        //httpServer.use(middleware(randomSecret));
         httpServer.use(bodyParser.json())
         httpServer.use('/api/clipboard', clipboardRoutes);
         httpServer.use('/api/app', appRoutes);

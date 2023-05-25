@@ -1,4 +1,5 @@
 import {app, BrowserWindow} from 'electron'
+import { autoUpdater } from "electron-updater"
 import {electronApp, optimizer, is} from '@electron-toolkit/utils'
 import {notifyLaravel, startAPI, runScheduler, servePhpApp, serveWebsockets} from './server'
 import ps from 'ps-node'
@@ -15,6 +16,7 @@ require('@electron/remote/main').initialize()
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(async () => {
+
     if (process.env.NODE_ENV === 'development') {
         app.dock.setIcon(defaultIcon)
     }
@@ -48,6 +50,8 @@ app.whenReady().then(async () => {
     websocketProcess = serveWebsockets()
 
     await notifyLaravel('booted')
+
+    autoUpdater.checkForUpdatesAndNotify()
 
     schedulerInterval = setInterval(() => {
         console.log("Running scheduler...")

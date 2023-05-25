@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "An Electron application with Vue",
   "main": "./out/main/index.js",
-  "author": "example.com",
-  "homepage": "https://www.electronjs.org",
+  "author": "beyondco.de",
+  "homepage": "https://beyondco.de",
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
@@ -26,6 +26,7 @@
     "body-parser": "^1.20.2",
     "electron-context-menu": "^3.6.1",
     "electron-store": "^8.1.0",
+    "electron-updater": "^5.3.0",
     "express": "^4.18.2",
     "fs-extra": "^11.1.1",
     "get-port": "^5.1.1",
