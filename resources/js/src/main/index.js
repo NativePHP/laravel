@@ -3,6 +3,7 @@ import {electronApp, optimizer, is} from '@electron-toolkit/utils'
 import {notifyLaravel, startAPI, runScheduler, servePhpApp, serveWebsockets} from './server'
 import ps from 'ps-node'
 import {resolve} from 'path'
+import defaultIcon from '../../resources/icon.png?asset&asarUnpack'
 
 let phpProcesses = [];
 let websocketProcess;
@@ -14,6 +15,10 @@ require('@electron/remote/main').initialize()
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(async () => {
+    if (process.env.NODE_ENV === 'development') {
+        app.dock.setIcon(defaultIcon)
+    }
+
     // Set app user model id for windows
     electronApp.setAppUserModelId('com.electron')
 
