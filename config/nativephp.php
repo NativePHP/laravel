@@ -28,7 +28,7 @@ return [
                 'name' => env('DO_SPACES_NAME'),
                 'region' => env('DO_SPACES_REGION'),
                 'path' => env('NATIVEPHP_UPDATER_PATH', null),
-            ]
+            ],
         ],
     ],
 ];
