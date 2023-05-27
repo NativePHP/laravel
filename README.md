@@ -18,14 +18,14 @@ composer require nativephp/laravel
 You can publish and run the migrations with:
 
 ```bash
-php artisan vendor:publish --tag="native-php-migrations"
+php artisan vendor:publish --tag="nativephp-migrations"
 php artisan migrate
 ```
 
 You can publish the native app provider using
 
 ```bash
-php artisan vendor:publish --tag="native-php-provider"
+php artisan vendor:publish --tag="nativephp-provider"
 ```
 
 ## Testing

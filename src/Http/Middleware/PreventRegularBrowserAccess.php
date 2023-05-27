@@ -10,13 +10,13 @@ class PreventRegularBrowserAccess
     public function handle(Request $request, Closure $next)
     {
         $cookie = $request->cookie('_php_native');
-        $header = $request->header('X-Native-PHP-Secret');
+        $header = $request->header('X-NativePHP-Secret');
 
-        if ($cookie && $cookie === config('native-php.secret')) {
+        if ($cookie && $cookie === config('nativephp.secret')) {
             return $next($request);
         }
 
-        if ($header && $header === config('native-php.secret')) {
+        if ($header && $header === config('nativephp.secret')) {
             return $next($request);
         }
 

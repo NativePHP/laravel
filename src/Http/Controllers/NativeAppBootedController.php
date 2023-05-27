@@ -9,7 +9,7 @@ class NativeAppBootedController
 {
     public function __invoke(Request $request)
     {
-        $provider = app(config('native-php.provider'));
+        $provider = app(config('nativephp.provider'));
         $provider->boot();
 
         event(new ApplicationBooted());

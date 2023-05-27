@@ -11,6 +11,6 @@ class LoadStartupConfigurationCommand extends Command
 
     public function handle()
     {
-        echo json_encode(config('native-php'));
+        echo json_encode(config('nativephp'));
     }
 }
