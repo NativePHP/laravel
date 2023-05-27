@@ -16,6 +16,9 @@ class DevelopCommand extends Command
         $this->info('Fetching latest dependencies…');
 
         Process::path(__DIR__.'/../../resources/js/')
+            ->env([
+                'NATIVEPHP_PHP_BINARY_PATH' => base_path('vendor/nativephp/php-bin/bin/mac'),
+            ])
             ->run('yarn', function (string $type, string $output) {
             });
 
@@ -24,6 +27,7 @@ class DevelopCommand extends Command
         Process::path(__DIR__.'/../../resources/js/')
             ->env([
                 'APP_PATH' => base_path(),
+                'NATIVEPHP_PHP_BINARY_PATH' => base_path('vendor/nativephp/php-bin/bin/mac'),
                 'NATIVE_PHP_SKIP_QUEUE' => $this->option('no-queue') ? true : false,
             ])
             ->forever()

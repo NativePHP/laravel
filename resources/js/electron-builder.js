@@ -8,8 +8,8 @@ const fileName = process.env.NATIVEPHP_APP_FILENAME;
 const appVersion = process.env.NATIVEPHP_APP_VERSION;
 const appUrl = process.env.APP_URL;
 const appAuthor = process.env.NATIVEPHP_APP_AUTHOR;
+const phpBinaryPath = process.env.NATIVEPHP_PHP_BINARY_PATH;
 const isArm64 = process.argv.includes('--arm64');
-const phpBinary = process.env.NATIVEPHP_PHP_BINARY;
 let updaterConfig = {};
 
 try {
@@ -18,7 +18,11 @@ try {
 } catch (e) {
     updaterConfig = {};
 }
-copySync(join(__dirname, '..', '..', 'bin', (isArm64 ? 'arm64' : 'x86'), 'php'), join(__dirname, 'resources', 'php'));
+try {
+    copySync(join(phpBinaryPath, (isArm64 ? 'arm64' : 'x86'), 'php'), join(__dirname, 'resources', 'php'));
+} catch (e) {
+    console.log('Error copying PHP binary', e);
+}
 
 if (isBuilding) {
     console.log('=====================');
@@ -37,7 +41,8 @@ if (isBuilding) {
         removeSync(join(__dirname, 'resources', 'app'));
         removeSync(join(__dirname, 'resources', 'php'));
 
-        copySync(join(__dirname, '..', '..', 'bin', (isArm64 ? 'arm64' : 'x86'), 'php'), join(__dirname, 'resources', 'php'));
+        let phpBinary = join(phpBinaryPath, (isArm64 ? 'arm64' : 'x86'), 'php');
+        copySync(phpBinary, join(__dirname, 'resources', 'php'));
 
         copySync(process.env.APP_PATH, join(__dirname, 'resources', 'app'), {
             overwrite: true,
@@ -48,6 +53,7 @@ if (isBuilding) {
                     join(process.env.APP_PATH, 'vendor', 'nativephp', 'electron', 'vendor'),
                     join(process.env.APP_PATH, 'vendor', 'nativephp', 'laravel', 'vendor'),
 
+                    join(process.env.APP_PATH, 'vendor', 'nativephp', 'php-bin'),
                     join(process.env.APP_PATH, 'vendor', 'nativephp', 'electron', 'bin'),
                     join(process.env.APP_PATH, 'vendor', 'nativephp', 'electron', 'resources'),
                     join(process.env.APP_PATH, 'node_modules'),

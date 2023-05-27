@@ -16,6 +16,7 @@ class BuildCommand extends Command
         $this->info('Build NativePHP app…');
 
         Process::path(__DIR__.'/../../resources/js/')
+            ->env($this->getEnvironmentVariables())
             ->run('yarn', function (string $type, string $output) {
                 echo $output;
             });
@@ -26,23 +27,28 @@ class BuildCommand extends Command
             });
 
         Process::path(__DIR__.'/../../resources/js/')
-            ->env(array_merge(
-                [
-                    'APP_PATH' => base_path(),
-                    'NATIVEPHP_BUILDING' => true,
-                    'NATIVEPHP_PHP_BINARY' => PHP_BINARY,
-                    'NATIVEPHP_APP_NAME' => config('app.name'),
-                    'NATIVEPHP_APP_ID' => config('nativephp.app_id'),
-                    'NATIVEPHP_APP_VERSION' => config('nativephp.version'),
-                    'NATIVEPHP_APP_FILENAME' => Str::slug(config('app.name')),
-                    'NATIVEPHP_UPDATER_CONFIG' => json_encode(Updater::builderOptions()),
-                ],
-                Updater::environmentVariables(),
-            ))
+            ->env($this->getEnvironmentVariables())
             ->forever()
             ->tty()
             ->run('yarn build:mac-arm', function (string $type, string $output) {
                 echo $output;
             });
+    }
+
+    protected function getEnvironmentVariables()
+    {
+        return array_merge(
+            [
+                'APP_PATH' => base_path(),
+                'NATIVEPHP_BUILDING' => true,
+                'NATIVEPHP_PHP_BINARY_PATH' => base_path('vendor/nativephp/php-bin/bin/mac'),
+                'NATIVEPHP_APP_NAME' => config('app.name'),
+                'NATIVEPHP_APP_ID' => config('nativephp.app_id'),
+                'NATIVEPHP_APP_VERSION' => config('nativephp.version'),
+                'NATIVEPHP_APP_FILENAME' => Str::slug(config('app.name')),
+                'NATIVEPHP_UPDATER_CONFIG' => json_encode(Updater::builderOptions()),
+            ],
+            Updater::environmentVariables(),
+        );
     }
 }
