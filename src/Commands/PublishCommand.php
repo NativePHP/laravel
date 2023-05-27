@@ -3,7 +3,6 @@
 namespace Native\Electron\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Str;
 use Native\Electron\Facades\Updater;
