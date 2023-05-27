@@ -1,9 +1,10 @@
 import {mkdirSync, statSync, writeFileSync, existsSync} from 'fs'
 import {copySync} from 'fs-extra'
 import Store from 'electron-store'
+import {promisify} from 'util'
 import {join} from 'path'
 import {app} from 'electron'
-import {exec, spawn} from 'child_process'
+import {exec, execFile, spawn} from 'child_process'
 import php from '../../../resources/php?asset&asarUnpack'
 import getPort from 'get-port';
 
@@ -17,6 +18,20 @@ async function getPhpPort() {
     return await getPort({
         port: getPort.makeRange(8100, 9000)
     });
+}
+
+async function retrieveNativePHPConfig() {
+    const env = {
+        NATIVEPHP_STORAGE_PATH: storagePath,
+        NATIVEPHP_DATABASE_PATH: databaseFile,
+    };
+
+    const phpOptions = {
+        cwd: appPath,
+        env
+    };
+
+    return await promisify(execFile)(php, ['artisan', 'native:config'], phpOptions);
 }
 
 function callPhp(args, options) {
@@ -70,11 +85,11 @@ function ensureAppFoldersAreAvailable() {
 
 function startQueueWorker(secret, apiPort) {
     const env = {
-        NATIVE_PHP_STORAGE_PATH: storagePath,
-        NATIVE_PHP_DATABASE_PATH: databaseFile,
-        NATIVE_PHP_API_URL: `http://localhost:${apiPort}/api/`,
-        NATIVE_PHP_RUNNING: true,
-        NATIVE_PHP_SECRET: secret
+        NATVEPHP_STORAGE_PATH: storagePath,
+        NATVEPHP_DATABASE_PATH: databaseFile,
+        NATVEPHP_API_URL: `http://localhost:${apiPort}/api/`,
+        NATVEPHP_RUNNING: true,
+        NATIVEPHP_SECRET: secret
     };
 
     const phpOptions = {
@@ -87,11 +102,11 @@ function startQueueWorker(secret, apiPort) {
 
 function startScheduler(secret, apiPort) {
     const env = {
-        NATIVE_PHP_STORAGE_PATH: storagePath,
-        NATIVE_PHP_DATABASE_PATH: databaseFile,
-        NATIVE_PHP_API_URL: `http://localhost:${apiPort}/api/`,
-        NATIVE_PHP_RUNNING: true,
-        NATIVE_PHP_SECRET: secret
+        NATIVEPHP_STORAGE_PATH: storagePath,
+        NATIVEPHP_DATABASE_PATH: databaseFile,
+        NATIVEPHP_API_URL: `http://localhost:${apiPort}/api/`,
+        NATIVEPHP_RUNNING: true,
+        NATIVEPHP_SECRET: secret
     };
 
     const phpOptions = {
@@ -113,11 +128,11 @@ function serveApp(secret, apiPort) {
         console.log('Making sure app folders are available')
 
         const env = {
-            NATIVE_PHP_STORAGE_PATH: storagePath,
-            NATIVE_PHP_DATABASE_PATH: databaseFile,
-            NATIVE_PHP_API_URL: `http://localhost:${apiPort}/api/`,
-            NATIVE_PHP_RUNNING: true,
-            NATIVE_PHP_SECRET: secret
+            NATIVEPHP_STORAGE_PATH: storagePath,
+            NATIVEPHP_DATABASE_PATH: databaseFile,
+            NATIVEPHP_API_URL: `http://localhost:${apiPort}/api/`,
+            NATIVEPHP_RUNNING: true,
+            NATIVEPHP_SECRET: secret
         };
 
         const phpOptions = {
@@ -179,4 +194,4 @@ function serveApp(secret, apiPort) {
     })
 }
 
-export {startQueueWorker, startScheduler, serveApp, getAppPath}
+export {startQueueWorker, startScheduler, serveApp, getAppPath, retrieveNativePHPConfig}

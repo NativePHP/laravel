@@ -5,7 +5,9 @@ namespace Native\Electron;
 use Native\Electron\Commands\BuildCommand;
 use Native\Electron\Commands\DevelopCommand;
 use Native\Electron\Commands\InstallCommand;
+use Native\Electron\Commands\PublishCommand;
 use Native\Electron\Commands\QueueWorkerCommand;
+use Native\Electron\Updater\UpdaterManager;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -20,7 +22,15 @@ class ElectronServiceProvider extends PackageServiceProvider
                 InstallCommand::class,
                 DevelopCommand::class,
                 BuildCommand::class,
+                PublishCommand::class,
                 QueueWorkerCommand::class,
             ]);
+    }
+
+    public function packageRegistered()
+    {
+        $this->app->singleton('nativephp.updater', function ($app) {
+            return new UpdaterManager($app);
+        });
     }
 }

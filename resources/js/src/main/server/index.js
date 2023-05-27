@@ -1,7 +1,7 @@
 import {session} from 'electron'
 import serveWebsockets from './websockets'
 import startAPIServer from './api'
-import {startQueueWorker, startScheduler, serveApp} from './php';
+import {startQueueWorker, startScheduler, serveApp, retrieveNativePHPConfig} from './php';
 import axios from 'axios';
 
 let phpPort = null;
@@ -34,7 +34,7 @@ export function startAPI() {
     return startAPIServer(randomSecret);
 }
 
-export {serveWebsockets}
+export {serveWebsockets, retrieveNativePHPConfig}
 
 export async function appendCookie() {
     const cookie = {url: `http://localhost:${phpPort}`, name: '_php_native', value: randomSecret}

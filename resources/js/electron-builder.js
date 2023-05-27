@@ -10,7 +10,14 @@ const appUrl = process.env.APP_URL;
 const appAuthor = process.env.NATIVEPHP_APP_AUTHOR;
 const isArm64 = process.argv.includes('--arm64');
 const phpBinary = process.env.NATIVEPHP_PHP_BINARY;
+let updaterConfig = {};
 
+try {
+    updaterConfig = process.env.NATIVEPHP_UPDATER_CONFIG;
+    updaterConfig = JSON.parse(updaterConfig);
+} catch (e) {
+    updaterConfig = {};
+}
 copySync(join(__dirname, '..', '..', 'bin', (isArm64 ? 'arm64' : 'x86'), 'php'), join(__dirname, 'resources', 'php'));
 
 if (isBuilding) {
@@ -22,6 +29,8 @@ if (isBuilding) {
         console.log('Building for x86');
         console.log(join(__dirname, '..', '..', 'bin', (isArm64 ? 'arm64' : 'x86'), 'php'));
     }
+    console.log('=====================');
+    console.log('updater config', updaterConfig);
     console.log('=====================');
 
     try {
@@ -133,10 +142,7 @@ module.exports = {
         artifactName: appName + '-${version}.${ext}',
     },
     npmRebuild: false,
-    publish: {
-        provider: 'generic',
-        url: 'https://example.com/auto-updates',
-    },
+    publish: updaterConfig,
     extraMetadata: {
         name: fileName,
         homepage: appUrl,

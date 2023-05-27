@@ -1,7 +1,7 @@
-import {app, BrowserWindow} from 'electron'
+import {app, BrowserWindow, Notification} from 'electron'
 import { autoUpdater } from "electron-updater"
 import {electronApp, optimizer, is} from '@electron-toolkit/utils'
-import {notifyLaravel, startAPI, runScheduler, servePhpApp, serveWebsockets} from './server'
+import {notifyLaravel, startAPI, runScheduler, servePhpApp, serveWebsockets, retrieveNativePHPConfig} from './server'
 import ps from 'ps-node'
 import {resolve} from 'path'
 import defaultIcon from '../../resources/icon.png?asset&asarUnpack'
@@ -21,9 +21,6 @@ app.whenReady().then(async () => {
         app.dock.setIcon(defaultIcon)
     }
 
-    // Set app user model id for windows
-    electronApp.setAppUserModelId('com.electron')
-
     // Default open or close DevTools by F12 in development
     // and ignore CommandOrControl + R in production.
     // see https://github.com/alex8088/electron-toolkit/tree/master/packages/utils
@@ -31,14 +28,26 @@ app.whenReady().then(async () => {
         optimizer.watchWindowShortcuts(window)
     })
 
-    const deepLinkProtocol = 'nativephp'
+    let nativePHPConfig = {};
+    try {
+        let {stdout} = await retrieveNativePHPConfig()
+        nativePHPConfig = JSON.parse(stdout);
+    } catch (e) {
+        console.error(e);
+    }
 
-    if (process.defaultApp) {
-        if (process.argv.length >= 2) {
-            app.setAsDefaultProtocolClient(deepLinkProtocol, process.execPath, [resolve(process.argv[1])])
+    // Set app user model id for windows
+    electronApp.setAppUserModelId(nativePHPConfig?.app_id)
+
+    const deepLinkProtocol = nativePHPConfig?.deeplink_scheme;
+    if (deepLinkProtocol) {
+        if (process.defaultApp) {
+            if (process.argv.length >= 2) {
+                app.setAsDefaultProtocolClient(deepLinkProtocol, process.execPath, [resolve(process.argv[1])])
+            }
+        } else {
+            app.setAsDefaultProtocolClient(deepLinkProtocol)
         }
-    } else {
-        app.setAsDefaultProtocolClient(deepLinkProtocol)
     }
 
     // Start PHP server and websockets
@@ -51,7 +60,9 @@ app.whenReady().then(async () => {
 
     await notifyLaravel('booted')
 
-    autoUpdater.checkForUpdatesAndNotify()
+    if (nativePHPConfig?.updater?.enabled === true) {
+        autoUpdater.checkForUpdatesAndNotify()
+    }
 
     schedulerInterval = setInterval(() => {
         console.log("Running scheduler...")

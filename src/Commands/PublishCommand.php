@@ -3,17 +3,18 @@
 namespace Native\Electron\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Str;
 use Native\Electron\Facades\Updater;
 
-class BuildCommand extends Command
+class PublishCommand extends Command
 {
-    protected $signature = 'native:build';
+    protected $signature = 'native:publish {os=mac}';
 
     public function handle()
     {
-        $this->info('Build NativePHP app…');
+        $this->info('Building and publishing NativePHP app…');
 
         Process::path(__DIR__.'/../../resources/js/')
             ->run('yarn', function (string $type, string $output) {
@@ -24,6 +25,9 @@ class BuildCommand extends Command
             ->run('composer install --no-dev', function (string $type, string $output) {
                 echo $output;
             });
+
+        $updaterConnection = config('native-php.updater.default');
+        $updaterConfig = config("native-php.updater.connections.{$updaterConnection}", []);
 
         Process::path(__DIR__.'/../../resources/js/')
             ->env(array_merge(
@@ -41,7 +45,7 @@ class BuildCommand extends Command
             ))
             ->forever()
             ->tty()
-            ->run('yarn build:mac-arm', function (string $type, string $output) {
+            ->run('yarn publish:mac-arm', function (string $type, string $output) {
                 echo $output;
             });
     }

@@ -62,7 +62,10 @@
         "laravel": {
             "providers": [
               "Native\\Electron\\ElectronServiceProvider"
-            ]
+            ],
+            "aliases": {
+                "Updater": "Native\\Electron\\Facades\\Updater"
+            }
         }
     },
     "minimum-stability": "dev",
