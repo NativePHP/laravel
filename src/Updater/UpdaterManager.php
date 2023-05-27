@@ -132,7 +132,6 @@ class UpdaterManager
     /**
      * Create an instance of the spaces updater driver.
      *
-     * @param  array  $config
      * @return \Native\Electron\Updater\Contracts\Updater
      */
     protected function createSpacesDriver(array $config)
@@ -143,7 +142,6 @@ class UpdaterManager
     /**
      * Create an instance of the spaces updater driver.
      *
-     * @param  array  $config
      * @return \Native\Electron\Updater\Contracts\Updater
      */
     protected function createS3Driver(array $config)
