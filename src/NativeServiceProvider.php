@@ -6,6 +6,7 @@ use Illuminate\Foundation\Console\ServeCommand;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
+use Native\Laravel\Commands\LoadStartupConfigurationCommand;
 use Native\Laravel\Commands\MinifyApplicationCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -25,6 +26,7 @@ class NativeServiceProvider extends PackageServiceProvider
             ->name('native-php')
             ->hasCommands([
                 MinifyApplicationCommand::class,
+                LoadStartupConfigurationCommand::class,
             ])
             ->hasConfigFile()
             ->hasRoute('api')

@@ -1,15 +1,15 @@
 <?php
 
 return [
-    'running' => env('NATIVE_PHP_RUNNING', false),
+    'running' => env('NATIVEPHP_RUNNING', false),
 
-    'storage_path' => env('NATIVE_PHP_STORAGE_PATH'),
+    'storage_path' => env('NATIVEPHP_STORAGE_PATH'),
 
-    'database_path' => env('NATIVE_PHP_DATABASE_PATH'),
+    'database_path' => env('NATIVEPHP_DATABASE_PATH'),
 
-    'version' => env('NATIVE_PHP_VERSION', '1.0.0'),
+    'version' => env('NATIVEPHP_APP_VERSION', '1.0.0'),
 
-    'secret' => env('NATIVE_PHP_SECRET'),
+    'secret' => env('NATIVEPHP_SECRET'),
 
     'app_id' => env('NATIVEPHP_APP_ID'),
 
@@ -17,7 +17,7 @@ return [
 
     'author' => env('NATIVEPHP_APP_AUTHOR'),
 
-    'api_url' => env('NATIVE_PHP_API_URL', 'http://localhost:4000/api/'),
+    'api_url' => env('NATIVEPHP_API_URL', 'http://localhost:4000/api/'),
 
     'provider' => \App\Providers\NativeAppServiceProvider::class,
 ];
