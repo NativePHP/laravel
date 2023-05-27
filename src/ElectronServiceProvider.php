@@ -17,7 +17,7 @@ class ElectronServiceProvider extends PackageServiceProvider
     {
         $package
             ->name('nativephp-electron')
-            ->hasConfigFile('native-php')
+            ->hasConfigFile('nativephp')
             ->hasCommands([
                 InstallCommand::class,
                 DevelopCommand::class,

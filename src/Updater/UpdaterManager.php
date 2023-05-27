@@ -89,7 +89,7 @@ class UpdaterManager
     protected function getConfig($name)
     {
         if (! is_null($name) && $name !== 'null') {
-            return $this->app['config']["native-php.updater.providers.{$name}"];
+            return $this->app['config']["nativephp.updater.providers.{$name}"];
         }
 
         return ['driver' => 'null'];
@@ -102,7 +102,7 @@ class UpdaterManager
      */
     public function getDefaultDriver()
     {
-        return $this->app['config']['native-php.updater.default'];
+        return $this->app['config']['nativephp.updater.default'];
     }
 
     /**
@@ -113,7 +113,7 @@ class UpdaterManager
      */
     public function setDefaultDriver($name)
     {
-        $this->app['config']['native-php.updater.default'] = $name;
+        $this->app['config']['nativephp.updater.default'] = $name;
     }
 
     /**

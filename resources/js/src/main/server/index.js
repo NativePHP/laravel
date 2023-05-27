@@ -45,7 +45,7 @@ export async function notifyLaravel(endpoint, payload = {}) {
     try {
         await axios.post(`http://localhost:${phpPort}/_native/api/${endpoint}`, payload, {
             headers: {
-                'X-Native-PHP-Secret': randomSecret
+                'X-NativePHP-Secret': randomSecret
             }
         })
     } catch (e) {

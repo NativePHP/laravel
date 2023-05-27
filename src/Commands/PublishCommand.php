@@ -25,8 +25,8 @@ class PublishCommand extends Command
                 echo $output;
             });
 
-        $updaterConnection = config('native-php.updater.default');
-        $updaterConfig = config("native-php.updater.connections.{$updaterConnection}", []);
+        $updaterConnection = config('nativephp.updater.default');
+        $updaterConfig = config("nativephp.updater.connections.{$updaterConnection}", []);
 
         Process::path(__DIR__.'/../../resources/js/')
             ->env(array_merge(
@@ -35,8 +35,8 @@ class PublishCommand extends Command
                     'NATIVEPHP_BUILDING' => true,
                     'NATIVEPHP_PHP_BINARY' => PHP_BINARY,
                     'NATIVEPHP_APP_NAME' => config('app.name'),
-                    'NATIVEPHP_APP_ID' => config('native-php.app_id'),
-                    'NATIVEPHP_APP_VERSION' => config('native-php.version'),
+                    'NATIVEPHP_APP_ID' => config('nativephp.app_id'),
+                    'NATIVEPHP_APP_VERSION' => config('nativephp.version'),
                     'NATIVEPHP_APP_FILENAME' => Str::slug(config('app.name')),
                     'NATIVEPHP_UPDATER_CONFIG' => json_encode(Updater::builderOptions()),
                 ],

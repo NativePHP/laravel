@@ -14,7 +14,7 @@ class InstallCommand extends Command
     public function handle()
     {
         $this->comment('Publishing NativePHP Service Provider...');
-        $this->callSilent('vendor:publish', ['--tag' => 'native-php-provider']);
+        $this->callSilent('vendor:publish', ['--tag' => 'nativephp-provider']);
 
         if ($this->confirm('Would you like to install the NativePHP NPM dependencies?', true)) {
             $this->installNpmDependencies();
