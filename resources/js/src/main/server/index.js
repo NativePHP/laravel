@@ -43,7 +43,7 @@ export async function appendCookie() {
 
 export async function notifyLaravel(endpoint, payload = {}) {
     try {
-        await axios.post(`http://localhost:${phpPort}/_native/api/${endpoint}`, payload, {
+        await axios.post(`http://127.0.0.1:${phpPort}/_native/api/${endpoint}`, payload, {
             headers: {
                 'X-NativePHP-Secret': randomSecret
             }

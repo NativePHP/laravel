@@ -181,6 +181,7 @@ function serveApp(secret, apiPort) {
             const match = portRegex.exec(data.toString())
             if (match) {
                 const port = match[1]
+                console.log("PHP Server started on port: ", port)
                 resolve({
                     port,
                     process: phpServer
