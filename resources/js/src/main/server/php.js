@@ -132,7 +132,7 @@ function serveApp(secret, apiPort) {
             NATIVEPHP_DATABASE_PATH: databaseFile,
             NATIVEPHP_API_URL: `http://localhost:${apiPort}/api/`,
             NATIVEPHP_RUNNING: true,
-            NATIVEPHP_SECRET: secret
+            NATIVEPHP_SECRET: secret,
         };
 
         const phpOptions = {
@@ -178,6 +178,7 @@ function serveApp(secret, apiPort) {
         })
 
         phpServer.stderr.on('data', (data) => {
+            console.log(data.toString())
             const match = portRegex.exec(data.toString())
             if (match) {
                 const port = match[1]

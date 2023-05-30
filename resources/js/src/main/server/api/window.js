@@ -25,10 +25,12 @@ router.post('/close', (req, res) => {
 })
 
 router.get('/current', (req, res) => {
-    // const currentWindow = BrowserWindow.getFocusedWindow();
-    const currentWindow = state.windows[Object.keys(state.windows)[0]]
+    const currentWindow = Object.values(state.windows).find(window => window.id === BrowserWindow.getFocusedWindow().id)
+    // Find object key with matching value
+    const id = Object.keys(state.windows).find(key => state.windows[key] === currentWindow)
+
     res.json({
-        id: currentWindow.id,
+        id: id,
         x: currentWindow.getPosition()[0],
         y: currentWindow.getPosition()[1],
         width: currentWindow.getSize()[0],
@@ -71,6 +73,11 @@ router.post('/open', (req, res) => {
         return res.sendStatus(200)
     }
 
+    let preloadPath = join(__dirname, '../../../preload/index.js')
+    if (process.env.NODE_ENV === 'development' || argumentEnv.TESTING == 1) {
+        preloadPath = join(__dirname, '../preload/index.js')
+    }
+
     const window = new BrowserWindow({
         width: parseInt(width),
         height: parseInt(height),
@@ -92,7 +99,7 @@ router.post('/open', (req, res) => {
         webPreferences: {
             backgroundThrottling: false,
             spellcheck: false,
-            preload: join(__dirname, '../../../preload/index.js'),
+            preload: preloadPath,
             sandbox: false,
             contextIsolation: false,
             nodeIntegration: true,

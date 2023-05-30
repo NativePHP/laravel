@@ -49,5 +49,6 @@ export async function notifyLaravel(endpoint, payload = {}) {
             }
         })
     } catch (e) {
+        
     }
 }

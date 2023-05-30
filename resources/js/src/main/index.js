@@ -108,6 +108,7 @@ function killChildProcesses() {
 
     processes.forEach((process) => {
         try {
+            console.log(`Killing process ${process.pid}`)
             ps.kill(process.pid, function( err ) {
                 if (err) {
                     console.error( 'Error occurred while killing process %s', pid );
@@ -117,6 +118,7 @@ function killChildProcesses() {
                 }
             });
         } catch (err) {
+            console.error(err);
         }
     });
 }

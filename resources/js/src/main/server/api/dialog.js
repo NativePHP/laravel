@@ -1,5 +1,6 @@
 import express from 'express'
 import {dialog} from 'electron'
+import state from '../state'
 const router = express.Router();
 
 function trimOptions(options) {
@@ -8,8 +9,12 @@ function trimOptions(options) {
     return options;
 }
 
+function findWindow(id) {
+    return state.windows[id] || null
+}
+
 router.post('/open', (req, res) => {
-    const {title, buttonLabel, filters, properties, defaultPath, message} = req.body
+    const {title, buttonLabel, filters, properties, defaultPath, message, windowReference} = req.body
 
     let options = {
         title,
@@ -22,7 +27,12 @@ router.post('/open', (req, res) => {
 
     options = trimOptions(options);
 
-    const result = dialog.showOpenDialogSync(options)
+    let browserWindow = findWindow(windowReference);
+    if (browserWindow) {
+        const result = dialog.showOpenDialogSync(browserWindow, options)
+    } else {
+        const result = dialog.showOpenDialogSync(options)
+    }
 
     res.json({
         result
