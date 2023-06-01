@@ -2,10 +2,9 @@
 
 namespace Native\Electron\Tests;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Artisan;
-use Orchestra\Testbench\TestCase as Orchestra;
 use Native\Electron\ElectronServiceProvider;
+use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
 {
