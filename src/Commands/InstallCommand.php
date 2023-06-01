@@ -7,7 +7,7 @@ use Symfony\Component\Process\Process;
 
 class InstallCommand extends Command
 {
-    protected $signature = 'native:install';
+    protected $signature = 'native:install {--force : Overwrite existing files by default}';
 
     protected $description = 'Install all of the NativePHP resources';
 
@@ -16,13 +16,13 @@ class InstallCommand extends Command
         $this->comment('Publishing NativePHP Service Provider...');
         $this->callSilent('vendor:publish', ['--tag' => 'nativephp-provider']);
 
-        if ($this->confirm('Would you like to install the NativePHP NPM dependencies?', true)) {
+        if ($this->option('force') || $this->confirm('Would you like to install the NativePHP NPM dependencies?', true)) {
             $this->installNpmDependencies();
 
             $this->output->newLine();
         }
 
-        if ($this->confirm('Would you like to start the NativePHP development server', false)) {
+        if (! $this->option('force') && $this->confirm('Would you like to start the NativePHP development server', false)) {
             $this->call('native:serve');
         }
 
@@ -31,7 +31,7 @@ class InstallCommand extends Command
 
     protected function nativePhpPath()
     {
-        return base_path('vendor/nativephp/electron/resources/js');
+        return realpath( __DIR__ . '/../../resources/js');
     }
 
     protected function installNpmDependencies()

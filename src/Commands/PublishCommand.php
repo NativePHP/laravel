@@ -45,6 +45,7 @@ class PublishCommand extends Command
                 'APP_PATH' => base_path(),
                 'NATIVEPHP_BUILDING' => true,
                 'NATIVEPHP_PHP_BINARY_PATH' => base_path('vendor/nativephp/php-bin/bin/mac'),
+                'NATIVEPHP_CERTIFICATE_FILE_PATH' => base_path('vendor/nativephp/php-bin/cacert.pem'),
                 'NATIVEPHP_APP_NAME' => config('app.name'),
                 'NATIVEPHP_APP_ID' => config('nativephp.app_id'),
                 'NATIVEPHP_APP_VERSION' => config('nativephp.version'),

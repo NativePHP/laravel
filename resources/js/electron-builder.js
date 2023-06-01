@@ -9,6 +9,7 @@ const appVersion = process.env.NATIVEPHP_APP_VERSION;
 const appUrl = process.env.APP_URL;
 const appAuthor = process.env.NATIVEPHP_APP_AUTHOR;
 const phpBinaryPath = process.env.NATIVEPHP_PHP_BINARY_PATH;
+const certificatePath = process.env.NATIVEPHP_CERTIFICATE_FILE_PATH;
 const isArm64 = process.argv.includes('--arm64');
 let updaterConfig = {};
 
@@ -18,10 +19,21 @@ try {
 } catch (e) {
     updaterConfig = {};
 }
-try {
-    copySync(join(phpBinaryPath, (isArm64 ? 'arm64' : 'x86'), 'php'), join(__dirname, 'resources', 'php'));
-} catch (e) {
-    console.log('Error copying PHP binary', e);
+
+if (phpBinaryPath) {
+    try {
+        copySync(join(phpBinaryPath, (isArm64 ? 'arm64' : 'x86'), 'php'), join(__dirname, 'resources', 'php'));
+    } catch (e) {
+        console.log('Error copying PHP binary', e);
+    }
+}
+
+if (certificatePath) {
+    try {
+        copySync(certificatePath, join(__dirname, 'resources', 'cacert.pem'));
+    } catch (e) {
+        console.log('Error copying certificate file', e);
+    }
 }
 
 if (isBuilding) {

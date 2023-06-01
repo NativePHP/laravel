@@ -18,6 +18,7 @@ class DevelopCommand extends Command
         Process::path(__DIR__.'/../../resources/js/')
             ->env([
                 'NATIVEPHP_PHP_BINARY_PATH' => base_path('vendor/nativephp/php-bin/bin/mac'),
+                'NATIVEPHP_CERTIFICATE_FILE_PATH' => base_path('vendor/nativephp/php-bin/cacert.pem'),
             ])
             ->run('yarn', function (string $type, string $output) {
             });
@@ -28,6 +29,7 @@ class DevelopCommand extends Command
             ->env([
                 'APP_PATH' => base_path(),
                 'NATIVEPHP_PHP_BINARY_PATH' => base_path('vendor/nativephp/php-bin/bin/mac'),
+                'NATIVEPHP_CERTIFICATE_FILE_PATH' => base_path('vendor/nativephp/php-bin/cacert.pem'),
                 'NATIVE_PHP_SKIP_QUEUE' => $this->option('no-queue') ? true : false,
             ])
             ->forever()
