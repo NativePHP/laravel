@@ -2,10 +2,16 @@
 
 namespace Native\Laravel;
 
+use Illuminate\Support\Traits\Conditionable;
+use Illuminate\Support\Traits\Macroable;
 use Native\Laravel\Client\Client;
+use Native\Laravel\Facades\Window;
 
 class Dialog
 {
+    use Conditionable;
+    use Macroable;
+
     protected $title;
 
     protected $defaultPath;
@@ -17,6 +23,8 @@ class Dialog
     ];
 
     protected $filters = [];
+
+    protected $windowReference;
 
     public function __construct(protected Client $client)
     {
@@ -69,6 +77,13 @@ class Dialog
         return $this;
     }
 
+    public function dontResolveSymlinks(): self
+    {
+        $this->properties[] = 'noResolveAliases';
+
+        return $this;
+    }
+
     public function filter(string $name, array $extensions): self
     {
         $this->filters[] = [
@@ -86,10 +101,22 @@ class Dialog
         return $this;
     }
 
+    public function asSheet(string $windowId = null): self
+    {
+        if (is_null($windowId)) {
+            $this->windowReference = Window::current()->id;
+        } else {
+            $this->windowReference = $windowId;
+        }
+
+        return $this;
+    }
+
     public function show()
     {
         $result = $this->client->post('dialog/open', [
             'title' => $this->title,
+            'windowReference' => $this->windowReference,
             'defaultPath' => $this->defaultPath,
             'filters' => $this->filters,
             'buttonLabel' => $this->buttonLabel,
@@ -107,6 +134,7 @@ class Dialog
     {
         return $this->client->post('dialog/save', [
             'title' => $this->title,
+            'windowReference' => $this->windowReference,
             'defaultPath' => $this->defaultPath,
             'filters' => $this->filters,
             'buttonLabel' => $this->buttonLabel,

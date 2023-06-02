@@ -5,7 +5,9 @@ namespace Native\Laravel\Menu;
 use Native\Laravel\Client\Client;
 use Native\Laravel\Contracts\MenuItem;
 use Native\Laravel\Enums\RolesEnum;
+use Native\Laravel\Menu\Items\Checkbox;
 use Native\Laravel\Menu\Items\Event;
+use Native\Laravel\Menu\Items\Label;
 use Native\Laravel\Menu\Items\Link;
 use Native\Laravel\Menu\Items\Role;
 use Native\Laravel\Menu\Items\Separator;
@@ -54,6 +56,16 @@ class Menu implements MenuItem
     public function quit(): static
     {
         return $this->add(new Role(RolesEnum::QUIT));
+    }
+
+    public function label(string $label): self
+    {
+        return $this->add(new Label($label));
+    }
+
+    public function checkbox(string $label, bool $checked = false): self
+    {
+        return $this->add(new Checkbox($label, $checked));
     }
 
     public function event(string $event, string $text): self

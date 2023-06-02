@@ -19,4 +19,9 @@ class ContextMenu
             'entries' => $items,
         ]);
     }
+
+    public function remove()
+    {
+        $this->client->delete('context');
+    }
 }

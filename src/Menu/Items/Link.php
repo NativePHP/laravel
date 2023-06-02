@@ -2,22 +2,19 @@
 
 namespace Native\Laravel\Menu\Items;
 
-use Native\Laravel\Contracts\MenuItem;
-
-class Link implements MenuItem
+class Link extends MenuItem
 {
-    public function __construct(protected string $url, protected string $label, protected ?string $hotkey = null)
+    protected string $type = 'link';
+
+    public function __construct(protected string $url, protected ?string $label, protected ?string $accelerator = null)
     {
 
     }
 
     public function toArray(): array
     {
-        return [
-            'type' => 'link',
-            'accelerator' => $this->hotkey,
+        return array_merge(parent::toArray(), [
             'url' => $this->url,
-            'label' => $this->label,
-        ];
+        ]);
     }
 }

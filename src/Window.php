@@ -14,9 +14,15 @@ class Window
 
     protected $y;
 
+    protected $manageState = false;
+
     protected int $width = 400;
 
     protected int $height = 400;
+
+    protected int $minWidth = 0;
+
+    protected int $minHeight = 0;
 
     protected bool $alwaysOnTop = false;
 
@@ -42,8 +48,7 @@ class Window
 
     public function __construct(protected Client $client)
     {
-        $this->id = Str::uuid();
-        $this->url = url('/');
+        $this->url(url('/'));
     }
 
     public static function new(): static
@@ -56,6 +61,13 @@ class Window
         $this->client->post('window/close', [
             'id' => $id ?? $this->detectId(),
         ]);
+    }
+
+    public function id(string $id): self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function url(string $url): self
@@ -97,6 +109,13 @@ class Window
     public function titleBarHiddenInset(): self
     {
         return $this->titleBarStyle('hiddenInset');
+    }
+
+    public function manageWindowState(): self
+    {
+        $this->manageState = true;
+
+        return $this;
     }
 
     public function frameless(): self
@@ -163,6 +182,20 @@ class Window
         return $this;
     }
 
+    public function minWidth($width): self
+    {
+        $this->minWidth = $width;
+
+        return $this;
+    }
+
+    public function minHeight($height): self
+    {
+        $this->minHeight = $height;
+
+        return $this;
+    }
+
     public function resizable($resizable = true): static
     {
         $this->resizable = $resizable;
@@ -176,28 +209,6 @@ class Window
         $this->y = $y;
 
         return $this;
-    }
-
-    public function open(): void
-    {
-        $this->client->post('window/open', [
-            'id' => $this->id,
-            'url' => $this->url,
-            'x' => $this->x,
-            'y' => $this->y,
-            'width' => $this->width,
-            'height' => $this->height,
-            'focusable' => $this->focusable,
-            'hasShadow' => $this->hasShadow,
-            'frame' => $this->frame,
-            'titleBarStyle' => $this->titleBarStyle,
-            'vibrancy' => $this->vibrancy,
-            'transparency' => $this->transparent,
-            'backgroundColor' => $this->backgroundColor,
-            'alwaysOnTop' => $this->alwaysOnTop,
-            'resizable' => $this->resizable,
-            'title' => $this->title,
-        ]);
     }
 
     public function current()
@@ -224,6 +235,40 @@ class Window
         parse_str($parsedUrl['query'] ?? '', $query);
 
         return $query['_windowId'] ?? null;
+    }
+
+    public function open(Window $window = null): void
+    {
+        if ($window === null) {
+            $window = $this;
+        }
+
+        $this->client->post('window/open', $window->toArray());
+    }
+
+    public function toArray()
+    {
+        return [
+            'id' => $this->id,
+            'url' => $this->url,
+            'x' => $this->x,
+            'y' => $this->y,
+            'manageState' => $this->manageState,
+            'width' => $this->width,
+            'height' => $this->height,
+            'minWidth' => $this->minWidth,
+            'minHeight' => $this->minHeight,
+            'focusable' => $this->focusable,
+            'hasShadow' => $this->hasShadow,
+            'frame' => $this->frame,
+            'titleBarStyle' => $this->titleBarStyle,
+            'vibrancy' => $this->vibrancy,
+            'transparency' => $this->transparent,
+            'backgroundColor' => $this->backgroundColor,
+            'alwaysOnTop' => $this->alwaysOnTop,
+            'resizable' => $this->resizable,
+            'title' => $this->title,
+        ];
     }
 
     public function resize($width, $height): void

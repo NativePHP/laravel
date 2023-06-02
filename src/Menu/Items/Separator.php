@@ -2,14 +2,7 @@
 
 namespace Native\Laravel\Menu\Items;
 
-use Native\Laravel\Contracts\MenuItem;
-
-class Separator implements MenuItem
+class Separator extends MenuItem
 {
-    public function toArray(): array
-    {
-        return [
-            'type' => 'separator',
-        ];
-    }
+    protected string $type = 'separator';
 }

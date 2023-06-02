@@ -2,11 +2,12 @@
 
 namespace Native\Laravel\Menu\Items;
 
-use Native\Laravel\Contracts\MenuItem;
 use Native\Laravel\Enums\RolesEnum;
 
-class Role implements MenuItem
+class Role extends MenuItem
 {
+    protected string $type = 'role';
+
     public function __construct(protected RolesEnum $role)
     {
 
@@ -14,9 +15,8 @@ class Role implements MenuItem
 
     public function toArray(): array
     {
-        return [
-            'type' => 'role',
+        return array_merge(parent::toArray(), [
             'role' => $this->role->value,
-        ];
+        ]);
     }
 }
