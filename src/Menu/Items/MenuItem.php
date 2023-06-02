@@ -7,16 +7,22 @@ use Native\Laravel\Contracts\MenuItem as MenuItemContract;
 abstract class MenuItem implements MenuItemContract
 {
     protected string $type = 'normal';
+
     protected ?string $label = null;
+
     protected ?string $sublabel = null;
+
     protected ?string $accelerator = null;
+
     protected ?string $icon = null;
+
     protected ?string $toolTip = null;
 
     protected bool $isEnabled = true;
-    protected bool $isVisible = true;
-    protected bool $isChecked = false;
 
+    protected bool $isVisible = true;
+
+    protected bool $isChecked = false;
 
     public function enabled($enabled = true): self
     {

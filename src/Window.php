@@ -3,7 +3,6 @@
 namespace Native\Laravel;
 
 use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Str;
 use Native\Laravel\Client\Client;
 
 class Window
