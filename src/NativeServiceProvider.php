@@ -35,11 +35,9 @@ class NativeServiceProvider extends PackageServiceProvider
 
     public function packageRegistered()
     {
-        foreach ($this->passThrough as $env) {
-            ServeCommand::$passthroughVariables[] = $env;
-        }
+        $this->mergeConfigFrom($this->package->basePath("/../config/nativephp-internal.php"), 'nativephp-internal');
 
-        if (config('nativephp.running')) {
+        if (config('nativephp-internal.running')) {
             $this->configureApp();
         }
     }
@@ -48,14 +46,14 @@ class NativeServiceProvider extends PackageServiceProvider
     {
         $oldStoragePath = $this->app->storagePath();
 
-        $this->app->useStoragePath(config('nativephp.storage_path'));
+        $this->app->useStoragePath(config('nativephp-internal.storage_path'));
 
         // Patch all config values that contain the old storage path
         $config = Arr::dot(config()->all());
 
         foreach ($config as $key => $value) {
             if (is_string($value) && str_contains($value, $oldStoragePath)) {
-                $newValue = str_replace($oldStoragePath, config('nativephp.storage_path'), $value);
+                $newValue = str_replace($oldStoragePath, config('nativephp-internal.storage_path'), $value);
                 config([$key => $newValue]);
             }
         }
@@ -63,7 +61,7 @@ class NativeServiceProvider extends PackageServiceProvider
         config(['database.connections.nativephp' => [
             'driver' => 'sqlite',
             'url' => env('DATABASE_URL'),
-            'database' => config('nativephp.database_path'),
+            'database' => config('nativephp-internal.database_path'),
             'prefix' => '',
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
         ]]);

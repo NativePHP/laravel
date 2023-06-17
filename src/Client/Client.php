@@ -16,7 +16,7 @@ class Client
             ->baseUrl(config('nativephp.api_url', ''))
             ->timeout(60 * 60)
             ->withHeaders([
-                'X-NativePHP-Secret' => config('nativephp.secret'),
+                'X-NativePHP-Secret' => config('nativephp-internal.secret'),
             ])
             ->asJson();
     }
