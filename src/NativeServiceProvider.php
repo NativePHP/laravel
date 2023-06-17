@@ -2,7 +2,6 @@
 
 namespace Native\Laravel;
 
-use Illuminate\Foundation\Console\ServeCommand;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
@@ -35,7 +34,7 @@ class NativeServiceProvider extends PackageServiceProvider
 
     public function packageRegistered()
     {
-        $this->mergeConfigFrom($this->package->basePath("/../config/nativephp-internal.php"), 'nativephp-internal');
+        $this->mergeConfigFrom($this->package->basePath('/../config/nativephp-internal.php'), 'nativephp-internal');
 
         if (config('nativephp-internal.running')) {
             $this->configureApp();
