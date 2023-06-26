@@ -10,7 +10,7 @@ class ApplicationBooted
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public function __construct(public $path)
+    public function __construct()
     {
 
     }

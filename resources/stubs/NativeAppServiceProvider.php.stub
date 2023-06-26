@@ -4,9 +4,9 @@ namespace App\Providers;
 
 use Native\Laravel\Facades\ContextMenu;
 use Native\Laravel\Facades\Dock;
+use Native\Laravel\Facades\Window;
 use Native\Laravel\GlobalShortcut;
 use Native\Laravel\Menu\Menu;
-use Native\Laravel\Window as AppWindow;
 
 class NativeAppServiceProvider
 {
@@ -29,12 +29,9 @@ class NativeAppServiceProvider
             )
             ->register();
 
-        AppWindow::new()
-            ->url(url('/'))
-            ->title('Laravel Native App')
+        Window::open()
             ->width(800)
-            ->height(800)
-            ->open();
+            ->height(800);
 
         /**
             Dock::menu(

@@ -17,11 +17,11 @@ class PreventRegularBrowserAccess
         $cookie = $request->cookie('_php_native');
         $header = $request->header('X-NativePHP-Secret');
 
-        if ($cookie && $cookie === config('nativephp.secret')) {
+        if ($cookie && $cookie === config('nativephp-internal.secret')) {
             return $next($request);
         }
 
-        if ($header && $header === config('nativephp.secret')) {
+        if ($header && $header === config('nativephp-internal.secret')) {
             return $next($request);
         }
 

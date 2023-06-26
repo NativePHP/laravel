@@ -1,33 +1,24 @@
 <?php
 
-namespace Native\Laravel;
+namespace Native\Laravel\Windows;
 
 use Illuminate\Support\Facades\URL;
 use Native\Laravel\Client\Client;
+use Native\Laravel\Concerns\HasDimensions;
+use Native\Laravel\Concerns\HasVibrancy;
 
 class Window
 {
+    use HasVibrancy;
+    use HasDimensions;
+
     protected string $url = '';
 
-    protected $x;
-
-    protected $y;
-
     protected $manageState = false;
-
-    protected int $width = 400;
-
-    protected int $height = 400;
-
-    protected int $minWidth = 0;
-
-    protected int $minHeight = 0;
 
     protected bool $alwaysOnTop = false;
 
     protected bool $resizable = true;
-
-    protected bool $transparent = false;
 
     protected bool $focusable = true;
 
@@ -36,10 +27,6 @@ class Window
     protected bool $frame = true;
 
     protected string $titleBarStyle = 'default';
-
-    protected string $vibrancy = 'appearance-based';
-
-    protected string $backgroundColor = '#FFFFFF';
 
     protected string $title = '';
 
@@ -50,25 +37,13 @@ class Window
     public function __construct(string $id)
     {
         $this->id = $id;
-    }
-
-    public function close($id = null): void
-    {
-        $this->client->post('window/close', [
-            'id' => $id ?? $this->detectId(),
-        ]);
+        $this->title = config('app.name');
+        $this->url = url('/');
     }
 
     public function id(string $id = 'main'): self
     {
         $this->id = $id;
-
-        return $this;
-    }
-
-    public function setClient(Client $client): self
-    {
-        $this->client = $client;
 
         return $this;
     }
@@ -83,16 +58,6 @@ class Window
     public function title(string $title): self
     {
         $this->title = $title;
-
-        return $this;
-    }
-
-    public function transparent($value = true): self
-    {
-        $this->transparent = $value;
-        if ($value === true) {
-            $this->backgroundColor = '#00000000';
-        }
 
         return $this;
     }
@@ -147,54 +112,16 @@ class Window
         return $this->titleBarStyle('customButtonsOnHover');
     }
 
-    public function vibrancy(string $vibrancy): self
+    public function setClient(Client $client): self
     {
-        $this->vibrancy = $vibrancy;
+        $this->client = $client;
 
         return $this;
     }
 
-    public function lightVibrancy(): self
+    public function alwaysOnTop($alwaysOnTop = true): self
     {
-        return $this->vibrancy('light');
-    }
-
-    public function blendBackgroundBehindWindow(): self
-    {
-        $this->transparent();
-
-        return $this->vibrancy('under-window');
-    }
-
-    public function darkVibrancy(): self
-    {
-        return $this->vibrancy('dark');
-    }
-
-    public function width($width): self
-    {
-        $this->width = $width;
-
-        return $this;
-    }
-
-    public function height($height): self
-    {
-        $this->height = $height;
-
-        return $this;
-    }
-
-    public function minWidth($width): self
-    {
-        $this->minWidth = $width;
-
-        return $this;
-    }
-
-    public function minHeight($height): self
-    {
-        $this->minHeight = $height;
+        $this->alwaysOnTop = $alwaysOnTop;
 
         return $this;
     }
@@ -206,19 +133,6 @@ class Window
         return $this;
     }
 
-    public function position($x, $y): self
-    {
-        $this->x = $x;
-        $this->y = $y;
-
-        return $this;
-    }
-
-    public function current()
-    {
-        return (object) $this->client->get('window/current')->json();
-    }
-
     public function invisibleFrameless(): self
     {
         return $this
@@ -228,13 +142,16 @@ class Window
             ->hasShadow(false);
     }
 
-    public function open(Window $window = null): void
+    public function detectId(): ?string
     {
-        if ($window === null) {
-            $window = $this;
-        }
+        $previousUrl = request()->headers->get('Referer');
+        $currentUrl = URL::current();
 
-        $this->client->post('window/open', $window->toArray());
+        // Return the _windowId query parameter from either the previous or current URL.
+        $parsedUrl = parse_url($previousUrl ?? $currentUrl);
+        parse_str($parsedUrl['query'] ?? '', $query);
+
+        return $query['_windowId'] ?? null;
     }
 
     public function toArray()
@@ -260,22 +177,5 @@ class Window
             'resizable' => $this->resizable,
             'title' => $this->title,
         ];
-    }
-
-    public function resize($width, $height): void
-    {
-        $this->client->post('window/resize', [
-            'id' => $this->detectId(),
-            'width' => $width,
-            'height' => $height,
-        ]);
-    }
-
-    public function alwaysOnTop($alwaysOnTop): void
-    {
-        $this->client->post('window/always-on-top', [
-            'id' => $this->detectId(),
-            'alwaysOnTop' => $alwaysOnTop,
-        ]);
     }
 }

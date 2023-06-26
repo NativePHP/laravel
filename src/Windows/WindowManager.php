@@ -1,0 +1,51 @@
+<?php
+
+namespace Native\Laravel\Windows;
+
+use Illuminate\Support\Facades\URL;
+use Native\Laravel\Client\Client;
+use Native\Laravel\Concerns\DetectsWindowId;
+
+class WindowManager
+{
+    use DetectsWindowId;
+
+    public function __construct(protected Client $client)
+    {
+
+    }
+
+    public function open(string $id = 'main')
+    {
+        return (new PendingOpenWindow($id))->setClient($this->client);
+    }
+
+    public function close($id = null)
+    {
+        $this->client->post('window/close', [
+            'id' => $id ?? $this->detectId(),
+        ]);
+    }
+
+    public function current()
+    {
+        return (object) $this->client->get('window/current')->json();
+    }
+
+    public function resize($width, $height, $id = null)
+    {
+        $this->client->post('window/resize', [
+            'id' => $id ?? $this->detectId(),
+            'width' => $width,
+            'height' => $height,
+        ]);
+    }
+
+    public function alwaysOnTop($alwaysOnTop, $id = null): void
+    {
+        $this->client->post('window/always-on-top', [
+            'id' => $id ?? $this->detectId(),
+            'alwaysOnTop' => $alwaysOnTop,
+        ]);
+    }
+}

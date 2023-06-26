@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
 use Native\Laravel\Commands\LoadStartupConfigurationCommand;
 use Native\Laravel\Commands\MinifyApplicationCommand;
+use Native\Laravel\Logging\LogWatcher;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -44,6 +45,10 @@ class NativeServiceProvider extends PackageServiceProvider
 
     protected function configureApp()
     {
+        if (config('app.debug')) {
+            app(LogWatcher::class)->register();
+        }
+
         $oldStoragePath = $this->app->storagePath();
 
         $this->app->useStoragePath(config('nativephp-internal.storage_path'));

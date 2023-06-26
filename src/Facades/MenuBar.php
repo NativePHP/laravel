@@ -8,6 +8,6 @@ class MenuBar extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return \Native\Laravel\MenuBar::class;
+        return \Native\Laravel\MenuBar\MenuBarManager::class;
     }
 }
