@@ -20,9 +20,12 @@ class DevelopCommand extends Command
                 'NATIVEPHP_PHP_BINARY_PATH' => base_path('vendor/nativephp/php-bin/bin/mac'),
                 'NATIVEPHP_CERTIFICATE_FILE_PATH' => base_path('vendor/nativephp/php-bin/cacert.pem'),
             ])
+            ->forever()
             ->run('yarn', function (string $type, string $output) {
+                if ($this->getOutput()->isVerbose()) {
+                    echo $output;
+                }
             });
-
         $this->info('Starting NativePHP app…');
 
         Process::path(__DIR__.'/../../resources/js/')
@@ -35,7 +38,9 @@ class DevelopCommand extends Command
             ->forever()
             ->tty()
             ->run('yarn dev', function (string $type, string $output) {
-                echo $output;
+                if ($this->getOutput()->isVerbose()) {
+                    echo $output;
+                }
             });
     }
 }
