@@ -2,8 +2,6 @@
 
 namespace Native\Laravel\MenuBar;
 
-use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Str;
 use Native\Laravel\Client\Client;
 use Native\Laravel\Concerns\HasDimensions;
 use Native\Laravel\Concerns\HasVibrancy;

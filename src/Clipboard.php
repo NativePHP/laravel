@@ -52,7 +52,7 @@ class Clipboard
         if (is_string($image) && file_exists($image)) {
             $type = pathinfo($image, PATHINFO_EXTENSION);
             $data = file_get_contents($image);
-            $dataUri = "data:image/{$type};base64," . base64_encode($data);
+            $dataUri = "data:image/{$type};base64,".base64_encode($data);
         }
 
         $this->client->post('clipboard/image', [
