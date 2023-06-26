@@ -13,7 +13,7 @@ class Client
     public function __construct()
     {
         $this->client = Http::asJson()
-            ->baseUrl(config('nativephp.api_url', ''))
+            ->baseUrl(config('nativephp-internal.api_url', ''))
             ->timeout(60 * 60)
             ->withHeaders([
                 'X-NativePHP-Secret' => config('nativephp-internal.secret'),
