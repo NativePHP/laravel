@@ -5,14 +5,14 @@ namespace Native\Laravel\Windows;
 use Illuminate\Support\Facades\URL;
 use Native\Laravel\Client\Client;
 use Native\Laravel\Concerns\HasDimensions;
+use Native\Laravel\Concerns\HasUrl;
 use Native\Laravel\Concerns\HasVibrancy;
 
 class Window
 {
     use HasVibrancy;
     use HasDimensions;
-
-    protected string $url = '';
+    use HasUrl;
 
     protected $manageState = false;
 
@@ -44,13 +44,6 @@ class Window
     public function id(string $id = 'main'): self
     {
         $this->id = $id;
-
-        return $this;
-    }
-
-    public function url(string $url): self
-    {
-        $this->url = $url;
 
         return $this;
     }

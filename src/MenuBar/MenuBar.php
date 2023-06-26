@@ -4,6 +4,7 @@ namespace Native\Laravel\MenuBar;
 
 use Native\Laravel\Client\Client;
 use Native\Laravel\Concerns\HasDimensions;
+use Native\Laravel\Concerns\HasUrl;
 use Native\Laravel\Concerns\HasVibrancy;
 use Native\Laravel\Menu\Menu;
 
@@ -11,8 +12,7 @@ class MenuBar
 {
     use HasVibrancy;
     use HasDimensions;
-
-    protected string $url = '';
+    use HasUrl;
 
     protected string $icon = '';
 
