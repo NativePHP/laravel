@@ -37,4 +37,43 @@ return [
      * any global hotkeys, menus, windows, etc.
      */
     'provider' => \App\Providers\NativeAppServiceProvider::class,
+
+    /**
+     * The NativePHP updater configuration.
+     */
+    'updater' => [
+        /**
+         * Whether or not the updater is enabled. Please note that the
+         * updater will only work when your application is bundled
+         * for production.
+         */
+        'enabled' => env('NATIVEPHP_UPDATER_ENABLED', true),
+
+        /**
+         * The updater provider to use.
+         * Supported: "s3", "spaces"
+         */
+        'default' => env('NATIVEPHP_UPDATER_PROVIDER', 'spaces'),
+
+        'providers' => [
+            's3' => [
+                'driver' => 's3',
+                'key' => env('AWS_ACCESS_KEY_ID'),
+                'secret' => env('AWS_SECRET_ACCESS_KEY'),
+                'region' => env('AWS_DEFAULT_REGION'),
+                'bucket' => env('AWS_BUCKET'),
+                'endpoint' => env('AWS_ENDPOINT'),
+                'path' => env('NATIVEPHP_UPDATER_PATH', null),
+            ],
+
+            'spaces' => [
+                'driver' => 'spaces',
+                'key' => env('DO_SPACES_KEY_ID'),
+                'secret' => env('DO_SPACES_SECRET_ACCESS_KEY'),
+                'name' => env('DO_SPACES_NAME'),
+                'region' => env('DO_SPACES_REGION'),
+                'path' => env('NATIVEPHP_UPDATER_PATH', null),
+            ],
+        ],
+    ],
 ];
