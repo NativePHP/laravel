@@ -7,13 +7,13 @@ it('can boot up the app', function () {
     $php = $executableFinder->find(false);
 
     copy(
-        from: __DIR__ . '/fixtures/artisan',
+        from: __DIR__.'/fixtures/artisan',
         to: base_path('artisan'),
     );
 
     $process = \Illuminate\Support\Facades\Process::path(base_path())
         ->tty()
-        ->start($php . ' artisan native:serve', function ($type, $line) {
+        ->start($php.' artisan native:serve', function ($type, $line) {
             echo $line;
         });
 
@@ -27,11 +27,11 @@ it('can boot up the app', function () {
             }
         }, 5000);
     } catch (Exception $e) {
-        Process::run('pkill -9 -P ' . $process->id());
+        Process::run('pkill -9 -P '.$process->id());
         throw $e;
     }
 
-    Process::run('pkill -9 -P ' . $process->id());
+    Process::run('pkill -9 -P '.$process->id());
 
     expect(true)->toBeTrue();
 });

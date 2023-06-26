@@ -31,7 +31,7 @@ class InstallCommand extends Command
 
     protected function nativePhpPath()
     {
-        return realpath( __DIR__ . '/../../resources/js');
+        return realpath(__DIR__.'/../../resources/js');
     }
 
     protected function installNpmDependencies()
