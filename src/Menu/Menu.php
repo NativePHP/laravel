@@ -88,6 +88,11 @@ class Menu implements MenuItem
         return $this->add(new Role(RolesEnum::TOGGLE_FULL_SCREEN));
     }
 
+    public function toggleDevTools(): static
+    {
+        return $this->add(new Role(RolesEnum::TOGGLE_DEV_TOOLS));
+    }
+
     public function add(MenuItem $item): self
     {
         $this->items[] = $item;

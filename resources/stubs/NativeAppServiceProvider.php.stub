@@ -17,7 +17,7 @@ class NativeAppServiceProvider
     public function boot(): void
     {
         Menu::new()
-            ->submenu('App', Menu::new()->appMenu())
+            ->appMenu()
             ->submenu('About', Menu::new()
                 ->link('https://beyondco.de', 'Beyond Code')
                 ->link('https://simonhamp.me', 'Simon Hamp')
