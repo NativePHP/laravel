@@ -2,7 +2,6 @@
 
 namespace Native\Laravel;
 
-use Illuminate\Support\Facades\URL;
 use Native\Laravel\Client\Client;
 
 class Window

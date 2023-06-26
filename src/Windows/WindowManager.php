@@ -2,7 +2,6 @@
 
 namespace Native\Laravel\Windows;
 
-use Illuminate\Support\Facades\URL;
 use Native\Laravel\Client\Client;
 use Native\Laravel\Concerns\DetectsWindowId;
 

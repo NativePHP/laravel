@@ -3,8 +3,6 @@
 namespace Native\Laravel;
 
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Storage;
 use Native\Laravel\Commands\LoadStartupConfigurationCommand;
 use Native\Laravel\Commands\MinifyApplicationCommand;
 use Native\Laravel\Logging\LogWatcher;
