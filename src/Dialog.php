@@ -112,7 +112,7 @@ class Dialog
         return $this;
     }
 
-    public function show()
+    public function open()
     {
         $result = $this->client->post('dialog/open', [
             'title' => $this->title,

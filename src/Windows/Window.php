@@ -14,11 +14,19 @@ class Window
     use HasDimensions;
     use HasUrl;
 
-    protected $manageState = false;
+    protected $rememberState = false;
 
     protected bool $alwaysOnTop = false;
 
     protected bool $resizable = true;
+
+    protected bool $movable = true;
+
+    protected bool $minimizable = true;
+
+    protected bool $maximizable = true;
+
+    protected bool $closable = true;
 
     protected bool $focusable = true;
 
@@ -72,9 +80,9 @@ class Window
         return $this->titleBarStyle('hiddenInset');
     }
 
-    public function manageWindowState(): self
+    public function rememberState(): self
     {
-        $this->manageState = true;
+        $this->rememberState = true;
 
         return $this;
     }
@@ -126,6 +134,34 @@ class Window
         return $this;
     }
 
+    public function movable($movable = true): static
+    {
+        $this->movable = $movable;
+
+        return $this;
+    }
+
+    public function minimizable($minimizable = true): static
+    {
+        $this->minimizable = $minimizable;
+
+        return $this;
+    }
+
+    public function maximizable($maximizable = true): static
+    {
+        $this->maximizable = $maximizable;
+
+        return $this;
+    }
+
+    public function closable($closable = true): static
+    {
+        $this->closable = $closable;
+
+        return $this;
+    }
+
     public function invisibleFrameless(): self
     {
         return $this
@@ -135,18 +171,6 @@ class Window
             ->hasShadow(false);
     }
 
-    public function detectId(): ?string
-    {
-        $previousUrl = request()->headers->get('Referer');
-        $currentUrl = URL::current();
-
-        // Return the _windowId query parameter from either the previous or current URL.
-        $parsedUrl = parse_url($previousUrl ?? $currentUrl);
-        parse_str($parsedUrl['query'] ?? '', $query);
-
-        return $query['_windowId'] ?? null;
-    }
-
     public function toArray()
     {
         return [
@@ -154,11 +178,13 @@ class Window
             'url' => $this->url,
             'x' => $this->x,
             'y' => $this->y,
-            'manageState' => $this->manageState,
+            'rememberState' => $this->rememberState,
             'width' => $this->width,
             'height' => $this->height,
             'minWidth' => $this->minWidth,
             'minHeight' => $this->minHeight,
+            'maxWidth' => $this->maxWidth,
+            'maxHeight' => $this->maxHeight,
             'focusable' => $this->focusable,
             'hasShadow' => $this->hasShadow,
             'frame' => $this->frame,
@@ -168,6 +194,10 @@ class Window
             'backgroundColor' => $this->backgroundColor,
             'alwaysOnTop' => $this->alwaysOnTop,
             'resizable' => $this->resizable,
+            'movable' => $this->movable,
+            'minimizable' => $this->minimizable,
+            'maximizable' => $this->maximizable,
+            'closable' => $this->closable,
             'title' => $this->title,
         ];
     }

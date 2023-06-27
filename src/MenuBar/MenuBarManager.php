@@ -7,23 +7,24 @@ use Native\Laravel\Concerns\DetectsWindowId;
 
 class MenuBarManager
 {
-    use DetectsWindowId;
-
     public function __construct(protected Client $client)
     {
 
     }
 
-    public function create(string $id = 'menubar')
+    public function create()
     {
-        return (new PendingCreateMenuBar($id))->setClient($this->client);
+        return (new PendingCreateMenuBar())->setClient($this->client);
     }
 
-    public function close($id = 'menubar')
+    public function show()
     {
-        $this->client->post('menu-bar/close', [
-            'id' => $id ?? $this->detectId(),
-        ]);
+        $this->client->post('menu-bar/show');
+    }
+
+    public function hide()
+    {
+        $this->client->post('menu-bar/close');
     }
 
     public function label(string $label)

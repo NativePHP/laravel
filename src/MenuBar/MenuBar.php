@@ -16,19 +16,18 @@ class MenuBar
 
     protected string $icon = '';
 
-    protected Menu $contextMenu;
+    protected string $label = '';
+
+    protected ?Menu $contextMenu = null;
 
     protected bool $alwaysOnTop = false;
 
     protected bool $showDockIcon = false;
 
-    protected string $id;
-
     protected Client $client;
 
-    public function __construct(string $id)
+    public function __construct()
     {
-        $this->id = $id;
         $this->url = url('/');
     }
 
@@ -60,6 +59,13 @@ class MenuBar
         return $this;
     }
 
+    public function label(string $label = ''): self
+    {
+        $this->label = $label;
+
+        return $this;
+    }
+
     public function alwaysOnTop($alwaysOnTop = true): self
     {
         $this->alwaysOnTop = $alwaysOnTop;
@@ -77,18 +83,18 @@ class MenuBar
     public function toArray(): array
     {
         return [
-            'id' => $this->id,
             'url' => $this->url,
             'icon' => $this->icon,
             'x' => $this->x,
             'y' => $this->y,
+            'label' => $this->label,
             'width' => $this->width,
             'height' => $this->height,
             'vibrancy' => $this->vibrancy,
             'showDockIcon' => $this->showDockIcon,
             'transparency' => $this->transparent,
             'backgroundColor' => $this->backgroundColor,
-            'contextMenu' => $this->contextMenu ? $this->contextMenu->toArray()['submenu'] : null,
+            'contextMenu' => ! is_null($this->contextMenu) ? $this->contextMenu->toArray()['submenu'] : null,
             'alwaysOnTop' => $this->alwaysOnTop,
         ];
     }

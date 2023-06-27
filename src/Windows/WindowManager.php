@@ -40,7 +40,17 @@ class WindowManager
         ]);
     }
 
-    public function alwaysOnTop($alwaysOnTop, $id = null): void
+    public function position($x, $y, $animated = false, $id = null)
+    {
+        $this->client->post('window/resize', [
+            'id' => $id ?? $this->detectId(),
+            'x' => $x,
+            'y' => $y,
+            'animate' => $animated,
+        ]);
+    }
+
+    public function alwaysOnTop($alwaysOnTop = true, $id = null): void
     {
         $this->client->post('window/always-on-top', [
             'id' => $id ?? $this->detectId(),

@@ -10,6 +10,13 @@ trait HasVibrancy
 
     protected bool $transparent = false;
 
+    public function backgroundColor($color): self
+    {
+        $this->backgroundColor = $color;
+
+        return $this;
+    }
+
     public function transparent($value = true): self
     {
         $this->transparent = $value;

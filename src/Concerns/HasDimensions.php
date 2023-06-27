@@ -9,8 +9,9 @@ trait HasDimensions
     protected int $height = 400;
 
     protected int $minWidth = 0;
-
     protected int $minHeight = 0;
+    protected int $maxWidth = 0;
+    protected int $maxHeight = 0;
 
     protected $x;
 
@@ -40,6 +41,20 @@ trait HasDimensions
     public function minHeight($height): self
     {
         $this->minHeight = $height;
+
+        return $this;
+    }
+
+    public function maxWidth($width): self
+    {
+        $this->maxWidth = $width;
+
+        return $this;
+    }
+
+    public function maxHeight($height): self
+    {
+        $this->maxHeight = $height;
 
         return $this;
     }
