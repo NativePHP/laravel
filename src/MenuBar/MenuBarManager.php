@@ -3,7 +3,6 @@
 namespace Native\Laravel\MenuBar;
 
 use Native\Laravel\Client\Client;
-use Native\Laravel\Concerns\DetectsWindowId;
 
 class MenuBarManager
 {
