@@ -9,8 +9,11 @@ trait HasDimensions
     protected int $height = 400;
 
     protected int $minWidth = 0;
+
     protected int $minHeight = 0;
+
     protected int $maxWidth = 0;
+
     protected int $maxHeight = 0;
 
     protected $x;
