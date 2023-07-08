@@ -17,7 +17,7 @@ class PublishCommand extends Command
 
         Process::path(__DIR__.'/../../resources/js/')
             ->env($this->getEnvironmentVariables())
-            ->run('yarn', function (string $type, string $output) {
+            ->run('npm update', function (string $type, string $output) {
                 echo $output;
             });
 
@@ -33,7 +33,7 @@ class PublishCommand extends Command
             ->env($this->getEnvironmentVariables())
             ->forever()
             ->tty()
-            ->run('yarn publish:mac-arm', function (string $type, string $output) {
+            ->run('npm run publish:mac-arm', function (string $type, string $output) {
                 echo $output;
             });
     }

@@ -21,7 +21,7 @@ class DevelopCommand extends Command
                 'NATIVEPHP_CERTIFICATE_FILE_PATH' => base_path('vendor/nativephp/php-bin/cacert.pem'),
             ])
             ->forever()
-            ->run('yarn', function (string $type, string $output) {
+            ->run('npm update', function (string $type, string $output) {
                 if ($this->getOutput()->isVerbose()) {
                     echo $output;
                 }
@@ -37,7 +37,7 @@ class DevelopCommand extends Command
             ])
             ->forever()
             ->tty()
-            ->run('yarn dev', function (string $type, string $output) {
+            ->run('npm run dev', function (string $type, string $output) {
                 if ($this->getOutput()->isVerbose()) {
                     echo $output;
                 }
