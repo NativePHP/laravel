@@ -70,9 +70,18 @@ class Dialog
         return $this;
     }
 
-    public function singleFile()
+    public function files()
     {
+        $this->properties = array_diff($this->properties, ['openDirectory']);
         $this->properties = ['openFile'];
+
+        return $this;
+    }
+
+    public function folders()
+    {
+        $this->properties = array_diff($this->properties, ['openFile']);
+        $this->properties[] = 'openDirectory';
 
         return $this;
     }

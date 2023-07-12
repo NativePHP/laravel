@@ -17,6 +17,8 @@ class Window
 
     protected bool $alwaysOnTop = false;
 
+    protected bool $showDevTools = false;
+
     protected bool $resizable = true;
 
     protected bool $movable = true;
@@ -46,6 +48,7 @@ class Window
         $this->id = $id;
         $this->title = config('app.name');
         $this->url = url('/');
+        $this->showDevTools = config('app.debug');
     }
 
     public function id(string $id = 'main'): self
@@ -126,6 +129,13 @@ class Window
         return $this;
     }
 
+    public function showDevTools($showDevTools = true): self
+    {
+        $this->showDevTools = $showDevTools;
+
+        return $this;
+    }
+
     public function resizable($resizable = true): static
     {
         $this->resizable = $resizable;
@@ -188,6 +198,7 @@ class Window
             'hasShadow' => $this->hasShadow,
             'frame' => $this->frame,
             'titleBarStyle' => $this->titleBarStyle,
+            'showDevTools' => $this->showDevTools,
             'vibrancy' => $this->vibrancy,
             'transparency' => $this->transparent,
             'backgroundColor' => $this->backgroundColor,
