@@ -1,5 +1,7 @@
-const {copySync, removeSync} = require("fs-extra");
+const {copySync, removeSync, writeJsonSync} = require("fs-extra");
 const {join} = require("path");
+const os = require('os');
+const {mkdtempSync} = require("fs");
 const {execSync} = require("child_process");
 const isBuilding = process.env.NATIVEPHP_BUILDING == 1;
 const appId = process.env.NATIVEPHP_APP_ID;
@@ -56,7 +58,10 @@ if (isBuilding) {
         let phpBinary = join(phpBinaryPath, (isArm64 ? 'arm64' : 'x86'), 'php');
         copySync(phpBinary, join(__dirname, 'resources', 'php'));
 
-        copySync(process.env.APP_PATH, join(__dirname, 'resources', 'app'), {
+        // As we can't copy into a subdirectory of ourself we need to copy to a temp directory
+        let tmpDir = mkdtempSync(join(os.tmpdir(), 'nativephp'));
+
+        copySync(process.env.APP_PATH, tmpDir, {
             overwrite: true,
             dereference: true,
             filter: (src, dest) => {
@@ -82,6 +87,20 @@ if (isBuilding) {
                 return !shouldSkip;
             }
         });
+
+        copySync(tmpDir, join(__dirname, 'resources', 'app'));
+
+        // Electron build removes empty folders, so we have to create dummy files
+        // dotfiles unfortunately don't work.
+        writeJsonSync(join(__dirname, 'resources', 'app', 'storage', 'framework', 'cache', '_native.json'), {})
+        writeJsonSync(join(__dirname, 'resources', 'app', 'storage', 'framework', 'sessions', '_native.json'), {})
+        writeJsonSync(join(__dirname, 'resources', 'app', 'storage', 'framework', 'testing', '_native.json'), {})
+        writeJsonSync(join(__dirname, 'resources', 'app', 'storage', 'framework', 'views', '_native.json'), {})
+        writeJsonSync(join(__dirname, 'resources', 'app', 'storage', 'app', 'public', '_native.json'), {})
+        writeJsonSync(join(__dirname, 'resources', 'app', 'storage', 'logs', '_native.json'), {})
+
+        removeSync(tmpDir);
+
         console.log('=====================');
         console.log('Copied app to resources');
         console.log(join(process.env.APP_PATH, 'dist'));
