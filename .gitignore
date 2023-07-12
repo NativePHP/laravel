@@ -9,3 +9,4 @@ phpstan.neon
 testbench.yaml
 vendor
 node_modules
+resources/js/*.log
