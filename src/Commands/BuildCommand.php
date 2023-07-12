@@ -40,6 +40,7 @@ class BuildCommand extends Command
         return array_merge(
             [
                 'APP_PATH' => base_path(),
+                'APP_URL' => config('app.url'),
                 'NATIVEPHP_BUILDING' => true,
                 'NATIVEPHP_PHP_BINARY_PATH' => base_path('vendor/nativephp/php-bin/bin/mac'),
                 'NATIVEPHP_CERTIFICATE_FILE_PATH' => base_path('vendor/nativephp/php-bin/cacert.pem'),
@@ -47,6 +48,7 @@ class BuildCommand extends Command
                 'NATIVEPHP_APP_ID' => config('nativephp.app_id'),
                 'NATIVEPHP_APP_VERSION' => config('nativephp.version'),
                 'NATIVEPHP_APP_FILENAME' => Str::slug(config('app.name')),
+                'NATIVEPHP_APP_AUTHOR' => config('nativephp.author'),
                 'NATIVEPHP_UPDATER_CONFIG' => json_encode(Updater::builderOptions()),
             ],
             Updater::environmentVariables(),
