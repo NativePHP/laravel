@@ -11,13 +11,6 @@ use Spatie\LaravelPackageTools\PackageServiceProvider;
 
 class NativeServiceProvider extends PackageServiceProvider
 {
-    protected $passThrough = [
-        'NATIVE_PHP_SECRET',
-        'NATIVE_PHP_RUNNING',
-        'NATIVE_PHP_STORAGE_PATH',
-        'NATIVE_PHP_DATABASE_PATH',
-    ];
-
     public function configurePackage(Package $package): void
     {
         $package

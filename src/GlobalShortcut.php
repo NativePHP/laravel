@@ -14,11 +14,6 @@ class GlobalShortcut
     {
     }
 
-    public static function new()
-    {
-        return new static(new Client());
-    }
-
     public function key(string $key): self
     {
         $this->key = $key;
