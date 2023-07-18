@@ -2,7 +2,6 @@
 
 namespace Native\Laravel\Tests;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Native\Laravel\NativeServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
