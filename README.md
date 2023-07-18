@@ -1,32 +1,11 @@
-# Laravel wrapper for the NativePHP framework.
+# Electron "backend" for the NativePHP framework
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/nativephp/nativephp-electron.svg?style=flat-square)](https://packagist.org/packages/nativephp/nativephp-electron)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/nativephp/nativephp-electron/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/nativephp/nativephp-electron/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/nativephp/nativephp-electron/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/nativephp/nativephp-electron/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/nativephp/nativephp-electron.svg?style=flat-square)](https://packagist.org/packages/nativephp/nativephp-electron)
 
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
-
-## Installation
-
-You can install the package via composer:
-
-```bash
-composer require nativephp/electron
-```
-
-You can publish and run the migrations with:
-
-```bash
-php artisan vendor:publish --tag="native-php-migrations"
-php artisan migrate
-```
-
-You can publish the native app provider using
-
-```bash
-php artisan vendor:publish --tag="native-php-provider"
-```
+Visit the [official website](https://nativephp.com) to learn more about it.
 
 ## Testing
 
