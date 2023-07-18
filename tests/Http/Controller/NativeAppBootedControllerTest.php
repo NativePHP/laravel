@@ -3,8 +3,10 @@
 use Illuminate\Support\Facades\Event;
 use Native\Laravel\Events\App\ApplicationBooted;
 
-class TestProvider {
-    public function boot() {
+class TestProvider
+{
+    public function boot()
+    {
 
     }
 }
@@ -13,7 +15,7 @@ it('boots the NativePHP provider', function () {
     Event::fake();
 
     config([
-        'nativephp.provider' => TestProvider::class
+        'nativephp.provider' => TestProvider::class,
     ]);
 
     $this->withoutMiddleware()
