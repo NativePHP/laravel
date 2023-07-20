@@ -8,9 +8,7 @@ class CreateSecurityCookieController
 {
     public function __invoke(Request $request)
     {
-        if ($request->get('secret') !== config('native-php.secret')) {
-            return abort(403);
-        }
+        abort_if($request->get('secret') !== config('native-php.secret'), 403);
 
         return redirect('/')->cookie(cookie(
             name: '_php_native',
