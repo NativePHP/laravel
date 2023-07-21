@@ -14,7 +14,7 @@ class Client
     {
         $this->client = Http::asJson()
             ->baseUrl(config('nativephp-internal.api_url', ''))
-            ->timeout(60 * 60)
+            ->timeout(config('nativephp-internal.timeout'))
             ->withHeaders([
                 'X-NativePHP-Secret' => config('nativephp-internal.secret'),
             ])
