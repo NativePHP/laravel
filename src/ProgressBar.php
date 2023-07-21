@@ -7,9 +7,13 @@ use Native\Laravel\Client\Client;
 class ProgressBar
 {
     protected float $percent = 0;
+
     protected int $step = 0;
+
     protected float $lastWriteTime = 0;
+
     protected float $minSecondsBetweenRedraws = 0.1;
+
     protected float $maxSecondsBetweenRedraws = 1;
 
     public function __construct(protected int $maxSteps, protected Client $client)
