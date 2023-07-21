@@ -62,7 +62,7 @@
     "extra": {
         "laravel": {
             "providers": [
-              "Native\\Electron\\ElectronServiceProvider"
+                "Native\\Electron\\ElectronServiceProvider"
             ],
             "aliases": {
                 "Updater": "Native\\Electron\\Facades\\Updater"
@@ -72,11 +72,7 @@
     "repositories": [
         {
             "type": "path",
-            "url": "./../nativephp-php-bin"
-        },
-        {
-            "type": "path",
-            "url": "./../nativephp-laravel"
+            "url": "..\\nativephp-php-bin"
         }
     ],
     "minimum-stability": "dev",
