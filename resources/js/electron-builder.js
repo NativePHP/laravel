@@ -18,6 +18,9 @@ const phpBinaryFilename = isWindows ? 'php.exe' : phpBinaryFilename;
 const binaryArch = process.arch
 let updaterConfig = {};
 
+const binarySrc = join(phpBinaryPath, binaryArch, phpBinaryFilename);
+const binaryDest = join(__dirname, 'resources', phpBinaryFilename);
+
 console.log("Arch: ", process.arch)
 console.log("Platform: ", process.platform)
 try {
@@ -29,18 +32,20 @@ try {
 
 if (phpBinaryPath) {
     try {
-        // copySync(join(phpBinaryPath, binaryArch, phpBinaryFilename), join(__dirname, 'resources', phpBinaryFilename));
-        copySync(join(phpBinaryPath, binaryArch, phpBinaryFilename), join(__dirname, 'resources', phpBinaryFilename));
+        copySync(binarySrc, binaryDest);
+		console.log('Copied PHP binary to ', binaryDest);
     } catch (e) {
-        console.log('Error copying PHP binary', e);
+        console.error('Error copying PHP binary', e);
     }
 }
 
 if (certificatePath) {
     try {
-        copySync(certificatePath, join(__dirname, 'resources', 'cacert.pem'));
+		let certDest = join(__dirname, 'resources', 'cacert.pem');
+        copySync(certificatePath, certDest);
+		console.log('Copied certificate file to', certDest);
     } catch (e) {
-        console.log('Error copying certificate file', e);
+        console.error('Error copying certificate file', e);
     }
 }
 
@@ -59,10 +64,10 @@ if (isBuilding) {
 
     try {
         removeSync(join(__dirname, 'resources', 'app'));
-        removeSync(join(__dirname, 'resources', phpBinaryFilename));
+        removeSync(binaryDest);
 
-        let phpBinary = join(phpBinaryPath, binaryArch, phpBinaryFilename);
-        copySync(phpBinary, join(__dirname, 'resources', phpBinaryFilename));
+        // let phpBinary = join(phpBinaryPath, binaryArch, phpBinaryFilename);
+        copySync(binarySrc, binaryDest);
 
         // As we can't copy into a subdirectory of ourself we need to copy to a temp directory
         let tmpDir = mkdtempSync(join(os.tmpdir(), 'nativephp'));
@@ -112,12 +117,12 @@ if (isBuilding) {
         console.log(join(process.env.APP_PATH, 'dist'));
         console.log('=====================');
 
-        execSync(`${phpBinary} ${join(__dirname, 'resources', 'app', 'artisan')} native:minify ${join(__dirname, 'resources', 'app')}`);
+        execSync(`${binarySrc} ${join(__dirname, 'resources', 'app', 'artisan')} native:minify ${join(__dirname, 'resources', 'app')}`);
     } catch (e) {
-        console.log('=====================');
-        console.log('Error copying app to resources');
-        console.log(e);
-        console.log('=====================');
+        console.error('=====================');
+        console.error('Error copying app to resources');
+        console.error(e);
+        console.error('=====================');
     }
 
 }

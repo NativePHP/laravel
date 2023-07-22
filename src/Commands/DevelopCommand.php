@@ -12,7 +12,8 @@ class DevelopCommand extends Command
     public function handle()
     {
         // PHP_OS_FAMILY on Windows is "Windows"
-        $nativeBasePath = 'vendor/nativephp/php-bin/bin/';
+        $phpBinPackageDir = 'vendor/nativephp/php-bin/'
+        $nativeBasePath = $phpBinPackageDir . 'bin/';
         $nativeBinaryPath = $nativeBasePath . (PHP_OS_FAMILY === 'Windows' ? 'win' : 'mac');
         $this->info("NativePHP binary path: $nativeBinaryPath");
         $this->info('Starting NativePHP dev server…');
@@ -23,7 +24,7 @@ class DevelopCommand extends Command
             Process::path(__DIR__ . '/../../resources/js/')
                 ->env([
                     'NATIVEPHP_PHP_BINARY_PATH' => base_path($nativeBinaryPath),
-                    'NATIVEPHP_CERTIFICATE_FILE_PATH' => base_path('vendor/nativephp/php-bin/cacert.pem'),
+                    'NATIVEPHP_CERTIFICATE_FILE_PATH' => base_path($phpBinPackageDir . 'cacert.pem'),
                 ])
                 ->forever()
                 ->run('yarn', function (string $type, string $output) {
@@ -43,7 +44,7 @@ class DevelopCommand extends Command
             ->env([
                 'APP_PATH' => base_path(),
                 'NATIVEPHP_PHP_BINARY_PATH' => base_path($nativeBinaryPath),
-                'NATIVEPHP_CERTIFICATE_FILE_PATH' => base_path('vendor/nativephp/php-bin/cacert.pem'),
+                'NATIVEPHP_CERTIFICATE_FILE_PATH' => base_path($phpBinPackageDir . 'cacert.pem'),
                 'NATIVE_PHP_SKIP_QUEUE' => $this->option('no-queue') ? true : false,
             ])
             ->forever()
