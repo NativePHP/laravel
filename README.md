@@ -8,6 +8,16 @@
 Write native desktop applications using PHP.
 To learn more, visit the [official website](https://nativephp.com).
 
+## Documentation
+
+You can find the NativePHP [documentation on the website](https://nativephp.com).
+Check out the [Getting Started](https://nativephp.com/docs/1/getting-started/introduction) page for a quick overview.
+- [Getting Started](https://nativephp.com/docs/1/getting-started/introduction)
+- [Installation](https://nativephp.com/docs/1/getting-started/installation)
+- [Configuration](https://nativephp.com/docs/1/getting-started/configuration)
+- [Application Lifecycle](https://nativephp.com/docs/1/the-basics/app-lifecycle)
+- [Contributing Guide](https://github.com/artmxra7/phpnative-laravel/blob/main/CONTRIBUTING.md)
+
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
