@@ -38,6 +38,7 @@ try {
 
 if (phpBinaryPath) {
     try {
+        console.log('Copying PHP file(s) from ' + binarySrcDir + ' to ' + binaryDestDir);
         copySync(binarySrcDir, binaryDestDir);
 		console.log('Copied PHP binary to ', binaryDestDir);
     } catch (e) {
