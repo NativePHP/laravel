@@ -5,7 +5,6 @@ namespace Native\Laravel\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static object new()
  * @method static object title(string $title)
  * @method static object event(string $event)
  * @method static object message(string $body)
