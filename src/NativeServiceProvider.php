@@ -11,6 +11,12 @@ use Spatie\LaravelPackageTools\PackageServiceProvider;
 
 class NativeServiceProvider extends PackageServiceProvider
 {
+    /**
+     * Configure the package.
+     *
+     * @param Package $package The package instance.
+     * @return void
+     */
     public function configurePackage(Package $package): void
     {
         $package
@@ -24,6 +30,11 @@ class NativeServiceProvider extends PackageServiceProvider
             ->publishesServiceProvider('NativeAppServiceProvider');
     }
 
+    /**
+     * Register the package services.
+     *
+     * @return void
+     */
     public function packageRegistered()
     {
         $this->mergeConfigFrom($this->package->basePath('/../config/nativephp-internal.php'), 'nativephp-internal');
@@ -33,6 +44,11 @@ class NativeServiceProvider extends PackageServiceProvider
         }
     }
 
+    /**
+     * Configure the application based on the package settings.
+     *
+     * @return void
+     */
     protected function configureApp()
     {
         if (config('app.debug')) {
