@@ -12,7 +12,7 @@ class DevelopCommand extends Command
     public function handle()
     {
         // PHP_OS_FAMILY on Windows is "Windows"
-        $phpBinPackageDir = 'vendor/nativephp/php-bin/'
+        $phpBinPackageDir = 'vendor/nativephp/php-bin/';
         $nativeBasePath = $phpBinPackageDir . 'bin/';
         $nativeBinaryPath = $nativeBasePath . (PHP_OS_FAMILY === 'Windows' ? 'win' : 'mac');
         $this->info("NativePHP binary path: $nativeBinaryPath");
