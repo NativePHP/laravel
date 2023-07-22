@@ -36,7 +36,8 @@ class InstallCommand extends Command
 
     protected function installNpmDependencies()
     {
-        $this->executeCommand('npm set progress=false && npm install', $this->nativePhpPath());
+        // $this->executeCommand('npm set progress=false && npm install', $this->nativePhpPath());
+        $this->executeCommand('npm install', $this->nativePhpPath());
     }
 
     protected function executeCommand($command, $path)
