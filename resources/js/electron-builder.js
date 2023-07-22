@@ -22,8 +22,10 @@ let updaterConfig = {};
 console.log('Binary Source: ', phpBinaryPath);
 console.log('Binary Filename: ', phpBinaryFilename);
 
-const binarySrc = join(phpBinaryPath, binaryArch, phpBinaryFilename);
-const binaryDest = join(__dirname, 'resources', phpBinaryFilename);
+const binarySrcDir = join(phpBinaryPath, binaryArch);
+const binarySrcExecutable = join(phpBinaryPath, binaryArch, phpBinaryFilename);
+// const binaryDest = join(__dirname, 'resources', phpBinaryFilename);
+const binaryDestDir = join(__dirname, 'resources/php');
 
 console.log("Arch: ", process.arch)
 console.log("Platform: ", process.platform)
@@ -36,8 +38,8 @@ try {
 
 if (phpBinaryPath) {
     try {
-        copySync(binarySrc, binaryDest);
-		console.log('Copied PHP binary to ', binaryDest);
+        copySync(binarySrcDir, binaryDestDir);
+		console.log('Copied PHP binary to ', binaryDestDir);
     } catch (e) {
         console.error('Error copying PHP binary', e);
     }
@@ -68,10 +70,10 @@ if (isBuilding) {
 
     try {
         removeSync(join(__dirname, 'resources', 'app'));
-        removeSync(binaryDest);
+        removeSync(binaryDestDir);
 
         // let phpBinary = join(phpBinaryPath, binaryArch, phpBinaryFilename);
-        copySync(binarySrc, binaryDest);
+        copySync(binarySrcDir, binaryDestDir);
 
         // As we can't copy into a subdirectory of ourself we need to copy to a temp directory
         let tmpDir = mkdtempSync(join(os.tmpdir(), 'nativephp'));
@@ -121,7 +123,7 @@ if (isBuilding) {
         console.log(join(process.env.APP_PATH, 'dist'));
         console.log('=====================');
 
-        execSync(`${binarySrc} ${join(__dirname, 'resources', 'app', 'artisan')} native:minify ${join(__dirname, 'resources', 'app')}`);
+        execSync(`${binarySrcExecutable} ${join(__dirname, 'resources', 'app', 'artisan')} native:minify ${join(__dirname, 'resources', 'app')}`);
     } catch (e) {
         console.error('=====================');
         console.error('Error copying app to resources');
