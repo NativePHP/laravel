@@ -43,7 +43,7 @@ class DevelopCommand extends Command
                 'NATIVE_PHP_SKIP_QUEUE' => $this->option('no-queue') ? true : false,
             ])
             ->forever()
-            ->tty()
+            ->tty(PHP_OS_FAMILY != 'Windows')
             ->run('yarn run dev', function (string $type, string $output) {
                 if ($this->getOutput()->isVerbose()) {
                     echo $output;
