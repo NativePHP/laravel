@@ -18,6 +18,9 @@ const phpBinaryFilename = isWindows ? 'php.exe' : phpBinaryFilename;
 const binaryArch = process.arch
 let updaterConfig = {};
 
+console.log('Binary Source: ', phpBinaryPath);
+console.log('Binary Filename: ', phpBinaryFilename);
+
 const binarySrc = join(phpBinaryPath, binaryArch, phpBinaryFilename);
 const binaryDest = join(__dirname, 'resources', phpBinaryFilename);
 
