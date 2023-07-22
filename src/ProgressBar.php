@@ -14,6 +14,8 @@ class ProgressBar
 
     protected float $minSecondsBetweenRedraws = 0.1;
 
+    protected float $maxSecondsBetweenRedraws = 1;
+
     public function __construct(protected int $maxSteps, protected Client $client)
     {
     }
