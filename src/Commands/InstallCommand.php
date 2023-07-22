@@ -7,7 +7,7 @@ use Symfony\Component\Process\Process;
 
 class InstallCommand extends Command
 {
-    protected $signature = 'native:install {--force : Overwrite existing files by default}';
+    protected $signature = 'native:install {--force : Overwrite existing files by default} {--installer=npm : The package installer to use: npm, yarn or pnpm}';
 
     protected $description = 'Install all of the NativePHP resources';
 
@@ -17,12 +17,20 @@ class InstallCommand extends Command
         $this->callSilent('vendor:publish', ['--tag' => 'nativephp-provider']);
 
         if ($this->option('force') || $this->confirm('Would you like to install the NativePHP NPM dependencies?', true)) {
-            $this->installNpmDependencies();
+
+            $this->comment('Installing NPM dependencies (This may take a while)...');
+
+            $this->option('installer') === 'yarn'
+                ? $this->installYarnDependencies()
+                : ($this->option('installer') === 'pnpm'
+                    ? $this->installPnpmDependencies()
+                    : $this->installNpmDependencies()
+            );
 
             $this->output->newLine();
         }
 
-        if (! $this->option('force') && $this->confirm('Would you like to start the NativePHP development server', false)) {
+        if (!$this->option('force') && $this->confirm('Would you like to start the NativePHP development server', false)) {
             $this->call('native:serve');
         }
 
@@ -31,12 +39,22 @@ class InstallCommand extends Command
 
     protected function nativePhpPath()
     {
-        return realpath(__DIR__.'/../../resources/js');
+        return realpath(__DIR__ . '/../../resources/js');
     }
 
     protected function installNpmDependencies()
     {
         $this->executeCommand('npm set progress=false && npm install', $this->nativePhpPath());
+    }
+
+    protected function installYarnDependencies()
+    {
+        $this->executeCommand('yarn install', $this->nativePhpPath());
+    }
+
+    protected function installPnpmDependencies()
+    {
+        $this->executeCommand('pnpm install', $this->nativePhpPath());
     }
 
     protected function executeCommand($command, $path)
