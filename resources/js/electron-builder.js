@@ -18,7 +18,7 @@ const phpBinaryFilename = isWindows ? 'php.exe' : phpBinaryFilename;
 const binaryArch = process.arch
 let updaterConfig = {};
 
-console.log('Env Vars: ', process.env)
+// console.log('Env Vars: ', process.env)
 console.log('Binary Source: ', phpBinaryPath);
 console.log('Binary Filename: ', phpBinaryFilename);
 
