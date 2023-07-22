@@ -3,7 +3,6 @@
 namespace Native\Laravel\Facades;
 
 use Illuminate\Support\Facades\Facade;
-use phpDocumentor\Reflection\Types\Object_;
 
 /**
  * @method static object new()
