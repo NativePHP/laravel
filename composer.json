@@ -69,16 +69,6 @@
             }
         }
     },
-    "repositories": [
-        {
-            "type": "path",
-            "url": "./../nativephp-php-bin"
-        },
-        {
-            "type": "path",
-            "url": "./../nativephp-laravel"
-        }
-    ],
     "minimum-stability": "dev",
     "prefer-stable": true
 }
