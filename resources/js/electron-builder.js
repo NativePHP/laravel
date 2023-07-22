@@ -13,8 +13,13 @@ const appAuthor = process.env.NATIVEPHP_APP_AUTHOR;
 const phpBinaryPath = process.env.NATIVEPHP_PHP_BINARY_PATH;
 const certificatePath = process.env.NATIVEPHP_CERTIFICATE_FILE_PATH;
 const isArm64 = process.argv.includes('--arm64');
+const isWindows = process.platform === 'win32';
+const phpBinaryFilename = isWindows ? 'php.exe' : phpBinaryFilename;
+const binaryArch = process.arch
 let updaterConfig = {};
 
+console.log("Arch: ", process.arch)
+console.log("Platform: ", process.platform)
 try {
     updaterConfig = process.env.NATIVEPHP_UPDATER_CONFIG;
     updaterConfig = JSON.parse(updaterConfig);
@@ -24,7 +29,8 @@ try {
 
 if (phpBinaryPath) {
     try {
-        copySync(join(phpBinaryPath, (isArm64 ? 'arm64' : 'x86'), 'php'), join(__dirname, 'resources', 'php'));
+        // copySync(join(phpBinaryPath, binaryArch, phpBinaryFilename), join(__dirname, 'resources', phpBinaryFilename));
+        copySync(join(phpBinaryPath, binaryArch, phpBinaryFilename), join(__dirname, 'resources', phpBinaryFilename));
     } catch (e) {
         console.log('Error copying PHP binary', e);
     }
@@ -42,10 +48,10 @@ if (isBuilding) {
     console.log('=====================');
     if (isArm64) {
         console.log('Building for ARM64');
-        console.log(join(__dirname, '..', '..', 'bin', (isArm64 ? 'arm64' : 'x86'), 'php'));
+        console.log(join(__dirname, '..', '..', 'bin', binaryArch, phpBinaryFilename));
     } else {
         console.log('Building for x86');
-        console.log(join(__dirname, '..', '..', 'bin', (isArm64 ? 'arm64' : 'x86'), 'php'));
+        console.log(join(__dirname, '..', '..', 'bin', binaryArch, phpBinaryFilename));
     }
     console.log('=====================');
     console.log('updater config', updaterConfig);
@@ -53,10 +59,10 @@ if (isBuilding) {
 
     try {
         removeSync(join(__dirname, 'resources', 'app'));
-        removeSync(join(__dirname, 'resources', 'php'));
+        removeSync(join(__dirname, 'resources', phpBinaryFilename));
 
-        let phpBinary = join(phpBinaryPath, (isArm64 ? 'arm64' : 'x86'), 'php');
-        copySync(phpBinary, join(__dirname, 'resources', 'php'));
+        let phpBinary = join(phpBinaryPath, binaryArch, phpBinaryFilename);
+        copySync(phpBinary, join(__dirname, 'resources', phpBinaryFilename));
 
         // As we can't copy into a subdirectory of ourself we need to copy to a temp directory
         let tmpDir = mkdtempSync(join(os.tmpdir(), 'nativephp'));

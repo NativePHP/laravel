@@ -11,14 +11,18 @@ class DevelopCommand extends Command
 
     public function handle()
     {
+        // PHP_OS_FAMILY on Windows is "Windows"
+        $nativeBasePath = 'vendor/nativephp/php-bin/bin/';
+        $nativeBinaryPath = $nativeBasePath . (PHP_OS_FAMILY === 'Windows' ? 'win' : 'mac');
+        $this->info("NativePHP binary path: $nativeBinaryPath");
         $this->info('Starting NativePHP dev server…');
 
         $this->info('Fetching latest dependencies…');
 
-        if (! $this->option('no-dependencies')) {
-            Process::path(__DIR__.'/../../resources/js/')
+        if (!$this->option('no-dependencies')) {
+            Process::path(__DIR__ . '/../../resources/js/')
                 ->env([
-                    'NATIVEPHP_PHP_BINARY_PATH' => base_path('vendor/nativephp/php-bin/bin/mac'),
+                    'NATIVEPHP_PHP_BINARY_PATH' => base_path($nativeBinaryPath),
                     'NATIVEPHP_CERTIFICATE_FILE_PATH' => base_path('vendor/nativephp/php-bin/cacert.pem'),
                 ])
                 ->forever()
@@ -35,15 +39,15 @@ class DevelopCommand extends Command
             $this->patchPlist();
         }
 
-        Process::path(__DIR__.'/../../resources/js/')
+        Process::path(__DIR__ . '/../../resources/js/')
             ->env([
                 'APP_PATH' => base_path(),
-                'NATIVEPHP_PHP_BINARY_PATH' => base_path('vendor/nativephp/php-bin/bin/mac'),
+                'NATIVEPHP_PHP_BINARY_PATH' => base_path($nativeBinaryPath),
                 'NATIVEPHP_CERTIFICATE_FILE_PATH' => base_path('vendor/nativephp/php-bin/cacert.pem'),
                 'NATIVE_PHP_SKIP_QUEUE' => $this->option('no-queue') ? true : false,
             ])
             ->forever()
-            ->tty()
+            // ->tty()
             ->run('yarn run dev', function (string $type, string $output) {
                 if ($this->getOutput()->isVerbose()) {
                     echo $output;
@@ -59,15 +63,15 @@ class DevelopCommand extends Command
      */
     protected function patchPlist()
     {
-        $pList = file_get_contents(__DIR__.'/../../resources/js/node_modules/electron/dist/Electron.app/Contents/Info.plist');
+        $pList = file_get_contents(__DIR__ . '/../../resources/js/node_modules/electron/dist/Electron.app/Contents/Info.plist');
 
         // Change the CFBundleName to the correct app name
         $pattern = '/(<key>CFBundleName<\/key>\s+<string>)(.*?)(<\/string>)/m';
-        $pList = preg_replace($pattern, '$1'.config('app.name').'$3', $pList);
+        $pList = preg_replace($pattern, '$1' . config('app.name') . '$3', $pList);
 
         $pattern = '/(<key>CFBundleDisplayName<\/key>\s+<string>)(.*?)(<\/string>)/m';
-        $pList = preg_replace($pattern, '$1'.config('app.name').'$3', $pList);
+        $pList = preg_replace($pattern, '$1' . config('app.name') . '$3', $pList);
 
-        file_put_contents(__DIR__.'/../../resources/js/node_modules/electron/dist/Electron.app/Contents/Info.plist', $pList);
+        file_put_contents(__DIR__ . '/../../resources/js/node_modules/electron/dist/Electron.app/Contents/Info.plist', $pList);
     }
 }
