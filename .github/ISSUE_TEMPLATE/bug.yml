@@ -47,6 +47,14 @@ body:
         placeholder: 9.0.0
       validations:
         required: true
+    - type: input
+      id: node-version
+      attributes:
+        label: Node Version
+        description: What version of Node are you running? Please be as specific as possible
+        placeholder: '18.17'
+      validations:
+        required: true
     - type: dropdown
       id: operating-systems
       attributes:
