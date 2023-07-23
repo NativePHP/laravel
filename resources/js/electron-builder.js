@@ -14,9 +14,12 @@ const phpBinaryPath = process.env.NATIVEPHP_PHP_BINARY_PATH;
 const certificatePath = process.env.NATIVEPHP_CERTIFICATE_FILE_PATH;
 const isArm64 = process.argv.includes('--arm64');
 const isWindows = process.platform === 'win32';
+const isDarwin = process.platform === 'darwin';
+const binaryArch = process.arch
 const phpBinaryFilename = 'php';
 if (isWindows) phpBinaryFilename += '.exe';
-const binaryArch = process.arch
+// Override for Darwin on x64 to use standard 32-bit PHP binary
+if (isDarwin && binaryArch == 'x64') binaryArch == 'x86';
 let updaterConfig = {};
 
 // console.log('Env Vars: ', process.env)
