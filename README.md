@@ -1,4 +1,4 @@
-# Laravel wrapper for the NativePHP framework.
+# Laravel wrapper for the NativePHP framework. 📦
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/nativephp/laravel.svg?style=flat-square)](https://packagist.org/packages/nativephp/laravel)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/nativephp/laravel/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/nativephp/laravel/actions?query=workflow%3Arun-tests+branch%3Amain)
@@ -8,7 +8,7 @@
 Write native desktop applications using PHP.
 To learn more, visit the [official website](https://nativephp.com).
 
-## Documentation
+## Documentation 📚
 
 You can find the NativePHP [documentation on the website](https://nativephp.com).
 Check out the [Getting Started](https://nativephp.com/docs/1/getting-started/introduction) page for a quick overview.
@@ -18,23 +18,23 @@ Check out the [Getting Started](https://nativephp.com/docs/1/getting-started/int
 - [Application Lifecycle](https://nativephp.com/docs/1/the-basics/app-lifecycle)
 - [Contributing Guide](https://github.com/artmxra7/phpnative-laravel/blob/main/CONTRIBUTING.md)
 
-## Changelog
+## Changelog 📝
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
 
-## Contributing
+## Contributing 🤝
 
 Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
-## Security Vulnerabilities
+## Security Vulnerabilities 🔒
 
 Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
 
-## Credits
+## Credits 🙏
 
 - [Marcel Pociot](https://github.com/mpociot)
 - [All Contributors](../../contributors)
 
-## License
+## License 📄
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
