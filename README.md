@@ -16,7 +16,7 @@ Check out the [Getting Started](https://nativephp.com/docs/1/getting-started/int
 - [Installation](https://nativephp.com/docs/1/getting-started/installation)
 - [Configuration](https://nativephp.com/docs/1/getting-started/configuration)
 - [Application Lifecycle](https://nativephp.com/docs/1/the-basics/app-lifecycle)
-- [Contributing Guide](https://github.com/artmxra7/phpnative-laravel/blob/main/CONTRIBUTING.md)
+- [Contributing Guide](https://github.com/NativePHP/laravel/blob/main/CONTRIBUTING.md)
 
 ## Changelog
 
