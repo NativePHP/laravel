@@ -13,8 +13,26 @@ const appAuthor = process.env.NATIVEPHP_APP_AUTHOR;
 const phpBinaryPath = process.env.NATIVEPHP_PHP_BINARY_PATH;
 const certificatePath = process.env.NATIVEPHP_CERTIFICATE_FILE_PATH;
 const isArm64 = process.argv.includes('--arm64');
+const isWindows = process.platform === 'win32';
+const isDarwin = process.platform === 'darwin';
+let binaryArch = process.arch
+let phpBinaryFilename = 'php';
+if (isWindows) phpBinaryFilename += '.exe';
+// Override for Darwin on x64 to use standard 32-bit PHP binary
+if (isDarwin && binaryArch == 'x64') binaryArch = 'x86';
 let updaterConfig = {};
 
+// console.log('Env Vars: ', process.env)
+console.log('Binary Source: ', phpBinaryPath);
+console.log('Binary Filename: ', phpBinaryFilename);
+
+const binarySrcDir = join(phpBinaryPath, binaryArch);
+const binarySrcExecutable = join(phpBinaryPath, binaryArch, phpBinaryFilename);
+// const binaryDest = join(__dirname, 'resources', phpBinaryFilename);
+const binaryDestDir = join(__dirname, 'resources/php');
+
+console.log("Arch: ", process.arch)
+console.log("Platform: ", process.platform)
 try {
     updaterConfig = process.env.NATIVEPHP_UPDATER_CONFIG;
     updaterConfig = JSON.parse(updaterConfig);
@@ -24,17 +42,21 @@ try {
 
 if (phpBinaryPath) {
     try {
-        copySync(join(phpBinaryPath, (isArm64 ? 'arm64' : 'x86'), 'php'), join(__dirname, 'resources', 'php'));
+        console.log('Copying PHP file(s) from ' + binarySrcDir + ' to ' + binaryDestDir);
+        copySync(binarySrcDir, binaryDestDir);
+		console.log('Copied PHP binary to ', binaryDestDir);
     } catch (e) {
-        console.log('Error copying PHP binary', e);
+        console.error('Error copying PHP binary', e);
     }
 }
 
 if (certificatePath) {
     try {
-        copySync(certificatePath, join(__dirname, 'resources', 'cacert.pem'));
+		let certDest = join(__dirname, 'resources', 'cacert.pem');
+        copySync(certificatePath, certDest);
+		console.log('Copied certificate file to', certDest);
     } catch (e) {
-        console.log('Error copying certificate file', e);
+        console.error('Error copying certificate file', e);
     }
 }
 
@@ -42,10 +64,10 @@ if (isBuilding) {
     console.log('=====================');
     if (isArm64) {
         console.log('Building for ARM64');
-        console.log(join(__dirname, '..', '..', 'bin', (isArm64 ? 'arm64' : 'x86'), 'php'));
+        console.log(join(__dirname, '..', '..', 'bin', binaryArch, phpBinaryFilename));
     } else {
         console.log('Building for x86');
-        console.log(join(__dirname, '..', '..', 'bin', (isArm64 ? 'arm64' : 'x86'), 'php'));
+        console.log(join(__dirname, '..', '..', 'bin', binaryArch, phpBinaryFilename));
     }
     console.log('=====================');
     console.log('updater config', updaterConfig);
@@ -53,10 +75,10 @@ if (isBuilding) {
 
     try {
         removeSync(join(__dirname, 'resources', 'app'));
-        removeSync(join(__dirname, 'resources', 'php'));
+        removeSync(binaryDestDir);
 
-        let phpBinary = join(phpBinaryPath, (isArm64 ? 'arm64' : 'x86'), 'php');
-        copySync(phpBinary, join(__dirname, 'resources', 'php'));
+        // let phpBinary = join(phpBinaryPath, binaryArch, phpBinaryFilename);
+        copySync(binarySrcDir, binaryDestDir);
 
         // As we can't copy into a subdirectory of ourself we need to copy to a temp directory
         let tmpDir = mkdtempSync(join(os.tmpdir(), 'nativephp'));
@@ -106,12 +128,12 @@ if (isBuilding) {
         console.log(join(process.env.APP_PATH, 'dist'));
         console.log('=====================');
 
-        execSync(`${phpBinary} ${join(__dirname, 'resources', 'app', 'artisan')} native:minify ${join(__dirname, 'resources', 'app')}`);
+        execSync(`${binarySrcExecutable} ${join(__dirname, 'resources', 'app', 'artisan')} native:minify ${join(__dirname, 'resources', 'app')}`);
     } catch (e) {
-        console.log('=====================');
-        console.log('Error copying app to resources');
-        console.log(e);
-        console.log('=====================');
+        console.error('=====================');
+        console.error('Error copying app to resources');
+        console.error(e);
+        console.error('=====================');
     }
 
 }
