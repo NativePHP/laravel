@@ -2,8 +2,11 @@
 
 import NativePHP from '@nativephp/electron-plugin'
 import {app} from 'electron'
-import certificate from '../../resources/cacert.pem?asset&asarUnpack'
+
+import NativePHP from '@nativephp/electron-plugin'
 import defaultIcon from '../../resources/icon.png?asset&asarUnpack'
+import phpBinary from '../../resources/php?asset&asarUnpack'
+import certificate from '../../resources/cacert.pem?asset&asarUnpack'
 
 // Probably still need to improve this platform awareness
 let phpBinary;
