@@ -19,7 +19,7 @@ const binaryArch = process.arch
 const phpBinaryFilename = 'php';
 if (isWindows) phpBinaryFilename += '.exe';
 // Override for Darwin on x64 to use standard 32-bit PHP binary
-if (isDarwin && binaryArch == 'x64') binaryArch == 'x86';
+if (isDarwin && binaryArch == 'x64') binaryArch = 'x86';
 let updaterConfig = {};
 
 // console.log('Env Vars: ', process.env)
