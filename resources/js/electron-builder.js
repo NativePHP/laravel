@@ -15,8 +15,8 @@ const certificatePath = process.env.NATIVEPHP_CERTIFICATE_FILE_PATH;
 const isArm64 = process.argv.includes('--arm64');
 const isWindows = process.platform === 'win32';
 const isDarwin = process.platform === 'darwin';
-const binaryArch = process.arch
-const phpBinaryFilename = 'php';
+let binaryArch = process.arch
+let phpBinaryFilename = 'php';
 if (isWindows) phpBinaryFilename += '.exe';
 // Override for Darwin on x64 to use standard 32-bit PHP binary
 if (isDarwin && binaryArch == 'x64') binaryArch = 'x86';
