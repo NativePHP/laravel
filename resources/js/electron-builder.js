@@ -14,7 +14,8 @@ const phpBinaryPath = process.env.NATIVEPHP_PHP_BINARY_PATH;
 const certificatePath = process.env.NATIVEPHP_CERTIFICATE_FILE_PATH;
 const isArm64 = process.argv.includes('--arm64');
 const isWindows = process.platform === 'win32';
-const phpBinaryFilename = isWindows ? 'php.exe' : phpBinaryFilename;
+const phpBinaryFilename = 'php';
+if (isWindows) phpBinaryFilename += '.exe';
 const binaryArch = process.arch
 let updaterConfig = {};
 
