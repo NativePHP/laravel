@@ -20,28 +20,9 @@ class InstallCommand extends Command
         $this->callSilent('vendor:publish', ['--tag' => 'nativephp-provider']);
         $this->callSilent('vendor:publish', ['--tag' => 'nativephp-config']);
 
+        $this->installDependencies();
 
-        if ($this->option('force') || $this->confirm('Would you like to install the NativePHP NPM dependencies?', true)) {
-            $this->comment('Installing NPM dependencies (This may take a while)...');
-
-            switch ($this->option('installer')) {
-                case 'yarn':
-                    $this->info('Installing NPM dependencies using the yarn package manager...');
-                    $this->installYarnDependencies();
-                    break;
-                case 'pnpm':
-                    $this->info('Installing NPM dependencies using the pnpm package manager...');
-                    $this->installPnpmDependencies();
-                    break;
-                default:
-                    $this->info('Installing NPM dependencies using the npm package manager...');
-                    $this->installNpmDependencies();
-            }
-
-            $this->output->newLine();
-        }
-
-        if (! $this->option('force') && $this->confirm('Would you like to start the NativePHP development server', false)) {
+        if (!$this->option('force') && $this->confirm('Would you like to start the NativePHP development server', false)) {
             $this->call('native:serve');
         }
 
@@ -50,7 +31,7 @@ class InstallCommand extends Command
 
     protected function nativePhpPath()
     {
-        return realpath(__DIR__.'/../../resources/js');
+        return realpath(__DIR__ . '/../../resources/js');
     }
 
     protected function executeCommand($command, $path)
