@@ -17,7 +17,7 @@
     ],
     "require": {
         "php": "^8.1",
-        "nativephp/php-bin": "*",
+        "nativephp/php-bin": "dev-dev",
         "nativephp/laravel": "*",
         "spatie/laravel-package-tools": "^1.14.0",
         "illuminate/contracts": "^10.0"
