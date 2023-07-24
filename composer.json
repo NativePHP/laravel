@@ -17,7 +17,7 @@
     ],
     "require": {
         "php": "^8.1",
-        "nativephp/php-bin": "dev-main",
+        "nativephp/php-bin": "*",
         "nativephp/laravel": "*",
         "spatie/laravel-package-tools": "^1.14.0",
         "illuminate/contracts": "^10.0"
@@ -69,12 +69,6 @@
             }
         }
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/chrisreedio/php-bin"
-        }
-    ],
     "minimum-stability": "dev",
     "prefer-stable": true
 }
