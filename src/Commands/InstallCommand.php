@@ -20,7 +20,6 @@ class InstallCommand extends Command
         $this->callSilent('vendor:publish', ['--tag' => 'nativephp-provider']);
         $this->callSilent('vendor:publish', ['--tag' => 'nativephp-config']);
 
-
         if ($this->option('force') || $this->confirm('Would you like to install the NativePHP NPM dependencies?', true)) {
             $this->comment('Installing NPM dependencies (This may take a while)...');
 
