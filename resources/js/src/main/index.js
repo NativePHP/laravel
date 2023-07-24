@@ -9,12 +9,12 @@ import phpBinary from '../../resources/php?asset&asarUnpack'
 import certificate from '../../resources/cacert.pem?asset&asarUnpack'
 
 // Probably still need to improve this platform awareness
-let phpBinary;
-if (process.platform === 'win32') {
-	phpBinary = import('../../resources/php/php.exe?asset&asarUnpack');
-} else {
-	phpBinary = import('../../resources/php/php?asset&asarUnpack');
-}
+// let phpBinary;
+// if (process.platform === 'win32') {
+// 	phpBinary = import('../../resources/php/php.exe?asset&asarUnpack');
+// } else {
+// 	phpBinary = import('../../resources/php/php?asset&asarUnpack');
+// }
 
 /**
  * Turn on the lights for the NativePHP app.
