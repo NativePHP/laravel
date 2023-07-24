@@ -20,7 +20,7 @@ class DevelopCommand extends Command
         $this->info('Fetching latest dependencies…');
 
         if (!$this->option('no-dependencies')) {
-            Process::path(__DIR__ . '/../../resources/js/')
+            Process::path(__DIR__.'/../../resources/js/')
                 ->env([
                     'NATIVEPHP_PHP_BINARY_PATH' => base_path($nativeBinaryPath),
                     'NATIVEPHP_CERTIFICATE_FILE_PATH' => base_path($phpBinPackageDir . 'cacert.pem'),
@@ -39,7 +39,7 @@ class DevelopCommand extends Command
             $this->patchPlist();
         }
 
-        Process::path(__DIR__ . '/../../resources/js/')
+        Process::path(__DIR__.'/../../resources/js/')
             ->env([
                 'APP_PATH' => base_path(),
                 'NATIVEPHP_PHP_BINARY_PATH' => base_path($nativeBinaryPath),
@@ -63,15 +63,15 @@ class DevelopCommand extends Command
      */
     protected function patchPlist()
     {
-        $pList = file_get_contents(__DIR__ . '/../../resources/js/node_modules/electron/dist/Electron.app/Contents/Info.plist');
+        $pList = file_get_contents(__DIR__.'/../../resources/js/node_modules/electron/dist/Electron.app/Contents/Info.plist');
 
         // Change the CFBundleName to the correct app name
         $pattern = '/(<key>CFBundleName<\/key>\s+<string>)(.*?)(<\/string>)/m';
-        $pList = preg_replace($pattern, '$1' . config('app.name') . '$3', $pList);
+        $pList = preg_replace($pattern, '$1'.config('app.name').'$3', $pList);
 
         $pattern = '/(<key>CFBundleDisplayName<\/key>\s+<string>)(.*?)(<\/string>)/m';
-        $pList = preg_replace($pattern, '$1' . config('app.name') . '$3', $pList);
+        $pList = preg_replace($pattern, '$1'.config('app.name').'$3', $pList);
 
-        file_put_contents(__DIR__ . '/../../resources/js/node_modules/electron/dist/Electron.app/Contents/Info.plist', $pList);
+        file_put_contents(__DIR__.'/../../resources/js/node_modules/electron/dist/Electron.app/Contents/Info.plist', $pList);
     }
 }
