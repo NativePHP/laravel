@@ -22,13 +22,11 @@ if (isWindows) phpBinaryFilename += '.exe';
 if (isDarwin && binaryArch == 'x64') binaryArch = 'x86';
 let updaterConfig = {};
 
-// console.log('Env Vars: ', process.env)
 console.log('Binary Source: ', phpBinaryPath);
 console.log('Binary Filename: ', phpBinaryFilename);
 
 const binarySrcDir = join(phpBinaryPath, binaryArch);
 const binarySrcExecutable = join(phpBinaryPath, binaryArch, phpBinaryFilename);
-// const binaryDest = join(__dirname, 'resources', phpBinaryFilename);
 const binaryDestDir = join(__dirname, 'resources/php');
 
 console.log("Arch: ", process.arch)
@@ -77,7 +75,6 @@ if (isBuilding) {
         removeSync(join(__dirname, 'resources', 'app'));
         removeSync(binaryDestDir);
 
-        // let phpBinary = join(phpBinaryPath, binaryArch, phpBinaryFilename);
         copySync(binarySrcDir, binaryDestDir);
 
         // As we can't copy into a subdirectory of ourself we need to copy to a temp directory
