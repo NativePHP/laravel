@@ -60,13 +60,7 @@ if (certificatePath) {
 
 if (isBuilding) {
     console.log('=====================');
-    if (isArm64) {
-        console.log('Building for ARM64');
-        console.log(join(__dirname, '..', '..', 'bin', binaryArch, phpBinaryFilename));
-    } else {
-        console.log('Building for x86');
-        console.log(join(__dirname, '..', '..', 'bin', binaryArch, phpBinaryFilename));
-    }
+	console.log('Building for ' + process.platform + ' | ' + process.arch);
     console.log('=====================');
     console.log('updater config', updaterConfig);
     console.log('=====================');
