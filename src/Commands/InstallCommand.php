@@ -47,7 +47,7 @@ class InstallCommand extends Command
                     'NATIVEPHP_CERTIFICATE_FILE_PATH' => base_path($phpBinPackageDir . 'cacert.pem'),
                 ])
                 ->forever()
-				->tty(PHP_OS_FAMILY != 'Windows')
+                ->tty(PHP_OS_FAMILY != 'Windows')
                 ->run('npm install', function (string $type, string $output) {
                     // if ($this->getOutput()->isVerbose()) {
                         echo $output;
