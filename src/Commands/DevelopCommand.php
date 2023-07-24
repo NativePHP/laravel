@@ -19,7 +19,7 @@ class DevelopCommand extends Command
 
         $this->info('Fetching latest dependencies…');
 
-        if (!$this->option('no-dependencies')) {
+        if (! $this->option('no-dependencies')) {
             Process::path(__DIR__.'/../../resources/js/')
                 ->env([
                     'NATIVEPHP_PHP_BINARY_PATH' => base_path($nativeBinaryPath),
