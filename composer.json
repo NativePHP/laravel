@@ -62,13 +62,19 @@
     "extra": {
         "laravel": {
             "providers": [
-              "Native\\Electron\\ElectronServiceProvider"
+                "Native\\Electron\\ElectronServiceProvider"
             ],
             "aliases": {
                 "Updater": "Native\\Electron\\Facades\\Updater"
             }
         }
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/chrisreedio/php-bin"
+        }
+    ],
     "minimum-stability": "dev",
     "prefer-stable": true
 }
