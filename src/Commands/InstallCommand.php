@@ -4,9 +4,12 @@ namespace Native\Electron\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Process;
+use Native\Electron\Traits\PhpBinaryTrait;
 
 class InstallCommand extends Command
 {
+	use PhpBinaryTrait;
+
     protected $signature = 'native:install {--force : Overwrite existing files by default}';
 
     protected $description = 'Install all of the NativePHP resources';
@@ -37,21 +40,18 @@ class InstallCommand extends Command
 
     protected function installNpmDependencies()
     {
-        $phpBinPackageDir = config('nativephp.binary_package');
-        $nativeBinaryPath = $phpBinPackageDir . 'bin/' . (PHP_OS_FAMILY === 'Windows' ? 'win' : 'mac');
-        $this->info("NativePHP binary path: $nativeBinaryPath");
         $this->info('Fetching latest dependencies…');
         Process::path(__DIR__ . '/../../resources/js/')
                 ->env([
-                    'NATIVEPHP_PHP_BINARY_PATH' => base_path($nativeBinaryPath),
-                    'NATIVEPHP_CERTIFICATE_FILE_PATH' => base_path($phpBinPackageDir . 'cacert.pem'),
+                    'NATIVEPHP_PHP_BINARY_PATH' => base_path($this->phpBinaryPath()),
+                    'NATIVEPHP_CERTIFICATE_FILE_PATH' => base_path($this->binaryPackageDirectory() . 'cacert.pem'),
                 ])
                 ->forever()
-                ->tty(PHP_OS_FAMILY != 'Windows')
-                ->run('npm install', function (string $type, string $output) {
-                    // if ($this->getOutput()->isVerbose()) {
+				->tty(PHP_OS_FAMILY != 'Windows')
+                ->run('npm set progress=false && npm install', function (string $type, string $output) {
+                    if ($this->getOutput()->isVerbose()) {
                         echo $output;
-                    // }
+                    }
                 });
     }
 }

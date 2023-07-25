@@ -27,7 +27,7 @@
     "@electron-toolkit/preload": "^1.0.3",
     "@electron-toolkit/utils": "^1.0.2",
     "@electron/remote": "^2.0.9",
-    "@nativephp/electron-plugin": "*"
+    "@nativephp/electron-plugin": "^0.1.0"
   },
   "devDependencies": {
     "@electron/notarize": "^1.2.3",
