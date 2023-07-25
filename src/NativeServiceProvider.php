@@ -4,6 +4,7 @@ namespace Native\Laravel;
 
 use Illuminate\Support\Arr;
 use Native\Laravel\Commands\LoadStartupConfigurationCommand;
+use Native\Laravel\Commands\MigrateCommand;
 use Native\Laravel\Commands\MinifyApplicationCommand;
 use Native\Laravel\Logging\LogWatcher;
 use Spatie\LaravelPackageTools\Package;
@@ -16,6 +17,7 @@ class NativeServiceProvider extends PackageServiceProvider
         $package
             ->name('nativephp')
             ->hasCommands([
+                MigrateCommand::class,
                 MinifyApplicationCommand::class,
                 LoadStartupConfigurationCommand::class,
             ])
@@ -28,6 +30,10 @@ class NativeServiceProvider extends PackageServiceProvider
     {
         $this->mergeConfigFrom($this->package->basePath('/../config/nativephp-internal.php'), 'nativephp-internal');
 
+        $this->app->singleton(MigrateCommand::class, function ($app) {
+            return new MigrateCommand($app['migrator'], $app['events']);
+        });
+
         if (config('nativephp-internal.running')) {
             $this->configureApp();
         }
@@ -37,6 +43,20 @@ class NativeServiceProvider extends PackageServiceProvider
     {
         if (config('app.debug')) {
             app(LogWatcher::class)->register();
+        }
+
+        $this->rewriteStoragePath();
+
+        $this->rewriteDatabase();
+
+        config(['session.driver' => 'file']);
+        config(['queue.default' => 'database']);
+    }
+
+    protected function rewriteStoragePath()
+    {
+        if (config('app.debug')) {
+            return;
         }
 
         $oldStoragePath = $this->app->storagePath();
@@ -52,18 +72,28 @@ class NativeServiceProvider extends PackageServiceProvider
                 config([$key => $newValue]);
             }
         }
+    }
+
+    public function rewriteDatabase()
+    {
+        $databasePath = config('nativephp-internal.database_path');
+
+        if (config('app.debug')) {
+            $databasePath = database_path('nativephp.sqlite');
+
+            if (! file_exists($databasePath)) {
+                touch($databasePath);
+            }
+        }
 
         config(['database.connections.nativephp' => [
             'driver' => 'sqlite',
             'url' => env('DATABASE_URL'),
-            'database' => config('nativephp-internal.database_path'),
+            'database' => $databasePath,
             'prefix' => '',
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
         ]]);
 
         config(['database.default' => 'nativephp']);
-        config(['session.driver' => 'file']);
-
-        config(['queue.default' => 'database']);
     }
 }
