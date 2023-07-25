@@ -48,10 +48,10 @@ class InstallCommand extends Command
                 ])
                 ->forever()
 				->tty(PHP_OS_FAMILY != 'Windows')
-                ->run('npm install', function (string $type, string $output) {
-                    // if ($this->getOutput()->isVerbose()) {
+                ->run('npm set progress=false && npm install', function (string $type, string $output) {
+                    if ($this->getOutput()->isVerbose()) {
                         echo $output;
-                    // }
+                    }
                 });
     }
 }
