@@ -4,41 +4,35 @@ namespace Native\Electron\Traits;
 
 trait Installer
 {
-    protected function installDependencies()
+    protected function installNPMDependencies($installer = 'npm')
     {
         if ($this->option('force') || $this->confirm('Would you like to install the NativePHP NPM dependencies?', true)) {
             $this->comment('Installing NPM dependencies (This may take a while)...');
 
-            switch ($this->option('installer')) {
-                case 'yarn':
-                    $this->info('Installing NPM dependencies using the yarn package manager...');
-                    $this->installYarnDependencies();
-                    break;
-                case 'pnpm':
-                    $this->info('Installing NPM dependencies using the pnpm package manager...');
-                    $this->installPnpmDependencies();
-                    break;
-                default:
-                    $this->info('Installing NPM dependencies using the npm package manager...');
-                    $this->installNpmDependencies();
+            if (!$installer) {
+                $this->installDependencies();
+            } else {
+                $this->installDependencies(installer: $installer);
             }
 
             $this->output->newLine();
         }
     }
 
-    protected function installNpmDependencies()
+    protected function installDependencies(?string $installer = null)
     {
-        $this->executeCommand('npm set progress=false && npm install', $this->nativePhpPath());
-    }
+        $installers = [
+            'npm'  => 'npm set progress=false && npm install',
+            'yarn' => 'yarn',
+            'pnpm' => 'pnpm install',
+        ];
 
-    protected function installYarnDependencies()
-    {
-        $this->executeCommand('yarn install', $this->nativePhpPath());
-    }
+        if (!in_array($installer, array_keys($installers))) {
+            $this->error("Invalid installer {$installer} provided.");
+            $installer = $this->choice('Choose one of the following installers: npm, yarn, pnpm', array_keys($installers));
+        }
 
-    protected function installPnpmDependencies()
-    {
-        $this->executeCommand('pnpm install', $this->nativePhpPath());
+        $this->info("Installing {$installer} dependencies using the npm package manager...");
+        $this->executeCommand("{$installers[$installer]}", $this->nativePhpPath());
     }
 }
