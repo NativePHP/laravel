@@ -27,9 +27,11 @@ trait Installer
             'pnpm' => 'pnpm install',
         ];
 
-        if (!in_array($installer, array_keys($installers))) {
+        if (!array_key_exists($installer, $installers))) {
             $this->error("Invalid installer {$installer} provided.");
-            $installer = $this->choice('Choose one of the following installers: npm, yarn, pnpm', array_keys($installers));
+            $keys = array_keys($installers);
+            $techs = implode(', ', $keys);
+            $installer = $this->choice('Choose one of the following installers: '. $techs, $keys);
         }
 
         $this->info("Installing {$installer} dependencies using the npm package manager...");
