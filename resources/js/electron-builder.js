@@ -1,4 +1,4 @@
-const {copySync, removeSync, writeJsonSync} = require("fs-extra");
+const {copySync, removeSync, writeJsonSync, existsSync} = require("fs-extra");
 const {join} = require("path");
 const os = require('os');
 const {mkdtempSync} = require("fs");
@@ -42,6 +42,11 @@ if (phpBinaryPath) {
     try {
         console.log('Copying PHP file(s) from ' + binarySrcDir + ' to ' + binaryDestDir);
         copySync(binarySrcDir, binaryDestDir);
+		// If we're on windows, copy the php.exe from the dest dir to `php`.
+		// This allows the same import command to work on all platforms (same binary filename)
+		if (isWindows && existsSync(join(binaryDestDir, phpBinaryFilename))) {
+			copySync(join(binaryDestDir, phpBinaryFilename), join(binaryDestDir, 'php'));
+		}
 		console.log('Copied PHP binary to ', binaryDestDir);
     } catch (e) {
         console.error('Error copying PHP binary', e);
