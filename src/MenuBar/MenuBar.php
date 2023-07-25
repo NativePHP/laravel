@@ -18,6 +18,8 @@ class MenuBar
 
     protected string $label = '';
 
+    protected bool $onlyShowContextWindow = false;
+
     protected ?Menu $contextMenu = null;
 
     protected bool $alwaysOnTop = false;
@@ -41,6 +43,13 @@ class MenuBar
     public function icon(string $icon): self
     {
         $this->icon = $icon;
+
+        return $this;
+    }
+
+    public function onlyShowContextMenu(bool $onlyContextMenu = true): self
+    {
+        $this->onlyShowContextWindow = $onlyContextMenu;
 
         return $this;
     }
@@ -94,6 +103,7 @@ class MenuBar
             'showDockIcon' => $this->showDockIcon,
             'transparency' => $this->transparent,
             'backgroundColor' => $this->backgroundColor,
+            'onlyShowContextWindow' => $this->onlyShowContextWindow,
             'contextMenu' => ! is_null($this->contextMenu) ? $this->contextMenu->toArray()['submenu'] : null,
             'alwaysOnTop' => $this->alwaysOnTop,
         ];
