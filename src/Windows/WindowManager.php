@@ -57,4 +57,11 @@ class WindowManager
             'alwaysOnTop' => $alwaysOnTop,
         ]);
     }
+
+    public function maximize($id = null): void
+    {
+        $this->client->post('window/maximize', [
+            'id' => $id ?? $this->detectId(),
+        ]);
+    }
 }

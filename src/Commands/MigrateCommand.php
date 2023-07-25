@@ -3,9 +3,9 @@
 namespace Native\Laravel\Commands;
 
 use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Database\Console\Migrations\MigrateCommand as BaseMigrateCommand;
 use Illuminate\Database\Migrations\Migrator;
 use Native\Laravel\NativeServiceProvider;
-use Illuminate\Database\Console\Migrations\MigrateCommand as BaseMigrateCommand;
 
 class MigrateCommand extends BaseMigrateCommand
 {
