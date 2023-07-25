@@ -13,6 +13,10 @@ class Window
     use HasDimensions;
     use HasUrl;
 
+    protected bool $fullscreen = false;
+
+    protected bool $kiosk = false;
+
     protected $rememberState = false;
 
     protected bool $alwaysOnTop = false;
@@ -180,6 +184,20 @@ class Window
             ->hasShadow(false);
     }
 
+    public function fullscreen($fullscreen = false): static
+    {
+        $this->fullscreen = $fullscreen;
+
+        return $this;
+    }
+
+    public function kiosk($kiosk = false): static
+    {
+        $this->kiosk = $kiosk;
+
+        return $this;
+    }
+
     public function toArray()
     {
         return [
@@ -209,6 +227,8 @@ class Window
             'maximizable' => $this->maximizable,
             'closable' => $this->closable,
             'title' => $this->title,
+            'fullscreen' => $this->fullscreen,
+            'kiosk' => $this->kiosk,
         ];
     }
 }
