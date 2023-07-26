@@ -2,6 +2,20 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 0.1.2 - 2023-07-25
+
+### What's Changed
+
+- Remove yarn dependency when using serve command by @semiherdogan in https://github.com/NativePHP/electron/pull/39
+- Add missing php.js file
+- Make sure that NPM runs forever when running `artisan:publish`
+
+### New Contributors
+
+- @semiherdogan made their first contribution in https://github.com/NativePHP/electron/pull/39
+
+**Full Changelog**: https://github.com/NativePHP/electron/compare/0.1.1...0.1.2
+
 ## 0.1.1 - 2023-07-22
 
 ### What's Changed
