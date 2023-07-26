@@ -6,9 +6,12 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Str;
 use Native\Electron\Facades\Updater;
+use Native\Electron\Traits\PhpBinaryTrait;
 
 class BuildCommand extends Command
 {
+	use PhpBinaryTrait;
+
     protected $signature = 'native:build';
 
     public function handle()

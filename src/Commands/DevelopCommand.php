@@ -4,9 +4,12 @@ namespace Native\Electron\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Process;
+use Native\Electron\Traits\PhpBinaryTrait;
 
 class DevelopCommand extends Command
 {
+	use PhpBinaryTrait;
+
     protected $signature = 'native:serve {--no-queue} {--D|no-dependencies}';
 
     public function handle()
