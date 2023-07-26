@@ -17,9 +17,13 @@ const isWindows = process.platform === 'win32';
 const isDarwin = process.platform === 'darwin';
 let binaryArch = process.arch
 let phpBinaryFilename = 'php';
-if (isWindows) phpBinaryFilename += '.exe';
+if (isWindows) {
+    phpBinaryFilename += '.exe';
+}
 // Override for Darwin on x64 to use standard 32-bit PHP binary
-if (isDarwin && binaryArch == 'x64') binaryArch = 'x86';
+if (isDarwin && binaryArch == 'x64') {
+    binaryArch = 'x86';
+}
 let updaterConfig = {};
 
 console.log('Binary Source: ', phpBinaryPath);
@@ -42,12 +46,12 @@ if (phpBinaryPath) {
     try {
         console.log('Copying PHP file(s) from ' + binarySrcDir + ' to ' + binaryDestDir);
         copySync(binarySrcDir, binaryDestDir);
-		// If we're on windows, copy the php.exe from the dest dir to `php`.
-		// This allows the same import command to work on all platforms (same binary filename)
-		if (isWindows && existsSync(join(binaryDestDir, phpBinaryFilename))) {
-			copySync(join(binaryDestDir, phpBinaryFilename), join(binaryDestDir, 'php'));
-		}
-		console.log('Copied PHP binary to ', binaryDestDir);
+        // If we're on Windows, copy the php.exe from the dest dir to `php`.
+        // This allows the same import command to work on all platforms (same binary filename)
+        if (isWindows && existsSync(join(binaryDestDir, phpBinaryFilename))) {
+            copySync(join(binaryDestDir, phpBinaryFilename), join(binaryDestDir, 'php'));
+        }
+        console.log('Copied PHP binary to ', binaryDestDir);
     } catch (e) {
         console.error('Error copying PHP binary', e);
     }
@@ -55,9 +59,9 @@ if (phpBinaryPath) {
 
 if (certificatePath) {
     try {
-		let certDest = join(__dirname, 'resources', 'cacert.pem');
+        let certDest = join(__dirname, 'resources', 'cacert.pem');
         copySync(certificatePath, certDest);
-		console.log('Copied certificate file to', certDest);
+        console.log('Copied certificate file to', certDest);
     } catch (e) {
         console.error('Error copying certificate file', e);
     }
@@ -65,7 +69,7 @@ if (certificatePath) {
 
 if (isBuilding) {
     console.log('=====================');
-	console.log('Building for ' + process.platform + ' | ' + process.arch);
+    console.log('Building for ' + process.platform + ' | ' + process.arch);
     console.log('=====================');
     console.log('updater config', updaterConfig);
     console.log('=====================');

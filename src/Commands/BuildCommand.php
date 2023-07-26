@@ -6,11 +6,11 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Str;
 use Native\Electron\Facades\Updater;
-use Native\Electron\Traits\PhpBinaryTrait;
+use Native\Electron\Concerns\LocatesPhpBinary;
 
 class BuildCommand extends Command
 {
-	use PhpBinaryTrait;
+    use LocatesPhpBinary;
 
     protected $signature = 'native:build';
 
@@ -18,7 +18,7 @@ class BuildCommand extends Command
     {
         $this->info('Build NativePHP app…');
 
-        Process::path(__DIR__.'/../../resources/js/')
+        Process::path(__DIR__ . '/../../resources/js/')
             ->env($this->getEnvironmentVariables())
             ->run('npm update', function (string $type, string $output) {
                 echo $output;
@@ -29,7 +29,7 @@ class BuildCommand extends Command
                 echo $output;
             });
 
-        Process::path(__DIR__.'/../../resources/js/')
+        Process::path(__DIR__ . '/../../resources/js/')
             ->env($this->getEnvironmentVariables())
             ->forever()
             ->tty(PHP_OS_FAMILY != 'Windows')

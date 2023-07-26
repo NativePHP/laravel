@@ -8,4 +8,9 @@ import certificate from '../../resources/cacert.pem?asset&asarUnpack'
 /**
  * Turn on the lights for the NativePHP app.
  */
-NativePHP.bootstrap(app, defaultIcon, phpBinary, certificate);
+NativePHP.bootstrap(
+    app,
+    defaultIcon,
+    phpBinary,
+    certificate
+);

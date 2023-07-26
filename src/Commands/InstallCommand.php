@@ -4,11 +4,11 @@ namespace Native\Electron\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Process;
-use Native\Electron\Traits\PhpBinaryTrait;
+use Native\Electron\Concerns\LocatesPhpBinary;
 
 class InstallCommand extends Command
 {
-	use PhpBinaryTrait;
+    use LocatesPhpBinary;
 
     protected $signature = 'native:install {--force : Overwrite existing files by default}';
 
@@ -26,7 +26,7 @@ class InstallCommand extends Command
             $this->output->newLine();
         }
 
-        if (! $this->option('force') && $this->confirm('Would you like to start the NativePHP development server', false)) {
+        if (!$this->option('force') && $this->confirm('Would you like to start the NativePHP development server', false)) {
             $this->call('native:serve');
         }
 
@@ -35,23 +35,23 @@ class InstallCommand extends Command
 
     protected function nativePhpPath()
     {
-        return realpath(__DIR__.'/../../resources/js');
+        return realpath(__DIR__ . '/../../resources/js');
     }
 
     protected function installNpmDependencies()
     {
         $this->info('Fetching latest dependencies…');
         Process::path(__DIR__ . '/../../resources/js/')
-                ->env([
-                    'NATIVEPHP_PHP_BINARY_PATH' => base_path($this->phpBinaryPath()),
-                    'NATIVEPHP_CERTIFICATE_FILE_PATH' => base_path($this->binaryPackageDirectory() . 'cacert.pem'),
-                ])
-                ->forever()
-				->tty(PHP_OS_FAMILY != 'Windows')
-                ->run('npm set progress=false && npm install', function (string $type, string $output) {
-                    if ($this->getOutput()->isVerbose()) {
-                        echo $output;
-                    }
-                });
+            ->env([
+                'NATIVEPHP_PHP_BINARY_PATH' => base_path($this->phpBinaryPath()),
+                'NATIVEPHP_CERTIFICATE_FILE_PATH' => base_path($this->binaryPackageDirectory() . 'cacert.pem'),
+            ])
+            ->forever()
+            ->tty(PHP_OS_FAMILY != 'Windows')
+            ->run('npm set progress=false && npm install', function (string $type, string $output) {
+                if ($this->getOutput()->isVerbose()) {
+                    echo $output;
+                }
+            });
     }
 }
