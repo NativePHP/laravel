@@ -4,9 +4,12 @@ namespace Native\Electron\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Process;
+use Native\Electron\Traits\PhpBinaryTrait;
 
 class DevelopCommand extends Command
 {
+	use PhpBinaryTrait;
+
     protected $signature = 'native:serve {--no-queue} {--D|no-dependencies}';
 
     public function handle()
@@ -18,8 +21,8 @@ class DevelopCommand extends Command
         if (! $this->option('no-dependencies')) {
             Process::path(__DIR__.'/../../resources/js/')
                 ->env([
-                    'NATIVEPHP_PHP_BINARY_PATH' => base_path('vendor/nativephp/php-bin/bin/mac'),
-                    'NATIVEPHP_CERTIFICATE_FILE_PATH' => base_path('vendor/nativephp/php-bin/cacert.pem'),
+                    'NATIVEPHP_PHP_BINARY_PATH' => base_path($this->phpBinaryPath()),
+                    'NATIVEPHP_CERTIFICATE_FILE_PATH' => base_path($this->binaryPackageDirectory() . 'cacert.pem'),
                 ])
                 ->forever()
                 ->run('npm install', function (string $type, string $output) {
@@ -38,8 +41,8 @@ class DevelopCommand extends Command
         Process::path(__DIR__.'/../../resources/js/')
             ->env([
                 'APP_PATH' => base_path(),
-                'NATIVEPHP_PHP_BINARY_PATH' => base_path('vendor/nativephp/php-bin/bin/mac'),
-                'NATIVEPHP_CERTIFICATE_FILE_PATH' => base_path('vendor/nativephp/php-bin/cacert.pem'),
+                'NATIVEPHP_PHP_BINARY_PATH' => base_path($this->phpBinaryPath()),
+                'NATIVEPHP_CERTIFICATE_FILE_PATH' => base_path($this->binaryPackageDirectory() . 'cacert.pem'),
                 'NATIVE_PHP_SKIP_QUEUE' => $this->option('no-queue') ? true : false,
             ])
             ->forever()

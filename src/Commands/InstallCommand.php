@@ -3,10 +3,13 @@
 namespace Native\Electron\Commands;
 
 use Illuminate\Console\Command;
-use Symfony\Component\Process\Process;
+use Illuminate\Support\Facades\Process;
+use Native\Electron\Traits\PhpBinaryTrait;
 
 class InstallCommand extends Command
 {
+	use PhpBinaryTrait;
+
     protected $signature = 'native:install {--force : Overwrite existing files by default}';
 
     protected $description = 'Install all of the NativePHP resources';
@@ -37,19 +40,18 @@ class InstallCommand extends Command
 
     protected function installNpmDependencies()
     {
-        $this->executeCommand('npm set progress=false && npm install', $this->nativePhpPath());
-    }
-
-    protected function executeCommand($command, $path)
-    {
-        $process = (Process::fromShellCommandline($command, $path))->setTimeout(null);
-
-        if ('\\' !== DIRECTORY_SEPARATOR && file_exists('/dev/tty') && is_readable('/dev/tty')) {
-            $process->setTty(true);
-        }
-
-        $process->run(function ($type, $line) {
-            $this->output->write($line);
-        });
+        $this->info('Fetching latest dependencies…');
+        Process::path(__DIR__ . '/../../resources/js/')
+                ->env([
+                    'NATIVEPHP_PHP_BINARY_PATH' => base_path($this->phpBinaryPath()),
+                    'NATIVEPHP_CERTIFICATE_FILE_PATH' => base_path($this->binaryPackageDirectory() . 'cacert.pem'),
+                ])
+                ->forever()
+				->tty(PHP_OS_FAMILY != 'Windows')
+                ->run('npm set progress=false && npm install', function (string $type, string $output) {
+                    if ($this->getOutput()->isVerbose()) {
+                        echo $output;
+                    }
+                });
     }
 }
