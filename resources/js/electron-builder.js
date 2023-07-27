@@ -13,24 +13,34 @@ const appAuthor = process.env.NATIVEPHP_APP_AUTHOR;
 const phpBinaryPath = process.env.NATIVEPHP_PHP_BINARY_PATH;
 const certificatePath = process.env.NATIVEPHP_CERTIFICATE_FILE_PATH;
 const isArm64 = process.argv.includes('--arm64');
-const isWindows = process.platform === 'win32';
-const isDarwin = process.platform === 'darwin';
-let binaryArch = process.arch
+const isWindows = process.argv.includes('--win');
+const isLinux = process.argv.includes('--linux');
+const isDarwin = process.argv.includes('--mac');
+let targetOs = 'mac';
 let phpBinaryFilename = 'php';
 if (isWindows) {
+    targetOs = 'win';
     phpBinaryFilename += '.exe';
 }
-// Override for Darwin on x64 to use standard 32-bit PHP binary
-if (isDarwin && binaryArch == 'x64') {
-    binaryArch = 'x86';
+if (isLinux) {
+    targetOs = 'linux';
 }
+
+let binaryArch = 'x86';
+if (isArm64) {
+    binaryArch = 'arm64';
+}
+if (isWindows || isLinux) {
+    binaryArch = 'x64';
+}
+
+
 let updaterConfig = {};
 
 console.log('Binary Source: ', phpBinaryPath);
 console.log('Binary Filename: ', phpBinaryFilename);
 
-const binarySrcDir = join(phpBinaryPath, binaryArch);
-const binarySrcExecutable = join(phpBinaryPath, binaryArch, phpBinaryFilename);
+const binarySrcDir = join(phpBinaryPath, targetOs, binaryArch);
 const binaryDestDir = join(__dirname, 'resources/php');
 
 console.log("Arch: ", process.arch)
@@ -45,6 +55,7 @@ try {
 if (phpBinaryPath) {
     try {
         console.log('Copying PHP file(s) from ' + binarySrcDir + ' to ' + binaryDestDir);
+        removeSync(binaryDestDir);
         copySync(binarySrcDir, binaryDestDir);
         // If we're on Windows, copy the php.exe from the dest dir to `php`.
         // This allows the same import command to work on all platforms (same binary filename)
@@ -69,7 +80,7 @@ if (certificatePath) {
 
 if (isBuilding) {
     console.log('=====================');
-    console.log('Building for ' + process.platform + ' | ' + process.arch);
+    console.log('Building for ' + targetOs + ' | ' + binaryArch);
     console.log('=====================');
     console.log('updater config', updaterConfig);
     console.log('=====================');
@@ -128,7 +139,8 @@ if (isBuilding) {
         console.log(join(process.env.APP_PATH, 'dist'));
         console.log('=====================');
 
-        execSync(`${binarySrcExecutable} ${join(__dirname, 'resources', 'app', 'artisan')} native:minify ${join(__dirname, 'resources', 'app')}`);
+        // We'll use the default PHP binary here, as we can cross-compile for all platforms
+        execSync(`php ${join(__dirname, 'resources', 'app', 'artisan')} native:minify ${join(__dirname, 'resources', 'app')}`);
     } catch (e) {
         console.error('=====================');
         console.error('Error copying app to resources');
@@ -193,8 +205,8 @@ module.exports = {
         artifactName: appName + '-${version}-${arch}.${ext}',
     },
     linux: {
-        target: ['AppImage', 'snap', 'deb'],
-        maintainer: 'electronjs.org',
+        target: ['AppImage', 'deb'],
+        maintainer: appUrl,
         category: 'Utility',
     },
     appImage: {

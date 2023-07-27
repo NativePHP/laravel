@@ -12,7 +12,7 @@ class BuildCommand extends Command
 {
     use LocatesPhpBinary;
 
-    protected $signature = 'native:build';
+    protected $signature = 'native:build {os?}';
 
     public function handle()
     {
@@ -29,11 +29,16 @@ class BuildCommand extends Command
                 echo $output;
             });
 
+        $buildCommand = 'npm run build';
+        if ($this->argument('os')) {
+            $buildCommand .= ':' . $this->argument('os');
+        }
+
         Process::path(__DIR__ . '/../../resources/js/')
             ->env($this->getEnvironmentVariables())
             ->forever()
             ->tty(PHP_OS_FAMILY != 'Windows')
-            ->run('npm run build:mac-arm', function (string $type, string $output) {
+            ->run($buildCommand, function (string $type, string $output) {
                 echo $output;
             });
     }
@@ -45,8 +50,8 @@ class BuildCommand extends Command
                 'APP_PATH' => base_path(),
                 'APP_URL' => config('app.url'),
                 'NATIVEPHP_BUILDING' => true,
-                'NATIVEPHP_PHP_BINARY_PATH' => base_path('vendor/nativephp/php-bin/bin/mac'),
-                'NATIVEPHP_CERTIFICATE_FILE_PATH' => base_path('vendor/nativephp/php-bin/cacert.pem'),
+                'NATIVEPHP_PHP_BINARY_PATH' => base_path($this->phpBinaryPath()),
+                'NATIVEPHP_CERTIFICATE_FILE_PATH' => base_path($this->binaryPackageDirectory() . 'cacert.pem'),
                 'NATIVEPHP_APP_NAME' => config('app.name'),
                 'NATIVEPHP_APP_ID' => config('nativephp.app_id'),
                 'NATIVEPHP_APP_VERSION' => config('nativephp.version'),
