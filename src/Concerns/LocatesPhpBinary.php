@@ -13,17 +13,12 @@ trait LocatesPhpBinary
     }
 
     /**
-     * Calculate the path to the PHP binary based on the OS
+     * Returns the path to the PHP binary.
      *
      * @return string The path to the PHP binary (not including the filename)
      */
     public function phpBinaryPath(): string
     {
-        return $this->binaryPackageDirectory().'bin/'.match (PHP_OS_FAMILY) {
-            'Windows' => 'win',
-            'Darwin' => 'mac',
-            'Linux' => 'linux',
-        };
-
+        return $this->binaryPackageDirectory().'bin/';
     }
 }
