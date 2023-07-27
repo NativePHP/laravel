@@ -19,11 +19,11 @@ trait LocatesPhpBinary
      */
     public function phpBinaryPath(): string
     {
-        return $this->binaryPackageDirectory().'bin/'.match(PHP_OS_FAMILY) {
+        return $this->binaryPackageDirectory().'bin/'.match (PHP_OS_FAMILY) {
             'Windows' => 'win',
             'Darwin' => 'mac',
             'Linux' => 'linux',
         };
-;
+
     }
 }
