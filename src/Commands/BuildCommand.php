@@ -31,7 +31,7 @@ class BuildCommand extends Command
 
         $buildCommand = 'npm run build';
         if ($this->argument('os')) {
-            $buildCommand .= ':' . $this->argument('os');
+            $buildCommand .= ':'.$this->argument('os');
         }
 
         Process::path(__DIR__.'/../../resources/js/')
@@ -51,7 +51,7 @@ class BuildCommand extends Command
                 'APP_URL' => config('app.url'),
                 'NATIVEPHP_BUILDING' => true,
                 'NATIVEPHP_PHP_BINARY_PATH' => base_path($this->phpBinaryPath()),
-                'NATIVEPHP_CERTIFICATE_FILE_PATH' => base_path($this->binaryPackageDirectory() . 'cacert.pem'),
+                'NATIVEPHP_CERTIFICATE_FILE_PATH' => base_path($this->binaryPackageDirectory().'cacert.pem'),
                 'NATIVEPHP_APP_NAME' => config('app.name'),
                 'NATIVEPHP_APP_ID' => config('nativephp.app_id'),
                 'NATIVEPHP_APP_VERSION' => config('nativephp.version'),
