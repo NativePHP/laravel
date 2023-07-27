@@ -2,6 +2,19 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 0.3.0 - 2023-07-27
+
+### What's Changed
+
+- Added the ability to build Windows and Linux apps 🎉
+- Added binary lookup for linux based platform by @kalizi in https://github.com/NativePHP/electron/pull/44
+
+### New Contributors
+
+- @kalizi made their first contribution in https://github.com/NativePHP/electron/pull/44
+
+**Full Changelog**: https://github.com/NativePHP/electron/compare/0.2.0...0.3.0
+
 ## 0.2.0 - 2023-07-26
 
 ### What's Changed
