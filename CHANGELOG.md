@@ -2,6 +2,18 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 0.2.0 - 2023-07-26
+
+### What's Changed
+
+- Add Windows support by @chrisreedio in https://github.com/NativePHP/electron/pull/33
+
+### New Contributors
+
+- @chrisreedio made their first contribution in https://github.com/NativePHP/electron/pull/33
+
+**Full Changelog**: https://github.com/NativePHP/electron/compare/0.1.2...0.2.0
+
 ## 0.1.2 - 2023-07-25
 
 ### What's Changed

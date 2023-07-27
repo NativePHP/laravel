@@ -26,7 +26,7 @@ class InstallCommand extends Command
             $this->output->newLine();
         }
 
-        if (!$this->option('force') && $this->confirm('Would you like to start the NativePHP development server', false)) {
+        if (! $this->option('force') && $this->confirm('Would you like to start the NativePHP development server', false)) {
             $this->call('native:serve');
         }
 
@@ -35,16 +35,16 @@ class InstallCommand extends Command
 
     protected function nativePhpPath()
     {
-        return realpath(__DIR__ . '/../../resources/js');
+        return realpath(__DIR__.'/../../resources/js');
     }
 
     protected function installNpmDependencies()
     {
         $this->info('Fetching latest dependencies…');
-        Process::path(__DIR__ . '/../../resources/js/')
+        Process::path(__DIR__.'/../../resources/js/')
             ->env([
                 'NATIVEPHP_PHP_BINARY_PATH' => base_path($this->phpBinaryPath()),
-                'NATIVEPHP_CERTIFICATE_FILE_PATH' => base_path($this->binaryPackageDirectory() . 'cacert.pem'),
+                'NATIVEPHP_CERTIFICATE_FILE_PATH' => base_path($this->binaryPackageDirectory().'cacert.pem'),
             ])
             ->forever()
             ->tty(PHP_OS_FAMILY != 'Windows')
