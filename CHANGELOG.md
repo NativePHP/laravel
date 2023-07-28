@@ -2,6 +2,12 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 0.3.2 - 2023-07-28
+
+- Bump JS package dependency
+
+**Full Changelog**: https://github.com/NativePHP/electron/compare/0.3.1...0.3.2
+
 ## 0.3.1 - 2023-07-27
 
 Fix PHP path resolution
