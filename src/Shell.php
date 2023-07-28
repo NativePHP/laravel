@@ -30,9 +30,4 @@ class Shell
             'url' => $url,
         ]);
     }
-
-    public function displays(): array
-    {
-        return $this->client->get('screen/displays')->json('displays');
-    }
 }
