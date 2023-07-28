@@ -28,22 +28,4 @@ class InstallCommand extends Command
 
         $this->info('NativePHP scaffolding installed successfully.');
     }
-
-    protected function nativePhpPath()
-    {
-        return realpath(__DIR__ . '/../../resources/js');
-    }
-
-    protected function executeCommand($command, $path)
-    {
-        $process = (Process::fromShellCommandline($command, $path))->setTimeout(null);
-
-        if ('\\' !== DIRECTORY_SEPARATOR && file_exists('/dev/tty') && is_readable('/dev/tty')) {
-            $process->setTty(true);
-        }
-
-        $process->run(function ($type, $line) {
-            $this->output->write($line);
-        });
-    }
 }
