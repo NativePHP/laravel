@@ -2,6 +2,14 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 0.2.0 - 2023-07-28
+
+### What's changed
+
+- Added the new `Shell` Facade that allows you to open files in the explorer/finder, open urls in the default app, trash files, etc.
+
+**Full Changelog**: https://github.com/NativePHP/laravel/compare/0.1.1...0.2.0
+
 ## 0.1.1 - 2023-07-25
 
 ### What's Changed
