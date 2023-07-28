@@ -24,6 +24,13 @@ class Shell
         ])->json('result');
     }
 
+    public function trashFile(string $path): void
+    {
+        $this->client->delete('shell/trash-item', [
+            'path' => $path,
+        ]);
+    }
+
     public function openExternal(string $url): void
     {
         $this->client->post('shell/open-external', [
