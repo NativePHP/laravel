@@ -20,6 +20,7 @@ class BuildCommand extends Command
 
         Process::path(__DIR__.'/../../resources/js/')
             ->env($this->getEnvironmentVariables())
+            ->forever()
             ->run('npm update', function (string $type, string $output) {
                 echo $output;
             });
