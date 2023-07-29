@@ -13,6 +13,8 @@ class Window
     use HasDimensions;
     use HasUrl;
 
+    protected bool $autoHideMenuBar = false;
+
     protected bool $fullscreen = false;
 
     protected bool $kiosk = false;
@@ -184,6 +186,13 @@ class Window
             ->hasShadow(false);
     }
 
+    public function hideMenu($autoHideMenuBar = true): static
+    {
+        $this->autoHideMenuBar = $autoHideMenuBar;
+
+        return $this;
+    }
+
     public function fullscreen($fullscreen = false): static
     {
         $this->fullscreen = $fullscreen;
@@ -229,6 +238,7 @@ class Window
             'title' => $this->title,
             'fullscreen' => $this->fullscreen,
             'kiosk' => $this->kiosk,
+            'autoHideMenuBar' => $this->autoHideMenuBar,
         ];
     }
 }
