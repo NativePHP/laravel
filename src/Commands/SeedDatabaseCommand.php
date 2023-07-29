@@ -8,6 +8,7 @@ use Native\Laravel\NativeServiceProvider;
 class SeedDatabaseCommand extends BaseSeedCommand
 {
     protected $name = 'native:db:seed';
+
     protected $description = 'Run the database seeders in the NativePHP development environment';
 
     public function handle()
