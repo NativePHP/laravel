@@ -58,12 +58,12 @@ return [
         'providers' => [
             's3' => [
                 'driver' => 's3',
-                'key' => env('AWS_ACCESS_KEY_ID'),
-                'secret' => env('AWS_SECRET_ACCESS_KEY'),
+                'profile' => env('AWS_PROFILE'),
                 'region' => env('AWS_DEFAULT_REGION'),
                 'bucket' => env('AWS_BUCKET'),
                 'endpoint' => env('AWS_ENDPOINT'),
                 'path' => env('NATIVEPHP_UPDATER_PATH', null),
+                'acl' => env('NATIVEPHP_UPDATER_ACL', 'public-read'),
             ],
 
             'spaces' => [
