@@ -2,11 +2,14 @@
 
 namespace Native\Electron\Traits;
 
-use Symfony\Component\Process\Process;
+use Native\Electron\Concerns\LocatesPhpBinary;
+use Illuminate\Support\Facades\Process;
 
 trait Installer
 {
-    protected function installNPMDependencies($installer = 'npm')
+    use LocatesPhpBinary;
+
+    protected function installNPMDependencies(?string $installer = 'npm'): void
     {
         if ($this->option('force') || $this->confirm('Would you like to install the NativePHP NPM dependencies?', true)) {
             $this->comment('Installing NPM dependencies (This may take a while)...');
@@ -21,7 +24,7 @@ trait Installer
         }
     }
 
-    protected function installDependencies(?string $installer = null)
+    protected function installDependencies(?string $installer = null): void
     {
         $installers = [
             'npm'  => 'npm install',
@@ -37,24 +40,28 @@ trait Installer
         }
 
         $this->info("Installing NPM dependencies using the {$installer} package manager...");
-        $this->executeCommand("{$installers[$installer]}", $this->nativePhpPath());
+        $this->executeCommand(command: $installers[$installer]);
     }
 
-    protected function nativePhpPath()
+    protected function nativePhpPath(): string
     {
         return realpath(__DIR__ . '/../../resources/js');
     }
 
-    protected function executeCommand($command, $path)
+    protected function executeCommand(string $command): void
     {
-        $process = (Process::fromShellCommandline($command, $path))->setTimeout(null);
-
-        if ('\\' !== DIRECTORY_SEPARATOR && file_exists('/dev/tty') && is_readable('/dev/tty')) {
-            $process->setTty(true);
-        }
-
-        $process->run(function ($type, $line) {
-            $this->output->write($line);
-        });
+        $this->info('Fetching latest dependencies…');
+        Process::path(__DIR__ . '/../../resources/js/')
+            ->env([
+                'NATIVEPHP_PHP_BINARY_PATH'       => base_path($this->phpBinaryPath()),
+                'NATIVEPHP_CERTIFICATE_FILE_PATH' => base_path($this->binaryPackageDirectory() . 'cacert.pem'),
+            ])
+            ->forever()
+            ->tty(PHP_OS_FAMILY != 'Windows')
+            ->run($command, function (string $type, string $output) {
+                if ($this->getOutput()->isVerbose()) {
+                    echo $output;
+                }
+            });
     }
 }

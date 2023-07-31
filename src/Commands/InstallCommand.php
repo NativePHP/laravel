@@ -4,7 +4,6 @@ namespace Native\Electron\Commands;
 
 use Illuminate\Console\Command;
 use Native\Electron\Traits\Installer;
-use Symfony\Component\Process\Process;
 
 class InstallCommand extends Command
 {
@@ -14,13 +13,13 @@ class InstallCommand extends Command
 
     protected $description = 'Install all of the NativePHP resources';
 
-    public function handle()
+    public function handle(): void
     {
         $this->comment('Publishing NativePHP Service Provider...');
         $this->callSilent('vendor:publish', ['--tag' => 'nativephp-provider']);
         $this->callSilent('vendor:publish', ['--tag' => 'nativephp-config']);
 
-        $this->installNPMDependencies($this->option('installer'));
+        $this->installNPMDependencies(installer: $this->option('installer'));
 
         if (!$this->option('force') && $this->confirm('Would you like to start the NativePHP development server', false)) {
             $this->call('native:serve');
