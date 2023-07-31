@@ -19,10 +19,12 @@ class InstallCommand extends Command
         $this->callSilent('vendor:publish', ['--tag' => 'nativephp-provider']);
         $this->callSilent('vendor:publish', ['--tag' => 'nativephp-config']);
 
-        $this->installNPMDependencies(installer: $this->option('installer'));
+        $installer = $this->getInstaller($this->option('installer'));
+
+        $this->installNPMDependencies(force: $this->option('force'), installer: $installer);
 
         if (!$this->option('force') && $this->confirm('Would you like to start the NativePHP development server', false)) {
-            $this->call('native:serve');
+            $this->call('native:serve', ['--installer' => $installer]);
         }
 
         $this->info('NativePHP scaffolding installed successfully.');
