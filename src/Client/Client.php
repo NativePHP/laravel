@@ -8,8 +8,18 @@ use Illuminate\Support\Facades\Http;
 
 class Client
 {
+    /**
+     * The pending request instance.
+     *
+     * @var \Illuminate\Http\Client\PendingRequest
+     */
     protected PendingRequest $client;
 
+    /**
+     * Create a new client instance.
+     *
+     * @return void
+     */
     public function __construct()
     {
         $this->client = Http::asJson()
@@ -21,16 +31,31 @@ class Client
             ->asJson();
     }
 
+    /**
+     * Get the response from the http client.
+     *
+     * @return \Illuminate\Http\Client\Response
+     */
     public function get(string $endpoint): Response
     {
         return $this->client->get($endpoint);
     }
 
+    /**
+     * Post the response from the http client.
+     *
+     * @return \Illuminate\Http\Client\Response
+     */
     public function post(string $endpoint, array $data = []): Response
     {
         return $this->client->post($endpoint, $data);
     }
 
+    /**
+     * Delete the response from the http client.
+     *
+     * @return \Illuminate\Http\Client\Response
+     */
     public function delete(string $endpoint, array $data = []): Response
     {
         return $this->client->delete($endpoint, $data);
