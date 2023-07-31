@@ -17,7 +17,10 @@ const isArm64 = process.argv.includes('--arm64');
 const isWindows = platformType === "win32";
 const isLinux = platformType === "linux";
 const isDarwin = platformType === "darwin";
-let targetOs = 'mac';
+let targetOs = null;
+if(isDarwin) {
+    targetOs = 'mac';
+}
 let phpBinaryFilename = 'php';
 if (isWindows) {
     targetOs = 'win';
