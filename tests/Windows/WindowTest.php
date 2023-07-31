@@ -1,7 +1,9 @@
 <?php
 
+use Native\Laravel\Facades\Window;
+
 it('test window', function () {
-    $window = \Native\Laravel\Facades\Window::open()
+    $window = Window::open()
         ->id('main')
         ->title('milwad')
         ->titleBarStyle('milwad')
@@ -39,4 +41,19 @@ it('test window', function () {
     expect($windowArray['fullscreen'])->toBeFalse();
     expect($windowArray['kiosk'])->toBeFalse();
     expect($windowArray['autoHideMenuBar'])->toBeTrue();
+});
+
+it('test title bar for window', function () {
+    $window = Window::open()
+        ->titleBarHidden();
+
+    expect($window->toArray()['titleBarStyle'])->toBe('hidden');
+
+    $window->titleBarHiddenInset();
+
+    expect($window->toArray()['titleBarStyle'])->toBe('hiddenInset');
+
+    $window->titleBarButtonsOnHover();
+
+    expect($window->toArray()['titleBarStyle'])->toBe('customButtonsOnHover');
 });
