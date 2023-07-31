@@ -2,6 +2,25 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 0.3.3 - 2023-07-31
+
+### What's Changed
+
+- Fix native:build npm timeout by @drhoussem in https://github.com/NativePHP/electron/pull/54
+- Resolve Windows opening config file in default application by @ShaneShipston in https://github.com/NativePHP/electron/pull/60
+- Correct NATIVEPHP_PHP_BINARY_PATH by @lonnylot in https://github.com/NativePHP/electron/pull/64
+- Fix php path in queue command by @phuclh in https://github.com/NativePHP/electron/pull/58
+- Fix queue command environment variables
+
+### New Contributors
+
+- @drhoussem made their first contribution in https://github.com/NativePHP/electron/pull/54
+- @ShaneShipston made their first contribution in https://github.com/NativePHP/electron/pull/60
+- @lonnylot made their first contribution in https://github.com/NativePHP/electron/pull/64
+- @phuclh made their first contribution in https://github.com/NativePHP/electron/pull/58
+
+**Full Changelog**: https://github.com/NativePHP/electron/compare/0.3.2...0.3.3
+
 ## 0.3.2 - 2023-07-28
 
 - Bump JS package dependency
