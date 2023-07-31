@@ -11,7 +11,7 @@ use Native\Electron\Facades\Updater;
 class PublishCommand extends Command
 {
     use LocatesPhpBinary;
-    
+
     protected $signature = 'native:publish {os=mac}';
 
     public function handle()
