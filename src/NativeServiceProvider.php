@@ -107,13 +107,13 @@ class NativeServiceProvider extends PackageServiceProvider
             'NATIVEPHP_USER_HOME_PATH' => 'user_home',
             'NATIVEPHP_APP_DATA_PATH' => 'app_data',
             'NATIVEPHP_USER_DATA_PATH' => 'user_data',
-            'NATIVEPHP_DESKTOP_PATH' => 'user_desktop',
-            'NATIVEPHP_DOCUMENTS_PATH' => 'user_documents',
-            'NATIVEPHP_DOWNLOADS_PATH' => 'user_downloads',
-            'NATIVEPHP_MUSIC_PATH' => 'user_music',
-            'NATIVEPHP_PICTURES_PATH' => 'user_pictures',
-            'NATIVEPHP_VIDEOS_PATH' => 'user_videos',
-            'NATIVEPHP_RECENT_PATH' => 'user_recent',
+            'NATIVEPHP_DESKTOP_PATH' => 'desktop',
+            'NATIVEPHP_DOCUMENTS_PATH' => 'documents',
+            'NATIVEPHP_DOWNLOADS_PATH' => 'downloads',
+            'NATIVEPHP_MUSIC_PATH' => 'music',
+            'NATIVEPHP_PICTURES_PATH' => 'pictures',
+            'NATIVEPHP_VIDEOS_PATH' => 'videos',
+            'NATIVEPHP_RECENT_PATH' => 'recent',
         ];
 
         foreach ($disks as $env => $disk) {
