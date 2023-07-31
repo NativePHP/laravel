@@ -11,23 +11,23 @@
     "start": "electron-vite preview",
     "dev": "electron-vite dev --watch",
     "build": "electron-vite build",
-    "postinstall": "electron-builder install-app-deps",
+    "postinstall": "node electron-builder install-app-deps",
     "publish:win": "cross-env npm run build && cross-env electron-builder -p always --win --config",
     "publish:mac": "cross-env npm run build:mac-arm && cross-env npm run build:mac-x86",
     "publish:mac-arm": "cross-env npm run build && cross-env electron-builder -p always --mac --config --arm64 -p always",
     "publish:mac-x86": "cross-env npm run build && cross-env electron-builder -p always --mac --config --x64 -p always",
     "publish:linux": "cross-env npm run build && cross-env electron-builder -p always --linux --config",
-    "build:win": "cross-env npm run build && cross-env electron-builder -p never --win --config",
+    "build:win": "cross-env node php.js --win && cross-env npm run build && cross-env electron-builder -p never --win --config",
     "build:mac": "cross-env npm run build:mac-arm && cross-env npm run build:mac-x86",
     "build:mac-arm": "cross-env node php.js --arm64 && cross-env npm run build && cross-env electron-builder -p never --mac --config --arm64",
     "build:mac-x86": "cross-env node php.js --x64 && cross-env npm run build && cross-env electron-builder -p never --mac --config --x64",
-    "build:linux": "cross-env npm run build && cross-env electron-builder -p never --linux --config"
+    "build:linux": "cross-env node php.js --linux && cross-env npm run build && cross-env electron-builder -p never --linux --config"
   },
   "dependencies": {
     "@electron-toolkit/preload": "^1.0.3",
     "@electron-toolkit/utils": "^1.0.2",
     "@electron/remote": "^2.0.9",
-    "@nativephp/electron-plugin": "^0.1.0"
+    "@nativephp/electron-plugin": "^0.2"
   },
   "devDependencies": {
     "@electron/notarize": "^1.2.3",
