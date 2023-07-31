@@ -34,10 +34,10 @@ class QueueWorkerCommand extends Command
         Process::path(base_path())
             ->env([
                 'APP_PATH' => base_path(),
-                'NATIVE_PHP_RUNNING' => true,
-                'NATIVE_PHP_STORAGE_PATH' => $this->getAppDirectory().'/storage',
-                'NATIVE_PHP_API_URL' => 'http://localhost:'.$this->option('port').'/api/',
-                'NATIVE_PHP_DATABASE_PATH' => $this->getAppDirectory().'/database/database.sqlite',
+                'NATIVEPHP_RUNNING' => true,
+                'NATIVEPHP_STORAGE_PATH' => $this->getAppDirectory().'/storage',
+                'NATIVEPHP_API_URL' => 'http://localhost:'.$this->option('port').'/api/',
+                'NATIVEPHP_DATABASE_PATH' => $this->getAppDirectory().'/database/database.sqlite',
             ])
             ->forever()
             ->tty()
