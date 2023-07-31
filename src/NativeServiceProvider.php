@@ -51,6 +51,8 @@ class NativeServiceProvider extends PackageServiceProvider
 
         $this->rewriteDatabase();
 
+        $this->configureDisks();
+
         config(['session.driver' => 'file']);
         config(['queue.default' => 'database']);
     }
@@ -97,5 +99,33 @@ class NativeServiceProvider extends PackageServiceProvider
         ]]);
 
         config(['database.default' => 'nativephp']);
+    }
+
+    protected function configureDisks(): void
+    {
+        $disks = [
+            'NATIVEPHP_USER_HOME_PATH' => 'user_home',
+            'NATIVEPHP_APP_DATA_PATH' => 'app_data',
+            'NATIVEPHP_USER_DATA_PATH' => 'user_data',
+            'NATIVEPHP_DESKTOP_PATH' => 'user_desktop',
+            'NATIVEPHP_DOCUMENTS_PATH' => 'user_documents',
+            'NATIVEPHP_DOWNLOADS_PATH' => 'user_downloads',
+            'NATIVEPHP_MUSIC_PATH' => 'user_music',
+            'NATIVEPHP_PICTURES_PATH' => 'user_pictures',
+            'NATIVEPHP_VIDEOS_PATH' => 'user_videos',
+            'NATIVEPHP_RECENT_PATH' => 'user_recent',
+        ];
+
+        foreach ($disks as $env => $disk) {
+            if (! env($env)) {
+                continue;
+            }
+
+            config(['filesystems.disks.'.$disk => [
+                'driver' => 'local',
+                'root' => env($env, ''),
+                'throw' => false,
+            ]]);
+        }
     }
 }
