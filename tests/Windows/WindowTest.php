@@ -57,3 +57,13 @@ it('test title bar for window', function () {
 
     expect($window->toArray()['titleBarStyle'])->toBe('customButtonsOnHover');
 });
+
+it('test for invisibleFrameless in window', function () {
+    $window = Window::open()->invisibleFrameless();
+    $windowArray = $window->toArray();
+
+    expect($windowArray['frame'])->toBeTrue();
+    expect($windowArray['transparent'])->toBeTrue();
+    expect($windowArray['focusable'])->toBeFalse();
+    expect($windowArray['hasShadow'])->toBeFalse();
+});
