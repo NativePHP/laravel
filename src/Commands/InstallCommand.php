@@ -23,7 +23,7 @@ class InstallCommand extends Command
 
         $this->installNPMDependencies(force: $this->option('force'), installer: $installer);
 
-        if (!$this->option('force') && $this->confirm('Would you like to start the NativePHP development server', false)) {
+        if (! $this->option('force') && $this->confirm('Would you like to start the NativePHP development server', false)) {
             $this->call('native:serve', ['--installer' => $installer]);
         }
 

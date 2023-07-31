@@ -11,7 +11,7 @@ trait Installer
         if ($force || $this->confirm('Would you like to install the NativePHP NPM dependencies?', true)) {
             $this->comment('Installing NPM dependencies (This may take a while)...');
 
-            if (!$installer) {
+            if (! $installer) {
                 $this->installDependencies();
             } else {
                 $this->installDependencies(installer: $installer);
@@ -32,6 +32,7 @@ trait Installer
     {
         $commands = $this->getCommandArrays(type: $type);
         $installer = $this->getInstaller(installer: $installer);
+
         return [$installer, $commands[$installer]];
     }
 
@@ -39,13 +40,13 @@ trait Installer
     {
         $installers = $this->getCommandArrays();
 
-        if (!array_key_exists($installer, $this->getCommandArrays())) {
+        if (! array_key_exists($installer, $this->getCommandArrays())) {
             $this->error("Invalid installer ** {$installer} ** provided.");
             $keys = array_keys($this->getCommandArrays());
             $techs = implode(', ', $keys);
-            $installer = $this->choice('Choose one of the following installers: ' . $techs, $keys, 0);
+            $installer = $this->choice('Choose one of the following installers: '.$techs, $keys, 0);
         }
+
         return $installer;
     }
 }
-

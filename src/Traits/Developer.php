@@ -2,8 +2,6 @@
 
 namespace Native\Electron\Traits;
 
-use Native\Electron\Concerns\LocatesPhpBinary;
-
 trait Developer
 {
     use ExecuteCommand;
@@ -15,5 +13,4 @@ trait Developer
         $this->info("Runing the dev script with {$installer}...");
         $this->executeCommand(command: $command, type: 'serve', skip_queue: $skip_queue);
     }
-
 }
