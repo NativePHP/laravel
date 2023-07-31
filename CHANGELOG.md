@@ -2,6 +2,21 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 0.3.0 - 2023-07-31
+
+### What's Changed
+
+- Add native:db:seed command by @phuclh in https://github.com/NativePHP/laravel/pull/82
+- Option to show/hide menu on Windows / Linux by @ShaneShipston in https://github.com/NativePHP/laravel/pull/84
+- Add tests for `MenuBar` by @milwad-dev in https://github.com/NativePHP/laravel/pull/31
+
+### New Contributors
+
+- @phuclh made their first contribution in https://github.com/NativePHP/laravel/pull/82
+- @ShaneShipston made their first contribution in https://github.com/NativePHP/laravel/pull/84
+
+**Full Changelog**: https://github.com/NativePHP/laravel/compare/0.2.0...0.3.0
+
 ## 0.2.0 - 2023-07-28
 
 ### What's changed
