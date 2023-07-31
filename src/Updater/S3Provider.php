@@ -10,8 +10,22 @@ class S3Provider implements Updater
     {
     }
 
-    public function providedEnvironmentVariables(): array
+    public function environmentVariables(): array
     {
-        return [];
+        return [
+            'AWS_PROFILE' => $this->config['profile'],
+        ];
+    }
+
+    public function builderOptions(): array
+    {
+        return [
+            'provider' => 's3',
+            'endpoint' => $this->config['endpoint'],
+            'region' => $this->config['region'],
+            'bucket' => $this->config['bucket'],
+            'path' => $this->config['path'],
+            'acl' => $this->config['acl']
+        ];
     }
 }
