@@ -29,7 +29,7 @@ class QueueWorkerCommand extends Command
     {
         $this->info('Starting NativePHP queue worker…');
 
-        $phpBinary = __DIR__.'/../../resources/js/resources/php';
+        $phpBinary = __DIR__.'/../../resources/js/resources/php/php';
 
         Process::path(base_path())
             ->env([
