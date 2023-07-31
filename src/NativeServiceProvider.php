@@ -3,6 +3,7 @@
 namespace Native\Laravel;
 
 use Illuminate\Support\Arr;
+use Native\Laravel\Commands\LoadPHPConfigurationCommand;
 use Native\Laravel\Commands\LoadStartupConfigurationCommand;
 use Native\Laravel\Commands\MigrateCommand;
 use Native\Laravel\Commands\MinifyApplicationCommand;
@@ -20,6 +21,7 @@ class NativeServiceProvider extends PackageServiceProvider
                 MigrateCommand::class,
                 MinifyApplicationCommand::class,
                 LoadStartupConfigurationCommand::class,
+                LoadPHPConfigurationCommand::class,
             ])
             ->hasConfigFile()
             ->hasRoute('api')
