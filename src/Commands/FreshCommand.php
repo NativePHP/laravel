@@ -19,5 +19,4 @@ class FreshCommand extends Command
 
         $this->call('native:migrate');
     }
-
 }
