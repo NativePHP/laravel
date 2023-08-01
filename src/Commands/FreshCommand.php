@@ -16,6 +16,8 @@ class FreshCommand extends Command
         unlink(config('nativephp-internal.database_path'));
 
         (new NativeServiceProvider($this->laravel))->rewriteDatabase();
+
+        $this->call('native:migrate');
     }
 
 }
