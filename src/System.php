@@ -29,6 +29,7 @@ class System
     public function printers(): array
     {
         $printers = $this->client->get('system/printers')->json('printers');
+
         return collect($printers)->map(function ($printer) {
             return new Printer(
                 data_get($printer, 'name'),
