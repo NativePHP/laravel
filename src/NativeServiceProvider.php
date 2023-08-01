@@ -3,6 +3,7 @@
 namespace Native\Laravel;
 
 use Illuminate\Support\Arr;
+use Native\Laravel\Commands\LoadPHPConfigurationCommand;
 use Native\Laravel\Commands\LoadStartupConfigurationCommand;
 use Native\Laravel\Commands\MigrateCommand;
 use Native\Laravel\Commands\MinifyApplicationCommand;
@@ -20,6 +21,7 @@ class NativeServiceProvider extends PackageServiceProvider
                 MigrateCommand::class,
                 MinifyApplicationCommand::class,
                 LoadStartupConfigurationCommand::class,
+                LoadPHPConfigurationCommand::class,
             ])
             ->hasConfigFile()
             ->hasRoute('api')
@@ -48,6 +50,8 @@ class NativeServiceProvider extends PackageServiceProvider
         $this->rewriteStoragePath();
 
         $this->rewriteDatabase();
+
+        $this->configureDisks();
 
         config(['session.driver' => 'file']);
         config(['queue.default' => 'database']);
@@ -95,5 +99,33 @@ class NativeServiceProvider extends PackageServiceProvider
         ]]);
 
         config(['database.default' => 'nativephp']);
+    }
+
+    protected function configureDisks(): void
+    {
+        $disks = [
+            'NATIVEPHP_USER_HOME_PATH' => 'user_home',
+            'NATIVEPHP_APP_DATA_PATH' => 'app_data',
+            'NATIVEPHP_USER_DATA_PATH' => 'user_data',
+            'NATIVEPHP_DESKTOP_PATH' => 'desktop',
+            'NATIVEPHP_DOCUMENTS_PATH' => 'documents',
+            'NATIVEPHP_DOWNLOADS_PATH' => 'downloads',
+            'NATIVEPHP_MUSIC_PATH' => 'music',
+            'NATIVEPHP_PICTURES_PATH' => 'pictures',
+            'NATIVEPHP_VIDEOS_PATH' => 'videos',
+            'NATIVEPHP_RECENT_PATH' => 'recent',
+        ];
+
+        foreach ($disks as $env => $disk) {
+            if (! env($env)) {
+                continue;
+            }
+
+            config(['filesystems.disks.'.$disk => [
+                'driver' => 'local',
+                'root' => env($env, ''),
+                'throw' => false,
+            ]]);
+        }
     }
 }
