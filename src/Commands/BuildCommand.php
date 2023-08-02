@@ -18,12 +18,6 @@ class BuildCommand extends Command
     {
         $this->info('Build NativePHP app…');
 
-        Process::path(__DIR__.'/../../resources/js/')
-            ->env($this->getEnvironmentVariables())
-            ->run('npm update', function (string $type, string $output) {
-                echo $output;
-            });
-
         Process::path(base_path())
             ->run('composer install --no-dev', function (string $type, string $output) {
                 echo $output;
