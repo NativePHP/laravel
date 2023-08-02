@@ -121,18 +121,23 @@ class Dialog
         return $this;
     }
 
-    public function open()
+    public function dataArray(): array
     {
-        $result = $this->client->post('dialog/open', [
+        return [
             'title' => $this->title,
             'windowReference' => $this->windowReference,
             'defaultPath' => $this->defaultPath,
             'filters' => $this->filters,
             'buttonLabel' => $this->buttonLabel,
             'properties' => array_unique($this->properties),
-        ])->json('result');
+        ];
+    }
 
-        if (! in_array('multiSelections', $this->properties)) {
+    public function open()
+    {
+        $result = $this->client->post('dialog/open', $this->dataArray())->json('result');
+
+        if (!in_array('multiSelections', $this->properties)) {
             return $result[0] ?? null;
         }
 
@@ -141,13 +146,6 @@ class Dialog
 
     public function save()
     {
-        return $this->client->post('dialog/save', [
-            'title' => $this->title,
-            'windowReference' => $this->windowReference,
-            'defaultPath' => $this->defaultPath,
-            'filters' => $this->filters,
-            'buttonLabel' => $this->buttonLabel,
-            'properties' => array_unique($this->properties),
-        ])->json('result');
+        return $this->client->post('dialog/save', $this->dataArray())->json('result');
     }
 }
