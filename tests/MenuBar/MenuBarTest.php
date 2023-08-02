@@ -22,5 +22,6 @@ it('menubar with create', function () {
     $this->assertEquals('milwad', $menuBarArray['label']);
     $this->assertEquals('https://github.com/milwad-dev', $menuBarArray['url']);
     $this->assertEquals('nativephp.png', $menuBarArray['icon']);
+    $this->assertEquals('trayCenter', $menuBarArray['windowPosition']);
     $this->assertIsArray($menuBarArray['contextMenu']);
 });
