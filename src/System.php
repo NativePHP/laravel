@@ -50,11 +50,10 @@ class System
         ]);
     }
 
-    public function printToPDF(string $html, $path = null): void
+    public function printToPDF(string $html): string
     {
         $this->client->post('system/print-to-pdf', [
             'html' => $html,
-            'path' => $path ?? '',
         ]);
     }
 }
