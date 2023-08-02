@@ -3,14 +3,14 @@
 namespace Native\Electron\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Process;
-use Native\Electron\Concerns\LocatesPhpBinary;
+use Native\Electron\Traits\Developer;
+use Native\Electron\Traits\Installer;
 
 class DevelopCommand extends Command
 {
-    use LocatesPhpBinary;
+    use Installer, Developer;
 
-    protected $signature = 'native:serve {--no-queue} {--D|no-dependencies}';
+    protected $signature = 'native:serve {--no-queue} {--D|no-dependencies} {--installer=npm}';
 
     public function handle()
     {
@@ -19,17 +19,11 @@ class DevelopCommand extends Command
         $this->info('Fetching latest dependencies…');
 
         if (! $this->option('no-dependencies')) {
-            Process::path(__DIR__.'/../../resources/js/')
-                ->env([
-                    'NATIVEPHP_PHP_BINARY_PATH' => base_path($this->phpBinaryPath()),
-                    'NATIVEPHP_CERTIFICATE_FILE_PATH' => base_path($this->binaryPackageDirectory().'cacert.pem'),
-                ])
-                ->forever()
-                ->run('npm install', function (string $type, string $output) {
-                    if ($this->getOutput()->isVerbose()) {
-                        echo $output;
-                    }
-                });
+            $this->installNPMDependencies(
+                force: ! $this->option('no-dependencies'),
+                installer: $this->option('installer'
+                )
+            );
         }
 
         $this->info('Starting NativePHP app…');
@@ -38,20 +32,8 @@ class DevelopCommand extends Command
             $this->patchPlist();
         }
 
-        Process::path(__DIR__.'/../../resources/js/')
-            ->env([
-                'APP_PATH' => base_path(),
-                'NATIVEPHP_PHP_BINARY_PATH' => base_path($this->phpBinaryPath()),
-                'NATIVEPHP_CERTIFICATE_FILE_PATH' => base_path($this->binaryPackageDirectory().'cacert.pem'),
-                'NATIVE_PHP_SKIP_QUEUE' => $this->option('no-queue') ? true : false,
-            ])
-            ->forever()
-            ->tty(PHP_OS_FAMILY != 'Windows')
-            ->run('npm run dev', function (string $type, string $output) {
-                if ($this->getOutput()->isVerbose()) {
-                    echo $output;
-                }
-            });
+        $this->runDeveloper(installer: $this->option('installer'), skip_queue: $this->option('no-queue'));
+
     }
 
     /**

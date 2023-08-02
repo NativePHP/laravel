@@ -5,10 +5,13 @@ namespace Native\Electron\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Str;
+use Native\Electron\Concerns\LocatesPhpBinary;
 use Native\Electron\Facades\Updater;
 
 class PublishCommand extends Command
 {
+    use LocatesPhpBinary;
+
     protected $signature = 'native:publish {os=mac}';
 
     public function handle()
@@ -27,9 +30,6 @@ class PublishCommand extends Command
                 echo $output;
             });
 
-        $updaterConnection = config('nativephp.updater.default');
-        $updaterConfig = config("nativephp.updater.connections.{$updaterConnection}", []);
-
         Process::path(__DIR__.'/../../resources/js/')
             ->env($this->getEnvironmentVariables())
             ->forever()
@@ -45,8 +45,8 @@ class PublishCommand extends Command
             [
                 'APP_PATH' => base_path(),
                 'NATIVEPHP_BUILDING' => true,
-                'NATIVEPHP_PHP_BINARY_PATH' => base_path('vendor/nativephp/php-bin/bin/mac'),
-                'NATIVEPHP_CERTIFICATE_FILE_PATH' => base_path('vendor/nativephp/php-bin/cacert.pem'),
+                'NATIVEPHP_PHP_BINARY_PATH' => base_path($this->phpBinaryPath()),
+                'NATIVEPHP_CERTIFICATE_FILE_PATH' => base_path($this->binaryPackageDirectory().'cacert.pem'),
                 'NATIVEPHP_APP_NAME' => config('app.name'),
                 'NATIVEPHP_APP_ID' => config('nativephp.app_id'),
                 'NATIVEPHP_APP_VERSION' => config('nativephp.version'),

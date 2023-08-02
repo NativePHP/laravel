@@ -3,55 +3,30 @@
 namespace Native\Electron\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Process;
-use Native\Electron\Concerns\LocatesPhpBinary;
+use Native\Electron\Traits\Installer;
 
 class InstallCommand extends Command
 {
-    use LocatesPhpBinary;
+    use Installer;
 
-    protected $signature = 'native:install {--force : Overwrite existing files by default}';
+    protected $signature = 'native:install {--force : Overwrite existing files by default} {--installer=npm : The package installer to use: npm, yarn or pnpm}';
 
     protected $description = 'Install all of the NativePHP resources';
 
-    public function handle()
+    public function handle(): void
     {
         $this->comment('Publishing NativePHP Service Provider...');
         $this->callSilent('vendor:publish', ['--tag' => 'nativephp-provider']);
         $this->callSilent('vendor:publish', ['--tag' => 'nativephp-config']);
 
-        if ($this->option('force') || $this->confirm('Would you like to install the NativePHP NPM dependencies?', true)) {
-            $this->installNpmDependencies();
+        $installer = $this->getInstaller($this->option('installer'));
 
-            $this->output->newLine();
-        }
+        $this->installNPMDependencies(force: $this->option('force'), installer: $installer);
 
         if (! $this->option('force') && $this->confirm('Would you like to start the NativePHP development server', false)) {
-            $this->call('native:serve');
+            $this->call('native:serve', ['--installer' => $installer]);
         }
 
         $this->info('NativePHP scaffolding installed successfully.');
-    }
-
-    protected function nativePhpPath()
-    {
-        return realpath(__DIR__.'/../../resources/js');
-    }
-
-    protected function installNpmDependencies()
-    {
-        $this->info('Fetching latest dependencies…');
-        Process::path(__DIR__.'/../../resources/js/')
-            ->env([
-                'NATIVEPHP_PHP_BINARY_PATH' => base_path($this->phpBinaryPath()),
-                'NATIVEPHP_CERTIFICATE_FILE_PATH' => base_path($this->binaryPackageDirectory().'cacert.pem'),
-            ])
-            ->forever()
-            ->tty(PHP_OS_FAMILY != 'Windows')
-            ->run('npm set progress=false && npm install', function (string $type, string $output) {
-                if ($this->getOutput()->isVerbose()) {
-                    echo $output;
-                }
-            });
     }
 }

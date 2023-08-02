@@ -12,15 +12,11 @@ const appUrl = process.env.APP_URL;
 const appAuthor = process.env.NATIVEPHP_APP_AUTHOR;
 const phpBinaryPath = process.env.NATIVEPHP_PHP_BINARY_PATH;
 const certificatePath = process.env.NATIVEPHP_CERTIFICATE_FILE_PATH;
-const platformType = process.platform;
 const isArm64 = process.argv.includes('--arm64');
-const isWindows = platformType === "win32";
-const isLinux = platformType === "linux";
-const isDarwin = platformType === "darwin";
-let targetOs = null;
-if(isDarwin) {
-    targetOs = 'mac';
-}
+const isWindows = process.argv.includes('--win') || 'win32' === os.platform();
+const isLinux = process.argv.includes('--linux') || 'linux' === os.platform();
+const isDarwin = process.argv.includes('--mac') || 'darwin' === os.platform();
+let targetOs = 'mac';
 let phpBinaryFilename = 'php';
 if (isWindows) {
     targetOs = 'win';
