@@ -125,7 +125,7 @@ class Dialog
     {
         $result = $this->client->post('dialog/open', $this->dialogData())->json('result');
 
-        if (!in_array('multiSelections', $this->properties)) {
+        if (! in_array('multiSelections', $this->properties)) {
             return $result[0] ?? null;
         }
 
