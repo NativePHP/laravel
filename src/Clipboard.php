@@ -41,7 +41,7 @@ class Clipboard
         return $html;
     }
 
-    public function image($image = null): string|null
+    public function image($image = null): ?string
     {
         if (is_null($image)) {
             return $this->client->get('clipboard/image')->json('image');
