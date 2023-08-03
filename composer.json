@@ -22,6 +22,7 @@
         "symfony/finder": "^6.2"
     },
     "require-dev": {
+        "guzzlehttp/guzzle": "^7.0",
         "laravel/pint": "^1.0",
         "nunomaduro/collision": "^7.9",
         "nunomaduro/larastan": "^2.0.1",
