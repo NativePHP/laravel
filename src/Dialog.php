@@ -121,21 +121,9 @@ class Dialog
         return $this;
     }
 
-    public function dataArray(): array
-    {
-        return [
-            'title' => $this->title,
-            'windowReference' => $this->windowReference,
-            'defaultPath' => $this->defaultPath,
-            'filters' => $this->filters,
-            'buttonLabel' => $this->buttonLabel,
-            'properties' => array_unique($this->properties),
-        ];
-    }
-
     public function open()
     {
-        $result = $this->client->post('dialog/open', $this->dataArray())->json('result');
+        $result = $this->client->post('dialog/open', $this->dialogData())->json('result');
 
         if (!in_array('multiSelections', $this->properties)) {
             return $result[0] ?? null;
@@ -146,6 +134,18 @@ class Dialog
 
     public function save()
     {
-        return $this->client->post('dialog/save', $this->dataArray())->json('result');
+        return $this->client->post('dialog/save', $this->dialogData())->json('result');
+    }
+
+    public function dialogData(): array
+    {
+        return [
+            'title' => $this->title,
+            'windowReference' => $this->windowReference,
+            'defaultPath' => $this->defaultPath,
+            'filters' => $this->filters,
+            'buttonLabel' => $this->buttonLabel,
+            'properties' => array_unique($this->properties),
+        ];
     }
 }
