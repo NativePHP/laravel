@@ -2,6 +2,8 @@
 
 namespace Native\Electron\Traits;
 
+use function Laravel\Prompts\note;
+
 trait Developer
 {
     use ExecuteCommand;
@@ -10,7 +12,7 @@ trait Developer
     {
         [$installer, $command] = $this->getInstallerAndCommand(installer: $installer, type: 'dev');
 
-        $this->info("Runing the dev script with {$installer}...");
+        note("Running the dev script with {$installer}...");
         $this->executeCommand(command: $command, type: 'serve', skip_queue: $skip_queue);
     }
 }

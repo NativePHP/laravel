@@ -5,6 +5,7 @@ namespace Native\Electron\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Str;
+use function Laravel\Prompts\intro;
 
 class QueueWorkerCommand extends Command
 {
@@ -27,7 +28,7 @@ class QueueWorkerCommand extends Command
 
     public function handle()
     {
-        $this->info('Starting NativePHP queue worker…');
+        intro('Starting NativePHP queue worker…');
 
         $phpBinary = __DIR__.'/../../resources/js/resources/php/php';
 

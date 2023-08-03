@@ -5,6 +5,8 @@ namespace Native\Electron\Commands;
 use Illuminate\Console\Command;
 use Native\Electron\Traits\Developer;
 use Native\Electron\Traits\Installer;
+use function Laravel\Prompts\intro;
+use function Laravel\Prompts\note;
 
 class DevelopCommand extends Command
 {
@@ -14,9 +16,9 @@ class DevelopCommand extends Command
 
     public function handle()
     {
-        $this->info('Starting NativePHP dev server…');
+        intro('Starting NativePHP dev server…');
 
-        $this->info('Fetching latest dependencies…');
+        note('Fetching latest dependencies…');
 
         if (! $this->option('no-dependencies')) {
             $this->installNPMDependencies(
@@ -26,14 +28,13 @@ class DevelopCommand extends Command
             );
         }
 
-        $this->info('Starting NativePHP app…');
+        note('Starting NativePHP app');
 
         if (PHP_OS_FAMILY === 'Darwin') {
             $this->patchPlist();
         }
 
         $this->runDeveloper(installer: $this->option('installer'), skip_queue: $this->option('no-queue'));
-
     }
 
     /**

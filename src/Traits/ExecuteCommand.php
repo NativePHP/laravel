@@ -4,6 +4,7 @@ namespace Native\Electron\Traits;
 
 use Illuminate\Support\Facades\Process;
 use Native\Electron\Concerns\LocatesPhpBinary;
+use function Laravel\Prompts\note;
 
 trait ExecuteCommand
 {
@@ -24,7 +25,7 @@ trait ExecuteCommand
             ],
         ];
 
-        $this->info('Fetching latest dependencies…');
+        note('Fetching latest dependencies…');
         Process::path(__DIR__.'/../../resources/js/')
             ->env($envs[$type])
             ->forever()
