@@ -17,6 +17,10 @@ composer test
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
 
+## Issues
+
+Please raise any issues on the [NativePHP/laravel](/nativephp/laravel/issues/new/choose) repo.
+
 ## Contributing
 
 Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
