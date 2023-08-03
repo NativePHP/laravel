@@ -3,10 +3,10 @@
 namespace Native\Electron\Commands;
 
 use Illuminate\Console\Command;
-use Native\Electron\Traits\Installer;
 use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\intro;
 use function Laravel\Prompts\outro;
+use Native\Electron\Traits\Installer;
 
 class InstallCommand extends Command
 {

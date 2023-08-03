@@ -3,10 +3,10 @@
 namespace Native\Electron\Commands;
 
 use Illuminate\Console\Command;
-use Native\Electron\Traits\Developer;
-use Native\Electron\Traits\Installer;
 use function Laravel\Prompts\intro;
 use function Laravel\Prompts\note;
+use Native\Electron\Traits\Developer;
+use Native\Electron\Traits\Installer;
 
 class DevelopCommand extends Command
 {
