@@ -52,8 +52,8 @@ class System
 
     public function printToPDF(string $html): string
     {
-        $this->client->post('system/print-to-pdf', [
+        return $this->client->post('system/print-to-pdf', [
             'html' => $html,
-        ]);
+        ])->json('result');
     }
 }
