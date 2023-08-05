@@ -35,7 +35,7 @@ return [
      *        └── x86/
      *
      * For example, "bin" folder is on the root folder. Your .env should look like this.
-     * NATIVEPHP_PHP_BINARY_PATH="./",
+     * NATIVEPHP_PHP_BINARY_PATH="./bin/"
      */
     'binary' => env('NATIVEPHP_PHP_BINARY_PATH'),
 
