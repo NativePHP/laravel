@@ -27,6 +27,19 @@ return [
     'deeplink_scheme' => env('NATIVEPHP_DEEPLINK_SCHEME'),
 
     /**
+     * The PHP binary of your app.
+     * It is used to determine the PHP binary path, where you can use your own PHP binary.
+     * The folder structure should match the original "NativePHP/php-bin/bin".
+     * ── bin/
+     *    └── mac/
+     *        └── x86/
+     *
+     * For example, "bin" folder is on the root folder. Your .env should look like this.
+     * NATIVEPHP_PHP_BINARY_PATH="./",
+     */
+    'binary' => env('NATIVEPHP_PHP_BINARY_PATH'),
+
+    /**
      * The author of your application.
      */
     'author' => env('NATIVEPHP_APP_AUTHOR'),
