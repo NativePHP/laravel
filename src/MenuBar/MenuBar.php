@@ -16,6 +16,8 @@ class MenuBar
 
     protected string $icon = '';
 
+    protected bool $withoutIcon = false;
+
     protected string $label = '';
 
     protected bool $onlyShowContextWindow = false;
@@ -43,6 +45,13 @@ class MenuBar
     public function icon(string $icon): self
     {
         $this->icon = $icon;
+
+        return $this;
+    }
+
+    public function withoutIcon(bool $withoutIcon = true): self
+    {
+        $this->withoutIcon = $withoutIcon;
 
         return $this;
     }
@@ -94,6 +103,7 @@ class MenuBar
         return [
             'url' => $this->url,
             'icon' => $this->icon,
+            'withoutIcon' => $this->withoutIcon,
             'x' => $this->x,
             'y' => $this->y,
             'label' => $this->label,
