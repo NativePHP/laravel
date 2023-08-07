@@ -54,6 +54,7 @@ class MinifyApplicationCommand extends Command
         $envValues = collect(explode("\n", $envContent))
             ->filter(function (string $line) use ($cleanUpKeys) {
                 $key = Str::before($line, '=');
+
                 return ! in_array($key, $cleanUpKeys);
             })
             ->join("\n");
