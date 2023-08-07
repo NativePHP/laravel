@@ -39,6 +39,12 @@ return [
     'provider' => \App\Providers\NativeAppServiceProvider::class,
 
     /**
+     * A list of environment keys that should be removed from the
+     * .env file when the application is bundled for production.
+     */
+    'cleanup_env_keys' => [],
+
+    /**
      * The NativePHP updater configuration.
      */
     'updater' => [

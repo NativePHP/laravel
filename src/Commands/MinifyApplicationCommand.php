@@ -3,6 +3,8 @@
 namespace Native\Laravel\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Str;
+use Native\Laravel\Compactor\Php;
 use Symfony\Component\Finder\Finder;
 
 class MinifyApplicationCommand extends Command
@@ -21,7 +23,9 @@ class MinifyApplicationCommand extends Command
 
         $this->info('Minifying application…');
 
-        $compactor = new \Native\Laravel\Compactor\Php();
+        $this->cleanUpEnvFile($appPath);
+
+        $compactor = new Php();
 
         $phpFiles = Finder::create()
             ->files()
@@ -32,5 +36,28 @@ class MinifyApplicationCommand extends Command
             $minifiedContent = $compactor->compact($phpFile->getRealPath(), $phpFile->getContents());
             file_put_contents($phpFile->getRealPath(), $minifiedContent);
         }
+    }
+
+    protected function cleanUpEnvFile(string $appPath): void
+    {
+        $envFile = $appPath.'/.env';
+
+        if (! file_exists($envFile)) {
+            return;
+        }
+
+        $this->info('Cleaning up .env file…');
+
+        $cleanUpKeys = config('nativephp.cleanup_env_keys', []);
+
+        $envContent = file_get_contents($envFile);
+        $envValues = collect(explode("\n", $envContent))
+            ->filter(function (string $line) use ($cleanUpKeys) {
+                $key = Str::before($line, '=');
+                return ! in_array($key, $cleanUpKeys);
+            })
+            ->join("\n");
+
+        file_put_contents($envFile, $envValues);
     }
 }
