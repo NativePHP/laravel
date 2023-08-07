@@ -2,6 +2,7 @@
 
 namespace Native\Laravel;
 
+use Illuminate\Console\Application as Artisan;
 use Illuminate\Support\Arr;
 use Native\Laravel\Commands\LoadPHPConfigurationCommand;
 use Native\Laravel\Commands\LoadStartupConfigurationCommand;
@@ -19,9 +20,6 @@ class NativeServiceProvider extends PackageServiceProvider
             ->name('nativephp')
             ->hasCommands([
                 MigrateCommand::class,
-                MinifyApplicationCommand::class,
-                LoadStartupConfigurationCommand::class,
-                LoadPHPConfigurationCommand::class,
             ])
             ->hasConfigFile()
             ->hasRoute('api')
@@ -37,6 +35,14 @@ class NativeServiceProvider extends PackageServiceProvider
         });
 
         if (config('nativephp-internal.running')) {
+            Artisan::starting(function ($artisan) {
+                $artisan->resolveCommands([
+                    MinifyApplicationCommand::class,
+                    LoadStartupConfigurationCommand::class,
+                    LoadPHPConfigurationCommand::class,
+                ]);
+            });
+
             $this->configureApp();
         }
     }
