@@ -2,6 +2,32 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 0.4.0 - 2023-08-09
+
+### What's Changed
+
+- Added the ability to remove custom .env keys when bundling the application
+- Allow custom php.ini settings by @mpociot in https://github.com/NativePHP/laravel/pull/98
+- Add method to configure disks by @mpociot in https://github.com/NativePHP/laravel/pull/99
+- Printer support by @mpociot in https://github.com/NativePHP/laravel/pull/103
+- Adds 'php artisan native:migrate fresh' command by @shanerbaner82 in https://github.com/NativePHP/laravel/pull/81
+- Add Tests For `Windows` by @milwad-dev in https://github.com/NativePHP/laravel/pull/100
+- import VerifyCsrfToken and refactor by @JaberWiki in https://github.com/NativePHP/laravel/pull/110
+- Modified return type of clipboard image method by @blankRSD in https://github.com/NativePHP/laravel/pull/111
+- add windowPosition by @DanielHudson in https://github.com/NativePHP/laravel/pull/112
+- Implement MenuBarDroppedFiles event by @ArondeParon in https://github.com/NativePHP/laravel/pull/113
+
+### New Contributors
+
+- @mpociot made their first contribution in https://github.com/NativePHP/laravel/pull/98
+- @shanerbaner82 made their first contribution in https://github.com/NativePHP/laravel/pull/81
+- @JaberWiki made their first contribution in https://github.com/NativePHP/laravel/pull/110
+- @blankRSD made their first contribution in https://github.com/NativePHP/laravel/pull/111
+- @DanielHudson made their first contribution in https://github.com/NativePHP/laravel/pull/112
+- @ArondeParon made their first contribution in https://github.com/NativePHP/laravel/pull/113
+
+**Full Changelog**: https://github.com/NativePHP/laravel/compare/0.3.0...0.4.0
+
 ## 0.3.0 - 2023-07-31
 
 ### What's Changed
