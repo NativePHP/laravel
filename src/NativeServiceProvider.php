@@ -20,6 +20,7 @@ class NativeServiceProvider extends PackageServiceProvider
             ->name('nativephp')
             ->hasCommands([
                 MigrateCommand::class,
+                MinifyApplicationCommand::class,
             ])
             ->hasConfigFile()
             ->hasRoute('api')
@@ -37,7 +38,6 @@ class NativeServiceProvider extends PackageServiceProvider
         if (config('nativephp-internal.running')) {
             Artisan::starting(function ($artisan) {
                 $artisan->resolveCommands([
-                    MinifyApplicationCommand::class,
                     LoadStartupConfigurationCommand::class,
                     LoadPHPConfigurationCommand::class,
                 ]);

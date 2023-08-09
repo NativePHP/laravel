@@ -55,7 +55,7 @@ class MinifyApplicationCommand extends Command
             ->filter(function (string $line) use ($cleanUpKeys) {
                 $key = Str::before($line, '=');
 
-                return ! in_array($key, $cleanUpKeys);
+                return ! Str::is($cleanUpKeys, $key);
             })
             ->join("\n");
 
