@@ -16,8 +16,7 @@ class NativeServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
-        $package
-            ->name('nativephp')
+        $package->name('nativephp')
             ->hasCommands([
                 MigrateCommand::class,
             ])
@@ -28,7 +27,10 @@ class NativeServiceProvider extends PackageServiceProvider
 
     public function packageRegistered()
     {
-        $this->mergeConfigFrom($this->package->basePath('/../config/nativephp-internal.php'), 'nativephp-internal');
+        $this->mergeConfigFrom(
+            $this->package->basePath('/../config/nativephp-internal.php'),
+            'nativephp-internal'
+        );
 
         $this->app->singleton(MigrateCommand::class, function ($app) {
             return new MigrateCommand($app['migrator'], $app['events']);
@@ -54,9 +56,7 @@ class NativeServiceProvider extends PackageServiceProvider
         }
 
         $this->rewriteStoragePath();
-
         $this->rewriteDatabase();
-
         $this->configureDisks();
 
         config(['session.driver' => 'file']);
@@ -70,7 +70,6 @@ class NativeServiceProvider extends PackageServiceProvider
         }
 
         $oldStoragePath = $this->app->storagePath();
-
         $this->app->useStoragePath(config('nativephp-internal.storage_path'));
 
         // Patch all config values that contain the old storage path
@@ -84,13 +83,12 @@ class NativeServiceProvider extends PackageServiceProvider
         }
     }
 
-    public function rewriteDatabase()
+    protected function rewriteDatabase()
     {
         $databasePath = config('nativephp-internal.database_path');
 
         if (config('app.debug')) {
             $databasePath = database_path('nativephp.sqlite');
-
             if (! file_exists($databasePath)) {
                 touch($databasePath);
             }
