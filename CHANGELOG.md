@@ -2,6 +2,23 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 0.4.0 - 2023-08-09
+
+### What's Changed
+
+- Added Laravel Prompts
+- Added the option --installer to InstallCommand and DevelopCommand by @SergioGMR in https://github.com/NativePHP/electron/pull/26
+- Linux extra condition for electron builder. by @lotharthesavior in https://github.com/NativePHP/electron/pull/57
+- fix(linux build commands): add missing 'x64' flag by @pixrr in https://github.com/NativePHP/electron/pull/63
+
+### New Contributors
+
+- @SergioGMR made their first contribution in https://github.com/NativePHP/electron/pull/26
+- @lotharthesavior made their first contribution in https://github.com/NativePHP/electron/pull/57
+- @pixrr made their first contribution in https://github.com/NativePHP/electron/pull/63
+
+**Full Changelog**: https://github.com/NativePHP/electron/compare/0.3.3...0.4.0
+
 ## 0.3.3 - 2023-07-31
 
 ### What's Changed
