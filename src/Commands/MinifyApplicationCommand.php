@@ -24,6 +24,7 @@ class MinifyApplicationCommand extends Command
         $this->info('Minifying application…');
 
         $this->cleanUpEnvFile($appPath);
+        $this->removeIgnoredFilesAndFolders($appPath);
 
         $compactor = new Php();
 
@@ -60,5 +61,51 @@ class MinifyApplicationCommand extends Command
             ->join("\n");
 
         file_put_contents($envFile, $envValues);
+    }
+
+    protected function removeIgnoredFilesAndFolders(string $appPath): void
+    {
+        $this->info('Cleaning up ignored files and folders…');
+
+        $itemsToRemove = config('nativephp.cleanup_exclude_files', []);
+
+        foreach ($itemsToRemove as $item) {
+            $fullPath = $appPath.'/'.$item;
+
+            if (file_exists($fullPath)) {
+                if (is_dir($fullPath)) {
+                    $this->delete_directory($fullPath);
+                } else {
+                    array_map('unlink', glob($fullPath));
+                }
+            } else {
+                foreach (glob($item) as $pathFound) {
+                    unlink($pathFound);
+                }
+            }
+        }
+    }
+
+    private function delete_directory($dir)
+    {
+        if (! file_exists($dir)) {
+            return true;
+        }
+
+        if (! is_dir($dir)) {
+            return unlink($dir);
+        }
+
+        foreach (scandir($dir) as $item) {
+            if ($item == '.' || $item == '..') {
+                continue;
+            }
+
+            if (! $this->delete_directory($dir.'/'.$item)) {
+                return false;
+            }
+        }
+
+        return rmdir($dir);
     }
 }
