@@ -18,6 +18,7 @@
     "publish:mac-x86": "cross-env npm run build && cross-env electron-builder -p always --mac --config --x64 -p always",
     "publish:linux": "cross-env npm run publish:linux-x64",
     "publish:linux-x64": "cross-env npm run build && cross-env electron-builder --linux --config --x64 -p always",
+    "build:all": "cross-env npm run build:mac && cross-env npm run build:win && cross-env npm run build:linux",
     "build:win": "cross-env node php.js --win && cross-env npm run build && cross-env electron-builder -p never --win --config",
     "build:mac": "cross-env npm run build:mac-arm && cross-env npm run build:mac-x86",
     "build:mac-arm": "cross-env node php.js --arm64 && cross-env npm run build && cross-env electron-builder -p never --mac --config --arm64",
