@@ -12,7 +12,7 @@ class BuildCommand extends Command
 {
     use LocatesPhpBinary;
 
-    protected $signature = 'native:build {os=all : The operating system to build for (all, linux, mac, windows)}';
+    protected $signature = 'native:build {os=all : The operating system to build for (all, linux, mac, windows)} {--ci : Whether the build is running in a CI environment}';
 
     public function handle()
     {
@@ -31,7 +31,7 @@ class BuildCommand extends Command
         Process::path(__DIR__.'/../../resources/js/')
             ->env($this->getEnvironmentVariables())
             ->forever()
-            ->tty(PHP_OS_FAMILY != 'Windows')
+            ->tty(PHP_OS_FAMILY != 'Windows' && !$this->option('ci'))
             ->run($buildCommand, function (string $type, string $output) {
                 echo $output;
             });
