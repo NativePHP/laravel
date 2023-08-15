@@ -11,26 +11,28 @@ trait Installer
 {
     use ExecuteCommand;
 
-    protected function installNPMDependencies(bool $force, ?string $installer = 'npm'): void
+    protected function installNPMDependencies(bool $force, ?string $installer = 'npm', bool $isCI = false): void
     {
-        if ($force || confirm('Would you like to install the NativePHP NPM dependencies?', true)) {
+        $shouldPrompt = $force || $isCI;
+
+        if ($shouldPrompt || confirm('Would you like to install the NativePHP NPM dependencies?', true)) {
             note('Installing NPM dependencies (This may take a while)...');
 
             if (! $installer) {
-                $this->installDependencies();
+                $this->installDependencies(isCI: $isCI);
             } else {
-                $this->installDependencies(installer: $installer);
+                $this->installDependencies(installer: $installer, isCI: $isCI);
             }
             $this->output->newLine();
         }
     }
 
-    protected function installDependencies(?string $installer): void
+    protected function installDependencies(?string $installer = null, bool $isCI = false): void
     {
         [$installer, $command] = $this->getInstallerAndCommand(installer: $installer);
 
         note("Installing NPM dependencies using the {$installer} package manager...");
-        $this->executeCommand(command: $command);
+        $this->executeCommand(command: $command, isCI: $isCI);
     }
 
     protected function getInstallerAndCommand(?string $installer, $type = 'install'): array

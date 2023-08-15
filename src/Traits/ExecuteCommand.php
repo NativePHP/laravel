@@ -10,10 +10,8 @@ trait ExecuteCommand
 {
     use LocatesPhpBinary;
 
-    protected function executeCommand(string $command, bool $skip_queue = false, string $type = 'install', bool $tty = true): void
+    protected function executeCommand(string $command, bool $skip_queue = false, string $type = 'install', bool $isCI = false): void
     {
-        $tty = $tty || PHP_OS_FAMILY != 'Windows';
-
         $envs = [
             'install' => [
                 'NATIVEPHP_PHP_BINARY_PATH' => base_path($this->phpBinaryPath()),
@@ -31,7 +29,7 @@ trait ExecuteCommand
         Process::path(__DIR__.'/../../resources/js/')
             ->env($envs[$type])
             ->forever()
-            ->tty($tty)
+            ->tty(!$isCI && PHP_OS_FAMILY != 'Windows')
             ->run($command, function (string $type, string $output) {
                 if ($this->getOutput()->isVerbose()) {
                     echo $output;
