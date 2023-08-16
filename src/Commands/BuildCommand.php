@@ -12,7 +12,7 @@ class BuildCommand extends Command
 {
     use LocatesPhpBinary;
 
-    protected $signature = 'native:build {os=all : The operating system to build for (all, linux, mac, windows)} {--no-interaction : Whether interaction should be disabled}';
+    protected $signature = 'native:build {os=all : The operating system to build for (all, linux, mac, windows)}';
 
     public function handle()
     {

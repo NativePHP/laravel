@@ -12,7 +12,7 @@ class PublishCommand extends Command
 {
     use LocatesPhpBinary;
 
-    protected $signature = 'native:publish {os=mac} {--no-interaction : Whether interaction should be disabled}';
+    protected $signature = 'native:publish {os=mac}';
 
     public function handle()
     {

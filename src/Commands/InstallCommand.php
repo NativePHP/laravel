@@ -12,7 +12,7 @@ class InstallCommand extends Command
 {
     use Installer;
 
-    protected $signature = 'native:install {--force : Overwrite existing files by default} {--installer=npm : The package installer to use: npm, yarn or pnpm} {--no-interaction : Whether interaction should be disabled}';
+    protected $signature = 'native:install {--force : Overwrite existing files by default} {--installer=npm : The package installer to use: npm, yarn or pnpm}';
 
     protected $description = 'Install all of the NativePHP resources';
 
