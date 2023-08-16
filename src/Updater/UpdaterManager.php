@@ -150,6 +150,16 @@ class UpdaterManager
     }
 
     /**
+     * Create an instance of the GitHub updater driver.
+     *
+     * @return \Native\Electron\Updater\Contracts\Updater
+     */
+    protected function createGitHubDriver(array $config)
+    {
+        return new GitHubProvider($config);
+    }
+
+    /**
      * Dynamically call the default updater instance.
      *
      * @param  string  $method
