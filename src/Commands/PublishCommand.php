@@ -12,7 +12,7 @@ class PublishCommand extends Command
 {
     use LocatesPhpBinary;
 
-    protected $signature = 'native:publish {os=mac} {--ci : Whether the build is running in a CI environment}';
+    protected $signature = 'native:publish {os=mac} {--no-interaction : Whether interaction should be disabled}';
 
     public function handle()
     {
@@ -33,7 +33,7 @@ class PublishCommand extends Command
         Process::path(__DIR__.'/../../resources/js/')
             ->env($this->getEnvironmentVariables())
             ->forever()
-            ->tty(PHP_OS_FAMILY != 'Windows' && !$this->option('ci'))
+            ->tty(PHP_OS_FAMILY != 'Windows' && !$this->option('no-interaction'))
             ->run('npm run publish:mac-arm', function (string $type, string $output) {
                 echo $output;
             });
