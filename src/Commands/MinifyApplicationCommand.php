@@ -86,7 +86,7 @@ class MinifyApplicationCommand extends Command
         }
     }
 
-    private function deleteDirectoryRecursive(string $directory)
+    private function deleteDirectoryRecursive(string $directory): void
     {
         if (! file_exists($directory)) {
             return true;
@@ -106,6 +106,6 @@ class MinifyApplicationCommand extends Command
             }
         }
 
-        return rmdir($directory);
+        rmdir($directory);
     }
 }
