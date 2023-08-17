@@ -86,26 +86,26 @@ class MinifyApplicationCommand extends Command
         }
     }
 
-    private function deleteDirectoryRecursive($dir)
+    private function deleteDirectoryRecursive(string $directory)
     {
-        if (! file_exists($dir)) {
+        if (! file_exists($directory)) {
             return true;
         }
 
-        if (! is_dir($dir)) {
-            return unlink($dir);
+        if (! is_dir($directory)) {
+            return unlink($directory);
         }
 
-        foreach (scandir($dir) as $item) {
+        foreach (scandir($directory) as $item) {
             if ($item == '.' || $item == '..') {
                 continue;
             }
 
-            if (! $this->deleteDirectoryRecursive($dir.'/'.$item)) {
+            if (! $this->deleteDirectoryRecursive($directory.'/'.$item)) {
                 return false;
             }
         }
 
-        return rmdir($dir);
+        return rmdir($directory);
     }
 }
