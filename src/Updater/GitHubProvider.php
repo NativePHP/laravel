@@ -24,8 +24,6 @@ class GitHubProvider implements Updater
             'repo' => $this->config['repo'],
             'owner' => $this->config['owner'],
             'vPrefixedTagName' => $this->config['vPrefixedTagName'],
-            'host' => $this->config['host'],
-            'protocol' => $this->config['protocol'],
             'private' => $this->config['private'],
             'channel' => $this->config['channel'],
             'releaseType' => $this->config['releaseType'],
