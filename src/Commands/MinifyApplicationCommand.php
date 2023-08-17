@@ -74,7 +74,7 @@ class MinifyApplicationCommand extends Command
 
             if (file_exists($fullPath)) {
                 if (is_dir($fullPath)) {
-                    $this->delete_directory_recursive($fullPath);
+                    $this->deleteDirectoryRecursive($fullPath);
                 } else {
                     array_map('unlink', glob($fullPath));
                 }
@@ -86,7 +86,7 @@ class MinifyApplicationCommand extends Command
         }
     }
 
-    private function delete_directory_recursive($dir)
+    private function deleteDirectoryRecursive($dir)
     {
         if (! file_exists($dir)) {
             return true;
@@ -101,7 +101,7 @@ class MinifyApplicationCommand extends Command
                 continue;
             }
 
-            if (! $this->delete_directory_recursive($dir.'/'.$item)) {
+            if (! $this->deleteDirectoryRecursive($dir.'/'.$item)) {
                 return false;
             }
         }
