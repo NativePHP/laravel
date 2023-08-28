@@ -3,19 +3,22 @@
 namespace Native\Laravel\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Database\Console\Migrations\FreshCommand as BaseFreshCommand;
 use Native\Laravel\NativeServiceProvider;
 
-class FreshCommand extends Command
+class FreshCommand extends BaseFreshCommand
 {
-    protected $description = 'Run the database migrations in the NativePHP development environment';
+    protected $description = 'Drop all tables and re-run all migrations in the NativePHP development environment';
 
-    protected $signature = 'native:migrate fresh';
+    protected $signature = 'native:migrate:fresh';
 
     public function handle()
     {
-        unlink(config('nativephp-internal.database_path'));
+        $nativeServiceProvider = new NativeServiceProvider($this->laravel);
 
-        (new NativeServiceProvider($this->laravel))->rewriteDatabase();
+        $nativeServiceProvider->removeDatabase();
+
+        $nativeServiceProvider->rewriteDatabase();
 
         $this->call('native:migrate');
     }
