@@ -14,16 +14,16 @@ const phpBinaryPath = process.env.NATIVEPHP_PHP_BINARY_PATH;
 const certificatePath = process.env.NATIVEPHP_CERTIFICATE_FILE_PATH;
 const isArm64 = process.argv.includes('--arm64');
 const isWindows = process.argv.includes('--win');
-const isLinux = process.argv.includes('--linux') || 'linux' === os.platform();
+const isLinux = process.argv.includes('--linux');
 const isDarwin = process.argv.includes('--mac');
 let targetOs = 'mac';
 let phpBinaryFilename = 'php';
+if (isLinux) {
+    targetOs = 'linux';
+}
 if (isWindows) {
     targetOs = 'win';
     phpBinaryFilename += '.exe';
-}
-if (isLinux) {
-    targetOs = 'linux';
 }
 
 let binaryArch = 'x86';
@@ -99,6 +99,11 @@ if (isBuilding) {
             dereference: true,
             filter: (src, dest) => {
                 let skip = [
+                    // Skip .git and Dev directories
+                    join(process.env.APP_PATH, '.git'),
+                    join(process.env.APP_PATH, 'packages'),
+                    join(process.env.APP_PATH, 'vendor', 'nativephp', 'electron', '.git'),
+
                     // Only needed for local testing
                     join(process.env.APP_PATH, 'vendor', 'nativephp', 'electron', 'vendor'),
                     join(process.env.APP_PATH, 'vendor', 'nativephp', 'laravel', 'vendor'),
