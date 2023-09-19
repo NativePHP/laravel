@@ -3,7 +3,7 @@ const {join} = require("path");
 const os = require('os');
 const {mkdtempSync} = require("fs");
 const {execSync} = require("child_process");
-const isBuilding = process.env.NATIVEPHP_BUILDING == 1;
+const isBuilding = process.env.NATIVEPHP_BUILDING;
 const appId = process.env.NATIVEPHP_APP_ID;
 const appName = process.env.NATIVEPHP_APP_NAME;
 const fileName = process.env.NATIVEPHP_APP_FILENAME;
@@ -12,28 +12,32 @@ const appUrl = process.env.APP_URL;
 const appAuthor = process.env.NATIVEPHP_APP_AUTHOR;
 const phpBinaryPath = process.env.NATIVEPHP_PHP_BINARY_PATH;
 const certificatePath = process.env.NATIVEPHP_CERTIFICATE_FILE_PATH;
-const isArm64 = process.argv.includes('--arm64');
-const isWindows = process.argv.includes('--win');
-const isLinux = process.argv.includes('--linux');
-const isDarwin = process.argv.includes('--mac');
+
+// Differentiates for Serving and Building
+const isArm64 = isBuilding ? process.argv.includes('--arm64') : process.platform.includes('arm64') ;
+const isWindows = isBuilding ?  process.argv.includes('--win') : process.platform.includes('win32');
+const isLinux = isBuilding ?  process.argv.includes('--linux') : process.platform.includes('linux');
+const isDarwin = isBuilding ?  process.argv.includes('--mac') : process.platform.includes('darwin');
 let targetOs = 'mac';
 let phpBinaryFilename = 'php';
+
 if (isLinux) {
     targetOs = 'linux';
 }
+
 if (isWindows) {
     targetOs = 'win';
     phpBinaryFilename += '.exe';
 }
 
 let binaryArch = 'x86';
+
 if (isArm64) {
     binaryArch = 'arm64';
 }
 if (isWindows || isLinux) {
     binaryArch = 'x64';
 }
-
 
 let updaterConfig = {};
 
@@ -102,6 +106,7 @@ if (isBuilding) {
                     // Skip .git and Dev directories
                     join(process.env.APP_PATH, '.git'),
                     join(process.env.APP_PATH, 'packages'),
+                    join(process.env.APP_PATH, 'docker'),
                     join(process.env.APP_PATH, 'vendor', 'nativephp', 'electron', '.git'),
 
                     // Only needed for local testing
