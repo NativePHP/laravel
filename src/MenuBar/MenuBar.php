@@ -11,10 +11,10 @@ use Native\Laravel\Menu\Menu;
 
 class MenuBar
 {
-    use HasVibrancy;
     use HasDimensions;
     use HasPositioner;
     use HasUrl;
+    use HasVibrancy;
 
     protected string $icon = '';
 
