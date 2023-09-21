@@ -36,7 +36,7 @@ class Php
                     // Note: $tokens may be updated by reference as well!
                     $retokenized = $this->retokenizeAttribute($tokens, $index);
 
-                    if (null !== $retokenized) {
+                    if ($retokenized !== null) {
                         array_splice($tokens, $index, 1, $retokenized);
                         $tokenCount = count($tokens);
                     }
@@ -65,7 +65,7 @@ class Php
                 // Handle whitespace potentially being split into two tokens after attribute retokenization.
                 $nextToken = $tokens[$index + 1] ?? null;
 
-                if (null !== $nextToken
+                if ($nextToken !== null
                     && $nextToken->is(T_WHITESPACE)
                 ) {
                     $whitespace .= $nextToken->text;
@@ -119,16 +119,16 @@ class Php
             $tokenText = $tokens[$i]->text;
 
             // Allow for short arrays within attributes.
-            if ('[' === $tokenText) {
+            if ($tokenText === '[') {
                 $brackets[] = $i;
 
                 continue;
             }
 
-            if (']' === $tokenText) {
+            if ($tokenText === ']') {
                 array_pop($brackets);
 
-                if (0 === count($brackets)) {
+                if (count($brackets) === 0) {
                     $closer = $i;
                     break;
                 }
@@ -157,7 +157,7 @@ class Php
 
         // Multi-line attribute or attribute containing something which looks like a PHP close tag.
         // Retokenize the rest of the file after the attribute opener.
-        if (null === $closer) {
+        if ($closer === null) {
             foreach (array_slice($tokens, $opener + 1) as $token) {
                 $attributeBody .= $token->text;
             }
@@ -167,7 +167,7 @@ class Php
 
             $closer = self::findAttributeCloser($subTokens, 0);
 
-            if (null !== $closer) {
+            if ($closer !== null) {
                 array_splice(
                     $tokens,
                     $opener + 1,
@@ -179,7 +179,7 @@ class Php
             }
         }
 
-        if (null === $closer) {
+        if ($closer === null) {
             return null;
         }
 

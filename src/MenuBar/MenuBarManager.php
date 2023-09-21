@@ -3,6 +3,7 @@
 namespace Native\Laravel\MenuBar;
 
 use Native\Laravel\Client\Client;
+use Native\Laravel\Menu\Menu;
 
 class MenuBarManager
 {
@@ -30,6 +31,13 @@ class MenuBarManager
     {
         $this->client->post('menu-bar/label', [
             'label' => $label,
+        ]);
+    }
+
+    public function contextMenu(Menu $contextMenu)
+    {
+        $this->client->post('menu-bar/context-menu', [
+            'contextMenu' => $contextMenu->toArray()['submenu'],
         ]);
     }
 }

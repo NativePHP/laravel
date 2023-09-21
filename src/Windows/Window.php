@@ -9,9 +9,9 @@ use Native\Laravel\Concerns\HasVibrancy;
 
 class Window
 {
-    use HasVibrancy;
     use HasDimensions;
     use HasUrl;
+    use HasVibrancy;
 
     protected bool $autoHideMenuBar = false;
 

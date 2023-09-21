@@ -49,4 +49,11 @@ class System
             'printer' => $printer->name ?? '',
         ]);
     }
+
+    public function printToPDF(string $html): string
+    {
+        return $this->client->post('system/print-to-pdf', [
+            'html' => $html,
+        ])->json('result');
+    }
 }
