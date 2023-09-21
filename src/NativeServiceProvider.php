@@ -8,6 +8,7 @@ use Native\Laravel\Commands\LoadPHPConfigurationCommand;
 use Native\Laravel\Commands\LoadStartupConfigurationCommand;
 use Native\Laravel\Commands\MigrateCommand;
 use Native\Laravel\Commands\MinifyApplicationCommand;
+use Native\Laravel\Commands\SeedDatabaseCommand;
 use Native\Laravel\Logging\LogWatcher;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -20,6 +21,7 @@ class NativeServiceProvider extends PackageServiceProvider
             ->name('nativephp')
             ->hasCommands([
                 MigrateCommand::class,
+                SeedDatabaseCommand::class,
                 MinifyApplicationCommand::class,
             ])
             ->hasConfigFile()
