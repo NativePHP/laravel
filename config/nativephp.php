@@ -45,6 +45,7 @@ return [
      */
     'cleanup_env_keys' => [
         'AWS_*',
+        'GITHUB_*',
         'DO_SPACES_*',
         '*_SECRET',
         'NATIVEPHP_UPDATER_PATH',
