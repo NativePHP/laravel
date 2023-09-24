@@ -9,7 +9,7 @@
     "format": "prettier --write .",
     "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
     "start": "electron-vite preview",
-    "dev": "electron-vite dev --watch",
+    "dev": "cross-env node php.js && electron-vite dev --watch",
     "build": "electron-vite build",
     "postinstall": "node electron-builder install-app-deps",
     "publish:win": "cross-env npm run build && cross-env electron-builder -p always --win --config",

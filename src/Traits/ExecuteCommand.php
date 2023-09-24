@@ -6,27 +6,28 @@ use Illuminate\Support\Facades\Process;
 use function Laravel\Prompts\note;
 use Native\Electron\Concerns\LocatesPhpBinary;
 
-trait ExecuteCommand {
+trait ExecuteCommand
+{
     use LocatesPhpBinary;
 
-    protected function executeCommand(string $command, bool $skip_queue = false, string $type = 'install'): void {
+    protected function executeCommand(string $command, bool $skip_queue = false, string $type = 'install'): void
+    {
         $envs = [
             'install' => [
                 'NATIVEPHP_PHP_BINARY_PATH' => base_path($this->phpBinaryPath()),
-                'NATIVEPHP_CERTIFICATE_FILE_PATH' => base_path($this->binaryPackageDirectory() . 'cacert.pem'),
+                'NATIVEPHP_CERTIFICATE_FILE_PATH' => base_path($this->binaryPackageDirectory().'cacert.pem'),
             ],
             'serve' => [
                 'APP_PATH' => base_path(),
                 'NATIVEPHP_PHP_BINARY_PATH' => base_path($this->phpBinaryPath()),
-                'NATIVEPHP_CERTIFICATE_FILE_PATH' => base_path($this->binaryPackageDirectory() . 'cacert.pem'),
+                'NATIVEPHP_CERTIFICATE_FILE_PATH' => base_path($this->binaryPackageDirectory().'cacert.pem'),
                 'NATIVE_PHP_SKIP_QUEUE' => $skip_queue,
-                'NATIVEPHP_BUILDING' => false,
-                'NATIVEPHP_PHP_OS_FAMILY' => PHP_OS_FAMILY
+                'NATIVEPHP_BUILDING' => false
             ],
         ];
 
         note('Fetching latest dependencies…');
-        Process::path(__DIR__ . '/../../resources/js/')
+        Process::path(__DIR__.'/../../resources/js/')
             ->env($envs[$type])
             ->forever()
             ->tty(PHP_OS_FAMILY != 'Windows')
@@ -37,7 +38,8 @@ trait ExecuteCommand {
             });
     }
 
-    protected function getCommandArrays(string $type = 'install'): array {
+    protected function getCommandArrays(string $type = 'install'): array
+    {
         $commands = [
             'install' => [
                 'npm' => 'npm install',
