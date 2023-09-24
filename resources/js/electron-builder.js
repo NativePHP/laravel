@@ -26,14 +26,15 @@ if (isWindows) {
 if (isLinux) {
     targetOs = 'linux';
 }
-if (isArm64) {
-    binaryArch = 'arm64';
-}
 // Use of isDarwin
 if (isDarwin) {
     targetOs = 'mac';
     binaryArch = 'x86';
 }
+if (isArm64) {
+    binaryArch = 'arm64';
+}
+
 
 let updaterConfig = {};
 

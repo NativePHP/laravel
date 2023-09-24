@@ -10,7 +10,7 @@ const isWindows = isBuilding ?  process.argv.includes('--win') : process.platfor
 const isLinux = isBuilding ?  process.argv.includes('--linux') : process.platform.includes('linux');
 const isDarwin = isBuilding ?  process.argv.includes('--mac') : process.platform.includes('darwin');
 
-let targetOs = 'mac';
+let targetOs;
 let binaryArch = 'x64';
 let phpBinaryFilename = 'php';
 
@@ -21,14 +21,15 @@ if (isWindows) {
 if (isLinux) {
     targetOs = 'linux';
 }
-if (isArm64) {
-    binaryArch = 'arm64';
-}
 // Use of isDarwin
 if (isDarwin) {
     targetOs = 'mac';
     binaryArch = 'x86';
 }
+if (isArm64) {
+    binaryArch = 'arm64';
+}
+
 
 
 const binarySrcDir = join(phpBinaryPath, targetOs, binaryArch);
