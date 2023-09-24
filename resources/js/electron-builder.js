@@ -62,7 +62,7 @@ if (isBuilding) {
                 let skip = [
                     // Skip .git and Dev directories
                     join(process.env.APP_PATH, '.git'),
-                    join(process.env.APP_PATH, 'docker'),                    join(process.env.APP_PATH, 'docker'),
+                    join(process.env.APP_PATH, 'docker'),
                     join(process.env.APP_PATH, 'packages'),
 
                     // Only needed for local testing
