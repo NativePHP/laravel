@@ -12,13 +12,11 @@ const appUrl = process.env.APP_URL;
 const appAuthor = process.env.NATIVEPHP_APP_AUTHOR;
 
 // Since we do not copy the php executable here, we only need these for building
-const isArm64 = process.argv.includes('--arm64');
 const isWindows = process.argv.includes('--win');
 const isLinux = process.argv.includes('--linux');
 const isDarwin = process.argv.includes('--mac');
 
 let targetOs;
-let binaryArch = 'x64';
 
 if (isWindows) {
     targetOs = 'win';
@@ -29,10 +27,6 @@ if (isLinux) {
 // Use of isDarwin
 if (isDarwin) {
     targetOs = 'mac';
-    binaryArch = 'x86';
-}
-if (isArm64) {
-    binaryArch = 'arm64';
 }
 
 
@@ -50,7 +44,7 @@ try {
 if (isBuilding) {
 
     console.log('=====================');
-    console.log('Building for ' + targetOs + ' | ' + binaryArch);
+    console.log('Building for ' + targetOs);
     console.log('=====================');
     console.log('updater config', updaterConfig);
     console.log('=====================');
