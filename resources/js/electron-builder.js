@@ -15,7 +15,7 @@ const certificatePath = process.env.NATIVEPHP_CERTIFICATE_FILE_PATH;
 const isArm64 = process.argv.includes('--arm64');
 const isWindows = process.argv.includes('--win') || 'win32' === os.platform();
 const isLinux = process.argv.includes('--linux') || 'linux' === os.platform();
-const isDarwin = process.argv.includes('--mac');
+const isDarwin = process.argv.includes('--mac') || 'darwin' === os.platform();
 let targetOs = 'mac';
 let phpBinaryFilename = 'php';
 if (isWindows) {
