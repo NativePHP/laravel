@@ -42,7 +42,7 @@ class WindowManager
 
     public function position($x, $y, $animated = false, $id = null)
     {
-        $this->client->post('window/resize', [
+        $this->client->post('window/position', [
             'id' => $id ?? $this->detectId(),
             'x' => $x,
             'y' => $y,
