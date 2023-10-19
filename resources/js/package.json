@@ -21,7 +21,7 @@
     "build:all": "cross-env npm run build:mac && cross-env npm run build:win && cross-env npm run build:linux",
     "build:win": "cross-env node php.js --win && cross-env npm run build && cross-env node ./node_modules/electron-builder/cli.js -p never --win --config",
     "build:mac": "cross-env npm run build:mac-arm && cross-env npm run build:mac-x86",
-    "build:mac-arm": "cross-env node php.js --arm64 && cross-env npm run build && cross-envnode ./node_modules/electron-builder/cli.js -p never --mac --config --arm64",
+    "build:mac-arm": "cross-env node php.js --arm64 && cross-env npm run build && cross-env node ./node_modules/electron-builder/cli.js -p never --mac --config --arm64",
     "build:mac-x86": "cross-env node php.js --x64 && cross-env npm run build && cross-env node ./node_modules/electron-builder/cli.js -p never --mac --config --x64",
     "build:linux": "cross-env npm run build:linux-x64",
     "build:linux-x64": "cross-env node php.js --linux && cross-env npm run build && cross-env node ./node_modules/electron-builder/cli.js -p never --linux --config --x64"
