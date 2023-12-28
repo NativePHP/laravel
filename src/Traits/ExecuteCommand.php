@@ -3,8 +3,9 @@
 namespace Native\Electron\Traits;
 
 use Illuminate\Support\Facades\Process;
-use function Laravel\Prompts\note;
 use Native\Electron\Concerns\LocatesPhpBinary;
+
+use function Laravel\Prompts\note;
 
 trait ExecuteCommand
 {
@@ -29,7 +30,7 @@ trait ExecuteCommand
         Process::path(__DIR__.'/../../resources/js/')
             ->env($envs[$type])
             ->forever()
-            ->tty(!$withoutInteraction && PHP_OS_FAMILY != 'Windows')
+            ->tty(! $withoutInteraction && PHP_OS_FAMILY != 'Windows')
             ->run($command, function (string $type, string $output) {
                 if ($this->getOutput()->isVerbose()) {
                     echo $output;
