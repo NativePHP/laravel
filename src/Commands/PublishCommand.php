@@ -33,7 +33,7 @@ class PublishCommand extends Command
         Process::path(__DIR__.'/../../resources/js/')
             ->env($this->getEnvironmentVariables())
             ->forever()
-            ->tty(PHP_OS_FAMILY != 'Windows')
+            ->tty(PHP_OS_FAMILY != 'Windows' && !$this->option('no-interaction'))
             ->run('npm run publish:mac-arm', function (string $type, string $output) {
                 echo $output;
             });
