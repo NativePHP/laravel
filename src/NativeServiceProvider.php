@@ -10,6 +10,7 @@ use Native\Laravel\Commands\LoadStartupConfigurationCommand;
 use Native\Laravel\Commands\MigrateCommand;
 use Native\Laravel\Commands\MinifyApplicationCommand;
 use Native\Laravel\Clients\Electron;
+use Native\Laravel\Clients\Tauri;
 use Native\Laravel\Commands\SeedDatabaseCommand;
 use Native\Laravel\Contracts\Client;
 use Native\Laravel\Logging\LogWatcher;
@@ -75,6 +76,7 @@ class NativeServiceProvider extends PackageServiceProvider
     {
         $this->app->singleton(Client::class, function ($app) {
             return match($app['config']->get('nativephp-internal.environment')) {
+                'tauri' => new Tauri(),
                 'electron' => new Electron(),
             };
         });
