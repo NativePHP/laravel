@@ -1,6 +1,6 @@
 <?php
 
-namespace Native\Laravel\Client;
+namespace Native\Laravel\Clients;
 
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;

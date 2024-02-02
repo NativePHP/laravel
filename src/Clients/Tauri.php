@@ -1,6 +1,6 @@
 <?php
 
-namespace Native\Laravel\Environments;
+namespace Native\Laravel\Clients;
 
 use Native\Laravel\Contracts\Client;
 
