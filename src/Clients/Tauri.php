@@ -2,14 +2,10 @@
 
 namespace Native\Laravel\Environments;
 
-use Native\Laravel\Contracts\Environment;
+use Native\Laravel\Contracts\Client;
 
-class Tauri implements Environment
+class Tauri implements Client
 {
-    public function __construct()
-    {
-    }
-
     public function get(string $resource)
     {
         return $this->request([
@@ -18,6 +14,14 @@ class Tauri implements Environment
     }
 
     public function post(string $resource, array $data = [])
+    {
+        return $this->request([
+            'invoke' => $resource,
+            'data' => $data,
+        ]);
+    }
+
+    public function delete(string $resource, array $data = [])
     {
         return $this->request([
             'invoke' => $resource,
