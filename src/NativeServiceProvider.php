@@ -4,13 +4,13 @@ namespace Native\Laravel;
 
 use Illuminate\Console\Application as Artisan;
 use Illuminate\Support\Arr;
+use Native\Laravel\Clients\Electron;
+use Native\Laravel\Clients\Tauri;
 use Native\Laravel\Commands\FreshCommand;
 use Native\Laravel\Commands\LoadPHPConfigurationCommand;
 use Native\Laravel\Commands\LoadStartupConfigurationCommand;
 use Native\Laravel\Commands\MigrateCommand;
 use Native\Laravel\Commands\MinifyApplicationCommand;
-use Native\Laravel\Clients\Electron;
-use Native\Laravel\Clients\Tauri;
 use Native\Laravel\Commands\SeedDatabaseCommand;
 use Native\Laravel\Contracts\Client;
 use Native\Laravel\Logging\LogWatcher;
@@ -75,7 +75,7 @@ class NativeServiceProvider extends PackageServiceProvider
     protected function registerNativeClient()
     {
         $this->app->singleton(Client::class, function ($app) {
-            return match($app['config']->get('nativephp-internal.environment')) {
+            return match ($app['config']->get('nativephp-internal.environment')) {
                 'tauri' => new Tauri(),
                 'electron' => new Electron(),
             };

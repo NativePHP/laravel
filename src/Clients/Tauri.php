@@ -13,7 +13,7 @@ class Tauri implements Environment
     public function get(string $resource)
     {
         return $this->request([
-            'invoke' => $resource
+            'invoke' => $resource,
         ]);
     }
 
