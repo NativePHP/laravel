@@ -2,6 +2,11 @@
 
 return [
     /**
+     * Which NativePHP environment is this application running in?
+     */
+    'environment' => env('NATIVEPHP_ENVIRONMENT', 'electron'),
+
+    /**
      * An internal flag to indicate if the app is running in the NativePHP
      * environment. This is used to determine if the app should use the
      * NativePHP database and storage paths.

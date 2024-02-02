@@ -9,7 +9,9 @@ use Native\Laravel\Commands\LoadPHPConfigurationCommand;
 use Native\Laravel\Commands\LoadStartupConfigurationCommand;
 use Native\Laravel\Commands\MigrateCommand;
 use Native\Laravel\Commands\MinifyApplicationCommand;
+use Native\Laravel\Clients\Electron;
 use Native\Laravel\Commands\SeedDatabaseCommand;
+use Native\Laravel\Contracts\Client;
 use Native\Laravel\Logging\LogWatcher;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -57,6 +59,8 @@ class NativeServiceProvider extends PackageServiceProvider
             app(LogWatcher::class)->register();
         }
 
+        $this->registerNativeClient();
+
         $this->rewriteStoragePath();
 
         $this->rewriteDatabase();
@@ -65,6 +69,15 @@ class NativeServiceProvider extends PackageServiceProvider
 
         config(['session.driver' => 'file']);
         config(['queue.default' => 'database']);
+    }
+
+    protected function registerNativeClient()
+    {
+        $this->app->singleton(Client::class, function ($app) {
+            return match($app['config']->get('nativephp-internal.environment')) {
+                'electron' => new Electron(),
+            };
+        });
     }
 
     protected function rewriteStoragePath()
