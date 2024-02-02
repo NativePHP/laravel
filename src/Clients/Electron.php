@@ -5,8 +5,9 @@ namespace Native\Laravel\Client;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
+use Native\Laravel\Contracts\Client;
 
-class Client
+class Electron implements Client
 {
     protected PendingRequest $client;
 
