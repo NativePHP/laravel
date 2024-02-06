@@ -1,6 +1,7 @@
 <?php
 
 use Symfony\Component\Process\PhpExecutableFinder;
+use Illuminate\Support\Facades\Process;
 
 it('can boot up the app', function () {
     $executableFinder = new PhpExecutableFinder();
@@ -11,7 +12,7 @@ it('can boot up the app', function () {
         to: base_path('artisan'),
     );
 
-    $process = \Illuminate\Support\Facades\Process::path(base_path())
+    $process = Process::path(base_path())
         ->tty()
         ->start($php.' artisan native:serve', function ($type, $line) {
             echo $line;
