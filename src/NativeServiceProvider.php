@@ -23,6 +23,8 @@ class NativeServiceProvider extends PackageServiceProvider
                 MigrateCommand::class,
                 SeedDatabaseCommand::class,
                 MinifyApplicationCommand::class,
+                LoadStartupConfigurationCommand::class,
+                LoadPHPConfigurationCommand::class,
             ])
             ->hasConfigFile()
             ->hasRoute('api')
@@ -38,13 +40,6 @@ class NativeServiceProvider extends PackageServiceProvider
         });
 
         if (config('nativephp-internal.running')) {
-            Artisan::starting(function ($artisan) {
-                $artisan->resolveCommands([
-                    LoadStartupConfigurationCommand::class,
-                    LoadPHPConfigurationCommand::class,
-                ]);
-            });
-
             $this->configureApp();
         }
     }
