@@ -42,7 +42,7 @@ class System
         })->toArray();
     }
 
-    public function print(string $html, Printer $printer = null): void
+    public function print(string $html, ?Printer $printer = null): void
     {
         $this->client->post('system/print', [
             'html' => $html,
