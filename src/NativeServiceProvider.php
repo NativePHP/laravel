@@ -4,6 +4,7 @@ namespace Native\Laravel;
 
 use Illuminate\Console\Application as Artisan;
 use Illuminate\Support\Arr;
+use Native\Laravel\Commands\FreshCommand;
 use Native\Laravel\Commands\LoadPHPConfigurationCommand;
 use Native\Laravel\Commands\LoadStartupConfigurationCommand;
 use Native\Laravel\Commands\MigrateCommand;
@@ -21,6 +22,7 @@ class NativeServiceProvider extends PackageServiceProvider
             ->name('nativephp')
             ->hasCommands([
                 MigrateCommand::class,
+                FreshCommand::class,
                 SeedDatabaseCommand::class,
                 MinifyApplicationCommand::class,
             ])
@@ -107,6 +109,21 @@ class NativeServiceProvider extends PackageServiceProvider
         ]]);
 
         config(['database.default' => 'nativephp']);
+    }
+
+    public function removeDatabase()
+    {
+        $databasePath = config('nativephp-internal.database_path');
+
+        if (config('app.debug')) {
+            $databasePath = database_path('nativephp.sqlite');
+
+            if (! file_exists($databasePath)) {
+                return;
+            }
+        }
+
+        unlink($databasePath);
     }
 
     protected function configureDisks(): void
