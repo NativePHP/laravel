@@ -1,21 +1,15 @@
 <?php
 
+use Illuminate\Support\Facades\Process;
 use Symfony\Component\Process\PhpExecutableFinder;
 
+use function Orchestra\Testbench\remote;
+
 it('can boot up the app', function () {
-    $executableFinder = new PhpExecutableFinder();
-    $php = $executableFinder->find(false);
-
-    copy(
-        from: __DIR__.'/fixtures/artisan',
-        to: base_path('artisan'),
-    );
-
-    $process = \Illuminate\Support\Facades\Process::path(base_path())
-        ->tty()
-        ->start($php.' artisan native:serve', function ($type, $line) {
-            echo $line;
-        });
+    $process = remote('native:serve');
+    $process->setTty(true)->start(function ($type, $line) {
+        echo $line;
+    });
 
     try {
         retry(12, function () {
@@ -27,11 +21,11 @@ it('can boot up the app', function () {
             }
         }, 5000);
     } catch (Exception $e) {
-        Process::run('pkill -9 -P '.$process->id());
+        Process::run('pkill -9 -P '.$process->getPid());
         throw $e;
     }
 
-    Process::run('pkill -9 -P '.$process->id());
+    Process::run('pkill -9 -P '.$process->getPid());
 
     expect(true)->toBeTrue();
 });

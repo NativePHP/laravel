@@ -3,11 +3,13 @@
 namespace Native\Electron\Tests;
 
 use Illuminate\Support\Facades\Artisan;
-use Native\Electron\ElectronServiceProvider;
+use Orchestra\Testbench\Concerns\WithWorkbench;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
 {
+    use WithWorkbench;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -15,15 +17,10 @@ class TestCase extends Orchestra
         Artisan::call('native:install', ['--force' => true]);
     }
 
-    protected function getPackageProviders($app)
+    public function defineEnvironment($app)
     {
-        return [
-            ElectronServiceProvider::class,
-        ];
-    }
-
-    public function getEnvironmentSetUp($app)
-    {
-        config()->set('database.default', 'testing');
+        tap($app->make('config'), function ($config) {
+            $config->set('database.default', 'testing');
+        });
     }
 }
