@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Process;
-use Symfony\Component\Process\PhpExecutableFinder;
 
 use function Orchestra\Testbench\remote;
 
