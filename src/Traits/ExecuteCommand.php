@@ -3,14 +3,15 @@
 namespace Native\Electron\Traits;
 
 use Illuminate\Support\Facades\Process;
-use function Laravel\Prompts\note;
 use Native\Electron\Concerns\LocatesPhpBinary;
+
+use function Laravel\Prompts\note;
 
 trait ExecuteCommand
 {
     use LocatesPhpBinary;
 
-    protected function executeCommand(string $command, bool $skip_queue = false, string $type = 'install'): void
+    protected function executeCommand(string $command, bool $skip_queue = false, string $type = 'install', bool $withoutInteraction = false): void
     {
         $envs = [
             'install' => [
@@ -30,7 +31,7 @@ trait ExecuteCommand
         Process::path(__DIR__.'/../../resources/js/')
             ->env($envs[$type])
             ->forever()
-            ->tty(PHP_OS_FAMILY != 'Windows')
+            ->tty(! $withoutInteraction && PHP_OS_FAMILY != 'Windows')
             ->run($command, function (string $type, string $output) {
                 if ($this->getOutput()->isVerbose()) {
                     echo $output;

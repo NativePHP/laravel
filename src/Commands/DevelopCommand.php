@@ -3,14 +3,15 @@
 namespace Native\Electron\Commands;
 
 use Illuminate\Console\Command;
-use function Laravel\Prompts\intro;
-use function Laravel\Prompts\note;
 use Native\Electron\Traits\Developer;
 use Native\Electron\Traits\Installer;
 
+use function Laravel\Prompts\intro;
+use function Laravel\Prompts\note;
+
 class DevelopCommand extends Command
 {
-    use Installer, Developer;
+    use Developer, Installer;
 
     protected $signature = 'native:serve {--no-queue} {--D|no-dependencies} {--installer=npm}';
 

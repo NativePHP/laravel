@@ -3,10 +3,11 @@
 namespace Native\Electron\Commands;
 
 use Illuminate\Console\Command;
+use Native\Electron\Traits\Installer;
+
 use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\intro;
 use function Laravel\Prompts\outro;
-use Native\Electron\Traits\Installer;
 
 class InstallCommand extends Command
 {
@@ -19,14 +20,19 @@ class InstallCommand extends Command
     public function handle(): void
     {
         intro('Publishing NativePHP Service Provider...');
+
+        $withoutInteraction = $this->option('no-interaction');
+
         $this->callSilent('vendor:publish', ['--tag' => 'nativephp-provider']);
         $this->callSilent('vendor:publish', ['--tag' => 'nativephp-config']);
 
-        $installer = $this->getInstaller($this->option('installer'));
+        $installer = $this->getInstaller($this->option('installer'), $withoutInteraction);
 
-        $this->installNPMDependencies(force: $this->option('force'), installer: $installer);
+        $this->installNPMDependencies(force: $this->option('force'), installer: $installer, withoutInteraction: $withoutInteraction);
 
-        if (! $this->option('force') && confirm('Would you like to start the NativePHP development server', false)) {
+        $shouldPromptForServe = ! $withoutInteraction && ! $this->option('force');
+
+        if ($shouldPromptForServe && confirm('Would you like to start the NativePHP development server', false)) {
             $this->call('native:serve', ['--installer' => $installer]);
         }
 
