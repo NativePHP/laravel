@@ -26,6 +26,13 @@ class WindowManager
         ]);
     }
 
+    public function hide($id = null)
+    {
+        return $this->client->post('window/hide', [
+            'id' => $id ?? $this->detectId(),
+        ]);
+    }
+
     public function current()
     {
         return (object) $this->client->get('window/current')->json();
