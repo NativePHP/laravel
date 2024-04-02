@@ -27,7 +27,7 @@ jobs:
             testbench: 8.*
             carbon: ^2.63
             laravel-package-tools: ^1.16.4
-            collision: ^7.*
+            collision: 7.*
 
         exclude:
           - laravel: 11.*
