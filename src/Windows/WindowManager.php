@@ -71,4 +71,11 @@ class WindowManager
             'id' => $id ?? $this->detectId(),
         ]);
     }
+
+    public function reload($id = null): void
+    {
+        $this->client->post('window/reload', [
+            'id' => $id ?? $this->detectId(),
+        ]);
+    }
 }

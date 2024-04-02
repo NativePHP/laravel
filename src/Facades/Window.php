@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static void resize($width, $height, $id = null)
  * @method static void position($x, $y, $animated = false, $id = null)
  * @method static void alwaysOnTop($alwaysOnTop = true, $id = null)
+ * @method static void reload($id = null)
  */
 class Window extends Facade
 {
