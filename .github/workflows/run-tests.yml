@@ -20,10 +20,12 @@ jobs:
           - laravel: 11.*
             testbench: 9.*
             carbon: ^3.2
+            laravel-package-tools: ^11.0
 
           - laravel: 10.*
             testbench: 8.*
             carbon: ^2.63
+            laravel-package-tools: ^10.0
 
         exclude:
           - laravel: 11.*
@@ -49,7 +51,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "nesbot/carbon:${{ matrix.carbon }}" --no-interaction --no-update
+          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "nesbot/carbon:${{ matrix.carbon }}" "spatie/laravel-package-tools:${{ matrix.laravel-package-tools }}" --no-interaction --no-update
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction
 
       - name: List Installed Dependencies
