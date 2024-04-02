@@ -1,7 +1,7 @@
 <?php
 
-use Symfony\Component\Process\PhpExecutableFinder;
 use Illuminate\Support\Facades\Process;
+use Symfony\Component\Process\PhpExecutableFinder;
 
 it('can boot up the app', function () {
     $executableFinder = new PhpExecutableFinder();
