@@ -41,8 +41,6 @@ class DevelopCommand extends Command
     /**
      * Patch Electron's Info.plist to show the correct app name
      * during development.
-     *
-     * @return void
      */
     protected function patchPlist(): void
     {
