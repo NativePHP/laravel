@@ -28,7 +28,7 @@ jobs:
         exclude:
           - laravel: 11.*
             php: 8.1
-            
+
     name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }} - ${{ matrix.os }}
 
     steps:
