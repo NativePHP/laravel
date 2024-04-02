@@ -20,12 +20,12 @@ jobs:
           - laravel: 11.*
             testbench: 9.*
             carbon: ^3.2
-            laravel-package-tools: ^11.0
+            laravel-package-tools: ^1.16.4
 
           - laravel: 10.*
             testbench: 8.*
             carbon: ^2.63
-            laravel-package-tools: ^10.0
+            laravel-package-tools: ^1.16.4
 
         exclude:
           - laravel: 11.*
