@@ -11,7 +11,7 @@ class System
     {
     }
 
-    public function canPromptTouchID(): bool
+    public function canPromptTouchID(): mixed
     {
         return $this->client->get('system/can-prompt-touch-id')->json('result');
     }
