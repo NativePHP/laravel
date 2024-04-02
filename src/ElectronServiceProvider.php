@@ -27,7 +27,7 @@ class ElectronServiceProvider extends PackageServiceProvider
             ]);
     }
 
-    public function packageRegistered()
+    public function packageRegistered(): void
     {
         $this->app->singleton('nativephp.updater', function ($app) {
             return new UpdaterManager($app);

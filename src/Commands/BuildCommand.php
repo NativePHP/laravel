@@ -14,7 +14,7 @@ class BuildCommand extends Command
 
     protected $signature = 'native:build {os=all : The operating system to build for (all, linux, mac, windows)}';
 
-    public function handle()
+    public function handle(): void
     {
         $this->info('Build NativePHP app…');
 
@@ -37,7 +37,7 @@ class BuildCommand extends Command
             });
     }
 
-    protected function getEnvironmentVariables()
+    protected function getEnvironmentVariables(): array
     {
         return array_merge(
             [

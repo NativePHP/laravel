@@ -43,7 +43,7 @@ trait Installer
         return [$installer, $commands[$installer]];
     }
 
-    protected function getInstaller(string $installer)
+    protected function getInstaller(string $installer): int|string
     {
         if (! array_key_exists($installer, $this->getCommandArrays())) {
             error("Invalid installer ** {$installer} ** provided.");
