@@ -15,7 +15,7 @@ class DevelopCommand extends Command
 
     protected $signature = 'native:serve {--no-queue} {--D|no-dependencies} {--installer=npm}';
 
-    public function handle()
+    public function handle(): void
     {
         intro('Starting NativePHP dev server…');
 
@@ -41,10 +41,8 @@ class DevelopCommand extends Command
     /**
      * Patch Electron's Info.plist to show the correct app name
      * during development.
-     *
-     * @return void
      */
-    protected function patchPlist()
+    protected function patchPlist(): void
     {
         $pList = file_get_contents(__DIR__.'/../../resources/js/node_modules/electron/dist/Electron.app/Contents/Info.plist');
 
