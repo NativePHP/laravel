@@ -9,7 +9,7 @@
     "format": "prettier --write .",
     "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
     "start": "electron-vite preview",
-    "dev": "electron-vite dev --watch",
+    "dev": "cross-env node php.js && electron-vite dev --watch",
     "build": "electron-vite build",
     "postinstall": "node ./node_modules/electron-builder/cli.js install-app-deps",
     "publish:win": "cross-env npm run build && cross-env node ./node_modules/electron-builder/cli.js -p always --win --config",
@@ -21,8 +21,8 @@
     "build:all": "cross-env npm run build:mac && cross-env npm run build:win && cross-env npm run build:linux",
     "build:win": "cross-env node php.js --win && cross-env npm run build && cross-env node ./node_modules/electron-builder/cli.js -p never --win --config",
     "build:mac": "cross-env npm run build:mac-arm && cross-env npm run build:mac-x86",
-    "build:mac-arm": "cross-env node php.js --arm64 && cross-env npm run build && cross-env node ./node_modules/electron-builder/cli.js -p never --mac --config --arm64",
-    "build:mac-x86": "cross-env node php.js --x64 && cross-env npm run build && cross-env node ./node_modules/electron-builder/cli.js -p never --mac --config --x64",
+    "build:mac-arm": "cross-env node php.js --arm64 --mac && cross-env npm run build && cross-env node ./node_modules/electron-builder/cli.js -p never --mac --config --arm64",
+    "build:mac-x86": "cross-env node php.js --mac && cross-env npm run build && cross-env node ./node_modules/electron-builder/cli.js -p never --mac --config --x64",
     "build:linux": "cross-env npm run build:linux-x64",
     "build:linux-x64": "cross-env node php.js --linux && cross-env npm run build && cross-env node ./node_modules/electron-builder/cli.js -p never --linux --config --x64"
   },
@@ -30,7 +30,7 @@
     "@electron-toolkit/preload": "^1.0.3",
     "@electron-toolkit/utils": "^1.0.2",
     "@electron/remote": "^2.0.9",
-    "@nativephp/electron-plugin": "^0.2"
+    "@nativephp/electron-plugin": "^0.3.1"
   },
   "devDependencies": {
     "@electron/notarize": "^1.2.3",
@@ -48,5 +48,8 @@
     "prettier": "^2.8.7",
     "vite": "^4.2.1",
     "vue": "^3.2.47"
+  },
+  "optionalDependencies": {
+    "dmg-license": "1.0.11"
   }
 }

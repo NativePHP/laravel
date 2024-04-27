@@ -3,45 +3,34 @@ const {join} = require("path");
 const os = require('os');
 const {mkdtempSync} = require("fs");
 const {execSync} = require("child_process");
-const isBuilding = process.env.NATIVEPHP_BUILDING == 1;
+const isBuilding = process.env.NATIVEPHP_BUILDING;
 const appId = process.env.NATIVEPHP_APP_ID;
 const appName = process.env.NATIVEPHP_APP_NAME;
 const fileName = process.env.NATIVEPHP_APP_FILENAME;
 const appVersion = process.env.NATIVEPHP_APP_VERSION;
 const appUrl = process.env.APP_URL;
 const appAuthor = process.env.NATIVEPHP_APP_AUTHOR;
-const phpBinaryPath = process.env.NATIVEPHP_PHP_BINARY_PATH;
-const certificatePath = process.env.NATIVEPHP_CERTIFICATE_FILE_PATH;
-const isArm64 = process.argv.includes('--arm64');
-const isWindows = process.argv.includes('--win') || 'win32' === os.platform();
-const isLinux = process.argv.includes('--linux') || 'linux' === os.platform();
-const isDarwin = process.argv.includes('--mac') || 'darwin' === os.platform();
-let targetOs = 'mac';
-let phpBinaryFilename = 'php';
+
+// Since we do not copy the php executable here, we only need these for building
+const isWindows = process.argv.includes('--win');
+const isLinux = process.argv.includes('--linux');
+const isDarwin = process.argv.includes('--mac');
+
+let targetOs;
+
 if (isWindows) {
     targetOs = 'win';
-    phpBinaryFilename += '.exe';
 }
 if (isLinux) {
     targetOs = 'linux';
 }
-
-let binaryArch = 'x86';
-if (isArm64) {
-    binaryArch = 'arm64';
-}
-if (isWindows || isLinux) {
-    binaryArch = 'x64';
+// Use of isDarwin
+if (isDarwin) {
+    targetOs = 'mac';
 }
 
 
 let updaterConfig = {};
-
-console.log('Binary Source: ', phpBinaryPath);
-console.log('Binary Filename: ', phpBinaryFilename);
-
-const binarySrcDir = join(phpBinaryPath, targetOs, binaryArch);
-const binaryDestDir = join(__dirname, 'resources/php');
 
 console.log("Arch: ", process.arch)
 console.log("Platform: ", process.platform)
@@ -52,44 +41,16 @@ try {
     updaterConfig = {};
 }
 
-if (phpBinaryPath) {
-    try {
-        console.log('Copying PHP file(s) from ' + binarySrcDir + ' to ' + binaryDestDir);
-        removeSync(binaryDestDir);
-        copySync(binarySrcDir, binaryDestDir);
-        // If we're on Windows, copy the php.exe from the dest dir to `php`.
-        // This allows the same import command to work on all platforms (same binary filename)
-        if (isWindows && existsSync(join(binaryDestDir, phpBinaryFilename))) {
-            copySync(join(binaryDestDir, phpBinaryFilename), join(binaryDestDir, 'php'));
-        }
-        console.log('Copied PHP binary to ', binaryDestDir);
-    } catch (e) {
-        console.error('Error copying PHP binary', e);
-    }
-}
-
-if (certificatePath) {
-    try {
-        let certDest = join(__dirname, 'resources', 'cacert.pem');
-        copySync(certificatePath, certDest);
-        console.log('Copied certificate file to', certDest);
-    } catch (e) {
-        console.error('Error copying certificate file', e);
-    }
-}
-
 if (isBuilding) {
+
     console.log('=====================');
-    console.log('Building for ' + targetOs + ' | ' + binaryArch);
+    console.log('Building for ' + targetOs);
     console.log('=====================');
     console.log('updater config', updaterConfig);
     console.log('=====================');
 
     try {
         removeSync(join(__dirname, 'resources', 'app'));
-        removeSync(binaryDestDir);
-
-        copySync(binarySrcDir, binaryDestDir);
 
         // As we can't copy into a subdirectory of ourself we need to copy to a temp directory
         let tmpDir = mkdtempSync(join(os.tmpdir(), 'nativephp'));
@@ -99,6 +60,11 @@ if (isBuilding) {
             dereference: true,
             filter: (src, dest) => {
                 let skip = [
+                    // Skip .git and Dev directories
+                    join(process.env.APP_PATH, '.git'),
+                    join(process.env.APP_PATH, 'docker'),
+                    join(process.env.APP_PATH, 'packages'),
+
                     // Only needed for local testing
                     join(process.env.APP_PATH, 'vendor', 'nativephp', 'electron', 'vendor'),
                     join(process.env.APP_PATH, 'vendor', 'nativephp', 'laravel', 'vendor'),

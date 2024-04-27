@@ -1,30 +1,38 @@
 const {copySync, removeSync, existsSync} = require("fs-extra");
 const {join} = require("path");
+const isBuilding = process.env.NATIVEPHP_BUILDING;
 const phpBinaryPath = process.env.NATIVEPHP_PHP_BINARY_PATH;
-const isArm64 = process.argv.includes('--arm64');
-const isWindows = process.argv.includes('--win');
-const isLinux = process.argv.includes('--linux');
 const certificatePath = process.env.NATIVEPHP_CERTIFICATE_FILE_PATH;
 
-let os = 'mac';
+// Differentiates for Serving and Building
+const isArm64 = isBuilding ? process.argv.includes('--arm64') : process.platform.includes('arm64') ;
+const isWindows = isBuilding ?  process.argv.includes('--win') : process.platform.includes('win32');
+const isLinux = isBuilding ?  process.argv.includes('--linux') : process.platform.includes('linux');
+const isDarwin = isBuilding ?  process.argv.includes('--mac') : process.platform.includes('darwin');
+
+let targetOs;
+let binaryArch = 'x64';
 let phpBinaryFilename = 'php';
+
 if (isWindows) {
+    targetOs = 'win';
     phpBinaryFilename += '.exe';
-    os = 'win';
 }
 if (isLinux) {
-    os = 'linux';
+    targetOs = 'linux';
 }
-
-let binaryArch = 'x64';
+// Use of isDarwin
+if (isDarwin) {
+    targetOs = 'mac';
+    binaryArch = 'x86';
+}
 if (isArm64) {
     binaryArch = 'arm64';
 }
-if (isWindows || isLinux) {
-    binaryArch = 'x64';
-}
 
-const binarySrcDir = join(phpBinaryPath, os, binaryArch);
+
+
+const binarySrcDir = join(phpBinaryPath, targetOs, binaryArch);
 const binaryDestDir = join(__dirname, 'resources/php');
 
 console.log('Binary Source: ', binarySrcDir);
@@ -46,7 +54,6 @@ if (phpBinaryPath) {
         console.log('Error copying PHP binary', e);
     }
 }
-
 
 if (certificatePath) {
     try {
