@@ -12,7 +12,7 @@ class QueueWorkerCommand extends Command
 {
     protected $signature = 'native:queue {--port=4000}';
 
-    protected function getAppDirectory()
+    protected function getAppDirectory(): string|false
     {
         $appName = Str::slug(config('app.name'));
 
@@ -27,7 +27,7 @@ class QueueWorkerCommand extends Command
         return realpath($basePath.'/'.$appName);
     }
 
-    public function handle()
+    public function handle(): void
     {
         intro('Starting NativePHP queue worker…');
 

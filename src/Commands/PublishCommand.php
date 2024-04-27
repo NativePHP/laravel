@@ -14,7 +14,7 @@ class PublishCommand extends Command
 
     protected $signature = 'native:publish {os=mac}';
 
-    public function handle()
+    public function handle(): void
     {
         $this->info('Building and publishing NativePHP app…');
 
@@ -39,7 +39,7 @@ class PublishCommand extends Command
             });
     }
 
-    protected function getEnvironmentVariables()
+    protected function getEnvironmentVariables(): array
     {
         return array_merge(
             [

@@ -2,6 +2,29 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 0.5.0 - 2024-04-01
+
+### What's Changed
+
+* Laravel 11 support by @meliani in https://github.com/NativePHP/electron/pull/89
+* Allow compiling packages in a CI environment by @danjohnson95 in https://github.com/NativePHP/electron/pull/74
+* Upload to GitHub Releases by @danjohnson95 in https://github.com/NativePHP/electron/pull/75
+* Windows flag for electron builder. by @A3Brothers in https://github.com/NativePHP/electron/pull/77
+* Automate platform detection by @kpanuragh in https://github.com/NativePHP/electron/pull/52
+* Fix broken links in README by @danjohnson95 in https://github.com/NativePHP/electron/pull/73
+* Bump actions/checkout from 3 to 4 by @dependabot in https://github.com/NativePHP/electron/pull/78
+* Bump stefanzweifel/git-auto-commit-action from 4 to 5 by @dependabot in https://github.com/NativePHP/electron/pull/80
+* Bump aglipanci/laravel-pint-action from 2.3.0 to 2.3.1 by @dependabot in https://github.com/NativePHP/electron/pull/82
+
+### New Contributors
+
+* @danjohnson95 made their first contribution in https://github.com/NativePHP/electron/pull/75
+* @A3Brothers made their first contribution in https://github.com/NativePHP/electron/pull/77
+* @kpanuragh made their first contribution in https://github.com/NativePHP/electron/pull/52
+* @meliani made their first contribution in https://github.com/NativePHP/electron/pull/89
+
+**Full Changelog**: https://github.com/NativePHP/electron/compare/0.4.0...0.5.0
+
 ## 0.4.0 - 2023-08-09
 
 ### What's Changed
