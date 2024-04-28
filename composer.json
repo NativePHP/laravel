@@ -13,6 +13,11 @@
             "name": "Marcel Pociot",
             "email": "marcel@beyondco.de",
             "role": "Developer"
+        },
+        {
+            "name": "Simon Hamp",
+            "email": "simon.hamp@me.com",
+            "role": "Developer"
         }
     ],
     "require": {
