@@ -44,6 +44,7 @@ class BuildCommand extends Command
                 'APP_PATH' => base_path(),
                 'APP_URL' => config('app.url'),
                 'NATIVEPHP_BUILDING' => true,
+                'NATIVEPHP_PHP_BINARY_VERSION' => PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION,
                 'NATIVEPHP_PHP_BINARY_PATH' => base_path($this->phpBinaryPath()),
                 'NATIVEPHP_CERTIFICATE_FILE_PATH' => base_path($this->binaryPackageDirectory().'cacert.pem'),
                 'NATIVEPHP_APP_NAME' => config('app.name'),
