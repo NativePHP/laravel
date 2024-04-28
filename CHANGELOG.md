@@ -2,6 +2,27 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 0.5.1 - 2024-04-28
+
+### What's Changed
+
+* Updated the electron-builder dependency constraint to the latest
+* Added prep code for upcoming new PHP binaries
+* Bump dependabot/fetch-metadata from 1.6.0 to 2.0.0 by @dependabot in https://github.com/NativePHP/electron/pull/88
+* Bump ramsey/composer-install from 2 to 3 by @dependabot in https://github.com/NativePHP/electron/pull/85
+* Fix undefined class Process in ExampleTest.php by @LunashaGit in https://github.com/NativePHP/electron/pull/83
+* add space between cross-env and node by @A3Brothers in https://github.com/NativePHP/electron/pull/81
+* Add the return types for each methods by @LunashaGit in https://github.com/NativePHP/electron/pull/84
+* Bump aglipanci/laravel-pint-action from 2.3.1 to 2.4 by @dependabot in https://github.com/NativePHP/electron/pull/90
+* allow crossbuilding + minor DRY cleanup by @Rudeisnice in https://github.com/NativePHP/electron/pull/79
+
+### New Contributors
+
+* @LunashaGit made their first contribution in https://github.com/NativePHP/electron/pull/83
+* @Rudeisnice made their first contribution in https://github.com/NativePHP/electron/pull/79
+
+**Full Changelog**: https://github.com/NativePHP/electron/compare/0.5.0...0.5.1
+
 ## 0.5.0 - 2024-04-01
 
 ### What's Changed
