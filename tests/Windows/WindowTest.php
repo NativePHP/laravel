@@ -62,8 +62,8 @@ it('test for invisibleFrameless in window', function () {
     $window = Window::open()->invisibleFrameless();
     $windowArray = $window->toArray();
 
-    expect($windowArray['frame'])->toBeTrue();
-    expect($windowArray['transparent'])->toBeTrue();
+    expect($windowArray['frame'])->toBeFalse();
+    expect($windowArray['transparency'])->toBeTrue();
     expect($windowArray['focusable'])->toBeFalse();
     expect($windowArray['hasShadow'])->toBeFalse();
 });
