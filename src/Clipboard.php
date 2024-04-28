@@ -2,7 +2,7 @@
 
 namespace Native\Laravel;
 
-use Native\Laravel\Client\Client;
+use Native\Laravel\Contracts\Client;
 
 class Clipboard
 {

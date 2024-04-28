@@ -2,7 +2,7 @@
 
 namespace Native\Laravel\Windows;
 
-use Native\Laravel\Client\Client;
+use Native\Laravel\Contracts\Client;
 use Native\Laravel\Concerns\HasDimensions;
 use Native\Laravel\Concerns\HasUrl;
 use Native\Laravel\Concerns\HasVibrancy;

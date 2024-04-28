@@ -4,7 +4,7 @@ namespace Native\Laravel\Logging;
 
 use Illuminate\Log\Events\MessageLogged;
 use Illuminate\Support\Facades\Event;
-use Native\Laravel\Client\Client;
+use Native\Laravel\Contracts\Client;
 
 class LogWatcher
 {

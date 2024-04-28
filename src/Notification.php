@@ -2,7 +2,7 @@
 
 namespace Native\Laravel;
 
-use Native\Laravel\Client\Client;
+use Native\Laravel\Contracts\Client;
 
 class Notification
 {
@@ -18,7 +18,7 @@ class Notification
 
     public static function new()
     {
-        return new static(new Client());
+        return new static(app(Client::class));
     }
 
     public function title(string $title): self

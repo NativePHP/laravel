@@ -2,7 +2,7 @@
 
 namespace Native\Laravel\MenuBar;
 
-use Native\Laravel\Client\Client;
+use Native\Laravel\Contracts\Client;
 use Native\Laravel\Concerns\HasDimensions;
 use Native\Laravel\Concerns\HasPositioner;
 use Native\Laravel\Concerns\HasUrl;

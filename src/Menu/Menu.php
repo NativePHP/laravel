@@ -3,7 +3,7 @@
 namespace Native\Laravel\Menu;
 
 use Illuminate\Support\Traits\Conditionable;
-use Native\Laravel\Client\Client;
+use Native\Laravel\Contracts\Client;
 use Native\Laravel\Contracts\MenuItem;
 use Native\Laravel\Enums\RolesEnum;
 use Native\Laravel\Menu\Items\Checkbox;

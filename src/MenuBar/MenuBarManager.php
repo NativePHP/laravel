@@ -2,7 +2,7 @@
 
 namespace Native\Laravel\MenuBar;
 
-use Native\Laravel\Client\Client;
+use Native\Laravel\Contracts\Client;
 use Native\Laravel\Menu\Menu;
 
 class MenuBarManager

@@ -2,7 +2,7 @@
 
 namespace Native\Laravel\Windows;
 
-use Native\Laravel\Client\Client;
+use Native\Laravel\Contracts\Client;
 use Native\Laravel\Concerns\DetectsWindowId;
 
 class WindowManager

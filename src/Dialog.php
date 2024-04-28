@@ -4,7 +4,7 @@ namespace Native\Laravel;
 
 use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Support\Traits\Macroable;
-use Native\Laravel\Client\Client;
+use Native\Laravel\Contracts\Client;
 use Native\Laravel\Facades\Window;
 
 class Dialog
