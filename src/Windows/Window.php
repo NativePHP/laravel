@@ -2,10 +2,10 @@
 
 namespace Native\Laravel\Windows;
 
-use Native\Laravel\Contracts\Client;
 use Native\Laravel\Concerns\HasDimensions;
 use Native\Laravel\Concerns\HasUrl;
 use Native\Laravel\Concerns\HasVibrancy;
+use Native\Laravel\Contracts\Client;
 
 class Window
 {

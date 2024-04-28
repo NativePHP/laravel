@@ -2,11 +2,11 @@
 
 namespace Native\Laravel\MenuBar;
 
-use Native\Laravel\Contracts\Client;
 use Native\Laravel\Concerns\HasDimensions;
 use Native\Laravel\Concerns\HasPositioner;
 use Native\Laravel\Concerns\HasUrl;
 use Native\Laravel\Concerns\HasVibrancy;
+use Native\Laravel\Contracts\Client;
 use Native\Laravel\Menu\Menu;
 
 class MenuBar
