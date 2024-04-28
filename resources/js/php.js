@@ -1,7 +1,11 @@
-const {copySync, removeSync, existsSync} = require("fs-extra");
+const fs = require("fs");
+const {copySync, removeSync, existsSync, ensureDirSync} = require("fs-extra");
 const {join} = require("path");
+const unzip = require("yauzl");
+
 const isBuilding = process.env.NATIVEPHP_BUILDING;
 const phpBinaryPath = process.env.NATIVEPHP_PHP_BINARY_PATH;
+const phpVersion = process.env.NATIVEPHP_PHP_BINARY_VERSION;
 const certificatePath = process.env.NATIVEPHP_CERTIFICATE_FILE_PATH;
 
 // Differentiates for Serving and Building
@@ -30,28 +34,50 @@ if (isArm64) {
     binaryArch = 'arm64';
 }
 
-
-
-const binarySrcDir = join(phpBinaryPath, targetOs, binaryArch);
+const phpVersionZip = 'php-' + phpVersion + '.zip';
+const binarySrcDir = join(phpBinaryPath, targetOs, binaryArch, phpVersionZip);
 const binaryDestDir = join(__dirname, 'resources/php');
 
 console.log('Binary Source: ', binarySrcDir);
 console.log('Binary Filename: ', phpBinaryFilename);
+console.log('PHP version: ' + phpVersion);
 
 if (phpBinaryPath) {
     try {
-        console.log('Copying PHP file(s) from ' + binarySrcDir + ' to ' + binaryDestDir);
+        console.log('Unzipping PHP binary from ' + binarySrcDir + ' to ' + binaryDestDir);
         removeSync(binaryDestDir);
-        copySync(binarySrcDir, binaryDestDir);
 
+        ensureDirSync(binaryDestDir);
 
-        // If we're building for Windows, copy the php.exe from the dest dir to `php`.
-        // This allows the same import command to work on all platforms (same binary filename)
-        if (isWindows && existsSync(join(binaryDestDir, phpBinaryFilename))) {
-            copySync(join(binaryDestDir, phpBinaryFilename), join(binaryDestDir, 'php'));
-        }
+        // Unzip the files
+        unzip.open(binarySrcDir, {lazyEntries: true}, function (err, zipfile) {
+            if (err) throw err;
+            zipfile.readEntry();
+            zipfile.on("entry", function (entry) {
+                zipfile.openReadStream(entry, function (err, readStream) {
+                    if (err) throw err;
+
+                    const writeStream = fs.createWriteStream(join(binaryDestDir, 'php'));
+
+                    readStream.pipe(writeStream);
+
+                    writeStream.on("close", function() {
+                        console.log('Copied PHP binary to ', binaryDestDir);
+
+                        // Add execute permissions
+                        fs.chmod(join(binaryDestDir, 'php'), 0o755, (err) => {
+                            if (err) {
+                                console.log(`Error setting permissions: ${err}`);
+                            }
+                        });
+
+                        zipfile.readEntry();
+                    });
+                });
+            });
+        });
     } catch (e) {
-        console.log('Error copying PHP binary', e);
+        console.error('Error copying PHP binary', e);
     }
 }
 
