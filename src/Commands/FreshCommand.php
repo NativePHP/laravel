@@ -2,7 +2,6 @@
 
 namespace Native\Laravel\Commands;
 
-use Illuminate\Console\Command;
 use Illuminate\Database\Console\Migrations\FreshCommand as BaseFreshCommand;
 use Native\Laravel\NativeServiceProvider;
 

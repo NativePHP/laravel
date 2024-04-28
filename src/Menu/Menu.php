@@ -66,17 +66,17 @@ class Menu implements MenuItem
         return $this->add(new Label($label));
     }
 
-    public function checkbox(string $label, bool $checked = false, string $hotkey = null): self
+    public function checkbox(string $label, bool $checked = false, ?string $hotkey = null): self
     {
         return $this->add(new Checkbox($label, $checked, $hotkey));
     }
 
-    public function event(string $event, string $text, string $hotkey = null): self
+    public function event(string $event, string $text, ?string $hotkey = null): self
     {
         return $this->add(new Event($event, $text, $hotkey));
     }
 
-    public function link(string $url, string $text, string $hotkey = null): self
+    public function link(string $url, string $text, ?string $hotkey = null): self
     {
         return $this->add(new Link($url, $text, $hotkey));
     }
