@@ -56,11 +56,11 @@ class NativeServiceProvider extends PackageServiceProvider
 
     protected function configureApp()
     {
+        $this->registerNativeClient();
+
         if (config('app.debug')) {
             app(LogWatcher::class)->register();
         }
-
-        $this->registerNativeClient();
 
         $this->rewriteStoragePath();
 
