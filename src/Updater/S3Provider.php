@@ -26,7 +26,6 @@ class S3Provider implements Updater
             'region' => $this->config['region'],
             'bucket' => $this->config['bucket'],
             'path' => $this->config['path'],
-            'acl' => $this->config['acl']
         ];
     }
 }
