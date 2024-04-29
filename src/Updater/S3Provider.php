@@ -13,7 +13,8 @@ class S3Provider implements Updater
     public function environmentVariables(): array
     {
         return [
-            'AWS_PROFILE' => $this->config['profile'],
+            'AWS_ACCESS_KEY_ID' => $this->config['key'],
+            'AWS_SECRET_ACCESS_KEY' => $this->config['secret'],
         ];
     }
 
