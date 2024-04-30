@@ -2,6 +2,22 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 0.6.0 - 2024-04-30
+
+### What's Changed
+
+* Uses the latest version of nativephp/php-bin and correctly selects the appropriate binary when building your app 🎉
+* Fixes NativePHP/laravel#244 which was a stumbling block for installing on Windows
+* Add default Amazon S3 auto-update provider config by @lonnylot in https://github.com/NativePHP/electron/pull/65
+* Upgrade Testbench by @crynobone in https://github.com/NativePHP/electron/pull/87
+* Bump dependabot/fetch-metadata from 2.0.0 to 2.1.0 by @dependabot in https://github.com/NativePHP/electron/pull/91
+
+### New Contributors
+
+* @crynobone made their first contribution in https://github.com/NativePHP/electron/pull/87
+
+**Full Changelog**: https://github.com/NativePHP/electron/compare/0.5.1...0.6.0
+
 ## 0.5.1 - 2024-04-28
 
 ### What's Changed
