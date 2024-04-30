@@ -30,11 +30,16 @@ class PublishCommand extends Command
                 echo $output;
             });
 
+        $buildCommand = 'npm run build';
+        if ($this->argument('os')) {
+            $buildCommand .= ':'.$this->argument('os');
+        }
+
         Process::path(__DIR__.'/../../resources/js/')
             ->env($this->getEnvironmentVariables())
             ->forever()
             ->tty(PHP_OS_FAMILY != 'Windows' && ! $this->option('no-interaction'))
-            ->run('npm run publish:mac-arm', function (string $type, string $output) {
+            ->run($buildCommand, function (string $type, string $output) {
                 echo $output;
             });
     }
@@ -45,6 +50,7 @@ class PublishCommand extends Command
             [
                 'APP_PATH' => base_path(),
                 'NATIVEPHP_BUILDING' => true,
+                'NATIVEPHP_PHP_BINARY_VERSION' => PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION,
                 'NATIVEPHP_PHP_BINARY_PATH' => base_path($this->phpBinaryPath()),
                 'NATIVEPHP_CERTIFICATE_FILE_PATH' => base_path($this->binaryPackageDirectory().'cacert.pem'),
                 'NATIVEPHP_APP_NAME' => config('app.name'),
