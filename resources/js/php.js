@@ -57,15 +57,16 @@ if (phpBinaryPath) {
                 zipfile.openReadStream(entry, function (err, readStream) {
                     if (err) throw err;
 
-                    const writeStream = fs.createWriteStream(join(binaryDestDir, 'php'));
+                    const binaryPath = join(binaryDestDir, phpBinaryFilename);
+                    const writeStream = fs.createWriteStream(binaryPath);
 
                     readStream.pipe(writeStream);
 
                     writeStream.on("close", function() {
-                        console.log('Copied PHP binary to ', binaryDestDir);
+                        console.log('Copied PHP binary to ', binaryPath);
 
                         // Add execute permissions
-                        fs.chmod(join(binaryDestDir, 'php'), 0o755, (err) => {
+                        fs.chmod(binaryPath, 0o755, (err) => {
                             if (err) {
                                 console.log(`Error setting permissions: ${err}`);
                             }
