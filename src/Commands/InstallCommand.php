@@ -23,8 +23,8 @@ class InstallCommand extends Command
 
         $withoutInteraction = $this->option('no-interaction');
 
-        $this->callSilent('vendor:publish', ['--tag' => 'nativephp-provider']);
-        $this->callSilent('vendor:publish', ['--tag' => 'nativephp-config']);
+        $this->call('vendor:publish', ['--tag' => 'nativephp-provider']);
+        $this->call('vendor:publish', ['--tag' => 'nativephp-config']);
 
         $installer = $this->getInstaller($this->option('installer'), $withoutInteraction);
 
