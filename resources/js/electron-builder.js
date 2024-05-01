@@ -50,7 +50,9 @@ if (isBuilding) {
     console.log('=====================');
 
     try {
-        removeSync(join(__dirname, 'resources', 'app'));
+        const appPath = join(__dirname, 'resources', 'app');
+
+        removeSync(appPath);
 
         // As we can't copy into a subdirectory of ourself we need to copy to a temp directory
         let tmpDir = mkdtempSync(join(os.tmpdir(), 'nativephp'));
@@ -87,16 +89,16 @@ if (isBuilding) {
             }
         });
 
-        copySync(tmpDir, join(__dirname, 'resources', 'app'));
+        copySync(tmpDir, appPath);
 
         // Electron build removes empty folders, so we have to create dummy files
         // dotfiles unfortunately don't work.
-        writeJsonSync(join(__dirname, 'resources', 'app', 'storage', 'framework', 'cache', '_native.json'), {})
-        writeJsonSync(join(__dirname, 'resources', 'app', 'storage', 'framework', 'sessions', '_native.json'), {})
-        writeJsonSync(join(__dirname, 'resources', 'app', 'storage', 'framework', 'testing', '_native.json'), {})
-        writeJsonSync(join(__dirname, 'resources', 'app', 'storage', 'framework', 'views', '_native.json'), {})
-        writeJsonSync(join(__dirname, 'resources', 'app', 'storage', 'app', 'public', '_native.json'), {})
-        writeJsonSync(join(__dirname, 'resources', 'app', 'storage', 'logs', '_native.json'), {})
+        writeJsonSync(join(appPath, 'storage', 'framework', 'cache', '_native.json'), {})
+        writeJsonSync(join(appPath, 'storage', 'framework', 'sessions', '_native.json'), {})
+        writeJsonSync(join(appPath, 'storage', 'framework', 'testing', '_native.json'), {})
+        writeJsonSync(join(appPath, 'storage', 'framework', 'views', '_native.json'), {})
+        writeJsonSync(join(appPath, 'storage', 'app', 'public', '_native.json'), {})
+        writeJsonSync(join(appPath, 'storage', 'logs', '_native.json'), {})
 
         removeSync(tmpDir);
 
@@ -106,7 +108,9 @@ if (isBuilding) {
         console.log('=====================');
 
         // We'll use the default PHP binary here, as we can cross-compile for all platforms
-        execSync(`php ${join(__dirname, 'resources', 'app', 'artisan')} native:minify ${join(__dirname, 'resources', 'app')}`);
+        const phpBinary = join(process.env.APP_PATH, 'vendor', 'nativephp', 'electron', 'resources', 'js', 'resources', 'php', 'php');
+        const artisanPath = join(appPath, 'artisan');
+        execSync(`${phpBinary} ${artisanPath} native:minify ${appPath}`);
     } catch (e) {
         console.error('=====================');
         console.error('Error copying app to resources');
