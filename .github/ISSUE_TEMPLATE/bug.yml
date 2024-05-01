@@ -1,12 +1,20 @@
 name: Bug Report
-description: Report an Issue or Bug with the Package
+description: Report an Issue or Bug in NativePHP
 title: "[Bug]: "
 labels: ["bug"]
 body:
     - type: markdown
       attributes:
           value: |
-              We're sorry to hear you have a problem. Can you help us solve it by providing the following details.
+              We're sorry to hear you have a problem. Please help us solve it by providing the following details.
+    - type: textarea
+      id: what-doing
+      attributes:
+          label: What were you trying to do?
+          description: Some context about what you were trying to achieve
+          placeholder: Trying to build my app for production
+      validations:
+          required: true
     - type: textarea
       id: what-happened
       attributes:
@@ -26,9 +34,8 @@ body:
     - type: input
       id: package-version
       attributes:
-          label: Package Version
-          description: What version of our Package are you running? Please be as specific as possible
-          placeholder: 2.0.0
+          label: Package Versions
+          description: What versions of the NativePHP packages are you running? Output of `composer show nativephp/* --format=json`
       validations:
           required: true
     - type: input
@@ -58,13 +65,21 @@ body:
     - type: dropdown
       id: operating-systems
       attributes:
-        label: Which operating systems does with happen with?
+        label: Which operating systems have you seen this occur on?
         description: You may select more than one.
         multiple: true
         options:
         - macOS
         - Windows
         - Linux
+    - type: input
+      id: os-version
+      attributes:
+        label: OS version
+        description: Which version of these OSes are you using?
+        placeholder: 'win11 (23H2), macos14.1 (23B74)'
+      validations:
+        required: true
     - type: textarea
       id: notes
       attributes:
