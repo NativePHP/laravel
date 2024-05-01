@@ -2,6 +2,14 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 0.6.1 - 2024-05-01
+
+### What's Changed
+
+- Fix PHP executable loading on Windows
+
+**Full Changelog**: https://github.com/NativePHP/electron/compare/0.6.0...0.6.1
+
 ## 0.6.0 - 2024-04-30
 
 ### What's Changed
