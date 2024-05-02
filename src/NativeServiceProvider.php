@@ -35,6 +35,10 @@ class NativeServiceProvider extends PackageServiceProvider
     {
         $this->mergeConfigFrom($this->package->basePath('/../config/nativephp-internal.php'), 'nativephp-internal');
 
+        $this->app->singleton(FreshCommand::class, function ($app) {
+            return new FreshCommand($app['migrator']);
+        });
+
         $this->app->singleton(MigrateCommand::class, function ($app) {
             return new MigrateCommand($app['migrator'], $app['events']);
         });
