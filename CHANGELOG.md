@@ -2,6 +2,14 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 0.5.2 - 2024-05-02
+
+### What's Changed
+
+* Fixes a regression introduced in 0.5.1
+
+**Full Changelog**: https://github.com/NativePHP/laravel/compare/0.5.1...0.5.2
+
 ## 0.5.1 - 2024-05-02
 
 ### What's Changed
