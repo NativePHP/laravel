@@ -2,6 +2,14 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 0.6.2 - 2024-05-02
+
+### What's Changed
+
+* Fix the `native:minify` command run during build (inspired by @KajPe's [patch](https://github.com/NativePHP/laravel/issues/277#issuecomment-2088910160))
+
+**Full Changelog**: https://github.com/NativePHP/electron/compare/0.6.1...0.6.2
+
 ## 0.6.1 - 2024-05-01
 
 ### What's Changed
