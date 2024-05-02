@@ -2,6 +2,25 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 0.5.1 - 2024-05-02
+
+### What's Changed
+
+* Add a default `NATIVEPHP_APP_ID` to fix #284
+* Fix for #175 `native:migrate:fresh` command @me-shaon in https://github.com/NativePHP/laravel/pull/198
+* Add hide window functionality by @braceyourself in https://github.com/NativePHP/laravel/pull/144
+* Update Tests workflow by @milwad-dev in https://github.com/NativePHP/laravel/pull/265
+* Bump ramsey/composer-install from 2 to 3 by @dependabot in https://github.com/NativePHP/laravel/pull/255
+* Bump dependabot/fetch-metadata from 1.6.0 to 2.0.0 by @dependabot in https://github.com/NativePHP/laravel/pull/260
+* Bump aglipanci/laravel-pint-action from 2.3.1 to 2.4 by @dependabot in https://github.com/NativePHP/laravel/pull/268
+* Bump dependabot/fetch-metadata from 2.0.0 to 2.1.0 by @dependabot in https://github.com/NativePHP/laravel/pull/275
+
+### New Contributors
+
+* @braceyourself made their first contribution in https://github.com/NativePHP/laravel/pull/144
+
+**Full Changelog**: https://github.com/NativePHP/laravel/compare/0.5.0...0.6.0
+
 ## 0.5.0 - 2024-04-01
 
 ### What's Changed
