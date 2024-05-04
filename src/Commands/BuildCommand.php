@@ -8,11 +8,13 @@ use Illuminate\Support\Str;
 use Native\Electron\Concerns\LocatesPhpBinary;
 use Native\Electron\Facades\Updater;
 
+use function Laravel\Prompts\select;
+
 class BuildCommand extends Command
 {
     use LocatesPhpBinary;
 
-    protected $signature = 'native:build {os=all : The operating system to build for (all, linux, mac, windows)}';
+    protected $signature = 'native:build {os? : The operating system to build for (all, linux, mac, windows)}';
 
     public function handle(): void
     {
@@ -23,9 +25,17 @@ class BuildCommand extends Command
                 echo $output;
             });
 
+        if (! $os = $this->argument('os')) {
+            $os = select(
+                label: 'Please select the operating system to build for',
+                options: ['win', 'linux', 'mac', 'all'],
+                default: $this->getDefaultOs(),
+            );
+        }
+
         $buildCommand = 'npm run build';
-        if ($this->argument('os')) {
-            $buildCommand .= ':'.$this->argument('os');
+        if ($os) {
+            $buildCommand .= ':'.$os;
         }
 
         Process::path(__DIR__.'/../../resources/js/')
@@ -56,5 +66,15 @@ class BuildCommand extends Command
             ],
             Updater::environmentVariables(),
         );
+    }
+
+    protected function getDefaultOs(): string
+    {
+        return match (PHP_OS_FAMILY) {
+            'Windows' => 'win',
+            'Darwin' => 'mac',
+            'Linux' => 'linux',
+            default => 'all',
+        };
     }
 }
