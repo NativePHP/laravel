@@ -24,8 +24,7 @@ class DevelopCommand extends Command
         if (! $this->option('no-dependencies')) {
             $this->installNPMDependencies(
                 force: ! $this->option('no-dependencies'),
-                installer: $this->option('installer'
-                )
+                installer: $this->option('installer')
             );
         }
 
