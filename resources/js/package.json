@@ -13,7 +13,7 @@
     "build": "electron-vite build",
     "postinstall": "node ./node_modules/electron-builder/cli.js install-app-deps",
     "publish:win": "cross-env npm run build && cross-env node ./node_modules/electron-builder/cli.js -p always --win --config",
-    "publish:mac": "cross-env npm run build:mac-arm && cross-env npm run build:mac-x86",
+    "publish:mac": "cross-env npm run publish:mac-arm && cross-env npm run publish:mac-x86",
     "publish:mac-arm": "cross-env npm run build && cross-env node ./node_modules/electron-builder/cli.js -p always --mac --config --arm64 -p always",
     "publish:mac-x86": "cross-env npm run build && cross-env node ./node_modules/electron-builder/cli.js -p always --mac --config --x64 -p always",
     "publish:linux": "cross-env npm run publish:linux-x64",
