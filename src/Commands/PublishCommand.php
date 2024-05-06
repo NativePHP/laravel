@@ -12,7 +12,7 @@ class PublishCommand extends Command
 {
     use LocatesPhpBinary;
 
-    protected $signature = 'native:publish {os=all : The operating system to build for (all, linux, mac, windows)}';
+    protected $signature = 'native:publish {os? : The operating system to build for (linux, mac, win)}';
 
     public function handle(): void
     {
@@ -30,16 +30,19 @@ class PublishCommand extends Command
                 echo $output;
             });
 
-        $buildCommand = 'npm run build';
-        if ($this->argument('os')) {
-            $buildCommand .= ':'.$this->argument('os');
+        if (! $os = $this->argument('os')) {
+            $os = select(
+                label: 'Please select the operating system to build for',
+                options: ['win', 'linux', 'mac', 'all'],
+                default: $this->getDefaultOs(),
+            );
         }
 
         Process::path(__DIR__.'/../../resources/js/')
             ->env($this->getEnvironmentVariables())
             ->forever()
             ->tty(PHP_OS_FAMILY != 'Windows' && ! $this->option('no-interaction'))
-            ->run($buildCommand, function (string $type, string $output) {
+            ->run("npm run publish:{$os}", function (string $type, string $output) {
                 echo $output;
             });
     }
@@ -61,5 +64,15 @@ class PublishCommand extends Command
             ],
             Updater::environmentVariables(),
         );
+    }
+
+    protected function getDefaultOs(): string
+    {
+        return match (PHP_OS_FAMILY) {
+            'Windows' => 'win',
+            'Darwin' => 'mac',
+            'Linux' => 'linux',
+            default => 'all',
+        };
     }
 }
