@@ -33,16 +33,11 @@ class BuildCommand extends Command
             );
         }
 
-        $buildCommand = 'npm run build';
-        if ($os) {
-            $buildCommand .= ':'.$os;
-        }
-
         Process::path(__DIR__.'/../../resources/js/')
             ->env($this->getEnvironmentVariables())
             ->forever()
             ->tty(PHP_OS_FAMILY != 'Windows' && ! $this->option('no-interaction'))
-            ->run($buildCommand, function (string $type, string $output) {
+            ->run("npm run build:{$os}", function (string $type, string $output) {
                 echo $output;
             });
     }
