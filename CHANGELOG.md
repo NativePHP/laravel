@@ -2,6 +2,20 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 0.6.3 - 2024-05-06
+
+### What's Changed
+
+* Use Prompts to request Platform when not provided by @vikas5914 in https://github.com/NativePHP/electron/pull/92
+* Fix publish command by @simonhamp in https://github.com/NativePHP/electron/pull/93
+* Fix `native:publish mac` by @simonhamp in https://github.com/NativePHP/electron/pull/94
+
+### New Contributors
+
+* @vikas5914 made their first contribution in https://github.com/NativePHP/electron/pull/92
+
+**Full Changelog**: https://github.com/NativePHP/electron/compare/0.6.2...0.6.3
+
 ## 0.6.2 - 2024-05-02
 
 ### What's Changed
