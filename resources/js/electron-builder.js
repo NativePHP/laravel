@@ -155,10 +155,6 @@ module.exports = {
     },
     mac: {
         entitlementsInherit: 'build/entitlements.mac.plist',
-        target: {
-            target: 'default',
-            arch: ['x64', 'arm64'],
-        },
         artifactName: appName + '-${version}-${arch}.${ext}',
         extendInfo: {
             NSCameraUsageDescription:
