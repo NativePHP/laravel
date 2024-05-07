@@ -1,10 +1,10 @@
 {
   "name": "NativePHP",
   "version": "1.0.0",
-  "description": "An Electron application with Vue",
+  "description": "A NativePHP Electron application",
   "main": "./out/main/index.js",
-  "author": "beyondco.de",
-  "homepage": "https://beyondco.de",
+  "author": "NativePHP",
+  "homepage": "https://nativephp.com",
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",

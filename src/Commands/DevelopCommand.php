@@ -34,6 +34,8 @@ class DevelopCommand extends Command
             $this->patchPlist();
         }
 
+        $this->patchPackageJson();
+
         $this->runDeveloper(installer: $this->option('installer'), skip_queue: $this->option('no-queue'));
     }
 
@@ -53,5 +55,15 @@ class DevelopCommand extends Command
         $pList = preg_replace($pattern, '$1'.config('app.name').'$3', $pList);
 
         file_put_contents(__DIR__.'/../../resources/js/node_modules/electron/dist/Electron.app/Contents/Info.plist', $pList);
+    }
+
+    protected function patchPackageJson(): void
+    {
+        $packageJsonPath = __DIR__.'/../../resources/js/package.json';
+        $packageJson = json_decode(file_get_contents($packageJsonPath), true);
+
+        $packageJson['name'] = config('app.name');
+
+        file_put_contents($packageJsonPath, json_encode($packageJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
     }
 }
