@@ -1,6 +1,5 @@
 name: Bug Report
 description: Report an Issue or Bug in NativePHP
-title: "[Bug]: "
 labels: ["bug"]
 body:
     - type: markdown
