@@ -1,5 +1,5 @@
 name: Bug Report
-description: Report an issue or bug in NativePHP. Before submitting your report, please make sure you've been through the debugging steps: https://nativephp.com/docs/getting-started/debugging
+description: "Report an issue or bug in NativePHP. Before submitting your report, please make sure you've been through the debugging steps: https://nativephp.com/docs/getting-started/debugging"
 labels: ["bug"]
 body:
     - type: markdown
