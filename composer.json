@@ -8,6 +8,12 @@
     ],
     "homepage": "https://github.com/nativephp/laravel",
     "license": "MIT",
+    "funding": [
+        {
+            "type": "github",
+            "url": "https://github.com/sponsors/simonhamp"
+        }
+    ],
     "authors": [
         {
             "name": "Marcel Pociot",
