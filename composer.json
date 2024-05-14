@@ -6,12 +6,23 @@
         "laravel",
         "electron"
     ],
+    "funding": [
+        {
+            "type": "github",
+            "url": "https://github.com/sponsors/simonhamp"
+        }
+    ],
     "homepage": "https://github.com/nativephp/electron",
     "license": "MIT",
     "authors": [
         {
             "name": "Marcel Pociot",
             "email": "marcel@beyondco.de",
+            "role": "Developer"
+        },
+        {
+            "name": "Simon Hamp",
+            "email": "simon.hamp@me.com",
             "role": "Developer"
         }
     ],
