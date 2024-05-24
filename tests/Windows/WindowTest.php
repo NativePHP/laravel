@@ -58,6 +58,25 @@ it('test title bar for window', function () {
     expect($window->toArray()['titleBarStyle'])->toBe('customButtonsOnHover');
 });
 
+it('test for trafficLightPosition in window', function () {
+    $window = Window::open()
+        ->trafficLightPosition(10, 10);
+
+    expect($window->toArray()['trafficLightPosition'])
+        ->toBeArray()
+        ->toHaveKeys(['x', 'y'])
+        ->toHaveLength(2)
+        ->toMatchArray(['x' => 10, 'y' => 10]);
+
+    $window->trafficLightPosition(5, 15);
+
+    expect($window->toArray()['trafficLightPosition'])
+        ->toBeArray()
+        ->toHaveKeys(['x', 'y'])
+        ->toHaveLength(2)
+        ->toMatchArray(['x' => 5, 'y' => 15]);
+});
+
 it('test for invisibleFrameless in window', function () {
     $window = Window::open()->invisibleFrameless();
     $windowArray = $window->toArray();
