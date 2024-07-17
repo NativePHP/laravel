@@ -4,6 +4,7 @@ namespace Native\Laravel;
 
 use Native\Laravel\Client\Client;
 use Native\Laravel\DataObjects\Printer;
+use Native\Laravel\Support\Timezones;
 
 class System
 {
@@ -55,5 +56,18 @@ class System
         return $this->client->post('system/print-to-pdf', [
             'html' => $html,
         ])->json('result');
+    }
+
+    public function timezone(): string
+    {
+        $timezones = new Timezones();
+
+        if (PHP_OS_FAMILY === 'Windows') {
+            $timezone = $timezones->translateFromWindowsString(exec('tzutil /g'));
+        } else {
+            $timezone = $timezones->translateFromAbbreviatedString(exec('date +%Z'));
+        }
+
+        return $timezone;
     }
 }
