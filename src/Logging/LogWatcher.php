@@ -8,10 +8,7 @@ use Native\Laravel\Client\Client;
 
 class LogWatcher
 {
-    public function __construct(protected Client $client)
-    {
-
-    }
+    public function __construct(protected Client $client) {}
 
     public function register(): void
     {

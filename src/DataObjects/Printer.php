@@ -11,7 +11,5 @@ class Printer
         public int $status,
         public bool $isDefault,
         public array $options
-    ) {
-
-    }
+    ) {}
 }

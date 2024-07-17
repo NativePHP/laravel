@@ -6,10 +6,7 @@ class Link extends MenuItem
 {
     protected string $type = 'link';
 
-    public function __construct(protected string $url, protected ?string $label, protected ?string $accelerator = null)
-    {
-
-    }
+    public function __construct(protected string $url, protected ?string $label, protected ?string $accelerator = null) {}
 
     public function toArray(): array
     {

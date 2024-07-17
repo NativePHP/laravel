@@ -12,10 +12,7 @@ class OpenedFromURL implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public function __construct(public $url)
-    {
-
-    }
+    public function __construct(public $url) {}
 
     public function broadcastOn()
     {

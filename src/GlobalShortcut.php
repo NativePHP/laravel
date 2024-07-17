@@ -10,9 +10,7 @@ class GlobalShortcut
 
     protected string $event;
 
-    public function __construct(protected Client $client)
-    {
-    }
+    public function __construct(protected Client $client) {}
 
     public function key(string $key): self
     {

@@ -12,9 +12,7 @@ class Notification
 
     protected string $event = '';
 
-    public function __construct(protected Client $client)
-    {
-    }
+    public function __construct(protected Client $client) {}
 
     public static function new()
     {

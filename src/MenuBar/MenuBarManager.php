@@ -7,10 +7,7 @@ use Native\Laravel\Menu\Menu;
 
 class MenuBarManager
 {
-    public function __construct(protected Client $client)
-    {
-
-    }
+    public function __construct(protected Client $client) {}
 
     public function create()
     {

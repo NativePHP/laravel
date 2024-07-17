@@ -7,9 +7,7 @@ use Native\Laravel\Menu\Menu;
 
 class Dock
 {
-    public function __construct(protected Client $client)
-    {
-    }
+    public function __construct(protected Client $client) {}
 
     public function menu(Menu $menu)
     {

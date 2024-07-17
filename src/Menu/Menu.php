@@ -21,9 +21,7 @@ class Menu implements MenuItem
 
     protected string $prepend = '';
 
-    public function __construct(protected Client $client)
-    {
-    }
+    public function __construct(protected Client $client) {}
 
     public static function new(): static
     {

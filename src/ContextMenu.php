@@ -7,9 +7,7 @@ use Native\Laravel\Menu\Menu;
 
 class ContextMenu
 {
-    public function __construct(protected Client $client)
-    {
-    }
+    public function __construct(protected Client $client) {}
 
     public function register(Menu $menu)
     {

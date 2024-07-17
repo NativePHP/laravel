@@ -6,9 +6,7 @@ use Native\Laravel\Client\Client;
 
 class Settings
 {
-    public function __construct(protected Client $client)
-    {
-    }
+    public function __construct(protected Client $client) {}
 
     public function set($key, $value): void
     {

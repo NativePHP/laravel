@@ -26,9 +26,7 @@ class Dialog
 
     protected $windowReference;
 
-    public function __construct(protected Client $client)
-    {
-    }
+    public function __construct(protected Client $client) {}
 
     public static function new()
     {

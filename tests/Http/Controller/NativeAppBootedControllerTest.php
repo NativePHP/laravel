@@ -5,10 +5,7 @@ use Native\Laravel\Events\App\ApplicationBooted;
 
 class TestProvider
 {
-    public function boot()
-    {
-
-    }
+    public function boot() {}
 }
 
 it('boots the NativePHP provider', function () {

@@ -9,10 +9,7 @@ class WindowManager
 {
     use DetectsWindowId;
 
-    public function __construct(protected Client $client)
-    {
-
-    }
+    public function __construct(protected Client $client) {}
 
     public function open(string $id = 'main')
     {

@@ -4,10 +4,7 @@ use Illuminate\Support\Facades\Event;
 
 class TestEvent
 {
-    public function __construct(public string $test = '')
-    {
-
-    }
+    public function __construct(public string $test = '') {}
 }
 
 it('dispatches an event', function () {

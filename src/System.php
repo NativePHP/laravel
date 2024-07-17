@@ -8,9 +8,7 @@ use Native\Laravel\Support\Timezones;
 
 class System
 {
-    public function __construct(protected Client $client)
-    {
-    }
+    public function __construct(protected Client $client) {}
 
     public function canPromptTouchID(): bool
     {
