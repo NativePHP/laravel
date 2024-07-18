@@ -2,6 +2,22 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 0.6.4 - 2024-07-18
+
+### What's Changed
+
+* Remove forced config from Electron config by @simonhamp in https://github.com/NativePHP/electron/pull/95
+* Patch app name during development by @simonhamp in https://github.com/NativePHP/electron/pull/96
+* Bump dependabot/fetch-metadata from 2.1.0 to 2.2.0 by @dependabot in https://github.com/NativePHP/electron/pull/99
+* Fixed missing import of select() function from Laravel Prompts by @rinodrummer in https://github.com/NativePHP/electron/pull/98
+* Fix to issue nativephp/laravel #318 + General cleanup and DRYied Publish command by @Rudeisnice in https://github.com/NativePHP/electron/pull/97
+
+### New Contributors
+
+* @rinodrummer made their first contribution in https://github.com/NativePHP/electron/pull/98
+
+**Full Changelog**: https://github.com/NativePHP/electron/compare/0.6.3...0.6.4
+
 ## 0.6.3 - 2024-05-06
 
 ### What's Changed
