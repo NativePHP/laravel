@@ -1,6 +1,6 @@
 name: Bug Report
 description: |
-    Found a bug in NativePHP? Before submitting your report, please make sure you've been through the section "[Debugging](https://nativephp.com/docs/getting-started/debugging)" on nativephp.com
+    Found a bug in NativePHP? Before submitting your report, please make sure you've been through the section "Debugging" in the docs: https://nativephp.com/docs/getting-started/debugging.
 labels: ["bug"]
 body:
     - type: markdown
