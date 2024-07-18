@@ -2,6 +2,23 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 0.5.3 - 2024-07-18
+
+### What's Changed
+
+* Add the reload() method to the WindowManager by @shomisha in https://github.com/NativePHP/laravel/pull/294
+* Add `trafficLightPosition()` method on Window by @sarukomine in https://github.com/NativePHP/laravel/pull/310
+* Add a new `System::timezone` helper to detect and normalise system time zone data
+* Fix `native:migrate:fresh` so that it behaves more like Laravel's `migrate:fresh` (e.g. you can use seeders etc)
+* Bump dependabot/fetch-metadata from 2.1.0 to 2.2.0 by @dependabot in https://github.com/NativePHP/laravel/pull/333
+
+### New Contributors
+
+* @shomisha made their first contribution in https://github.com/NativePHP/laravel/pull/294
+* @sarukomine made their first contribution in https://github.com/NativePHP/laravel/pull/310
+
+**Full Changelog**: https://github.com/NativePHP/laravel/compare/0.5.2...0.5.3
+
 ## 0.5.2 - 2024-05-02
 
 ### What's Changed
