@@ -32,6 +32,7 @@ if (isDarwin) {
 
 let updaterConfig = {};
 
+// We wouldn't need these since its not representing the target platform
 console.log("Arch: ", process.arch)
 console.log("Platform: ", process.platform)
 try {
@@ -107,10 +108,9 @@ if (isBuilding) {
         console.log(join(process.env.APP_PATH, 'dist'));
         console.log('=====================');
 
-        // We'll use the default PHP binary here, as we can cross-compile for all platforms
-        const phpBinary = join(process.env.APP_PATH, 'vendor', 'nativephp', 'electron', 'resources', 'js', 'resources', 'php', 'php');
         const artisanPath = join(appPath, 'artisan');
-        execSync(`${phpBinary} ${artisanPath} native:minify ${appPath}`);
+        // We'll use the default PATH PHP binary here, as we can cross-compile for all platforms. This shouldn't be changed.
+        execSync(`php ${artisanPath} native:minify ${appPath}`);
     } catch (e) {
         console.error('=====================');
         console.error('Error copying app to resources');
