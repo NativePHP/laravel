@@ -19,6 +19,6 @@ class FreshCommand extends BaseFreshCommand
 
         $nativeServiceProvider->rewriteDatabase();
 
-        $this->call('native:migrate');
+        return parent::handle();
     }
 }
