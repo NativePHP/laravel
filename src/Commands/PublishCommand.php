@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Str;
 use Native\Electron\Concerns\LocatesPhpBinary;
 use Native\Electron\Facades\Updater;
+use function Laravel\Prompts\select;
 
 class PublishCommand extends Command
 {
