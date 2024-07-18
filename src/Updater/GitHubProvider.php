@@ -6,9 +6,7 @@ use Native\Electron\Updater\Contracts\Updater;
 
 class GitHubProvider implements Updater
 {
-    public function __construct(protected array $config)
-    {
-    }
+    public function __construct(protected array $config) {}
 
     public function environmentVariables(): array
     {
