@@ -7,9 +7,9 @@ use Native\Laravel\NativeServiceProvider;
 
 class FreshCommand extends BaseFreshCommand
 {
-    protected $description = 'Drop all tables and re-run all migrations in the NativePHP development environment';
+    protected $name = 'native:migrate:fresh';
 
-    protected $signature = 'native:migrate:fresh';
+    protected $description = 'Drop all tables and re-run all migrations in the NativePHP development environment';
 
     public function handle()
     {
