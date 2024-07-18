@@ -7,8 +7,6 @@ use Illuminate\Support\Facades\Artisan;
 use Native\Electron\Concerns\LocatesPhpBinary;
 use Native\Electron\Traits\OsAndArch;
 
-use function Laravel\Prompts\select;
-
 class PublishCommand extends Command
 {
     use LocatesPhpBinary;
@@ -17,7 +15,6 @@ class PublishCommand extends Command
     protected $signature = 'native:publish
         {os? : The operating system to build for (linux, mac, win)}
         {arch? : The Processor Architecture to build for (x64, x86, arm64)}';
-
 
     protected array $availableOs = ['win', 'linux', 'mac'];
 
@@ -29,6 +26,6 @@ class PublishCommand extends Command
 
         $arch = $this->selectArchitectureForOs($os, $this->argument('arch'));
 
-        Artisan::call("native:build", ['os'=>$os, 'arch' => $arch, '--publish' => true], $this->output);
+        Artisan::call('native:build', ['os' => $os, 'arch' => $arch, '--publish' => true], $this->output);
     }
 }

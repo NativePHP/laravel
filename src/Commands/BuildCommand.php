@@ -44,15 +44,14 @@ class BuildCommand extends Command
         if ($os != 'all') {
             $arch = $this->selectArchitectureForOs($os, $this->argument('arch'));
 
-            $os .= $arch != 'all' ? "-{$arch}": '';
+            $os .= $arch != 'all' ? "-{$arch}" : '';
 
             // Wether to publish the app or not
-            if ($publish = ($this->option('publish'))){
+            if ($publish = ($this->option('publish'))) {
                 $buildCommand = 'publish';
             }
         }
-        $this->info((($publish ?? false) ? "Publishing" : 'Building') . " for {$os}");
-
+        $this->info((($publish ?? false) ? 'Publishing' : 'Building')." for {$os}");
 
         Process::path(__DIR__.'/../../resources/js/')
             ->env($this->getEnvironmentVariables())
@@ -83,5 +82,4 @@ class BuildCommand extends Command
             Updater::environmentVariables(),
         );
     }
-
 }
