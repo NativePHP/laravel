@@ -2,6 +2,18 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 0.6.5 - 2024-07-23
+
+### What's Changed
+
+* fix: add missing platform.arch for Linux and Windows by @martinpl in https://github.com/NativePHP/electron/pull/100
+
+### New Contributors
+
+* @martinpl made their first contribution in https://github.com/NativePHP/electron/pull/100
+
+**Full Changelog**: https://github.com/NativePHP/electron/compare/0.6.4...0.6.5
+
 ## 0.6.4 - 2024-07-18
 
 ### What's Changed
