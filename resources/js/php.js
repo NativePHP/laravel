@@ -26,10 +26,12 @@ const platform = {
 if (isWindows) {
     platform.os = 'win';
     platform.phpBinary += '.exe';
+    platform.arch = 'x64';
 }
 
 if (isLinux) {
     platform.os = 'linux';
+    platform.arch = 'x64';
 }
 
 if (isDarwin) {
