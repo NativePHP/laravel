@@ -17,6 +17,8 @@ class Window
 
     protected bool $fullscreen = false;
 
+    protected bool $fullscreenable = true;
+
     protected bool $kiosk = false;
 
     protected $rememberState = false;
@@ -209,6 +211,13 @@ class Window
         return $this;
     }
 
+    public function fullscreenable($fullscreenable = true): static
+    {
+        $this->fullscreenable = $fullscreenable;
+
+        return $this;
+    }
+
     public function kiosk($kiosk = false): static
     {
         $this->kiosk = $kiosk;
@@ -247,6 +256,7 @@ class Window
             'closable' => $this->closable,
             'title' => $this->title,
             'fullscreen' => $this->fullscreen,
+            'fullscreenable' => $this->fullscreenable,
             'kiosk' => $this->kiosk,
             'autoHideMenuBar' => $this->autoHideMenuBar,
         ];
