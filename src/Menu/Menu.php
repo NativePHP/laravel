@@ -25,7 +25,7 @@ class Menu implements MenuItem
 
     public static function new(): static
     {
-        return new static(new Client());
+        return new static(new Client);
     }
 
     public function register(): void
@@ -51,7 +51,7 @@ class Menu implements MenuItem
 
     public function separator(): static
     {
-        return $this->add(new Separator());
+        return $this->add(new Separator);
     }
 
     public function quit(): static

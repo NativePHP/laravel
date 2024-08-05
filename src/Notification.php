@@ -16,7 +16,7 @@ class Notification
 
     public static function new()
     {
-        return new static(new Client());
+        return new static(new Client);
     }
 
     public function title(string $title): self

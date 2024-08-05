@@ -26,7 +26,7 @@ class MinifyApplicationCommand extends Command
         $this->cleanUpEnvFile($appPath);
         $this->removeIgnoredFilesAndFolders($appPath);
 
-        $compactor = new Php();
+        $compactor = new Php;
 
         $phpFiles = Finder::create()
             ->files()

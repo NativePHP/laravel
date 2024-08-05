@@ -58,7 +58,7 @@ class System
 
     public function timezone(): string
     {
-        $timezones = new Timezones();
+        $timezones = new Timezones;
 
         if (PHP_OS_FAMILY === 'Windows') {
             $timezone = $timezones->translateFromWindowsString(exec('tzutil /g'));
