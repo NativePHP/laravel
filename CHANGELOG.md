@@ -2,6 +2,12 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 0.7.0 - 2024-08-06
+
+Update the NPM dependencies
+
+**Full Changelog**: https://github.com/NativePHP/electron/compare/0.6.5...0.7.0
+
 ## 0.6.5 - 2024-07-23
 
 ### What's Changed
