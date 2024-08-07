@@ -204,7 +204,7 @@ class Window
         return $this;
     }
 
-    public function fullscreen($fullscreen = false): static
+    public function fullscreen($fullscreen = true): static
     {
         $this->fullscreen = $fullscreen;
 
