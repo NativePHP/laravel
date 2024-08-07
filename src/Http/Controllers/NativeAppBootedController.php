@@ -12,7 +12,7 @@ class NativeAppBootedController
         $provider = app(config('nativephp.provider'));
         $provider->boot();
 
-        event(new ApplicationBooted());
+        event(new ApplicationBooted);
 
         return response()->json([
             'success' => true,

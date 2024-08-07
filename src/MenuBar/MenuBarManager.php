@@ -11,7 +11,7 @@ class MenuBarManager
 
     public function create()
     {
-        return (new PendingCreateMenuBar())->setClient($this->client);
+        return (new PendingCreateMenuBar)->setClient($this->client);
     }
 
     public function show()

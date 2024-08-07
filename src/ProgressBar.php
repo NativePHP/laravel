@@ -20,7 +20,7 @@ class ProgressBar
 
     public static function create(int $maxSteps): static
     {
-        return new static($maxSteps, new Client());
+        return new static($maxSteps, new Client);
     }
 
     public function start()
