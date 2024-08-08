@@ -35,7 +35,7 @@ body:
       id: package-version
       attributes:
           label: Package Versions
-          description: What versions of the NativePHP packages are you running? Output of `composer show nativephp/* --format=json`
+          description: What versions of the NativePHP packages are you running? Output of `composer show "nativephp/*" --format=json`
       validations:
           required: true
     - type: input
