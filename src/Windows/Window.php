@@ -6,6 +6,7 @@ use Native\Laravel\Client\Client;
 use Native\Laravel\Concerns\HasDimensions;
 use Native\Laravel\Concerns\HasUrl;
 use Native\Laravel\Concerns\HasVibrancy;
+use Native\Laravel\Facades\Window as WindowFacade;
 
 class Window
 {
@@ -52,6 +53,8 @@ class Window
     protected string $id = 'main';
 
     protected Client $client;
+
+    protected array $afterOpenCallbacks = [];
 
     public function __construct(string $id)
     {
@@ -181,6 +184,16 @@ class Window
         return $this;
     }
 
+    public function minimized(): static
+    {
+        $this->afterOpen(fn () => WindowFacade::minimize($this->id));
+    }
+
+    public function maximized(): static
+    {
+        $this->afterOpen(fn () => WindowFacade::maximize($this->id));
+    }
+
     public function closable($closable = true): static
     {
         $this->closable = $closable;
@@ -260,5 +273,12 @@ class Window
             'kiosk' => $this->kiosk,
             'autoHideMenuBar' => $this->autoHideMenuBar,
         ];
+    }
+
+    public function afterOpen(callable $cb): static
+    {
+        $this->afterOpenCallbacks[] = $cb;
+
+        return $this;
     }
 }
