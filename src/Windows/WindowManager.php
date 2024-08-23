@@ -69,6 +69,13 @@ class WindowManager
         ]);
     }
 
+    public function minimize($id = null): void
+    {
+        $this->client->post('window/minimize', [
+            'id' => $id ?? $this->detectId(),
+        ]);
+    }
+
     public function reload($id = null): void
     {
         $this->client->post('window/reload', [
