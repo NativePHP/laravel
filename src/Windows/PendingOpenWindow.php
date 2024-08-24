@@ -12,5 +12,9 @@ class PendingOpenWindow extends Window
     protected function open(): void
     {
         $this->client->post('window/open', $this->toArray());
+
+        foreach ($this->afterOpenCallbacks as $cb) {
+            $cb($this);
+        }
     }
 }
