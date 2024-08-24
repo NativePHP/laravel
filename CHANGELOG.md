@@ -2,6 +2,20 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 0.5.4 - 2024-08-24
+
+### What's Changed
+
+* Add fullscreenable support by @simonhamp in https://github.com/NativePHP/laravel/pull/340
+* Implemented minimizing by @RobertWesner in https://github.com/NativePHP/laravel/pull/347
+* Fluent API for opening windows maximized/minimized by @simonhamp in https://github.com/NativePHP/laravel/pull/349
+
+### New Contributors
+
+* @RobertWesner made their first contribution in https://github.com/NativePHP/laravel/pull/347
+
+**Full Changelog**: https://github.com/NativePHP/laravel/compare/0.5.3...0.5.4
+
 ## 0.5.3 - 2024-07-18
 
 ### What's Changed
