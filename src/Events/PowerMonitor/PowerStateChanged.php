@@ -15,7 +15,8 @@ class PowerStateChanged implements ShouldBroadcastNow
 
     public PowerStatesEnum $state;
 
-    public function __construct(string $state) {
+    public function __construct(string $state)
+    {
         $this->state = PowerStatesEnum::from($state);
     }
 

@@ -14,7 +14,8 @@ class SpeedLimitChanged implements ShouldBroadcastNow
 
     public int $limit;
 
-    public function __construct(string $limit) {
+    public function __construct(string $limit)
+    {
         $this->limit = (int) $limit;
     }
 

@@ -15,7 +15,8 @@ class ThermalStateChanged implements ShouldBroadcastNow
 
     public ThermalStatesEnum $state;
 
-    public function __construct(string $state) {
+    public function __construct(string $state)
+    {
         $this->state = ThermalStatesEnum::from($state);
     }
 
