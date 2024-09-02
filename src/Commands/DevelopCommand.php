@@ -5,13 +5,14 @@ namespace Native\Electron\Commands;
 use Illuminate\Console\Command;
 use Native\Electron\Traits\Developer;
 use Native\Electron\Traits\Installer;
+use Native\Electron\Traits\InstallsAppIcon;
 
 use function Laravel\Prompts\intro;
 use function Laravel\Prompts\note;
 
 class DevelopCommand extends Command
 {
-    use Developer, Installer;
+    use Developer, Installer, InstallsAppIcon;
 
     protected $signature = 'native:serve {--no-queue} {--D|no-dependencies} {--installer=npm}';
 
@@ -35,6 +36,8 @@ class DevelopCommand extends Command
         }
 
         $this->patchPackageJson();
+
+        $this->installIcon();
 
         $this->runDeveloper(installer: $this->option('installer'), skip_queue: $this->option('no-queue'));
     }

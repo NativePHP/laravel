@@ -7,10 +7,12 @@ use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Str;
 use Native\Electron\Concerns\LocatesPhpBinary;
 use Native\Electron\Facades\Updater;
+use Native\Electron\Traits\InstallsAppIcon;
 use Native\Electron\Traits\OsAndArch;
 
 class BuildCommand extends Command
 {
+    use InstallsAppIcon;
     use LocatesPhpBinary;
     use OsAndArch;
 
@@ -40,13 +42,15 @@ class BuildCommand extends Command
         // Added checks for correct input for os and arch
         $os = $this->selectOs($this->argument('os'));
 
+        $this->installIcon();
+
         $buildCommand = 'build';
         if ($os != 'all') {
             $arch = $this->selectArchitectureForOs($os, $this->argument('arch'));
 
             $os .= $arch != 'all' ? "-{$arch}" : '';
 
-            // Wether to publish the app or not
+            // Should we publish?
             if ($publish = ($this->option('publish'))) {
                 $buildCommand = 'publish';
             }
