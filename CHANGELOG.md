@@ -2,6 +2,15 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 0.5.5 - 2024-09-02
+
+### What's Changed
+
+* Battery/AC power, plus more by @danjohnson95 in https://github.com/NativePHP/laravel/pull/355
+* Safe storage by @simonhamp in https://github.com/NativePHP/laravel/pull/357
+
+**Full Changelog**: https://github.com/NativePHP/laravel/compare/0.5.4...0.5.5
+
 ## 0.5.4 - 2024-08-24
 
 ### What's Changed
