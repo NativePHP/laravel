@@ -22,6 +22,25 @@ class System
         ])->successful();
     }
 
+    public function canEncrypt(): bool
+    {
+        return $this->client->get('system/can-encrypt')->json('result');
+    }
+
+    public function encrypt(string $string): ?string
+    {
+        return $this->client->post('system/encrypt', [
+            'string' => $string,
+        ])->json('result');
+    }
+
+    public function decrypt(string $string): ?string
+    {
+        return $this->client->post('system/decrypt', [
+            'string' => $string,
+        ])->json('result');
+    }
+
     /**
      * @return array<\Native\Laravel\DataObjects\Printer>
      */
