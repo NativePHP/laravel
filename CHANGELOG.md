@@ -2,6 +2,14 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 0.7.1 - 2024-09-02
+
+### What's Changed
+
+* App Icon version 2 by @simonhamp in https://github.com/NativePHP/electron/pull/103
+
+**Full Changelog**: https://github.com/NativePHP/electron/compare/0.7.0...0.7.1
+
 ## 0.7.0 - 2024-08-06
 
 Update the NPM dependencies
