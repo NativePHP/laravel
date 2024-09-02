@@ -27,16 +27,16 @@ class System
         return $this->client->get('system/can-encrypt')->json('result');
     }
 
-    public function encrypt(string $string): string
+    public function encrypt(string $string): ?string
     {
-        $this->client->post('system/encrypt', [
+        return $this->client->post('system/encrypt', [
             'string' => $string,
         ])->json('result');
     }
 
-    public function decrypt(string $string): string
+    public function decrypt(string $string): ?string
     {
-        $this->client->post('system/decrypt', [
+        return $this->client->post('system/decrypt', [
             'string' => $string,
         ])->json('result');
     }
