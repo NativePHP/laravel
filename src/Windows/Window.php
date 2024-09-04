@@ -186,12 +186,12 @@ class Window
 
     public function minimized(): static
     {
-        $this->afterOpen(fn () => WindowFacade::minimize($this->id));
+        return $this->afterOpen(fn () => WindowFacade::minimize($this->id));
     }
 
     public function maximized(): static
     {
-        $this->afterOpen(fn () => WindowFacade::maximize($this->id));
+        return $this->afterOpen(fn () => WindowFacade::maximize($this->id));
     }
 
     public function closable($closable = true): static
