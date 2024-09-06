@@ -1,8 +1,12 @@
 <?php
 
 use Native\Laravel\Facades\Window;
+use Native\Laravel\Windows\Window as WindowClass;
 
 it('test window', function () {
+    Window::shouldReceive('open')
+        ->andReturn(new WindowClass('main'));
+
     $window = Window::open()
         ->id('main')
         ->title('milwad')
@@ -38,12 +42,15 @@ it('test window', function () {
     expect($windowArray['minimizable'])->toBeTrue();
     expect($windowArray['maximizable'])->toBeTrue();
     expect($windowArray['closable'])->toBeTrue();
-    expect($windowArray['fullscreen'])->toBeFalse();
+    expect($windowArray['fullscreen'])->toBeTrue();
     expect($windowArray['kiosk'])->toBeFalse();
     expect($windowArray['autoHideMenuBar'])->toBeTrue();
 });
 
 it('test title bar for window', function () {
+    Window::shouldReceive('open')
+        ->andReturn(new WindowClass('main'));
+
     $window = Window::open()
         ->titleBarHidden();
 
@@ -59,6 +66,9 @@ it('test title bar for window', function () {
 });
 
 it('test for trafficLightPosition in window', function () {
+    Window::shouldReceive('open')
+        ->andReturn(new WindowClass('main'));
+
     $window = Window::open()
         ->trafficLightPosition(10, 10);
 
@@ -78,10 +88,13 @@ it('test for trafficLightPosition in window', function () {
 });
 
 it('test for invisibleFrameless in window', function () {
+    Window::shouldReceive('open')
+        ->andReturn(new WindowClass('main'));
+
     $window = Window::open()->invisibleFrameless();
     $windowArray = $window->toArray();
 
-    expect($windowArray['frame'])->toBeTrue();
+    expect($windowArray['frame'])->toBeFalse();
     expect($windowArray['transparent'])->toBeTrue();
     expect($windowArray['focusable'])->toBeFalse();
     expect($windowArray['hasShadow'])->toBeFalse();
