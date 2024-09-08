@@ -10,6 +10,7 @@ const fileName = process.env.NATIVEPHP_APP_FILENAME;
 const appVersion = process.env.NATIVEPHP_APP_VERSION;
 const appUrl = process.env.APP_URL;
 const appAuthor = process.env.NATIVEPHP_APP_AUTHOR;
+const deepLinkProtocol = process.env.NATIVEPHP_DEEPLINK_SCHEME;
 
 // Since we do not copy the php executable here, we only need these for building
 const isWindows = process.argv.includes('--win');
@@ -119,8 +120,6 @@ if (isBuilding) {
     }
 
 }
-
-const deepLinkProtocol = 'nativephp';
 
 module.exports = {
     appId: appId,

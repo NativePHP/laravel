@@ -82,6 +82,7 @@ class BuildCommand extends Command
                 'NATIVEPHP_APP_FILENAME' => Str::slug(config('app.name')),
                 'NATIVEPHP_APP_AUTHOR' => config('nativephp.author'),
                 'NATIVEPHP_UPDATER_CONFIG' => json_encode(Updater::builderOptions()),
+                'NATIVEPHP_DEEPLINK_SCHEME' => config('nativephp.deeplink_scheme'),
             ],
             Updater::environmentVariables(),
         );
