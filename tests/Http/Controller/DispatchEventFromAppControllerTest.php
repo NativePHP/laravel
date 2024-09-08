@@ -19,15 +19,16 @@ it('dispatches an event', function () {
     Event::assertDispatched(TestEvent::class);
 });
 
-it('dispatches no event in case it does not exist', function () {
+// Since 45b7ccfcb86ebf35be35c1eb7fbb9f05a224448f nonexistent classes are handled as string events
+it('dispatches a string event', function () {
     Event::fake();
 
     $this->withoutMiddleware()
         ->post('_native/api/events', [
-            'event' => InvalidEvent::class,
+            'event' => 'some-event-that-is-no-class',
         ]);
 
-    Event::assertNotDispatched(InvalidEvent::class);
+    Event::assertDispatched('some-event-that-is-no-class');
 });
 
 it('passes the payload to the event', function () {

@@ -272,6 +272,7 @@ class Window
             'fullscreenable' => $this->fullscreenable,
             'kiosk' => $this->kiosk,
             'autoHideMenuBar' => $this->autoHideMenuBar,
+            'transparent' => $this->transparent,
         ];
     }
 
