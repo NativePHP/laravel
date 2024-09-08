@@ -18,8 +18,8 @@ jobs:
         stability: [prefer-lowest, prefer-stable]
         include:
           - laravel: 10.*
-            testbench: 8.*
-            carbon: ^2.63
+            testbench: ^8.18
+            carbon: ^2.67
 
     name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }} - ${{ matrix.os }}
 
@@ -42,10 +42,18 @@ jobs:
       - name: Install dependencies
         run: |
           composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "nesbot/carbon:${{ matrix.carbon }}" --no-interaction --no-update
-          composer update --${{ matrix.stability }} --prefer-dist --no-interaction
+          composer update --${{ matrix.stability }} --no-interaction
 
       - name: List Installed Dependencies
         run: composer show -D
 
-      - name: Execute tests
+      - name: Show pest version
+        run: vendor/bin/pest --version
+
+      - name: Execute tests on Linux
+        if: matrix.os == 'ubuntu-latest'
+        run: Xvfb :99 & DISPLAY=:99 vendor/bin/pest
+
+      - name: Execute tests on Windows
+        if: matrix.os == 'windows-latest'
         run: vendor/bin/pest

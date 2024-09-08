@@ -16,6 +16,6 @@ class TestCase extends Orchestra
     {
         parent::setUp();
 
-        Artisan::call('native:install', ['--force' => true]);
+        Artisan::call('native:install', ['--force' => true, '--no-interaction' => true]);
     }
 }
