@@ -2,6 +2,15 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 0.5.6 - 2024-09-09
+
+### What's Changed
+
+* Fix chainable by @simonhamp in https://github.com/NativePHP/laravel/pull/360
+* Fixed Tests by @RobertWesner in https://github.com/NativePHP/laravel/pull/362
+
+**Full Changelog**: https://github.com/NativePHP/laravel/compare/0.5.5...0.5.6
+
 ## 0.5.5 - 2024-09-02
 
 ### What's Changed
