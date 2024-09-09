@@ -18,6 +18,15 @@ Check out the [Getting Started](https://nativephp.com/docs/1/getting-started/int
 - [Application Lifecycle](https://nativephp.com/docs/1/the-basics/app-lifecycle)
 - [Contributing Guide](https://github.com/NativePHP/laravel/blob/main/CONTRIBUTING.md)
 
+## Sponsors
+
+Thanks to the following sponsors for funding NativePHP development. Please consider [sponsoring](https://github.com/sponsors/simonhamp).
+
+[BeyondCode](https://beyondco.de/?utm_source=nativephp-docs&utm_medium=logo&utm_campaign=nativephp) - Connecting the best Laravel Developers with the best Laravel Teams.  
+[Laradir](https://laradir.com/?ref=nativephp-docs) - Connecting the best Laravel Developers with the best Laravel Teams.  
+[RedGalaxy](https://www.redgalaxy.co.uk) - A web application development studio based in Cambridgeshire, building solutions to help businesses improve efficiency and profitability.  
+[Sevalla](https://sevalla.com/?utm_source=nativephp&utm_medium=Referral&utm_campaign=homepage) - Host and manage your applications, databases, and static sites in a single, intuitive platform.  
+
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
