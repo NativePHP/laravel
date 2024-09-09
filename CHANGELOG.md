@@ -2,6 +2,23 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 0.7.2 - 2024-09-09
+
+### What's Changed
+
+* Updated php-bin dependencies to ^0.5 by @SRWieZ in https://github.com/NativePHP/electron/pull/107
+* Fixed Tests by @RobertWesner in https://github.com/NativePHP/electron/pull/104
+* Customizable deeplink scheme by @simonhamp in https://github.com/NativePHP/electron/pull/105
+* Add environment variable for php bin directory. by @kisuka in https://github.com/NativePHP/electron/pull/101
+
+### New Contributors
+
+* @SRWieZ made their first contribution in https://github.com/NativePHP/electron/pull/107
+* @RobertWesner made their first contribution in https://github.com/NativePHP/electron/pull/104
+* @kisuka made their first contribution in https://github.com/NativePHP/electron/pull/101
+
+**Full Changelog**: https://github.com/NativePHP/electron/compare/0.7.1...0.7.2
+
 ## 0.7.1 - 2024-09-02
 
 ### What's Changed
