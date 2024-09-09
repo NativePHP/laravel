@@ -25,7 +25,10 @@ class EventWatcher
                 return;
             }
 
-            $this->client->post('debug/broadcast', ['event' => $event]);
+            $this->client->post('broadcast', [
+                'event' => $eventName,
+                'payload' => $event
+            ]);
         });
     }
 }
