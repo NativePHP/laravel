@@ -11,6 +11,7 @@ use Native\Laravel\Commands\MigrateCommand;
 use Native\Laravel\Commands\MinifyApplicationCommand;
 use Native\Laravel\Commands\SeedDatabaseCommand;
 use Native\Laravel\Logging\LogWatcher;
+use Native\Laravel\Events\EventWatcher;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -60,6 +61,8 @@ class NativeServiceProvider extends PackageServiceProvider
         if (config('app.debug')) {
             app(LogWatcher::class)->register();
         }
+
+        app(EventWatcher::class)->register();
 
         $this->rewriteStoragePath();
 
