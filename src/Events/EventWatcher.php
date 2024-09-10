@@ -22,18 +22,18 @@ class EventWatcher
             $channels = $event->broadcastOn();
 
             // Only events dispatched on the nativephp channel
-            if(! in_array('nativephp', $channels)) {
+            if (! in_array('nativephp', $channels)) {
                 return;
             }
 
             // Only post custom events to broadcasting endpoint
-            if(str_starts_with($eventName ,'Native\\Laravel\\Events')) {
+            if (str_starts_with($eventName, 'Native\\Laravel\\Events')) {
                 return;
             }
 
             $this->client->post('broadcast', [
                 'event' => "\\{$eventName}",
-                'payload' => $event
+                'payload' => $event,
             ]);
         });
     }

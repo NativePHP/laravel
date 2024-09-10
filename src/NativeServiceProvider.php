@@ -10,8 +10,8 @@ use Native\Laravel\Commands\LoadStartupConfigurationCommand;
 use Native\Laravel\Commands\MigrateCommand;
 use Native\Laravel\Commands\MinifyApplicationCommand;
 use Native\Laravel\Commands\SeedDatabaseCommand;
-use Native\Laravel\Logging\LogWatcher;
 use Native\Laravel\Events\EventWatcher;
+use Native\Laravel\Logging\LogWatcher;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
