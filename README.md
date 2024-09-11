@@ -22,7 +22,7 @@ Check out the [Getting Started](https://nativephp.com/docs/1/getting-started/int
 
 Thanks to the following sponsors for funding NativePHP development. Please consider [sponsoring](https://github.com/sponsors/simonhamp).
 
-- [BeyondCode](https://beyondco.de/?utm_source=nativephp-docs&utm_medium=logo&utm_campaign=nativephp) - Connecting the best Laravel Developers with the best Laravel Teams.
+- [BeyondCode](https://beyondco.de/?utm_source=nativephp-docs&utm_medium=logo&utm_campaign=nativephp) - Essential tools for web developers.
 - [Laradir](https://laradir.com/?ref=nativephp-docs) - Connecting the best Laravel Developers with the best Laravel Teams.
 - [RedGalaxy](https://www.redgalaxy.co.uk) - A web application development studio based in Cambridgeshire, building solutions to help businesses improve efficiency and profitability.
 - [Sevalla](https://sevalla.com/?utm_source=nativephp&utm_medium=Referral&utm_campaign=homepage) - Host and manage your applications, databases, and static sites in a single, intuitive platform.
