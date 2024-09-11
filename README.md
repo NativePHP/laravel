@@ -26,7 +26,7 @@ Thanks to the following sponsors for funding NativePHP development. Please consi
 - [Laradir](https://laradir.com/?ref=nativephp-docs) - Connecting the best Laravel Developers with the best Laravel Teams.
 - [RedGalaxy](https://www.redgalaxy.co.uk) - A web application development studio based in Cambridgeshire, building solutions to help businesses improve efficiency and profitability.
 - [Sevalla](https://sevalla.com/?utm_source=nativephp&utm_medium=Referral&utm_campaign=homepage) - Host and manage your applications, databases, and static sites in a single, intuitive platform.
-- [serverauth](https://serverauth.com) - Website Deployment & Server Management, made simple!
+- [ServerAuth](https://serverauth.com) - Website Deployment & Server Management, made simple!
 
 ## Changelog
 
