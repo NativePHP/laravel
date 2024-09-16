@@ -2,6 +2,18 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 0.5.7 - 2024-09-16
+
+### What's Changed
+
+* Feature: Broadcast custom Events on IPC by @gwleuverink in https://github.com/NativePHP/laravel/pull/367
+
+### New Contributors
+
+* @gwleuverink made their first contribution in https://github.com/NativePHP/laravel/pull/367
+
+**Full Changelog**: https://github.com/NativePHP/laravel/compare/0.5.6...0.5.7
+
 ## 0.5.6 - 2024-09-09
 
 ### What's Changed
