@@ -20,7 +20,7 @@ Check out the [Getting Started](https://nativephp.com/docs/1/getting-started/int
 
 ## Sponsors
 
-Thanks to the following sponsors for funding NativePHP development. Please consider [sponsoring](https://github.com/sponsors/simonhamp).
+Thanks to the following sponsors for funding NativePHP development. Please consider [sponsoring](https://nativephp.com/docs/getting-started/sponsoring).
 
 - [BeyondCode](https://beyondco.de/?utm_source=nativephp-docs&utm_medium=logo&utm_campaign=nativephp) - Essential tools for web developers.
 - [Laradir](https://laradir.com/?ref=nativephp-docs) - Connecting the best Laravel Developers with the best Laravel Teams.
