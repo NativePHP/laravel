@@ -12,6 +12,10 @@
         {
             "type": "github",
             "url": "https://github.com/sponsors/simonhamp"
+        },
+        {
+            "type": "opencollective",
+            "url": "https://opencollective.com/nativephp"
         }
     ],
     "authors": [
