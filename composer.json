@@ -10,6 +10,10 @@
         {
             "type": "github",
             "url": "https://github.com/sponsors/simonhamp"
+        },
+        {
+            "type": "opencollective",
+            "url": "https://opencollective.com/nativephp"
         }
     ],
     "homepage": "https://github.com/nativephp/electron",
