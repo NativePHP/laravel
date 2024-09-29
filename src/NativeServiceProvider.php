@@ -157,6 +157,7 @@ class NativeServiceProvider extends PackageServiceProvider
                 'driver' => 'local',
                 'root' => env($env, ''),
                 'throw' => false,
+                'links' => 'skip', 
             ]]);
         }
     }
