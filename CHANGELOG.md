@@ -2,6 +2,18 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 0.7.4 - 2024-10-16
+
+### What's Changed
+
+* Fix for Laravel Prompts version by @sarukomine in https://github.com/NativePHP/electron/pull/110
+
+### New Contributors
+
+* @sarukomine made their first contribution in https://github.com/NativePHP/electron/pull/110
+
+**Full Changelog**: https://github.com/NativePHP/electron/compare/0.7.3...0.7.4
+
 ## 0.7.3 - 2024-09-27
 
 **Full Changelog**: https://github.com/NativePHP/electron/compare/0.7.2...0.7.3
