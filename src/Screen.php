@@ -18,6 +18,16 @@ class Screen
         return $this->client->get('screen/displays')->json('displays');
     }
 
+    public function primary(): object
+    {
+        return $this->client->get('screen/primary-display')->json('primaryDisplay');
+    }
+
+    public function active(): object
+    {
+        return $this->client->get('screen/active')->json();
+    }
+
     /**
      *  Returns the center of the screen where the mouse pointer is placed.
      *
