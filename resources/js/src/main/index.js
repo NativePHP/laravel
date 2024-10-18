@@ -1,5 +1,5 @@
 import {app} from 'electron'
-import NativePHP from '@nativephp/electron-plugin'
+import NativePHP from '#plugin'
 import path from 'path'
 import defaultIcon from '../../resources/icon.png?asset&asarUnpack'
 import certificate from '../../resources/cacert.pem?asset&asarUnpack'

@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "module": "ES6",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "outDir": "./dist",
+    "sourceMap": false,
+    "target": "ES6",
+    "noImplicitAny": false,
+    "preserveConstEnums": true,
+    "removeComments": true,
+    "typeRoots": [
+      "../node_modules/@types"
+    ],
+    "lib": [
+      "es2019",
+      "dom"
+    ],
+    "types": [
+      "node",
+      "jest",
+      "electron"
+    ]
+  },
+  "include": [
+    "./src/**/*.ts"
+  ]
+}
