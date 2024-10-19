@@ -31,7 +31,7 @@ class Screen
     return $this->client->get("screen/primary-display")->json("primaryDisplay");
   }
 
-  public function active(): object|null|array
+  public function active(): object
   {
     return $this->client->get("screen/active")->json();
   }
