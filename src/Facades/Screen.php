@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Facade;
 /**
  * @method static object cursorPosition()
  * @method static array displays()
+ * @method static array getCenterOfActiveScreen()
  */
 class Screen extends Facade
 {

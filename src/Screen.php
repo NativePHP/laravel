@@ -3,10 +3,15 @@
 namespace Native\Laravel;
 
 use Native\Laravel\Client\Client;
+use Illuminate\Support\Facades\Log;
 
 class Screen
 {
     public function __construct(protected Client $client) {}
+
+    public function getClient() {
+        return $this->client;
+    }
 
     public function cursorPosition(): object
     {
@@ -23,7 +28,7 @@ class Screen
         return $this->client->get('screen/primary-display')->json('primaryDisplay');
     }
 
-    public function active(): object
+    public function active(): object|null
     {
         return $this->client->get('screen/active')->json();
     }
@@ -40,6 +45,10 @@ class Screen
         $screen = $this->displays();
 
         /* Navigate every screen and check for cursor position against the bounds of the screen. */
+        $activeScreen = $this->active();
+        $resp =  $this->client->get('screen/active');
+        Log::debug("activeScreen", [$activeScreen, $resp->body(), $resp->headers(), $resp->status()]);
+
         foreach ($screen as $s) {
             /** @var array $bounds  */
             $bounds = $s['bounds'];
