@@ -8,7 +8,7 @@ class ChildProcessManager
 {
     public function __construct(protected Client $client) {}
 
-    public function start(string $alias, array $cmd, string $cwd = null, array $env = null): object
+    public function start(string $alias, array $cmd, ?string $cwd = null, ?array $env = null): object
     {
         $this->process = $this->client->post('child-process/start')->json([
             'alias' => $alias,
@@ -18,7 +18,5 @@ class ChildProcessManager
         ]);
     }
 
-    public function onMessage() {
-
-    }
+    public function onMessage() {}
 }
