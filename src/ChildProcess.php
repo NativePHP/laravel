@@ -1,6 +1,6 @@
 <?php
 
-namespace Native\Laravel\ChildProcess;
+namespace Native\Laravel;
 
 use Illuminate\Support\Facades\Event;
 use Native\Laravel\Client\Client;
