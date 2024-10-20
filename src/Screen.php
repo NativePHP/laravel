@@ -6,9 +6,7 @@ use Native\Laravel\Client\Client;
 
 class Screen
 {
-    public function __construct(protected Client $client)
-    {
-    }
+    public function __construct(protected Client $client) {}
 
     public function cursorPosition(): object
     {
