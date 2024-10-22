@@ -13,6 +13,6 @@ class ChildProcess extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return \Native\Laravel\ChildProcess\ChildProcess::class;
+        return \Native\Laravel\ChildProcess::class;
     }
 }
