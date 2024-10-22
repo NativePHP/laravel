@@ -11,7 +11,7 @@ class ProcessSpawned implements ShouldBroadcast
 {
     use Dispatchable, SerializesModels;
 
-    public function __construct(public array $item) {}
+    public function __construct(public string $alias) {}
 
     public function broadcastOn()
     {
