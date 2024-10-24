@@ -40,6 +40,8 @@ class Window
 
     protected bool $focusable = true;
 
+    protected bool $focused = false;
+
     protected bool $hasShadow = true;
 
     protected bool $frame = true;
@@ -279,6 +281,15 @@ class Window
     public function afterOpen(callable $cb): static
     {
         $this->afterOpenCallbacks[] = $cb;
+
+        return $this;
+    }
+
+    public function fromRuntimeWindow(object $window): static
+    {
+        foreach ($window as $key => $value) {
+            $this->{$key} = $value;
+        }
 
         return $this;
     }
