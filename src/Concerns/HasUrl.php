@@ -15,7 +15,7 @@ trait HasUrl
 
     public function route(string $route, array $parameters = []): self
     {
-        $this->url = route($route, $parameters);
+        $this->url(route($route, $parameters));
 
         return $this;
     }
