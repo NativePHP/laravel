@@ -13,6 +13,12 @@ trait Developer
         [$installer, $command] = $this->getInstallerAndCommand(installer: $installer, type: 'dev');
 
         note("Running the dev script with {$installer}...");
-        $this->executeCommand(command: $command, skip_queue: $skip_queue, type: 'serve', withoutInteraction: $withoutInteraction);
+
+        $this->executeCommand(
+            command: $command,
+            skip_queue: $skip_queue,
+            type: 'serve',
+            withoutInteraction: $withoutInteraction
+        );
     }
 }

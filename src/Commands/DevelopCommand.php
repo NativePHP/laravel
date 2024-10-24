@@ -25,7 +25,8 @@ class DevelopCommand extends Command
         if (! $this->option('no-dependencies')) {
             $this->installNPMDependencies(
                 force: ! $this->option('no-dependencies'),
-                installer: $this->option('installer')
+                installer: $this->option('installer'),
+                withoutInteraction: $this->option('no-interaction')
             );
         }
 
@@ -39,7 +40,11 @@ class DevelopCommand extends Command
 
         $this->installIcon();
 
-        $this->runDeveloper(installer: $this->option('installer'), skip_queue: $this->option('no-queue'), withoutInteraction: $this->option('no-interaction'));
+        $this->runDeveloper(
+            installer: $this->option('installer'),
+            skip_queue: $this->option('no-queue'),
+            withoutInteraction: $this->option('no-interaction')
+        );
     }
 
     /**
