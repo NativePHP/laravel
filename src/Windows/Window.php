@@ -11,7 +11,9 @@ use Native\Laravel\Facades\Window as WindowFacade;
 class Window
 {
     use HasDimensions;
-    use HasUrl;
+    use HasUrl {
+        HasUrl::url as defaultUrl;
+    }
     use HasVibrancy;
 
     protected bool $autoHideMenuBar = false;
@@ -39,6 +41,8 @@ class Window
     protected bool $closable = true;
 
     protected bool $focusable = true;
+
+    protected bool $focused = false;
 
     protected bool $hasShadow = true;
 
@@ -74,6 +78,27 @@ class Window
     public function title(string $title): self
     {
         $this->title = $title;
+
+        if (! $this instanceof PendingOpenWindow) {
+            $this->client->post('window/title', [
+                'id' => $this->id,
+                'title' => $title,
+            ]);
+        }
+
+        return $this;
+    }
+
+    public function url(string $url)
+    {
+        $this->defaultUrl($url);
+
+        if (! $this instanceof PendingOpenWindow) {
+            $this->client->post('window/url', [
+                'id' => $this->id,
+                'url' => $url,
+            ]);
+        }
 
         return $this;
     }
@@ -231,7 +256,7 @@ class Window
         return $this;
     }
 
-    public function kiosk($kiosk = false): static
+    public function kiosk($kiosk = true): static
     {
         $this->kiosk = $kiosk;
 
@@ -279,6 +304,15 @@ class Window
     public function afterOpen(callable $cb): static
     {
         $this->afterOpenCallbacks[] = $cb;
+
+        return $this;
+    }
+
+    public function fromRuntimeWindow(object $window): static
+    {
+        foreach ($window as $key => $value) {
+            $this->{$key} = $value;
+        }
 
         return $this;
     }
