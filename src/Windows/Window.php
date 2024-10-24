@@ -233,7 +233,7 @@ class Window
         return $this;
     }
 
-    public function kiosk($kiosk = false): static
+    public function kiosk($kiosk = true): static
     {
         $this->kiosk = $kiosk;
 
