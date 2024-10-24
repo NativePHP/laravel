@@ -2,12 +2,7 @@
 
 namespace Native\Laravel;
 
-use Illuminate\Support\Facades\Event;
 use Native\Laravel\Client\Client;
-use Native\Laravel\Events\ChildProcess\ErrorReceived;
-use Native\Laravel\Events\ChildProcess\MessageReceived;
-use Native\Laravel\Events\ChildProcess\ProcessExited;
-use Native\Laravel\Events\ChildProcess\ProcessSpawned;
 
 class ChildProcess
 {
