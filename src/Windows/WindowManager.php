@@ -25,7 +25,7 @@ class WindowManager
 
     public function hide($id = null)
     {
-        return $this->client->post('window/hide', [
+        $this->client->post('window/hide', [
             'id' => $id ?? $this->detectId(),
         ]);
     }
