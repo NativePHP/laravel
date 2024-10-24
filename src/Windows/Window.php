@@ -11,7 +11,9 @@ use Native\Laravel\Facades\Window as WindowFacade;
 class Window
 {
     use HasDimensions;
-    use HasUrl;
+    use HasUrl {
+        HasUrl::url as defaultUrl;
+    }
     use HasVibrancy;
 
     protected bool $autoHideMenuBar = false;
@@ -76,6 +78,27 @@ class Window
     public function title(string $title): self
     {
         $this->title = $title;
+
+        if (! $this instanceof PendingOpenWindow) {
+            $this->client->post('window/title', [
+                'id' => $this->id,
+                'title' => $title,
+            ]);
+        }
+
+        return $this;
+    }
+
+    public function url(string $url)
+    {
+        $this->defaultUrl($url);
+
+        if (! $this instanceof PendingOpenWindow) {
+            $this->client->post('window/url', [
+                'id' => $this->id,
+                'url' => $url,
+            ]);
+        }
 
         return $this;
     }
