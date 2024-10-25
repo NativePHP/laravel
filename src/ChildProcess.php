@@ -16,10 +16,12 @@ class ChildProcess
     {
         $this->alias = $alias;
 
+        $cwd = $cwd ?? base_path();
+
         $this->process = $this->client->post('child-process/start', [
             'alias' => $alias,
             'cmd' => $cmd,
-            'cwd' => base_path(),
+            'cwd' => $cwd,
             'env' => $env,
         ])->json();
 
