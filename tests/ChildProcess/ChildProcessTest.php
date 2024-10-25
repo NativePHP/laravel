@@ -20,7 +20,9 @@ it('can start a child process', function () {
     });
 });
 
-it('can start a artisan command', function () {})->todo();
+it('can start a artisan command')->todo();
+
+it('can mark the process as persistent')->todo();
 
 it('accepts either a string or a array as command input')->todo();
 
