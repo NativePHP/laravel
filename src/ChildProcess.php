@@ -12,11 +12,17 @@ class ChildProcess
 
     public function __construct(protected Client $client) {}
 
-    public function start(string $alias, array $cmd, ?string $cwd = null, ?array $env = null): object
+    public function start(string $alias, string|array $cmd, ?string $cwd = null, ?array $env = null): object
     {
         $this->alias = $alias;
 
         $cwd = $cwd ?? base_path();
+
+        $cmd = is_iterable($cmd)
+            // when an array is passed, escape spaces for each item
+            ? array_map(fn ($a) => str_replace(' ', '\ ', $a), $cmd)
+            // when a string is passed, explode it on the space
+            : array_values(array_filter(explode(' ', $cmd)));
 
         $this->process = $this->client->post('child-process/start', [
             'alias' => $alias,
@@ -28,29 +34,11 @@ class ChildProcess
         return $this;
     }
 
-    public function artisan(string $alias, array $cmd, ?array $env = null): object
+    public function artisan(string $alias, string|array $cmd, ?array $env = null): object
     {
-        $cmd = array_merge([PHP_BINARY, 'artisan'], $cmd);
+        $cmd = [PHP_BINARY, 'artisan', ...(array) $cmd];
 
-        return $this->start(
-            $alias,
-            $cmd,
-            base_path(),
-            $env
-        );
-
-        $this->alias = $alias;
-
-        $cwd = $cwd ?? base_path();
-
-        $this->process = $this->client->post('child-process/start', [
-            'alias' => $alias,
-            'cmd' => $cmd,
-            'cwd' => $cwd,
-            'env' => $env,
-        ])->json();
-
-        return $this;
+        return $this->start($alias, $cmd, env: $env);
     }
 
     public function stop(string $alias): void
