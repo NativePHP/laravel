@@ -28,6 +28,31 @@ class ChildProcess
         return $this;
     }
 
+    public function artisan(string $alias, array $cmd, ?array $env = null): object
+    {
+        $cmd = array_merge([PHP_BINARY, 'artisan'], $cmd);
+
+        return $this->start(
+            $alias,
+            $cmd,
+            base_path(),
+            $env
+        );
+
+        $this->alias = $alias;
+
+        $cwd = $cwd ?? base_path();
+
+        $this->process = $this->client->post('child-process/start', [
+            'alias' => $alias,
+            'cmd' => $cmd,
+            'cwd' => $cwd,
+            'env' => $env,
+        ])->json();
+
+        return $this;
+    }
+
     public function stop(string $alias): void
     {
         $this->client->post('child-process/stop', [

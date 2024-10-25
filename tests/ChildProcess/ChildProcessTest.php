@@ -20,11 +20,23 @@ it('can start a child process', function () {
     });
 });
 
-it('can start a artisan command')->todo();
+it('can start a artisan command', function () {
+    ChildProcess::artisan('some-alias', ['foo:bar'], ['baz' => 'zah']);
+
+    Http::assertSent(function (Request $request) {
+        return $request->url() === 'http://localhost:4000/api/child-process/start' &&
+               $request['alias'] === 'some-alias' &&
+               $request['cmd'] === [PHP_BINARY, 'artisan', 'foo:bar'] &&
+               $request['cwd'] === base_path() &&
+               $request['env'] === ['baz' => 'zah'];
+    });
+});
 
 it('can mark the process as persistent')->todo();
 
-it('accepts either a string or a array as command input')->todo();
+it('start method accepts either a string or a array as command input')->todo();
+
+it('artisan method accepts either a string or a array as command input')->todo();
 
 it('sets the cwd to the base path if none was given', function () {
     ChildProcess::start('some-alias', ['foo', 'bar'], cwd: 'path/to/dir');
