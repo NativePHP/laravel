@@ -12,7 +12,7 @@ class ChildProcess
 
     public function __construct(protected Client $client) {}
 
-    public function start(string $alias, string|array $cmd, ?string $cwd = null, ?array $env = null): object
+    public function start(string $alias, string|array $cmd, ?string $cwd = null, ?array $env = null): self
     {
         $this->alias = $alias;
 
@@ -34,7 +34,7 @@ class ChildProcess
         return $this;
     }
 
-    public function artisan(string $alias, string|array $cmd, ?array $env = null): object
+    public function artisan(string $alias, string|array $cmd, ?array $env = null): self
     {
         $cmd = [PHP_BINARY, 'artisan', ...(array) $cmd];
 
