@@ -79,9 +79,9 @@ class ChildProcess
 
     public function artisan(string|array $cmd, string $alias, ?array $env = null, ?bool $persistent = false): self
     {
-        $cmd = [PHP_BINARY, 'artisan', ...$this->explodeCommand($cmd)];
+        $cmd = ['artisan', ...$this->explodeCommand($cmd)];
 
-        return $this->start($cmd, $alias, env: $env, persistent: $persistent);
+        return $this->php($cmd, $alias, env: $env, persistent: $persistent);
     }
 
     public function stop(?string $alias = null): void
