@@ -20,7 +20,7 @@ class ChildProcess
 
     public function __construct(protected Client $client) {}
 
-    public function get(string $alias = null): ?static
+    public function get(?string $alias = null): ?static
     {
         $alias = $alias ?? $this->alias;
 
@@ -35,7 +35,7 @@ class ChildProcess
 
     public function all(): array
     {
-        $processes = $this->client->get("child-process/")->json();
+        $processes = $this->client->get('child-process/')->json();
 
         if (empty($processes)) {
             return [];
@@ -57,8 +57,7 @@ class ChildProcess
         ?string $cwd = null,
         ?array $env = null,
         bool $persistent = false
-    ): static
-    {
+    ): static {
         $process = $this->client->post('child-process/start', [
             'alias' => $alias,
             'cmd' => $cmd,
@@ -70,14 +69,14 @@ class ChildProcess
         return $this->fromRuntimeProcess($process);
     }
 
-    public function stop(string $alias = null): void
+    public function stop(?string $alias = null): void
     {
         $this->client->post('child-process/stop', [
             'alias' => $alias ?? $this->alias,
         ])->json();
     }
 
-    public function restart(string $alias = null): ?static
+    public function restart(?string $alias = null): ?static
     {
         $process = $this->client->post('child-process/restart', [
             'alias' => $alias ?? $this->alias,
@@ -90,7 +89,7 @@ class ChildProcess
         return $this->fromRuntimeProcess($process);
     }
 
-    public function message(string $message, string $alias = null): static
+    public function message(string $message, ?string $alias = null): static
     {
         $this->client->post('child-process/message', [
             'alias' => $alias ?? $this->alias,
