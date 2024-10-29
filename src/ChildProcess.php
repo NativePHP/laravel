@@ -6,38 +6,110 @@ use Native\Laravel\Client\Client;
 
 class ChildProcess
 {
-    private string $alias;
+    public readonly int $pid;
 
-    private ?array $process;
+    public readonly string $alias;
+
+    public readonly array $cmd;
+
+    public readonly ?string $cwd;
+
+    public readonly ?array $env;
+
+    public readonly bool $persistent;
 
     public function __construct(protected Client $client) {}
 
-    public function start(string $alias, array $cmd, ?string $cwd = null, ?array $env = null): object
+    public function get(string $alias = null): ?static
     {
-        $this->alias = $alias;
+        $alias = $alias ?? $this->alias;
 
-        $this->process = $this->client->post('child-process/start', [
+        $process = $this->client->get("child-process/get/{$alias}")->json();
+
+        if (! $process) {
+            return null;
+        }
+
+        return $this->fromRuntimeProcess($process);
+    }
+
+    public function all(): array
+    {
+        $processes = $this->client->get("child-process/")->json();
+
+        if (empty($processes)) {
+            return [];
+        }
+
+        $hydrated = [];
+
+        foreach ($processes as $alias => $process) {
+            $hydrated[$alias] = (new static($this->client))
+                ->fromRuntimeProcess($process);
+        }
+
+        return $hydrated;
+    }
+
+    public function start(
+        string $alias,
+        array $cmd,
+        ?string $cwd = null,
+        ?array $env = null,
+        bool $persistent = false
+    ): static
+    {
+        $process = $this->client->post('child-process/start', [
             'alias' => $alias,
             'cmd' => $cmd,
             'cwd' => base_path(),
             'env' => $env,
+            'persistent' => $persistent,
+        ])->json();
+
+        return $this->fromRuntimeProcess($process);
+    }
+
+    public function stop(string $alias = null): void
+    {
+        $this->client->post('child-process/stop', [
+            'alias' => $alias ?? $this->alias,
+        ])->json();
+    }
+
+    public function restart(string $alias = null): ?static
+    {
+        $process = $this->client->post('child-process/restart', [
+            'alias' => $alias ?? $this->alias,
+        ])->json();
+
+        if (! $process) {
+            return null;
+        }
+
+        return $this->fromRuntimeProcess($process);
+    }
+
+    public function message(string $message, string $alias = null): static
+    {
+        $this->client->post('child-process/message', [
+            'alias' => $alias ?? $this->alias,
+            'message' => $message,
         ])->json();
 
         return $this;
     }
 
-    public function stop(string $alias): void
+    private function fromRuntimeProcess($process): static
     {
-        $this->client->post('child-process/stop', [
-            'alias' => $alias,
-        ])->json();
-    }
+        if (isset($process['pid'])) {
+            $this->pid = $process['pid'];
+        }
 
-    public function message(string $alias, mixed $message): void
-    {
-        $this->client->post('child-process/message', [
-            'alias' => $alias,
-            'message' => json_encode($message),
-        ])->json();
+        foreach ($process['settings'] as $key => $value) {
+            $this->{$key} = $value;
+        }
+
+        return $this;
     }
 }

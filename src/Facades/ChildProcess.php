@@ -5,9 +5,12 @@ namespace Native\Laravel\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static string start(string $alias, array $cmd, string $cwd = null, array $env = null)
- * @method static string stop(string $alias)
- * @method static string message(string $alias, mixed $message)
+ * @method static \Native\Laravel\ChildProcess[] all()
+ * @method static \Native\Laravel\ChildProcess get(string $alias)
+ * @method static \Native\Laravel\ChildProcess message(string $message, string $alias = null)
+ * @method static \Native\Laravel\ChildProcess restart(string $alias)
+ * @method static \Native\Laravel\ChildProcess start(string $alias, array $cmd, string $cwd = null, array $env = null, bool $persistent = false)
+ * @method static void stop(string $alias)
  */
 class ChildProcess extends Facade
 {
