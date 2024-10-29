@@ -22,6 +22,7 @@ import settingsRoutes from "./api/settings";
 import shellRoutes from "./api/shell";
 import progressBarRoutes from "./api/progressBar";
 import powerMonitorRoutes from "./api/powerMonitor";
+import childProcessRoutes from "./api/childProcess";
 import { Server } from "net";
 
 export interface APIProcess {
@@ -55,6 +56,7 @@ async function startAPIServer(randomSecret: string): Promise<APIProcess> {
     httpServer.use("/api/menu-bar", menuBarRoutes);
     httpServer.use("/api/progress-bar", progressBarRoutes);
     httpServer.use("/api/power-monitor", powerMonitorRoutes);
+    httpServer.use("/api/child-process", childProcessRoutes);
     httpServer.use("/api/broadcast", broadcastingRoutes);
 
     if (process.env.NODE_ENV === "development") {

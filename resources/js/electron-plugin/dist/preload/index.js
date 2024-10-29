@@ -1,6 +1,16 @@
-import { ipcRenderer } from 'electron';
-import * as remote from '@electron/remote';
-import Native from './native';
+const { contextBridge, ipcRenderer } = require('electron');
+const remote = require('@electron/remote');
+const Native = {
+    on: (event, callback) => {
+        ipcRenderer.on('native-event', (_, data) => {
+            event = event.replace(/^(\\)+/, '');
+            data.event = data.event.replace(/^(\\)+/, '');
+            if (event === data.event) {
+                return callback(data.payload, event);
+            }
+        });
+    }
+};
 window.Native = Native;
 window.remote = remote;
 ipcRenderer.on('log', (event, { level, message, context }) => {

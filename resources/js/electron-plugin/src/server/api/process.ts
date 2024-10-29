@@ -1,6 +1,5 @@
-import express from 'express'
-import {app, Menu} from 'electron'
-import {mapMenu} from "./helper";
+import express from 'express';
+
 const router = express.Router();
 
 router.get('/', (req, res) => {
@@ -10,6 +9,6 @@ router.get('/', (req, res) => {
         arch: process.arch,
         uptime: process.uptime()
     })
-})
+});
 
 export default router;

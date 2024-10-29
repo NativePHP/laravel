@@ -28,7 +28,7 @@
         "build:linux": "cross-env npm run build:linux-x64",
         "build:linux-x64": "cross-env node php.js --linux --x64 && cross-env npm run build && cross-env node ./node_modules/electron-builder/cli.js -p never --linux --config --x64",
         "plugin:build": "node node_modules/typescript/bin/tsc --project electron-plugin",
-        "plugin:build:watch": "npm run build -- -W",
+        "plugin:build:watch": "npm run plugin:build -- -W",
         "plugin:test": "jest --rootDir=electron-plugin --config=electron-plugin/jest.config.js --forceExit --verbose --detectOpenHandles --coverage"
     },
     "dependencies": {

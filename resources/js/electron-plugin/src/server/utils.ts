@@ -12,7 +12,6 @@ export async function appendCookie() {
 }
 
 export async function notifyLaravel(endpoint: string, payload = {}) {
-
   if (endpoint === 'events') {
     broadcastToWindows('native-event', payload);
   }
@@ -33,7 +32,6 @@ export async function notifyLaravel(endpoint: string, payload = {}) {
 }
 
 export function broadcastToWindows(event, payload) {
-
     Object.values(state.windows).forEach(window => {
         window.webContents.send(event, payload);
     })

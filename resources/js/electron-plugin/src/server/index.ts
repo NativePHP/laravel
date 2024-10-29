@@ -1,4 +1,3 @@
-import startWebsockets from "./websockets";
 import startAPIServer, { APIProcess } from "./api";
 import {
   retrieveNativePHPConfig,
@@ -44,4 +43,4 @@ export function startAPI(): Promise<APIProcess> {
   return startAPIServer(state.randomSecret);
 }
 
-export { startWebsockets, retrieveNativePHPConfig, retrievePhpIniSettings };
+export { retrieveNativePHPConfig, retrievePhpIniSettings };

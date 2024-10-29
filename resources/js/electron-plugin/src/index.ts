@@ -10,7 +10,6 @@ import {
   startAPI,
   startPhpApp,
   startQueue,
-  startWebsockets,
 } from "./server";
 import { notifyLaravel } from "./server/utils";
 import { resolve } from "path";
@@ -99,7 +98,6 @@ class NativePHP {
 
     await this.startPhpApp();
     await this.startQueueWorker();
-    await this.startWebsockets();
     this.startScheduler();
 
     await notifyLaravel("booted");
@@ -184,10 +182,6 @@ class NativePHP {
 
   private async startQueueWorker() {
     this.processes.push(await startQueue());
-  }
-
-  private async startWebsockets() {
-    this.processes.push(await startWebsockets());
   }
 
   private startScheduler() {

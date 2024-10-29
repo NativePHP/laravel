@@ -32,6 +32,7 @@ export default {
     icon: null,
     store: settingsStore,
     randomSecret: generateRandomString(32),
+    processes: {},
     windows: {},
     findWindow(id) {
         return this.windows[id] || null;

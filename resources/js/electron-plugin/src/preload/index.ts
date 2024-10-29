@@ -1,7 +1,18 @@
-import { contextBridge, ipcRenderer } from 'electron'
-import * as remote from '@electron/remote'
+const { contextBridge, ipcRenderer } = require('electron')
+const remote = require('@electron/remote')
+const Native = {
+    on: (event, callback) => {
+        ipcRenderer.on('native-event', (_, data) => {
+            // Strip leading slashes
+            event = event.replace(/^(\\)+/, '');
+            data.event = data.event.replace(/^(\\)+/, '');
 
-import Native from './native';
+            if (event === data.event) {
+                return callback(data.payload, event);
+            }
+        })
+    }
+};
 
 // @ts-ignore
 window.Native = Native;

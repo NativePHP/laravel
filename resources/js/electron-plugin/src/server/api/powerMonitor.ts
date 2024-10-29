@@ -45,6 +45,7 @@ powerMonitor.addListener('on-battery', () => {
     });
 })
 
+// @ts-ignore
 powerMonitor.addListener('thermal-state-change', (state: string) => {
     notifyLaravel("events", {
         event: `\\Native\\Laravel\\Events\\PowerMonitor\\ThermalStateChanged`,
@@ -54,6 +55,7 @@ powerMonitor.addListener('thermal-state-change', (state: string) => {
     });
 })
 
+// @ts-ignore
 powerMonitor.addListener('speed-limit-change', (limit: number) => {
     notifyLaravel("events", {
         event: `\\Native\\Laravel\\Events\\PowerMonitor\\SpeedLimitChanged`,

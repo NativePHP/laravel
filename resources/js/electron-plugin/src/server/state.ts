@@ -1,4 +1,4 @@
-import { BrowserWindow } from "electron";
+import { BrowserWindow, UtilityProcess } from "electron";
 import Store from "electron-store";
 import { notifyLaravel } from "./utils";
 
@@ -28,6 +28,7 @@ interface State {
   phpIni: any;
   caCert: string | null;
   icon: string | null;
+  processes: Record<string, {pid: any, proc: UtilityProcess, settings: Record<string, any>}>;
   windows: Record<string, BrowserWindow>;
   randomSecret: string;
   store: Store;
@@ -57,6 +58,7 @@ export default {
   icon: null,
   store: settingsStore,
   randomSecret: generateRandomString(32),
+  processes: {},
   windows: {},
   findWindow(id: string) {
     return this.windows[id] || null;

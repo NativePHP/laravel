@@ -7,7 +7,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import startWebsockets from "./websockets";
 import startAPIServer from "./api";
 import { retrieveNativePHPConfig, retrievePhpIniSettings, serveApp, startQueueWorker, startScheduler, } from "./php";
 import { appendCookie } from "./utils";
@@ -34,4 +33,4 @@ export function runScheduler() {
 export function startAPI() {
     return startAPIServer(state.randomSecret);
 }
-export { startWebsockets, retrieveNativePHPConfig, retrievePhpIniSettings };
+export { retrieveNativePHPConfig, retrievePhpIniSettings };

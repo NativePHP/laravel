@@ -126,7 +126,7 @@ router.post('/open', (req, res) => {
         return res.sendStatus(200)
     }
 
-    let preloadPath = join(__dirname, '../../preload/index.js')
+    let preloadPath = join(__dirname, '../../electron-plugin/dist/preload/index.js')
 
     let windowState: windowStateKeeper.State | undefined = undefined
 
@@ -244,6 +244,7 @@ router.post('/open', (req, res) => {
         })
     })
 
+    // @ts-ignore
     window.on('hide', (evt) => {
         notifyLaravel('events', {
             event: 'Native\\Laravel\\Events\\Windows\\WindowHidden',

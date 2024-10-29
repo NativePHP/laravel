@@ -76,7 +76,7 @@ router.post('/open', (req, res) => {
         state.windows[id].focus();
         return res.sendStatus(200);
     }
-    let preloadPath = join(__dirname, '../../preload/index.js');
+    let preloadPath = join(__dirname, '../../electron-plugin/dist/preload/index.js');
     let windowState = undefined;
     if (req.body.rememberState === true) {
         windowState = windowStateKeeper({

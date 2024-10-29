@@ -30,6 +30,7 @@ import settingsRoutes from "./api/settings";
 import shellRoutes from "./api/shell";
 import progressBarRoutes from "./api/progressBar";
 import powerMonitorRoutes from "./api/powerMonitor";
+import childProcessRoutes from "./api/childProcess";
 function startAPIServer(randomSecret) {
     return __awaiter(this, void 0, void 0, function* () {
         const port = yield getPort({
@@ -56,6 +57,7 @@ function startAPIServer(randomSecret) {
             httpServer.use("/api/menu-bar", menuBarRoutes);
             httpServer.use("/api/progress-bar", progressBarRoutes);
             httpServer.use("/api/power-monitor", powerMonitorRoutes);
+            httpServer.use("/api/child-process", childProcessRoutes);
             httpServer.use("/api/broadcast", broadcastingRoutes);
             if (process.env.NODE_ENV === "development") {
                 httpServer.use("/api/debug", debugRoutes);
