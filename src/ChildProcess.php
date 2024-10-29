@@ -6,16 +6,10 @@ use Native\Laravel\Client\Client;
 
 class ChildProcess
 {
-    private string $alias;
-
-    private ?array $process;
-
     public function __construct(protected Client $client) {}
 
     public function start(string|array $cmd, string $alias, ?string $cwd = null, ?array $env = null): self
     {
-        $this->alias = $alias;
-
         $cwd = $cwd ?? base_path();
 
         $cmd = is_iterable($cmd)
@@ -24,7 +18,7 @@ class ChildProcess
             // when a string is passed, explode it on the space
             : array_values(array_filter(explode(' ', $cmd)));
 
-        $this->process = $this->client->post('child-process/start', [
+        $this->client->post('child-process/start', [
             'alias' => $alias,
             'cmd' => $cmd,
             'cwd' => $cwd,
