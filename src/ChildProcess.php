@@ -59,14 +59,9 @@ class ChildProcess
         bool $persistent = false
     ): static {
 
-        if (is_string($cmd)) {
-            // When a string is passed, explode it on the space
-            $cmd = array_values(array_filter(explode(' ', $cmd)));
-        }
-
         $process = $this->client->post('child-process/start', [
             'alias' => $alias,
-            'cmd' => $cmd,
+            'cmd' => $this->explodeCommand($cmd),
             'cwd' => $cwd ?? base_path(),
             'env' => $env,
             'persistent' => $persistent,
@@ -75,9 +70,16 @@ class ChildProcess
         return $this->fromRuntimeProcess($process);
     }
 
+    public function php(string|array $cmd, string $alias, ?array $env = null, ?bool $persistent = false): self
+    {
+        $cmd = [PHP_BINARY, ...$this->explodeCommand($cmd)];
+
+        return $this->start($cmd, $alias, env: $env, persistent: $persistent);
+    }
+
     public function artisan(string|array $cmd, string $alias, ?array $env = null, ?bool $persistent = false): self
     {
-        $cmd = [PHP_BINARY, 'artisan', ...(array) $cmd];
+        $cmd = [PHP_BINARY, 'artisan', ...$this->explodeCommand($cmd)];
 
         return $this->start($cmd, $alias, env: $env, persistent: $persistent);
     }
@@ -123,5 +125,14 @@ class ChildProcess
         }
 
         return $this;
+    }
+
+    private function explodeCommand(string|array $cmd): array
+    {
+        if (is_iterable($cmd)) {
+            return $cmd;
+        }
+
+        return array_values(array_filter(explode(' ', $cmd)));
     }
 }
