@@ -9,7 +9,7 @@ beforeEach(function () {
 });
 
 it('can start a child process', function () {
-    ChildProcess::start('some-alias', 'foo bar', 'path/to/dir', ['baz' => 'zah']);
+    ChildProcess::start('foo bar', 'some-alias', 'path/to/dir', ['baz' => 'zah']);
 
     Http::assertSent(function (Request $request) {
         return $request->url() === 'http://localhost:4000/api/child-process/start' &&
@@ -21,7 +21,7 @@ it('can start a child process', function () {
 });
 
 it('can start a artisan command', function () {
-    ChildProcess::artisan('some-alias', 'foo:bar', ['baz' => 'zah']);
+    ChildProcess::artisan('foo:bar', 'some-alias', ['baz' => 'zah']);
 
     Http::assertSent(function (Request $request) {
         return $request->url() === 'http://localhost:4000/api/child-process/start' &&
@@ -35,36 +35,36 @@ it('can start a artisan command', function () {
 it('can mark the process as persistent')->todo();
 
 it('accepts either a string or a array as start command argument', function () {
-    ChildProcess::start('some-alias', 'foo bar');
+    ChildProcess::start('foo bar', 'some-alias');
     Http::assertSent(fn (Request $request) => $request['cmd'] === ['foo', 'bar']);
 
-    ChildProcess::start('some-alias', ['foo', 'baz']);
+    ChildProcess::start(['foo', 'baz'], 'some-alias');
     Http::assertSent(fn (Request $request) => $request['cmd'] === ['foo', 'baz']);
 });
 
 it('accepts either a string or a array as artisan command argument', function () {
-    ChildProcess::artisan('some-alias', 'foo:bar');
+    ChildProcess::artisan('foo:bar', 'some-alias');
     Http::assertSent(fn (Request $request) => $request['cmd'] === [str_replace(' ', '\ ', PHP_BINARY), 'artisan', 'foo:bar']);
 
-    ChildProcess::artisan('some-alias', ['foo:baz']);
+    ChildProcess::artisan(['foo:baz'], 'some-alias');
     Http::assertSent(fn (Request $request) => $request['cmd'] === [str_replace(' ', '\ ', PHP_BINARY), 'artisan', 'foo:baz']);
 });
 
 it('sets the cwd to the base path if none was given', function () {
-    ChildProcess::start('some-alias', ['foo', 'bar'], cwd: 'path/to/dir');
+    ChildProcess::start(['foo', 'bar'], 'some-alias', cwd: 'path/to/dir');
     Http::assertSent(fn (Request $request) => $request['cwd'] === 'path/to/dir');
 
-    ChildProcess::start('some-alias', ['foo', 'bar']);
+    ChildProcess::start(['foo', 'bar'], 'some-alias');
     Http::assertSent(fn (Request $request) => $request['cwd'] === base_path());
 });
 
 it('filters double spaces when exploding a command string', function () {
-    ChildProcess::start('some-alias', 'foo bar  baz      bak');
+    ChildProcess::start('foo bar  baz      bak', 'some-alias');
     Http::assertSent(fn (Request $request) => $request['cmd'] === ['foo', 'bar', 'baz', 'bak']);
 });
 
 it('escapes spaces when passing a command array', function () {
-    ChildProcess::start('some-alias', ['path/to/some executable with spaces.sh', '--foo', '--bar']);
+    ChildProcess::start(['path/to/some executable with spaces.sh', '--foo', '--bar'], 'some-alias');
     Http::assertSent(fn (Request $request) => $request['cmd'] === ['path/to/some\ executable\ with\ spaces.sh', '--foo', '--bar']);
 });
 
@@ -78,7 +78,7 @@ it('can stop a child process', function () {
 });
 
 it('can send messages to a child process', function () {
-    ChildProcess::message('some-alias', 'some-message');
+    ChildProcess::message('some-message', 'some-alias');
 
     Http::assertSent(function (Request $request) {
         return $request->url() === 'http://localhost:4000/api/child-process/message' &&

@@ -12,7 +12,7 @@ class ChildProcess
 
     public function __construct(protected Client $client) {}
 
-    public function start(string $alias, string|array $cmd, ?string $cwd = null, ?array $env = null): self
+    public function start(string|array $cmd, string $alias, ?string $cwd = null, ?array $env = null): self
     {
         $this->alias = $alias;
 
@@ -34,11 +34,11 @@ class ChildProcess
         return $this;
     }
 
-    public function artisan(string $alias, string|array $cmd, ?array $env = null): self
+    public function artisan(string|array $cmd, string $alias, ?array $env = null): self
     {
         $cmd = [PHP_BINARY, 'artisan', ...(array) $cmd];
 
-        return $this->start($alias, $cmd, env: $env);
+        return $this->start($cmd, $alias, env: $env);
     }
 
     public function stop(string $alias): void
@@ -48,11 +48,11 @@ class ChildProcess
         ])->json();
     }
 
-    public function message(string $alias, mixed $message): void
+    public function message(mixed $message, string $alias): void
     {
         $this->client->post('child-process/message', [
-            'alias' => $alias,
             'message' => json_encode($message),
+            'alias' => $alias,
         ])->json();
     }
 }
