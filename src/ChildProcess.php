@@ -50,15 +50,14 @@ class ChildProcess
 
         return $hydrated;
     }
-        
+
     public function start(
-        string|array $cmd
+        string|array $cmd,
         string $alias,
         ?string $cwd = null,
         ?array $env = null,
         bool $persistent = false
     ): static {
-        $cwd = $cwd ?? base_path();
 
         if (is_string($cmd)) {
             // When a string is passed, explode it on the space
