@@ -68,7 +68,7 @@ class ChildProcess
         $process = $this->client->post('child-process/start', [
             'alias' => $alias,
             'cmd' => $cmd,
-            'cwd' => $cwd,
+            'cwd' => $cwd ?? base_path(),
             'env' => $env,
             'persistent' => $persistent,
         ])->json();
