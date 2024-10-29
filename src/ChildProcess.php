@@ -8,7 +8,7 @@ class ChildProcess
 {
     public function __construct(protected Client $client) {}
 
-    public function start(string|array $cmd, string $alias, ?string $cwd = null, ?array $env = null): self
+    public function start(string|array $cmd, string $alias, ?string $cwd = null, ?array $env = null, ?bool $persistent = false): self
     {
         $cwd = $cwd ?? base_path();
 
@@ -22,16 +22,17 @@ class ChildProcess
             'cmd' => $cmd,
             'cwd' => $cwd,
             'env' => $env,
+            'persistent' => $persistent,
         ])->json();
 
         return $this;
     }
 
-    public function artisan(string|array $cmd, string $alias, ?array $env = null): self
+    public function artisan(string|array $cmd, string $alias, ?array $env = null, ?bool $persistent = false): self
     {
         $cmd = [PHP_BINARY, 'artisan', ...(array) $cmd];
 
-        return $this->start($cmd, $alias, env: $env);
+        return $this->start($cmd, $alias, env: $env, persistent: $persistent);
     }
 
     public function stop(string $alias): void

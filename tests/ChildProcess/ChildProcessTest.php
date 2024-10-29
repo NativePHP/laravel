@@ -32,8 +32,6 @@ it('can start a artisan command', function () {
     });
 });
 
-it('can mark the process as persistent')->todo();
-
 it('accepts either a string or a array as start command argument', function () {
     ChildProcess::start('foo bar', 'some-alias');
     Http::assertSent(fn (Request $request) => $request['cmd'] === ['foo', 'bar']);
@@ -80,4 +78,19 @@ it('can send messages to a child process', function () {
                $request['alias'] === 'some-alias' &&
                $request['message'] === '"some-message"';
     });
+});
+
+it('can mark a process as persistent', function () {
+    ChildProcess::start('foo bar', 'some-alias', persistent: true);
+    Http::assertSent(fn (Request $request) => $request['persistent'] === true);
+});
+
+it('can mark a artisan command as persistent', function () {
+    ChildProcess::artisan('foo:bar', 'some-alias', persistent: true);
+    Http::assertSent(fn (Request $request) => $request['persistent'] === true);
+});
+
+it('marks the process as non-persistent by default', function () {
+    ChildProcess::start('foo bar', 'some-alias');
+    Http::assertSent(fn (Request $request) => $request['persistent'] === false);
 });
