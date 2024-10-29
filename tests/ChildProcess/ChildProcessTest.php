@@ -20,6 +20,18 @@ it('can start a child process', function () {
     });
 });
 
+it('can start a php command', function () {
+    ChildProcess::artisan("-r 'sleep(5);'", 'some-alias', ['baz' => 'zah']);
+
+    Http::assertSent(function (Request $request) {
+        return $request->url() === 'http://localhost:4000/api/child-process/start' &&
+               $request['alias'] === 'some-alias' &&
+               $request['cmd'] === [PHP_BINARY, '-r', "'sleep(5);'"] &&
+               $request['cwd'] === base_path() &&
+               $request['env'] === ['baz' => 'zah'];
+    });
+});
+
 it('can start a artisan command', function () {
     ChildProcess::artisan('foo:bar', 'some-alias', ['baz' => 'zah']);
 
@@ -38,6 +50,14 @@ it('accepts either a string or a array as start command argument', function () {
 
     ChildProcess::start(['foo', 'baz'], 'some-alias');
     Http::assertSent(fn (Request $request) => $request['cmd'] === ['foo', 'baz']);
+});
+
+it('accepts either a string or a array as php command argument', function () {
+    ChildProcess::artisan(" 'sleep(5);'", 'some-alias');
+    Http::assertSent(fn (Request $request) => $request['cmd'] === [PHP_BINARY, '-r', "'sleep(5);'"]);
+
+    ChildProcess::artisan(['-r', "'sleep(5);'"], 'some-alias');
+    Http::assertSent(fn (Request $request) => $request['cmd'] === [PHP_BINARY, '-r', "'sleep(5);'"]);
 });
 
 it('accepts either a string or a array as artisan command argument', function () {
@@ -82,6 +102,11 @@ it('can send messages to a child process', function () {
 
 it('can mark a process as persistent', function () {
     ChildProcess::start('foo bar', 'some-alias', persistent: true);
+    Http::assertSent(fn (Request $request) => $request['persistent'] === true);
+});
+
+it('can mark a php command as persistent', function () {
+    ChildProcess::php("-r 'sleep(5);'", 'some-alias', persistent: true);
     Http::assertSent(fn (Request $request) => $request['persistent'] === true);
 });
 
