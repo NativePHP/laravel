@@ -26,7 +26,7 @@ it('can start a artisan command', function () {
     Http::assertSent(function (Request $request) {
         return $request->url() === 'http://localhost:4000/api/child-process/start' &&
                $request['alias'] === 'some-alias' &&
-               $request['cmd'] === [str_replace(' ', '\ ', PHP_BINARY), 'artisan', 'foo:bar'] &&
+               $request['cmd'] === [PHP_BINARY, 'artisan', 'foo:bar'] &&
                $request['cwd'] === base_path() &&
                $request['env'] === ['baz' => 'zah'];
     });
@@ -44,10 +44,10 @@ it('accepts either a string or a array as start command argument', function () {
 
 it('accepts either a string or a array as artisan command argument', function () {
     ChildProcess::artisan('foo:bar', 'some-alias');
-    Http::assertSent(fn (Request $request) => $request['cmd'] === [str_replace(' ', '\ ', PHP_BINARY), 'artisan', 'foo:bar']);
+    Http::assertSent(fn (Request $request) => $request['cmd'] === [PHP_BINARY, 'artisan', 'foo:bar']);
 
     ChildProcess::artisan(['foo:baz'], 'some-alias');
-    Http::assertSent(fn (Request $request) => $request['cmd'] === [str_replace(' ', '\ ', PHP_BINARY), 'artisan', 'foo:baz']);
+    Http::assertSent(fn (Request $request) => $request['cmd'] === [PHP_BINARY, 'artisan', 'foo:baz']);
 });
 
 it('sets the cwd to the base path if none was given', function () {
@@ -61,11 +61,6 @@ it('sets the cwd to the base path if none was given', function () {
 it('filters double spaces when exploding a command string', function () {
     ChildProcess::start('foo bar  baz      bak', 'some-alias');
     Http::assertSent(fn (Request $request) => $request['cmd'] === ['foo', 'bar', 'baz', 'bak']);
-});
-
-it('escapes spaces when passing a command array', function () {
-    ChildProcess::start(['path/to/some executable with spaces.sh', '--foo', '--bar'], 'some-alias');
-    Http::assertSent(fn (Request $request) => $request['cmd'] === ['path/to/some\ executable\ with\ spaces.sh', '--foo', '--bar']);
 });
 
 it('can stop a child process', function () {

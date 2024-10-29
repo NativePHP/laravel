@@ -12,11 +12,10 @@ class ChildProcess
     {
         $cwd = $cwd ?? base_path();
 
-        $cmd = is_iterable($cmd)
-            // when an array is passed, escape spaces for each item
-            ? array_map(fn ($a) => str_replace(' ', '\ ', $a), $cmd)
-            // when a string is passed, explode it on the space
-            : array_values(array_filter(explode(' ', $cmd)));
+        if (is_string($cmd)) {
+            // When a string is passed, explode it on the space
+            $cmd = array_values(array_filter(explode(' ', $cmd)));
+        }
 
         $this->client->post('child-process/start', [
             'alias' => $alias,
