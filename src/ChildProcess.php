@@ -112,7 +112,7 @@ class ChildProcess
         return $this;
     }
 
-    private function fromRuntimeProcess($process): static
+    protected function fromRuntimeProcess($process): static
     {
         if (isset($process['pid'])) {
             $this->pid = $process['pid'];
