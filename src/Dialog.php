@@ -110,11 +110,7 @@ class Dialog
 
     public function asSheet(?string $windowId = null): self
     {
-        if (is_null($windowId)) {
-            $this->windowReference = Window::current()->id;
-        } else {
-            $this->windowReference = $windowId;
-        }
+        $this->windowReference = $windowId ?? Window::current()->getId();
 
         return $this;
     }

@@ -25,14 +25,27 @@ class WindowManager
 
     public function hide($id = null)
     {
-        return $this->client->post('window/hide', [
+        $this->client->post('window/hide', [
             'id' => $id ?? $this->detectId(),
         ]);
     }
 
-    public function current()
+    public function current(): Window
     {
-        return (object) $this->client->get('window/current')->json();
+        $window = (object) $this->client->get('window/current')->json();
+
+        return (new Window($window->id))
+            ->setClient($this->client)
+            ->fromRuntimeWindow($window);
+    }
+
+    public function get(string $id): Window
+    {
+        $window = (object) $this->client->get("window/get/{$id}")->json();
+
+        return (new Window($id))
+            ->setClient($this->client)
+            ->fromRuntimeWindow($window);
     }
 
     public function resize($width, $height, $id = null)

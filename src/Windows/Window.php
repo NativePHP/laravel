@@ -11,7 +11,9 @@ use Native\Laravel\Facades\Window as WindowFacade;
 class Window
 {
     use HasDimensions;
-    use HasUrl;
+    use HasUrl {
+        HasUrl::url as defaultUrl;
+    }
     use HasVibrancy;
 
     protected bool $autoHideMenuBar = false;
@@ -28,6 +30,8 @@ class Window
 
     protected bool $showDevTools = false;
 
+    protected bool $devToolsOpen = false;
+
     protected bool $resizable = true;
 
     protected bool $movable = true;
@@ -39,6 +43,8 @@ class Window
     protected bool $closable = true;
 
     protected bool $focusable = true;
+
+    protected bool $focused = false;
 
     protected bool $hasShadow = true;
 
@@ -56,6 +62,8 @@ class Window
 
     protected array $afterOpenCallbacks = [];
 
+    protected array $webPreferences = [];
+
     public function __construct(string $id)
     {
         $this->id = $id;
@@ -71,9 +79,35 @@ class Window
         return $this;
     }
 
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
     public function title(string $title): self
     {
         $this->title = $title;
+
+        if (! $this instanceof PendingOpenWindow) {
+            $this->client->post('window/title', [
+                'id' => $this->id,
+                'title' => $title,
+            ]);
+        }
+
+        return $this;
+    }
+
+    public function url(string $url)
+    {
+        $this->defaultUrl($url);
+
+        if (! $this instanceof PendingOpenWindow) {
+            $this->client->post('window/url', [
+                'id' => $this->id,
+                'url' => $url,
+            ]);
+        }
 
         return $this;
     }
@@ -142,21 +176,43 @@ class Window
         return $this;
     }
 
-    public function alwaysOnTop($alwaysOnTop = true): self
+    public function alwaysOnTop(bool $alwaysOnTop = true): self
     {
         $this->alwaysOnTop = $alwaysOnTop;
 
         return $this;
     }
 
-    public function showDevTools($showDevTools = true): self
+    public function showDevTools(bool $showDevTools = true): self
     {
         $this->showDevTools = $showDevTools;
+
+        if (! $this instanceof PendingOpenWindow) {
+            $this->client->post('window/show-dev-tools', [
+                'id' => $this->id,
+            ]);
+        }
 
         return $this;
     }
 
-    public function resizable($resizable = true): static
+    public function hideDevTools(): self
+    {
+        if (! $this instanceof PendingOpenWindow) {
+            $this->client->post('window/hide-dev-tools', [
+                'id' => $this->id,
+            ]);
+        }
+
+        return $this;
+    }
+
+    public function devToolsOpen(): bool
+    {
+        return $this->devToolsOpen;
+    }
+
+    public function resizable(bool $resizable = true): static
     {
         $this->resizable = $resizable;
 
@@ -194,9 +250,16 @@ class Window
         return $this->afterOpen(fn () => WindowFacade::maximize($this->id));
     }
 
-    public function closable($closable = true): static
+    public function closable(bool $closable = true): static
     {
         $this->closable = $closable;
+
+        if (! $this instanceof PendingOpenWindow) {
+            $this->client->post('window/closable', [
+                'id' => $this->id,
+                'closable' => $closable,
+            ]);
+        }
 
         return $this;
     }
@@ -231,9 +294,16 @@ class Window
         return $this;
     }
 
-    public function kiosk($kiosk = false): static
+    public function kiosk($kiosk = true): static
     {
         $this->kiosk = $kiosk;
+
+        return $this;
+    }
+
+    public function webPreferences(array $preferences): static
+    {
+        $this->webPreferences = $preferences;
 
         return $this;
     }
@@ -273,12 +343,22 @@ class Window
             'kiosk' => $this->kiosk,
             'autoHideMenuBar' => $this->autoHideMenuBar,
             'transparent' => $this->transparent,
+            'webPreferences' => $this->webPreferences,
         ];
     }
 
     public function afterOpen(callable $cb): static
     {
         $this->afterOpenCallbacks[] = $cb;
+
+        return $this;
+    }
+
+    public function fromRuntimeWindow(object $window): static
+    {
+        foreach ($window as $key => $value) {
+            $this->{$key} = $value;
+        }
 
         return $this;
     }
