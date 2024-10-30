@@ -61,7 +61,7 @@ class ChildProcess
 
         $process = $this->client->post('child-process/start', [
             'alias' => $alias,
-            'cmd' => $this->explodeCommand($cmd),
+            'cmd' => (array) $cmd,
             'cwd' => $cwd ?? base_path(),
             'env' => $env,
             'persistent' => $persistent,
@@ -72,14 +72,14 @@ class ChildProcess
 
     public function php(string|array $cmd, string $alias, ?array $env = null, ?bool $persistent = false): self
     {
-        $cmd = [PHP_BINARY, ...$this->explodeCommand($cmd)];
+        $cmd = [PHP_BINARY, ...(array) $cmd];
 
         return $this->start($cmd, $alias, env: $env, persistent: $persistent);
     }
 
     public function artisan(string|array $cmd, string $alias, ?array $env = null, ?bool $persistent = false): self
     {
-        $cmd = ['artisan', ...$this->explodeCommand($cmd)];
+        $cmd = ['artisan', ...(array) $cmd];
 
         return $this->php($cmd, $alias, env: $env, persistent: $persistent);
     }
@@ -125,14 +125,5 @@ class ChildProcess
         }
 
         return $this;
-    }
-
-    private function explodeCommand(string|array $cmd): array
-    {
-        if (is_iterable($cmd)) {
-            return $cmd;
-        }
-
-        return array_values(array_filter(explode(' ', $cmd)));
     }
 }
