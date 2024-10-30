@@ -171,7 +171,7 @@ class Window
         return $this;
     }
 
-    public function alwaysOnTop($alwaysOnTop = true): self
+    public function alwaysOnTop(bool $alwaysOnTop = true): self
     {
         $this->alwaysOnTop = $alwaysOnTop;
 
