@@ -79,6 +79,11 @@ class Window
         return $this;
     }
 
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
     public function title(string $title): self
     {
         $this->title = $title;
