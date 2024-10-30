@@ -219,9 +219,16 @@ class Window
         return $this->afterOpen(fn () => WindowFacade::maximize($this->id));
     }
 
-    public function closable($closable = true): static
+    public function closable(bool $closable = true): static
     {
         $this->closable = $closable;
+
+        if (! $this instanceof PendingOpenWindow) {
+            $this->client->post('window/closable', [
+                'id' => $this->id,
+                'closable' => $closable,
+            ]);
+        }
 
         return $this;
     }
