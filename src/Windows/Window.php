@@ -30,6 +30,8 @@ class Window
 
     protected bool $showDevTools = false;
 
+    protected bool $devToolsOpen = false;
+
     protected bool $resizable = true;
 
     protected bool $movable = true;
@@ -176,14 +178,36 @@ class Window
         return $this;
     }
 
-    public function showDevTools($showDevTools = true): self
+    public function showDevTools(bool $showDevTools = true): self
     {
         $this->showDevTools = $showDevTools;
+
+        if (! $this instanceof PendingOpenWindow) {
+            $this->client->post('window/show-dev-tools', [
+                'id' => $this->id,
+            ]);
+        }
 
         return $this;
     }
 
-    public function resizable($resizable = true): static
+    public function hideDevTools(): self
+    {
+        if (! $this instanceof PendingOpenWindow) {
+            $this->client->post('window/hide-dev-tools', [
+                'id' => $this->id,
+            ]);
+        }
+
+        return $this;
+    }
+
+    public function devToolsOpen(): bool
+    {
+        return $this->devToolsOpen;
+    }
+
+    public function resizable(bool $resizable = true): static
     {
         $this->resizable = $resizable;
 
