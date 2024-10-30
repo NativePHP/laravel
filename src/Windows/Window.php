@@ -60,6 +60,8 @@ class Window
 
     protected array $afterOpenCallbacks = [];
 
+    protected array $webPreferences = [];
+
     public function __construct(string $id)
     {
         $this->id = $id;
@@ -270,6 +272,13 @@ class Window
         return $this;
     }
 
+    public function webPreferences(array $preferences): static
+    {
+        $this->webPreferences = $preferences;
+
+        return $this;
+    }
+
     public function toArray()
     {
         return [
@@ -305,6 +314,7 @@ class Window
             'kiosk' => $this->kiosk,
             'autoHideMenuBar' => $this->autoHideMenuBar,
             'transparent' => $this->transparent,
+            'webPreferences' => $this->webPreferences,
         ];
     }
 
