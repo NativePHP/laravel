@@ -43,7 +43,7 @@ class WindowManager
     {
         $window = (object) $this->client->get("window/get/{$id}")->json();
 
-        return (new Window($window->id))
+        return (new Window($id))
             ->setClient($this->client)
             ->fromRuntimeWindow($window);
     }
