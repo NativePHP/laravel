@@ -22,6 +22,6 @@ class MigrateCommand extends BaseMigrateCommand
     {
         (new NativeServiceProvider($this->laravel))->rewriteDatabase();
 
-        parent::handle();
+        return parent::handle();
     }
 }
