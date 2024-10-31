@@ -3,6 +3,7 @@
 namespace Native\Laravel\Facades;
 
 use Illuminate\Support\Facades\Facade;
+use Native\Laravel\ChildProcess as Implement;
 
 /**
  * @method static \Native\Laravel\ChildProcess[] all()
@@ -18,6 +19,8 @@ class ChildProcess extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return \Native\Laravel\ChildProcess::class;
+        self::clearResolvedInstance(Implement::class);
+
+        return Implement::class;
     }
 }
