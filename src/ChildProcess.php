@@ -52,21 +52,36 @@ class ChildProcess
     }
 
     public function start(
+        string|array $cmd,
         string $alias,
-        array $cmd,
         ?string $cwd = null,
         ?array $env = null,
         bool $persistent = false
     ): static {
+
         $process = $this->client->post('child-process/start', [
             'alias' => $alias,
-            'cmd' => $cmd,
-            'cwd' => base_path(),
+            'cmd' => (array) $cmd,
+            'cwd' => $cwd ?? base_path(),
             'env' => $env,
             'persistent' => $persistent,
         ])->json();
 
         return $this->fromRuntimeProcess($process);
+    }
+
+    public function php(string|array $cmd, string $alias, ?array $env = null, ?bool $persistent = false): self
+    {
+        $cmd = [PHP_BINARY, ...(array) $cmd];
+
+        return $this->start($cmd, $alias, env: $env, persistent: $persistent);
+    }
+
+    public function artisan(string|array $cmd, string $alias, ?array $env = null, ?bool $persistent = false): self
+    {
+        $cmd = ['artisan', ...(array) $cmd];
+
+        return $this->php($cmd, $alias, env: $env, persistent: $persistent);
     }
 
     public function stop(?string $alias = null): void
@@ -99,7 +114,7 @@ class ChildProcess
         return $this;
     }
 
-    private function fromRuntimeProcess($process): static
+    protected function fromRuntimeProcess($process): static
     {
         if (isset($process['pid'])) {
             $this->pid = $process['pid'];
