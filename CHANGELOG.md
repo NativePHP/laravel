@@ -2,6 +2,21 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 0.6.0 - 2024-11-01
+
+### What's Changed
+
+* Skip links as supporting library doesn't support that by @danielpetrica in https://github.com/NativePHP/laravel/pull/378
+* Add `getCenterOfActiveScreen` in Screen class by @danielpetrica in https://github.com/NativePHP/laravel/pull/375
+* Improved window management by @simonhamp in https://github.com/NativePHP/laravel/pull/391
+* Child processes by @simonhamp and @gwleuverink in https://github.com/NativePHP/laravel/pull/389
+
+### New Contributors
+
+* @danielpetrica made their first contribution in https://github.com/NativePHP/laravel/pull/378
+
+**Full Changelog**: https://github.com/NativePHP/laravel/compare/0.5.7...0.6.0
+
 ## 0.5.7 - 2024-09-16
 
 ### What's Changed
