@@ -2,6 +2,27 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 0.8.0 - 2024-11-01
+
+### What's Changed
+
+* Integrate Plugin by @RobertWesner in https://github.com/NativePHP/electron/pull/109
+* Add active screen endpoint by @simonhamp in https://github.com/NativePHP/electron/pull/112
+* Support `--no-interaction` in `native:serve` command by @simonhamp in https://github.com/NativePHP/electron/pull/119
+* Child processes by @simonhamp in https://github.com/NativePHP/electron/pull/115
+* Improved window management by @simonhamp in https://github.com/NativePHP/electron/pull/118
+* Add support for custom events fired by clicking on notifications by @LukeTowers in https://github.com/NativePHP/electron/pull/114
+* Fix windows php path for native:minify by @kritish-dhaubanjar in https://github.com/NativePHP/electron/pull/111
+* Bump actions/checkout from 2 to 4 by @dependabot in https://github.com/NativePHP/electron/pull/116
+* Bump actions/setup-node from 1 to 4 by @dependabot in https://github.com/NativePHP/electron/pull/117
+
+### New Contributors
+
+* @LukeTowers made their first contribution in https://github.com/NativePHP/electron/pull/114
+* @kritish-dhaubanjar made their first contribution in https://github.com/NativePHP/electron/pull/111
+
+**Full Changelog**: https://github.com/NativePHP/electron/compare/0.7.4...0.8.0
+
 ## 0.7.4 - 2024-10-16
 
 ### What's Changed
