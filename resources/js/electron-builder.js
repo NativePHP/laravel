@@ -1,8 +1,8 @@
-const {copySync, removeSync, writeJsonSync, existsSync} = require("fs-extra");
-const {join} = require("path");
 const os = require('os');
-const {mkdtempSync} = require("fs");
-const {execSync} = require("child_process");
+const { join } = require("path");
+const { mkdtempSync } = require("fs");
+const { copySync, removeSync, writeJsonSync } = require("fs-extra");
+
 const isBuilding = process.env.NATIVEPHP_BUILDING;
 const appId = process.env.NATIVEPHP_APP_ID;
 const appName = process.env.NATIVEPHP_APP_NAME;
@@ -108,10 +108,6 @@ if (isBuilding) {
         console.log('Copied app to resources');
         console.log(join(process.env.APP_PATH, 'dist'));
         console.log('=====================');
-
-        const artisanPath = join(appPath, 'artisan');
-        // We'll use the default PATH PHP binary here, as we can cross-compile for all platforms. This shouldn't be changed.
-        execSync(`php ${artisanPath} native:minify ${appPath}`);
     } catch (e) {
         console.error('=====================');
         console.error('Error copying app to resources');
