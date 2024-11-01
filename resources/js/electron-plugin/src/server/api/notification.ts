@@ -4,14 +4,15 @@ import {notifyLaravel} from "../utils";
 const router = express.Router();
 
 router.post('/', (req, res) => {
-    const {title, body, subtitle, silent, icon, hasReply, timeoutType, replyPlaceholder, sound, urgency, actions, closeButtonText, toastXml} = req.body
+    const {title, body, subtitle, silent, icon, hasReply, timeoutType, replyPlaceholder, sound, urgency, actions, closeButtonText, toastXml, customEvent: event} = req.body
+    const eventName = customEvent ?? '\\Native\\Laravel\\Events\\Notifications\\NotificationClicked';
 
     const notification = new Notification({title, body, subtitle, silent, icon, hasReply, timeoutType, replyPlaceholder, sound, urgency, actions, closeButtonText, toastXml});
 
     notification.on("click", (event)=>{
         notifyLaravel('events', {
-            event: '\\Native\\Laravel\\Events\\Notifications\\NotificationClicked',
-            payload: []
+            event: eventName,
+            payload: JSON.stringify(event)
         })
     })
 
