@@ -125,6 +125,12 @@ router.get('/current', (req, res) => {
     res.json(getWindowData(id));
 });
 
+router.get('/all', (req, res) => {
+    res.json(
+        Object.keys(state.windows).map(id => getWindowData(id))
+    );
+});
+
 router.get('/get/:id', (req, res) => {
     const {id} = req.params;
 

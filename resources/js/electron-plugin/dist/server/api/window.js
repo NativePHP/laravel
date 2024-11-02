@@ -91,6 +91,9 @@ router.get('/current', (req, res) => {
     const id = Object.keys(state.windows).find(key => state.windows[key] === currentWindow);
     res.json(getWindowData(id));
 });
+router.get('/all', (req, res) => {
+    res.json(Object.keys(state.windows).map(id => getWindowData(id)));
+});
 router.get('/get/:id', (req, res) => {
     const { id } = req.params;
     if (state.windows[id] === undefined) {
