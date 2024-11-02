@@ -39,6 +39,18 @@ class WindowManager
             ->fromRuntimeWindow($window);
     }
 
+    public function all(): array
+    {
+        $windows = (array) $this->client->get('window/all')->json();
+
+        return array_map(
+            fn ($window) => (new Window($window['id']))
+                ->setClient($this->client)
+                ->fromRuntimeWindow((object) $window),
+            $windows
+        );
+    }
+
     public function get(string $id): Window
     {
         $window = (object) $this->client->get("window/get/{$id}")->json();
