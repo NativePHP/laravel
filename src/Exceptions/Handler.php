@@ -2,7 +2,8 @@
 
 namespace Native\Laravel\Exceptions;
 
-class Handler extends \Illuminate\Foundation\Exceptions\Handler {
+class Handler extends \Illuminate\Foundation\Exceptions\Handler
+{
     protected $internalDontReport = [];
 
     public function register(): void
