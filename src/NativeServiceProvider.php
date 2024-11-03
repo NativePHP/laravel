@@ -11,6 +11,7 @@ use Native\Laravel\Commands\MigrateCommand;
 use Native\Laravel\Commands\MinifyApplicationCommand;
 use Native\Laravel\Commands\SeedDatabaseCommand;
 use Native\Laravel\Events\EventWatcher;
+use Native\Laravel\Exceptions\Handler;
 use Native\Laravel\Logging\LogWatcher;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -43,6 +44,11 @@ class NativeServiceProvider extends PackageServiceProvider
         $this->app->singleton(MigrateCommand::class, function ($app) {
             return new MigrateCommand($app['migrator'], $app['events']);
         });
+
+        $this->app->singleton(
+            \Illuminate\Contracts\Debug\ExceptionHandler::class,
+            Handler::class
+        );
 
         if (config('nativephp-internal.running')) {
             Artisan::starting(function ($artisan) {
