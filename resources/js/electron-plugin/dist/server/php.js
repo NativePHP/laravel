@@ -194,7 +194,8 @@ function serveApp(secret, apiPort, phpIniSettings) {
             }
         });
         phpServer.stderr.on('data', (data) => {
-            const match = portRegex.exec(data.toString());
+            const error = data.toString();
+            const match = portRegex.exec(error);
             if (match) {
                 const port = parseInt(match[1]);
                 console.log("PHP Server started on port: ", port);
@@ -202,6 +203,16 @@ function serveApp(secret, apiPort, phpIniSettings) {
                     port,
                     process: phpServer
                 });
+            }
+            else {
+                if (error.startsWith('[NATIVE_EXCEPTION]: ', 27)) {
+                    console.log();
+                    console.error('Error in PHP:');
+                    console.error('  ' + error.slice(47));
+                    console.log('Please check your log file:');
+                    console.log('  ' + join(appPath, 'storage', 'logs', 'laravel.log'));
+                    console.log();
+                }
             }
         });
         phpServer.on('error', (error) => {

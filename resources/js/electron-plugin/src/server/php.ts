@@ -238,16 +238,28 @@ function serveApp(secret, apiPort, phpIniSettings): Promise<ProcessResult> {
         })
 
         phpServer.stderr.on('data', (data) => {
-            const match = portRegex.exec(data.toString())
+            const error = data.toString();
+            const match = portRegex.exec(error);
+
             if (match) {
-                const port = parseInt(match[1])
-                console.log("PHP Server started on port: ", port)
+                const port = parseInt(match[1]);
+                console.log("PHP Server started on port: ", port);
                 resolve({
                     port,
                     process: phpServer
-                })
+                });
+            } else {
+                // 27 is the length of the php -S output preamble
+                if (error.startsWith('[NATIVE_EXCEPTION]: ', 27)) {
+                    console.log();
+                    console.error('Error in PHP:');
+                    console.error('  ' + error.slice(47));
+                    console.log('Please check your log file:');
+                    console.log('  ' + join(appPath, 'storage', 'logs', 'laravel.log'));
+                    console.log();
+                }
             }
-        })
+        });
 
         phpServer.on('error', (error) => {
             reject(error)
