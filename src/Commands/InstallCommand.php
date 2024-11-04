@@ -60,14 +60,14 @@ class InstallCommand extends Command
 
         $composerScripts->{'native:dev'} = [
             'Composer\\Config::disableProcessTimeout',
-            'npx concurrently -c "#93c5fd,#c4b5fd" "php artisan native:serve --no-interaction" "npm run dev" --names=app,vite'
+            'npx concurrently -c "#93c5fd,#c4b5fd" "php artisan native:serve --no-interaction" "npm run dev" --names=app,vite',
         ];
 
         data_set($composer, 'scripts', $composerScripts);
 
         file_put_contents(
             base_path('composer.json'),
-            json_encode($composer, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . PHP_EOL
+            json_encode($composer, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES).PHP_EOL
         );
 
         note('native:dev script installed!');
