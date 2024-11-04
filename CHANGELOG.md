@@ -2,6 +2,19 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 0.8.1 - 2024-11-04
+
+### What's Changed
+
+* Add endpoint for listing all windows by @JCombee in https://github.com/NativePHP/electron/pull/120
+* Add PHP server exception reporting by @simonhamp in https://github.com/NativePHP/electron/pull/121
+
+### New Contributors
+
+* @JCombee made their first contribution in https://github.com/NativePHP/electron/pull/120
+
+**Full Changelog**: https://github.com/NativePHP/electron/compare/0.8.0...0.8.1
+
 ## 0.8.0 - 2024-11-01
 
 ### What's Changed
