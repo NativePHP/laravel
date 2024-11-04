@@ -9,7 +9,7 @@ class Handler extends \Illuminate\Foundation\Exceptions\Handler
     public function register(): void
     {
         $this->reportable(function (\Throwable $e) {
-            error_log('[NATIVE_EXCEPTION]: '.$e->getMessage());
+            error_log("[NATIVE_EXCEPTION]: {$e->getMessage()} ({$e->getCode()}) in {$e->getFile()}:{$e->getLine()}");
         });
     }
 }
