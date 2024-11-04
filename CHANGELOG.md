@@ -2,6 +2,19 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 0.6.1 - 2024-11-04
+
+### What's Changed
+
+* Add a function to the window manager in order to list all open windows by @JCombee in https://github.com/NativePHP/laravel/pull/396
+* Add exception handler by @simonhamp in https://github.com/NativePHP/laravel/pull/398
+
+### New Contributors
+
+* @JCombee made their first contribution in https://github.com/NativePHP/laravel/pull/396
+
+**Full Changelog**: https://github.com/NativePHP/laravel/compare/0.6.0...0.6.1
+
 ## 0.6.0 - 2024-11-01
 
 ### What's Changed
