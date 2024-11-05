@@ -58,6 +58,10 @@ class InstallCommand extends Command
 
         $composerScripts = $composer->scripts ?? (object) [];
 
+        if ($composerScripts->{'native:dev'}) {
+            return;
+        }
+
         $composerScripts->{'native:dev'} = [
             'Composer\\Config::disableProcessTimeout',
             'npx concurrently -c "#93c5fd,#c4b5fd" "php artisan native:serve --no-interaction" "npm run dev" --names=app,vite',
