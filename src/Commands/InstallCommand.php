@@ -58,7 +58,7 @@ class InstallCommand extends Command
 
         $composerScripts = $composer->scripts ?? (object) [];
 
-        if ($composerScripts->{'native:dev'}) {
+        if ($composerScripts->{'native:dev'} ?? false) {
             return;
         }
 
