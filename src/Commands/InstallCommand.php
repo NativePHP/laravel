@@ -43,7 +43,11 @@ class InstallCommand extends Command
         $shouldPromptForServe = ! $withoutInteraction && ! $this->option('force');
 
         if ($shouldPromptForServe && confirm('Would you like to start the NativePHP development server', false)) {
-            $this->call('native:serve', ['--installer' => $installer]);
+            $this->call('native:serve', [
+                '--installer' => $installer,
+                '--no-dependencies',
+                '--no-interaction' => $withoutInteraction
+            ]);
         }
 
         outro('NativePHP scaffolding installed successfully.');
