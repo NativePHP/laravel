@@ -46,7 +46,7 @@ class InstallCommand extends Command
             $this->call('native:serve', [
                 '--installer' => $installer,
                 '--no-dependencies',
-                '--no-interaction' => $withoutInteraction
+                '--no-interaction' => $withoutInteraction,
             ]);
         }
 
