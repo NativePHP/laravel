@@ -2,6 +2,14 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 0.8.2 - 2024-11-05
+
+### `composer native:dev` 🔥
+
+To get the command, run `php artisan native:install` after updating to this version
+
+**Full Changelog**: https://github.com/NativePHP/electron/compare/0.8.1...0.8.2
+
 ## 0.8.1 - 2024-11-04
 
 ### What's Changed
