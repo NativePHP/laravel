@@ -2,6 +2,12 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 0.8.3 - 2024-11-05
+
+Hotfix
+
+**Full Changelog**: https://github.com/NativePHP/electron/compare/0.8.2...0.8.3
+
 ## 0.8.2 - 2024-11-05
 
 ### `composer native:dev` 🔥
