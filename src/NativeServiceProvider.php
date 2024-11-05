@@ -110,6 +110,8 @@ class NativeServiceProvider extends PackageServiceProvider
 
             if (! file_exists($databasePath)) {
                 touch($databasePath);
+
+                Artisan::call('native:migrate');
             }
         }
 
