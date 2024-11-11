@@ -81,6 +81,8 @@ class ChildProcess
     {
         $cmd = ['artisan', ...(array) $cmd];
 
+        $env = array_merge($_ENV, $env ?? []);
+
         return $this->php($cmd, $alias, env: $env, persistent: $persistent);
     }
 
