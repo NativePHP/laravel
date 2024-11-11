@@ -14,6 +14,7 @@ import { electronApp, optimizer } from "@electron-toolkit/utils";
 import { retrieveNativePHPConfig, retrievePhpIniSettings, runScheduler, startAPI, startPhpApp, startQueue, } from "./server";
 import { notifyLaravel } from "./server/utils";
 import { resolve } from "path";
+import { stopAllProcesses } from "./server/api/childProcess";
 import ps from "ps-node";
 class NativePHP {
     constructor() {
@@ -50,6 +51,7 @@ class NativePHP {
             if (this.schedulerInterval) {
                 clearInterval(this.schedulerInterval);
             }
+            stopAllProcesses();
             this.killChildProcesses();
         });
         app.on("browser-window-created", (_, window) => {

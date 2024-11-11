@@ -13,6 +13,7 @@ import {
 } from "./server";
 import { notifyLaravel } from "./server/utils";
 import { resolve } from "path";
+import { stopAllProcesses } from "./server/api/childProcess";
 import ps from "ps-node";
 
 class NativePHP {
@@ -58,8 +59,11 @@ class NativePHP {
 
     app.on("before-quit", () => {
       if (this.schedulerInterval) {
-        clearInterval(this.schedulerInterval);
+          clearInterval(this.schedulerInterval);
       }
+
+      // close all child processes from the app
+      stopAllProcesses();
 
       this.killChildProcesses();
     });

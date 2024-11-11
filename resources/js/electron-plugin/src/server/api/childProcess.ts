@@ -5,6 +5,7 @@ import { notifyLaravel } from "../utils";
 import { join } from 'path';
 
 const router = express.Router();
+const killSync = require('kill-sync');
 
 function startProcess(settings) {
     const {alias, cmd, cwd, env, persistent} = settings;
@@ -75,9 +76,12 @@ function startProcess(settings) {
             }
         });
 
+        const settings = {...getSettings(alias)};
+
         delete state.processes[alias];
 
-        if (persistent) {
+        if (settings.persistent) {
+            console.log('Process [' + alias + '] wathchdog restarting...');
             startProcess(settings);
         }
     });
@@ -96,8 +100,18 @@ function stopProcess(alias) {
         return;
     }
 
-    if (proc.kill()) {
-        delete state.processes[alias];
+    // Set persistent to false to prevent the process from restarting.
+    state.processes[alias].settings.persistent = false;
+
+    console.log('Process [' + alias + '] stopping with PID [' + proc.pid + '].');
+
+    killSync(proc.pid, 'SIGTERM', true); // Kill tree
+    proc.kill(); // Does not work but just in case. (do not put before killSync)
+}
+
+export function stopAllProcesses() {
+    for (const alias in state.processes) {
+        stopProcess(alias);
     }
 }
 
@@ -123,10 +137,10 @@ router.post('/stop', (req, res) => {
     res.sendStatus(200);
 });
 
-router.post('/restart', (req, res) => {
+router.post('/restart', async (req, res) => {
     const {alias} = req.body;
 
-    const settings = getSettings(alias);
+    const settings = {...getSettings(alias)};
 
     stopProcess(alias);
 
@@ -135,8 +149,21 @@ router.post('/restart', (req, res) => {
         return;
     }
 
-    const proc = startProcess(settings);
+    // Wait for the process to stop with a timeout of 5s
+    const waitForProcessDeletion = async (timeout, retry) => {
+        const start = Date.now();
+        while (state.processes[alias] !== undefined) {
+            if (Date.now() - start > timeout) {
+                return;
+            }
+            await new Promise(resolve => setTimeout(resolve, retry));
+        }
+    };
 
+    await waitForProcessDeletion(5000, 100);
+
+    console.log('Process [' + alias + '] restarting...');
+    const proc = startProcess(settings);
     res.json(proc);
 });
 
