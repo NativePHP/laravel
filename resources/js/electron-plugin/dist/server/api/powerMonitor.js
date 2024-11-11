@@ -38,20 +38,20 @@ powerMonitor.addListener('on-battery', () => {
         }
     });
 });
-powerMonitor.addListener('thermal-state-change', (state) => {
+powerMonitor.addListener('thermal-state-change', (details) => {
     notifyLaravel("events", {
         event: `\\Native\\Laravel\\Events\\PowerMonitor\\ThermalStateChanged`,
         payload: {
-            state
-        }
+            state: details.state,
+        },
     });
 });
-powerMonitor.addListener('speed-limit-change', (limit) => {
+powerMonitor.addListener('speed-limit-change', (details) => {
     notifyLaravel("events", {
         event: `\\Native\\Laravel\\Events\\PowerMonitor\\SpeedLimitChanged`,
         payload: {
-            limit
-        }
+            limit: details.limit,
+        },
     });
 });
 export default router;
