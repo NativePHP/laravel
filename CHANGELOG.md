@@ -2,6 +2,16 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 0.8.4 - 2024-11-11
+
+### What's Changed
+
+* Fix the relative path to PHP by @JCombee in https://github.com/NativePHP/electron/pull/125
+* Improve child process by @SRWieZ in https://github.com/NativePHP/electron/pull/123
+* Fix powerMonitor events by @SRWieZ in https://github.com/NativePHP/electron/pull/122
+
+**Full Changelog**: https://github.com/NativePHP/electron/compare/0.8.3...0.8.4
+
 ## 0.8.3 - 2024-11-05
 
 Hotfix
