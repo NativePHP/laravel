@@ -4,6 +4,7 @@ namespace Native\Laravel;
 
 use Illuminate\Console\Application as Artisan;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Native\Laravel\Commands\FreshCommand;
 use Native\Laravel\Commands\LoadPHPConfigurationCommand;
 use Native\Laravel\Commands\LoadStartupConfigurationCommand;
@@ -122,6 +123,9 @@ class NativeServiceProvider extends PackageServiceProvider
         ]]);
 
         config(['database.default' => 'nativephp']);
+
+        DB::statement('PRAGMA journal_mode=WAL;');
+        DB::statement('PRAGMA busy_timeout=5000;');
     }
 
     public function removeDatabase()
