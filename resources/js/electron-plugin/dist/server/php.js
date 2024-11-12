@@ -114,7 +114,7 @@ function startQueueWorker(secret, apiPort, phpIniSettings = {}) {
         cwd: appPath,
         env
     };
-    return callPhp(['artisan', 'queue:work'], phpOptions, phpIniSettings);
+    return callPhp(['artisan', 'queue:work', '-q'], phpOptions, phpIniSettings);
 }
 function startScheduler(secret, apiPort, phpIniSettings = {}) {
     const env = getDefaultEnvironmentVariables(secret, apiPort);
