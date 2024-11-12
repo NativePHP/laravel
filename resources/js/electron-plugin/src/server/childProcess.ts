@@ -2,14 +2,7 @@ const { spawn } = require('child_process')
 
 const proc = spawn(
     process.argv[2],
-    process.argv.slice(3),
-    {
-        // cwd: options.cwd,
-        // env: {
-        //     ...process.env,
-        //     ...options.env
-        // },
-    }
+    process.argv.slice(3)
 );
 
 process.parentPort.on('message', (message) => {
