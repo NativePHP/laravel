@@ -2,6 +2,20 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 0.8.5 - 2024-11-13
+
+### What's Changed
+
+* Tidy / remove commented out child process env merge by @gwleuverink in https://github.com/NativePHP/electron/pull/126
+* Create build-plugin.yml by @simonhamp in https://github.com/NativePHP/electron/pull/127
+* Make the queue worker work by @simonhamp in https://github.com/NativePHP/electron/pull/128
+
+### New Contributors
+
+* @gwleuverink made their first contribution in https://github.com/NativePHP/electron/pull/126
+
+**Full Changelog**: https://github.com/NativePHP/electron/compare/0.8.4...0.8.5
+
 ## 0.8.4 - 2024-11-11
 
 ### What's Changed
