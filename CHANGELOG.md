@@ -2,6 +2,15 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 0.6.2 - 2024-11-13
+
+### What's Changed
+
+* Enable WAL mode in SQLite by @simonhamp in https://github.com/NativePHP/laravel/pull/405
+* Migrate the dev DB when created by @simonhamp in https://github.com/NativePHP/laravel/pull/406
+
+**Full Changelog**: https://github.com/NativePHP/laravel/compare/0.6.1...0.6.2
+
 ## 0.6.1 - 2024-11-04
 
 ### What's Changed
