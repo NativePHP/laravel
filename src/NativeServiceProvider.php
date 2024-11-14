@@ -4,7 +4,6 @@ namespace Native\Laravel;
 
 use Illuminate\Console\Application;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Native\Laravel\Commands\FreshCommand;
 use Native\Laravel\Commands\LoadPHPConfigurationCommand;
@@ -112,8 +111,6 @@ class NativeServiceProvider extends PackageServiceProvider
 
             if (! file_exists($databasePath)) {
                 touch($databasePath);
-
-                Artisan::call('native:migrate');
             }
         }
 
