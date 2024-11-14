@@ -4,11 +4,22 @@ import { mapMenu } from "./helper";
 import state from "../state";
 import { menubar } from "menubar";
 import { notifyLaravel } from "../utils";
+import { join } from "path";
 const router = express.Router();
 router.post("/label", (req, res) => {
     res.sendStatus(200);
     const { label } = req.body;
     state.activeMenuBar.tray.setTitle(label);
+});
+router.post("/tooltip", (req, res) => {
+    res.sendStatus(200);
+    const { tooltip } = req.body;
+    state.activeMenuBar.tray.setToolTip(tooltip);
+});
+router.post("/icon", (req, res) => {
+    res.sendStatus(200);
+    const { icon } = req.body;
+    state.activeMenuBar.tray.setImage(icon);
 });
 router.post("/context-menu", (req, res) => {
     res.sendStatus(200);
@@ -25,12 +36,21 @@ router.post("/hide", (req, res) => {
 });
 router.post("/create", (req, res) => {
     res.sendStatus(200);
-    const { width, height, url, label, alwaysOnTop, vibrancy, backgroundColor, transparency, icon, showDockIcon, onlyShowContextWindow, windowPosition, contextMenu } = req.body;
-    if (onlyShowContextWindow === true) {
+    const { width, height, url, label, alwaysOnTop, vibrancy, backgroundColor, transparency, icon, showDockIcon, onlyShowContextMenu, windowPosition, contextMenu, tooltip, resizable, event, } = req.body;
+    if (onlyShowContextMenu) {
         const tray = new Tray(icon || state.icon.replace("icon.png", "IconTemplate.png"));
         tray.setContextMenu(buildMenu(contextMenu));
+        if (event) {
+            tray.on('click', (e) => {
+                notifyLaravel('events', {
+                    event,
+                    payload: e,
+                });
+            });
+        }
         state.activeMenuBar = menubar({
             tray,
+            tooltip,
             index: false,
             showDockIcon,
             showOnAllWorkspaces: false,
@@ -44,6 +64,8 @@ router.post("/create", (req, res) => {
     else {
         state.activeMenuBar = menubar({
             icon: icon || state.icon.replace("icon.png", "IconTemplate.png"),
+            preloadWindow: true,
+            tooltip,
             index: url,
             showDockIcon,
             showOnAllWorkspaces: false,
@@ -51,14 +73,16 @@ router.post("/create", (req, res) => {
             browserWindow: {
                 width,
                 height,
+                resizable,
                 alwaysOnTop,
                 vibrancy,
                 backgroundColor,
                 transparent: transparency,
                 webPreferences: {
+                    preload: join(__dirname, '../../electron-plugin/dist/preload/index.js'),
                     nodeIntegration: true,
                     sandbox: false,
-                    contextIsolation: false
+                    contextIsolation: false,
                 }
             }
         });
@@ -86,7 +110,7 @@ router.post("/create", (req, res) => {
                 ]
             });
         });
-        if (onlyShowContextWindow !== true) {
+        if (!onlyShowContextMenu) {
             state.activeMenuBar.tray.on("right-click", () => {
                 notifyLaravel("events", {
                     event: "\\Native\\Laravel\\Events\\MenuBar\\MenuBarContextMenuOpened"
