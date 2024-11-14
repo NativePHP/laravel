@@ -362,4 +362,9 @@ class Window
 
         return $this;
     }
+
+    public function __get($var)
+    {
+        return $this->$var ?? null;
+    }
 }
