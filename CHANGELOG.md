@@ -2,6 +2,20 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 0.6.3 - 2024-11-14
+
+### What's Changed
+
+* Fix native:migrate:fresh by @miagg in https://github.com/NativePHP/laravel/pull/408
+* Fix accessing window properties by @simonhamp in https://github.com/NativePHP/laravel/pull/410
+* MenuBar improvements by @simonhamp in https://github.com/NativePHP/laravel/pull/411
+
+### New Contributors
+
+* @miagg made their first contribution in https://github.com/NativePHP/laravel/pull/408
+
+**Full Changelog**: https://github.com/NativePHP/laravel/compare/0.6.2...0.6.3
+
 ## 0.6.2 - 2024-11-13
 
 ### What's Changed
