@@ -6,7 +6,6 @@ use Native\Electron\Commands\BuildCommand;
 use Native\Electron\Commands\DevelopCommand;
 use Native\Electron\Commands\InstallCommand;
 use Native\Electron\Commands\PublishCommand;
-use Native\Electron\Commands\QueueWorkerCommand;
 use Native\Electron\Updater\UpdaterManager;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
