@@ -56,13 +56,6 @@ class MenuBar
         return $this;
     }
 
-    public function url(string $url): self
-    {
-        $this->url = $url;
-
-        return $this;
-    }
-
     public function showDockIcon($value = true): self
     {
         $this->showDockIcon = $value;
