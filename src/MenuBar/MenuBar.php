@@ -22,6 +22,8 @@ class MenuBar
 
     protected string $tooltip = '';
 
+    protected bool $resizable = true;
+
     protected bool $onlyShowContextMenu = false;
 
     protected ?Menu $contextMenu = null;
@@ -79,6 +81,13 @@ class MenuBar
         return $this;
     }
 
+    public function resizable(bool $resizable = true): static
+    {
+        $this->resizable = $resizable;
+
+        return $this;
+    }
+
     public function alwaysOnTop($alwaysOnTop = true): self
     {
         $this->alwaysOnTop = $alwaysOnTop;
@@ -103,6 +112,7 @@ class MenuBar
             'y' => $this->y,
             'label' => $this->label,
             'tooltip' => $this->tooltip,
+            'resizable' => $this->resizable,
             'width' => $this->width,
             'height' => $this->height,
             'vibrancy' => $this->vibrancy,
