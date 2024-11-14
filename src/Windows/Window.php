@@ -24,7 +24,7 @@ class Window
 
     protected bool $kiosk = false;
 
-    protected $rememberState = false;
+    protected bool $rememberState = false;
 
     protected bool $alwaysOnTop = false;
 
