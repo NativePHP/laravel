@@ -23,7 +23,6 @@ class ElectronServiceProvider extends PackageServiceProvider
                 DevelopCommand::class,
                 BuildCommand::class,
                 PublishCommand::class,
-                QueueWorkerCommand::class,
             ]);
     }
 
