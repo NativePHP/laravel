@@ -4,8 +4,8 @@ namespace Native\Laravel;
 
 use Illuminate\Console\Application;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 use Native\Laravel\Commands\FreshCommand;
 use Native\Laravel\Commands\LoadPHPConfigurationCommand;
 use Native\Laravel\Commands\LoadStartupConfigurationCommand;
