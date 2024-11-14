@@ -24,7 +24,7 @@ class Window
 
     protected bool $kiosk = false;
 
-    protected $rememberState = false;
+    protected bool $rememberState = false;
 
     protected bool $alwaysOnTop = false;
 
@@ -361,5 +361,10 @@ class Window
         }
 
         return $this;
+    }
+
+    public function __get($var)
+    {
+        return $this->$var ?? null;
     }
 }
