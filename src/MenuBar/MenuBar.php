@@ -30,6 +30,8 @@ class MenuBar
 
     protected bool $alwaysOnTop = false;
 
+    protected ?string $event = null;
+
     protected bool $showDockIcon = false;
 
     protected Client $client;
@@ -95,6 +97,13 @@ class MenuBar
         return $this;
     }
 
+    public function event(string $event): self
+    {
+        $this->event = $event;
+
+        return $this;
+    }
+
     public function withContextMenu(Menu $menu): self
     {
         $this->contextMenu = $menu;
@@ -122,6 +131,7 @@ class MenuBar
             'onlyShowContextMenu' => $this->onlyShowContextMenu,
             'contextMenu' => ! is_null($this->contextMenu) ? $this->contextMenu->toArray()['submenu'] : null,
             'alwaysOnTop' => $this->alwaysOnTop,
+            'event' => $this->event,
         ];
     }
 }
