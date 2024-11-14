@@ -2,6 +2,14 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 0.8.6 - 2024-11-14
+
+### What's Changed
+
+* MenuBar improvements by @simonhamp in https://github.com/NativePHP/electron/pull/131
+
+**Full Changelog**: https://github.com/NativePHP/electron/compare/0.8.5...0.8.6
+
 ## 0.8.5 - 2024-11-13
 
 ### What's Changed
