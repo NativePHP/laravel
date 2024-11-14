@@ -20,6 +20,8 @@ class MenuBar
 
     protected string $label = '';
 
+    protected string $tooltip = '';
+
     protected bool $onlyShowContextMenu = false;
 
     protected ?Menu $contextMenu = null;
@@ -70,6 +72,13 @@ class MenuBar
         return $this;
     }
 
+    public function tooltip(string $tooltip = ''): self
+    {
+        $this->tooltip = $tooltip;
+
+        return $this;
+    }
+
     public function alwaysOnTop($alwaysOnTop = true): self
     {
         $this->alwaysOnTop = $alwaysOnTop;
@@ -93,6 +102,7 @@ class MenuBar
             'x' => $this->x,
             'y' => $this->y,
             'label' => $this->label,
+            'tooltip' => $this->tooltip,
             'width' => $this->width,
             'height' => $this->height,
             'vibrancy' => $this->vibrancy,
