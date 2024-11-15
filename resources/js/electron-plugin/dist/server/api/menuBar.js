@@ -36,6 +36,9 @@ router.post("/hide", (req, res) => {
 });
 router.post("/create", (req, res) => {
     res.sendStatus(200);
+    if (state.activeMenuBar) {
+        return;
+    }
     const { width, height, url, label, alwaysOnTop, vibrancy, backgroundColor, transparency, icon, showDockIcon, onlyShowContextMenu, windowPosition, contextMenu, tooltip, resizable, event, } = req.body;
     if (onlyShowContextMenu) {
         const tray = new Tray(icon || state.icon.replace("icon.png", "IconTemplate.png"));
@@ -70,6 +73,7 @@ router.post("/create", (req, res) => {
             showDockIcon,
             showOnAllWorkspaces: false,
             windowPosition: windowPosition !== null && windowPosition !== void 0 ? windowPosition : "trayCenter",
+            activateWithApp: false,
             browserWindow: {
                 width,
                 height,
@@ -110,14 +114,14 @@ router.post("/create", (req, res) => {
                 ]
             });
         });
-        if (!onlyShowContextMenu) {
-            state.activeMenuBar.tray.on("right-click", () => {
-                notifyLaravel("events", {
-                    event: "\\Native\\Laravel\\Events\\MenuBar\\MenuBarContextMenuOpened"
-                });
-                state.activeMenuBar.tray.popUpContextMenu(buildMenu(contextMenu));
+        state.activeMenuBar.tray.on("right-click", () => {
+            notifyLaravel("events", {
+                event: "\\Native\\Laravel\\Events\\MenuBar\\MenuBarContextMenuOpened"
             });
-        }
+            if (!onlyShowContextMenu) {
+                state.activeMenuBar.tray.popUpContextMenu(buildMenu(contextMenu));
+            }
+        });
     });
 });
 function buildMenu(contextMenu) {
