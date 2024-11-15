@@ -140,13 +140,11 @@ class NativeServiceProvider extends PackageServiceProvider
 
         if (config('app.debug')) {
             $databasePath = database_path('nativephp.sqlite');
-
-            if (! file_exists($databasePath)) {
-                return;
-            }
         }
 
-        unlink($databasePath);
+        @unlink($databasePath);
+        @unlink($databasePath.'-shm');
+        @unlink($database.'-wal');
     }
 
     protected function configureDisks(): void
