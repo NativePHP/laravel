@@ -47,12 +47,12 @@ class NativeServiceProvider extends PackageServiceProvider
             return new MigrateCommand($app['migrator'], $app['events']);
         });
 
-        $this->app->singleton(
-            \Illuminate\Contracts\Debug\ExceptionHandler::class,
-            Handler::class
-        );
-
         if (config('nativephp-internal.running')) {
+            $this->app->singleton(
+                \Illuminate\Contracts\Debug\ExceptionHandler::class,
+                Handler::class
+            );
+
             Application::starting(function ($app) {
                 $app->resolveCommands([
                     LoadStartupConfigurationCommand::class,
