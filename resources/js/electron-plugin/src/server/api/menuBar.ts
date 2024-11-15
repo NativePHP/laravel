@@ -84,10 +84,14 @@ router.post("/create", (req, res) => {
         tray.setContextMenu(buildMenu(contextMenu));
 
         if (event) {
-            tray.on('click', (e) => {
+            tray.on('click', (combo, bounds, position) => {
                 notifyLaravel('events', {
                     event,
-                    payload: e,
+                    payload: {
+                        combo,
+                        bounds,
+                        position,
+                    },
                 });
             });
         }
