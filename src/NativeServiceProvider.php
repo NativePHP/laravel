@@ -57,6 +57,7 @@ class NativeServiceProvider extends PackageServiceProvider
                 $app->resolveCommands([
                     LoadStartupConfigurationCommand::class,
                     LoadPHPConfigurationCommand::class,
+                    MigrateCommand::class,
                 ]);
             });
 
