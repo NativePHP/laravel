@@ -128,8 +128,10 @@ class NativeServiceProvider extends PackageServiceProvider
 
         config(['database.default' => 'nativephp']);
 
-        DB::statement('PRAGMA journal_mode=WAL;');
-        DB::statement('PRAGMA busy_timeout=5000;');
+        if (file_exists($databasePath)) {
+            DB::statement('PRAGMA journal_mode=WAL;');
+            DB::statement('PRAGMA busy_timeout=5000;');
+        }
     }
 
     public function removeDatabase()
