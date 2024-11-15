@@ -72,9 +72,15 @@ class ChildProcess
 
     public function php(string|array $cmd, string $alias, ?array $env = null, ?bool $persistent = false): self
     {
-        $cmd = [PHP_BINARY, ...(array) $cmd];
+        $process = $this->client->post('child-process/start-php', [
+            'alias' => $alias,
+            'cmd' => (array) $cmd,
+            'cwd' => $cwd ?? base_path(),
+            'env' => $env,
+            'persistent' => $persistent,
+        ])->json();
 
-        return $this->start($cmd, $alias, env: $env, persistent: $persistent);
+        return $this->fromRuntimeProcess($process);
     }
 
     public function artisan(string|array $cmd, string $alias, ?array $env = null, ?bool $persistent = false): self
