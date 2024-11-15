@@ -47,16 +47,17 @@ class NativeServiceProvider extends PackageServiceProvider
             return new MigrateCommand($app['migrator'], $app['events']);
         });
 
-        $this->app->singleton(
-            \Illuminate\Contracts\Debug\ExceptionHandler::class,
-            Handler::class
-        );
-
         if (config('nativephp-internal.running')) {
+            $this->app->singleton(
+                \Illuminate\Contracts\Debug\ExceptionHandler::class,
+                Handler::class
+            );
+
             Application::starting(function ($app) {
                 $app->resolveCommands([
                     LoadStartupConfigurationCommand::class,
                     LoadPHPConfigurationCommand::class,
+                    MigrateCommand::class,
                 ]);
             });
 
@@ -127,8 +128,10 @@ class NativeServiceProvider extends PackageServiceProvider
 
         config(['database.default' => 'nativephp']);
 
-        DB::statement('PRAGMA journal_mode=WAL;');
-        DB::statement('PRAGMA busy_timeout=5000;');
+        if (file_exists($databasePath)) {
+            DB::statement('PRAGMA journal_mode=WAL;');
+            DB::statement('PRAGMA busy_timeout=5000;');
+        }
     }
 
     public function removeDatabase()
@@ -137,13 +140,11 @@ class NativeServiceProvider extends PackageServiceProvider
 
         if (config('app.debug')) {
             $databasePath = database_path('nativephp.sqlite');
-
-            if (! file_exists($databasePath)) {
-                return;
-            }
         }
 
-        unlink($databasePath);
+        @unlink($databasePath);
+        @unlink($databasePath.'-shm');
+        @unlink($database.'-wal');
     }
 
     protected function configureDisks(): void
