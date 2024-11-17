@@ -1,13 +1,16 @@
 <?php
 
+use Native\Laravel\Client\Client;
 use Native\Laravel\Facades\Window;
 use Native\Laravel\Windows\Window as WindowClass;
 
 it('test window', function () {
+    Http::fake();
     Window::shouldReceive('open')
         ->andReturn(new WindowClass('main'));
 
     $window = Window::open()
+        ->setClient(new Client)
         ->id('main')
         ->title('milwad')
         ->titleBarStyle('milwad')
@@ -43,7 +46,7 @@ it('test window', function () {
     expect($windowArray['maximizable'])->toBeTrue();
     expect($windowArray['closable'])->toBeTrue();
     expect($windowArray['fullscreen'])->toBeTrue();
-    expect($windowArray['kiosk'])->toBeFalse();
+    expect($windowArray['kiosk'])->toBeTrue();
     expect($windowArray['autoHideMenuBar'])->toBeTrue();
 });
 

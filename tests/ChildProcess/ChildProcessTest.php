@@ -35,9 +35,9 @@ it('can start a php command', function () {
     ChildProcess::php("-r 'sleep(5);'", 'some-alias', ['baz' => 'zah']);
 
     Http::assertSent(function (Request $request) {
-        return $request->url() === 'http://localhost:4000/api/child-process/start' &&
+        return $request->url() === 'http://localhost:4000/api/child-process/start-php' &&
                $request['alias'] === 'some-alias' &&
-               $request['cmd'] === [PHP_BINARY, "-r 'sleep(5);'"] &&
+               $request['cmd'] === ["-r 'sleep(5);'"] &&
                $request['cwd'] === base_path() &&
                $request['env'] === ['baz' => 'zah'];
     });
@@ -47,9 +47,9 @@ it('can start a artisan command', function () {
     ChildProcess::artisan('foo:bar --verbose', 'some-alias', ['baz' => 'zah']);
 
     Http::assertSent(function (Request $request) {
-        return $request->url() === 'http://localhost:4000/api/child-process/start' &&
+        return $request->url() === 'http://localhost:4000/api/child-process/start-php' &&
                $request['alias'] === 'some-alias' &&
-               $request['cmd'] === [PHP_BINARY, 'artisan', 'foo:bar --verbose'] &&
+               $request['cmd'] === ['artisan', 'foo:bar --verbose'] &&
                $request['cwd'] === base_path() &&
                $request['env'] === ['baz' => 'zah'];
     });
@@ -65,18 +65,18 @@ it('accepts either a string or a array as start command argument', function () {
 
 it('accepts either a string or a array as php command argument', function () {
     ChildProcess::php("-r 'sleep(5);'", 'some-alias');
-    Http::assertSent(fn (Request $request) => $request['cmd'] === [PHP_BINARY, "-r 'sleep(5);'"]);
+    Http::assertSent(fn (Request $request) => $request['cmd'] === ["-r 'sleep(5);'"]);
 
     ChildProcess::php(['-r', "'sleep(5);'"], 'some-alias');
-    Http::assertSent(fn (Request $request) => $request['cmd'] === [PHP_BINARY, '-r', "'sleep(5);'"]);
+    Http::assertSent(fn (Request $request) => $request['cmd'] === ['-r', "'sleep(5);'"]);
 });
 
 it('accepts either a string or a array as artisan command argument', function () {
     ChildProcess::artisan('foo:bar', 'some-alias');
-    Http::assertSent(fn (Request $request) => $request['cmd'] === [PHP_BINARY, 'artisan', 'foo:bar']);
+    Http::assertSent(fn (Request $request) => $request['cmd'] === ['artisan', 'foo:bar']);
 
     ChildProcess::artisan(['foo:baz'], 'some-alias');
-    Http::assertSent(fn (Request $request) => $request['cmd'] === [PHP_BINARY, 'artisan', 'foo:baz']);
+    Http::assertSent(fn (Request $request) => $request['cmd'] === ['artisan', 'foo:baz']);
 });
 
 it('sets the cwd to the base path if none was given', function () {
