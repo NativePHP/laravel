@@ -2,6 +2,21 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 0.8.7 - 2024-11-17
+
+### What's Changed
+
+* Fix/forward native env variables to Child Processes by @gwleuverink in https://github.com/NativePHP/electron/pull/129
+* Fix some MenuBar quirks by @simonhamp in https://github.com/NativePHP/electron/pull/133
+* Pass MenuBar clicked event parameters correctly by @simonhamp in https://github.com/NativePHP/electron/pull/134
+* Delete the `native:queue` command by @JustinLawrenceMS in https://github.com/NativePHP/electron/pull/130
+
+### New Contributors
+
+* @JustinLawrenceMS made their first contribution in https://github.com/NativePHP/electron/pull/130
+
+**Full Changelog**: https://github.com/NativePHP/electron/compare/0.8.6...0.8.7
+
 ## 0.8.6 - 2024-11-14
 
 ### What's Changed
