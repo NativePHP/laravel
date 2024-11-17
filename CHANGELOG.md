@@ -2,6 +2,15 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 0.6.4 - 2024-11-17
+
+### What's Changed
+
+* Fix some DB stuff by @simonhamp in https://github.com/NativePHP/laravel/pull/413
+* Add dedicated PHP ChildProcess endpoint by @gwleuverink in https://github.com/NativePHP/laravel/pull/414
+
+**Full Changelog**: https://github.com/NativePHP/laravel/compare/0.6.3...0.6.4
+
 ## 0.6.3 - 2024-11-14
 
 ### What's Changed
