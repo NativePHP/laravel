@@ -31,6 +31,20 @@ class MenuBarManager
         ]);
     }
 
+    public function tooltip(string $tooltip)
+    {
+        $this->client->post('menu-bar/tooltip', [
+            'tooltip' => $tooltip,
+        ]);
+    }
+
+    public function icon(string $icon)
+    {
+        $this->client->post('menu-bar/icon', [
+            'icon' => $icon,
+        ]);
+    }
+
     public function contextMenu(Menu $contextMenu)
     {
         $this->client->post('menu-bar/context-menu', [

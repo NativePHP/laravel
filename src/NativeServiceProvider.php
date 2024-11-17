@@ -2,8 +2,10 @@
 
 namespace Native\Laravel;
 
-use Illuminate\Console\Application as Artisan;
+use Illuminate\Console\Application;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 use Native\Laravel\Commands\FreshCommand;
 use Native\Laravel\Commands\LoadPHPConfigurationCommand;
 use Native\Laravel\Commands\LoadStartupConfigurationCommand;
@@ -45,16 +47,17 @@ class NativeServiceProvider extends PackageServiceProvider
             return new MigrateCommand($app['migrator'], $app['events']);
         });
 
-        $this->app->singleton(
-            \Illuminate\Contracts\Debug\ExceptionHandler::class,
-            Handler::class
-        );
-
         if (config('nativephp-internal.running')) {
-            Artisan::starting(function ($artisan) {
-                $artisan->resolveCommands([
+            $this->app->singleton(
+                \Illuminate\Contracts\Debug\ExceptionHandler::class,
+                Handler::class
+            );
+
+            Application::starting(function ($app) {
+                $app->resolveCommands([
                     LoadStartupConfigurationCommand::class,
                     LoadPHPConfigurationCommand::class,
+                    MigrateCommand::class,
                 ]);
             });
 
@@ -110,6 +113,8 @@ class NativeServiceProvider extends PackageServiceProvider
 
             if (! file_exists($databasePath)) {
                 touch($databasePath);
+
+                Artisan::call('native:migrate');
             }
         }
 
@@ -122,6 +127,11 @@ class NativeServiceProvider extends PackageServiceProvider
         ]]);
 
         config(['database.default' => 'nativephp']);
+
+        if (file_exists($databasePath)) {
+            DB::statement('PRAGMA journal_mode=WAL;');
+            DB::statement('PRAGMA busy_timeout=5000;');
+        }
     }
 
     public function removeDatabase()
@@ -130,13 +140,11 @@ class NativeServiceProvider extends PackageServiceProvider
 
         if (config('app.debug')) {
             $databasePath = database_path('nativephp.sqlite');
-
-            if (! file_exists($databasePath)) {
-                return;
-            }
         }
 
-        unlink($databasePath);
+        @unlink($databasePath);
+        @unlink($databasePath.'-shm');
+        @unlink($database.'-wal');
     }
 
     protected function configureDisks(): void
