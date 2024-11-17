@@ -12,6 +12,7 @@ import { utilityProcess } from 'electron';
 import state from '../state';
 import { notifyLaravel } from "../utils";
 import { join } from 'path';
+import { getDefaultEnvironmentVariables, getDefaultPhpIniSettings } from "../php";
 const router = express.Router();
 const killSync = require('kill-sync');
 function startProcess(settings) {
@@ -21,8 +22,8 @@ function startProcess(settings) {
     }
     const proc = utilityProcess.fork(join(__dirname, '../../electron-plugin/dist/server/childProcess.js'), cmd, {
         cwd,
-        serviceName: alias,
         stdio: 'pipe',
+        serviceName: alias,
         env: Object.assign(Object.assign({}, process.env), env)
     });
     proc.stdout.on('data', (data) => {
@@ -68,7 +69,7 @@ function startProcess(settings) {
         const settings = Object.assign({}, getSettings(alias));
         delete state.processes[alias];
         if (settings.persistent) {
-            console.log('Process [' + alias + '] wathchdog restarting...');
+            console.log('Process [' + alias + '] watchdog restarting...');
             startProcess(settings);
         }
     });
@@ -77,6 +78,15 @@ function startProcess(settings) {
         proc,
         settings
     };
+}
+function startPhpProcess(settings) {
+    const defaultEnv = getDefaultEnvironmentVariables(state.randomSecret, state.electronApiPort);
+    const iniSettings = Object.assign(Object.assign({}, getDefaultPhpIniSettings()), state.phpIni);
+    const iniArgs = Object.keys(iniSettings).map(key => {
+        return ['-d', `${key}=${iniSettings[key]}`];
+    }).flat();
+    settings = Object.assign(Object.assign({}, settings), { cmd: [state.php, ...iniArgs, ...settings.cmd], env: Object.assign(Object.assign({}, settings.env), defaultEnv) });
+    return startProcess(settings);
 }
 function stopProcess(alias) {
     const proc = getProcess(alias);
@@ -103,6 +113,10 @@ function getSettings(alias) {
 }
 router.post('/start', (req, res) => {
     const proc = startProcess(req.body);
+    res.json(proc);
+});
+router.post('/start-php', (req, res) => {
+    const proc = startPhpProcess(req.body);
     res.json(proc);
 });
 router.post('/stop', (req, res) => {

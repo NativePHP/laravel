@@ -53,13 +53,8 @@ async function retrieveNativePHPConfig() {
 }
 
 function callPhp(args, options, phpIniSettings = {}) {
-    let defaultIniSettings = {
-      'memory_limit': '512M',
-      'curl.cainfo': state.caCert,
-      'openssl.cafile': state.caCert
-    }
 
-    let iniSettings = Object.assign(defaultIniSettings, phpIniSettings);
+    let iniSettings = Object.assign(getDefaultPhpIniSettings(), phpIniSettings);
 
     Object.keys(iniSettings).forEach(key => {
       args.unshift('-d', `${key}=${iniSettings[key]}`);
@@ -120,15 +115,7 @@ function ensureAppFoldersAreAvailable() {
 }
 
 function startQueueWorker(secret, apiPort, phpIniSettings = {}) {
-    const env = {
-        APP_ENV: process.env.NODE_ENV === 'development' ? 'local' : 'production',
-        APP_DEBUG: process.env.NODE_ENV === 'development' ? 'true' : 'false',
-        NATIVEPHP_STORAGE_PATH: storagePath,
-        NATIVEPHP_DATABASE_PATH: databaseFile,
-        NATIVEPHP_API_URL: `http://localhost:${apiPort}/api/`,
-        NATIVEPHP_RUNNING: true,
-        NATIVEPHP_SECRET: secret
-    };
+    const env = getDefaultEnvironmentVariables(secret, apiPort);
 
     const phpOptions = {
         cwd: appPath,
@@ -165,7 +152,7 @@ function getDefaultEnvironmentVariables(secret, apiPort) {
     NATIVEPHP_STORAGE_PATH: storagePath,
     NATIVEPHP_DATABASE_PATH: databaseFile,
     NATIVEPHP_API_URL: `http://localhost:${apiPort}/api/`,
-    NATIVEPHP_RUNNING: true,
+    NATIVEPHP_RUNNING: 'true',
     NATIVEPHP_SECRET: secret,
     NATIVEPHP_USER_HOME_PATH: getPath('home'),
     NATIVEPHP_APP_DATA_PATH: getPath('appData'),
@@ -178,6 +165,14 @@ function getDefaultEnvironmentVariables(secret, apiPort) {
     NATIVEPHP_VIDEOS_PATH: getPath('videos'),
     NATIVEPHP_RECENT_PATH: getPath('recent'),
   };
+}
+
+function getDefaultPhpIniSettings() {
+    return {
+        'memory_limit': '512M',
+        'curl.cainfo': state.caCert,
+        'openssl.cafile': state.caCert
+    }
 }
 
 function serveApp(secret, apiPort, phpIniSettings): Promise<ProcessResult> {
@@ -267,4 +262,4 @@ function serveApp(secret, apiPort, phpIniSettings): Promise<ProcessResult> {
     })
 }
 
-export {startQueueWorker, startScheduler, serveApp, getAppPath, retrieveNativePHPConfig, retrievePhpIniSettings}
+export {startQueueWorker, startScheduler, serveApp, getAppPath, retrieveNativePHPConfig, retrievePhpIniSettings, getDefaultEnvironmentVariables, getDefaultPhpIniSettings}

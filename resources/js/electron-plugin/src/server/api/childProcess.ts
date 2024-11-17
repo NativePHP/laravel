@@ -3,6 +3,8 @@ import { utilityProcess } from 'electron';
 import state from '../state';
 import { notifyLaravel } from "../utils";
 import { join } from 'path';
+import { getDefaultEnvironmentVariables, getDefaultPhpIniSettings } from "../php";
+
 
 const router = express.Router();
 const killSync = require('kill-sync');
@@ -19,8 +21,8 @@ function startProcess(settings) {
         cmd,
         {
             cwd,
-            serviceName: alias,
             stdio: 'pipe',
+            serviceName: alias,
             env: {
                 ...process.env,
                 ...env,
@@ -81,7 +83,7 @@ function startProcess(settings) {
         delete state.processes[alias];
 
         if (settings.persistent) {
-            console.log('Process [' + alias + '] wathchdog restarting...');
+            console.log('Process [' + alias + '] watchdog restarting...');
             startProcess(settings);
         }
     });
@@ -91,6 +93,30 @@ function startProcess(settings) {
         proc,
         settings
     };
+}
+
+function startPhpProcess(settings) {
+    const defaultEnv = getDefaultEnvironmentVariables(
+        state.randomSecret,
+        state.electronApiPort
+    );
+
+    // Construct command args from ini settings
+    const iniSettings = { ...getDefaultPhpIniSettings(), ...state.phpIni };
+    const iniArgs = Object.keys(iniSettings).map(key => {
+        return ['-d', `${key}=${iniSettings[key]}`];
+    }).flat();
+
+
+    settings = {
+        ...settings,
+        // Prepend cmd with php executable path & ini settings
+        cmd: [ state.php, ...iniArgs, ...settings.cmd ],
+        // Mix in the internal NativePHP env
+        env: { ...settings.env, ...defaultEnv }
+    };
+
+    return startProcess(settings);
 }
 
 function stopProcess(alias) {
@@ -125,6 +151,12 @@ function getSettings(alias) {
 
 router.post('/start', (req, res) => {
     const proc = startProcess(req.body);
+
+    res.json(proc);
+});
+
+router.post('/start-php', (req, res) => {
+    const proc = startPhpProcess(req.body);
 
     res.json(proc);
 });
