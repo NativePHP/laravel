@@ -15,7 +15,7 @@
         "publish:win": "cross-env npm run publish:win-x64",
         "publish:win-x64": "cross-env npm run build && cross-env node ./node_modules/electron-builder/cli.js -p always --win --config --x64",
         "publish:mac": "cross-env npm run publish:mac-arm && cross-env npm run publish:mac-x86",
-        "publish:mac-arm": "cross-env npm run build && cross-env node ./node_modules/electron-builder/cli.js -p always --mac --config --arm64 -p always",
+        "publish:mac-arm64": "cross-env npm run build && cross-env node ./node_modules/electron-builder/cli.js -p always --mac --config --arm64 -p always",
         "publish:mac-x86": "cross-env npm run build && cross-env node ./node_modules/electron-builder/cli.js -p always --mac --config --x64 -p always",
         "publish:linux": "cross-env npm run publish:linux-x64",
         "publish:linux-x64": "cross-env npm run build && cross-env node ./node_modules/electron-builder/cli.js --linux --config --x64 -p always",
