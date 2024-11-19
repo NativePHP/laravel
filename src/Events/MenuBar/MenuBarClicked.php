@@ -12,9 +12,7 @@ class MenuBarClicked implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public function __construct(public array $combo, public array $bounds, public array $position)
-    {
-    }
+    public function __construct(public array $combo, public array $bounds, public array $position) {}
 
     public function broadcastOn()
     {
