@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static void set($key, $value)
- * @method static void mixed($key, $default = null)
+ * @method static mixed get($key, $default = null)
  */
 class Settings extends Facade
 {
