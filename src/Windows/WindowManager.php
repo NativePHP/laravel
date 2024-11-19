@@ -4,8 +4,9 @@ namespace Native\Laravel\Windows;
 
 use Native\Laravel\Client\Client;
 use Native\Laravel\Concerns\DetectsWindowId;
+use Native\Laravel\Contracts\WindowManager as WindowManagerContract;
 
-class WindowManager
+class WindowManager implements WindowManagerContract
 {
     use DetectsWindowId;
 

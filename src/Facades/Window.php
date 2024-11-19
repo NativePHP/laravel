@@ -3,6 +3,8 @@
 namespace Native\Laravel\Facades;
 
 use Illuminate\Support\Facades\Facade;
+use Native\Laravel\Contracts\WindowManager as WindowManagerContract;
+use Native\Laravel\Fakes\WindowManagerFake;
 
 /**
  * @method static \Native\Laravel\Windows\PendingOpenWindow open(string $id = 'main')
@@ -18,8 +20,15 @@ use Illuminate\Support\Facades\Facade;
  */
 class Window extends Facade
 {
+    public static function fake()
+    {
+        return tap(new WindowManagerFake, function ($fake) {
+            static::swap($fake);
+        });
+    }
+
     protected static function getFacadeAccessor()
     {
-        return \Native\Laravel\Windows\WindowManager::class;
+        return WindowManagerContract::class;
     }
 }
