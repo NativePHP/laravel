@@ -4,7 +4,6 @@ namespace Native\Laravel\Facades;
 
 use Illuminate\Support\Facades\Facade;
 use Native\Laravel\Menu\Items\Checkbox;
-use Native\Laravel\Menu\Items\GoToUrl;
 use Native\Laravel\Menu\Items\Label;
 use Native\Laravel\Menu\Items\Link;
 use Native\Laravel\Menu\Items\Radio;
@@ -14,10 +13,9 @@ use Native\Laravel\Menu\Items\Separator;
 /**
  * @method static \Native\Laravel\Menu\Menu make(MenuItem ...$items)
  * @method static Checkbox checkbox(string $label, bool $checked = false, ?string $hotkey = null)
- * @method static GoToLink goToUrl(string $url, string $label = null, ?string $hotkey = null)
- * @method static GoToLink goToRoute(string $url, string $label = null, ?string $hotkey = null)
  * @method static Label label(string $label)
  * @method static Link link(string $url, string $label = null, ?string $hotkey = null)
+ * @method static Link route(string $url, string $label = null, ?string $hotkey = null)
  * @method static Radio radio(string $label, bool $checked = false, ?string $hotkey = null)
  * @method static Role app()
  * @method static Role file()

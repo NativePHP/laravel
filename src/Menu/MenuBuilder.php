@@ -43,16 +43,6 @@ class MenuBuilder
         return new Items\Label($label);
     }
 
-    public function goToUrl(string $url, ?string $label = null, ?string $hotkey = null): Items\GoToUrl
-    {
-        return new Items\GoToUrl($url, $label, $hotkey);
-    }
-
-    public function goToRoute(string $route, ?string $label = null, ?string $hotkey = null): Items\GoToUrl
-    {
-        return new Items\GoToUrl(route($route), $label, $hotkey);
-    }
-
     public function checkbox(string $label, bool $checked = false, ?string $hotkey = null): Items\Checkbox
     {
         return new Items\Checkbox($label, $checked, $hotkey);
@@ -66,6 +56,11 @@ class MenuBuilder
     public function link(string $url, ?string $label = null, ?string $hotkey = null): Items\Link
     {
         return new Items\Link($url, $label, $hotkey);
+    }
+
+    public function route(string $route, ?string $label = null, ?string $hotkey = null): Items\Link
+    {
+        return new Items\Link(route($route), $label, $hotkey);
     }
 
     public function app(): Items\Role
