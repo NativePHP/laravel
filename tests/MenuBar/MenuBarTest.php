@@ -1,7 +1,7 @@
 <?php
 
+use Native\Laravel\Facades\Menu;
 use Native\Laravel\Facades\MenuBar;
-use Native\Laravel\Menu\Menu;
 
 it('menubar with create', function () {
     config()->set('nativephp-internal.api_url', 'https://jsonplaceholder.typicode.com/todos/1');
@@ -13,7 +13,10 @@ it('menubar with create', function () {
         ->icon('nativephp.png')
         ->url('https://github.com/milwad-dev')
         ->withContextMenu(
-            Menu::new()->label('My Application')->quit(),
+            Menu::make(
+                Menu::label('My Application'),
+                Menu::quit(),
+            ),
         );
     $menuBarArray = $menuBar->toArray();
 
