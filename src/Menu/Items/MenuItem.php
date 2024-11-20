@@ -30,6 +30,8 @@ abstract class MenuItem implements MenuItemContract
 
     protected bool $isChecked = false;
 
+    protected ?string $event = null;
+
     public function enabled(): self
     {
         $this->isEnabled = true;
@@ -107,12 +109,20 @@ abstract class MenuItem implements MenuItemContract
         return $this;
     }
 
+    public function event(string $event): self
+    {
+        $this->event = $event;
+
+        return $this;
+    }
+
     public function toArray(): array
     {
         return array_filter([
             'type' => $this->type,
             'id' => $this->id,
             'label' => $this->label,
+            'event' => $this->event,
             'sublabel' => $this->sublabel,
             'toolTip' => $this->toolTip,
             'enabled' => $this->isEnabled,
