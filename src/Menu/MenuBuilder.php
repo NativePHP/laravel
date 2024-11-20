@@ -74,22 +74,22 @@ class MenuBuilder
         return new Items\Role(RolesEnum::APP_MENU);
     }
 
-    public function file($label = 'File'): Items\Role
+    public function file(?string $label = null): Items\Role
     {
         return new Items\Role(RolesEnum::FILE_MENU, $label);
     }
 
-    public function edit($label = 'Edit'): Items\Role
+    public function edit(?string $label = null): Items\Role
     {
         return new Items\Role(RolesEnum::EDIT_MENU, $label);
     }
 
-    public function view($label = 'View'): Items\Role
+    public function view(?string $label = null): Items\Role
     {
         return new Items\Role(RolesEnum::VIEW_MENU, $label);
     }
 
-    public function window($label = 'Window'): Items\Role
+    public function window(?string $label = null): Items\Role
     {
         return new Items\Role(RolesEnum::WINDOW_MENU, $label);
     }
@@ -99,73 +99,73 @@ class MenuBuilder
         return new Items\Separator;
     }
 
-    public function fullscreen(): Items\Role
+    public function fullscreen(?string $label = null): Items\Role
     {
-        return new Items\Role(RolesEnum::TOGGLE_FULL_SCREEN);
+        return new Items\Role(RolesEnum::TOGGLE_FULL_SCREEN, $label);
     }
 
-    public function devTools(): Items\Role
+    public function devTools(?string $label = null): Items\Role
     {
-        return new Items\Role(RolesEnum::TOGGLE_DEV_TOOLS);
+        return new Items\Role(RolesEnum::TOGGLE_DEV_TOOLS, $label);
     }
 
-    public function undo(): Items\Role
+    public function undo(?string $label = null): Items\Role
     {
-        return new Items\Role(RolesEnum::UNDO);
+        return new Items\Role(RolesEnum::UNDO, $label);
     }
 
-    public function redo(): Items\Role
+    public function redo(?string $label = null): Items\Role
     {
-        return new Items\Role(RolesEnum::REDO);
+        return new Items\Role(RolesEnum::REDO, $label);
     }
 
-    public function cut(): Items\Role
+    public function cut(?string $label = null): Items\Role
     {
-        return new Items\Role(RolesEnum::CUT);
+        return new Items\Role(RolesEnum::CUT, $label);
     }
 
-    public function copy(): Items\Role
+    public function copy(?string $label = null): Items\Role
     {
-        return new Items\Role(RolesEnum::COPY);
+        return new Items\Role(RolesEnum::COPY, $label);
     }
 
-    public function paste(): Items\Role
+    public function paste(?string $label = null): Items\Role
     {
-        return new Items\Role(RolesEnum::PASTE);
+        return new Items\Role(RolesEnum::PASTE, $label);
     }
 
-    public function pasteAndMatchStyle(): Items\Role
+    public function pasteAndMatchStyle(?string $label = null): Items\Role
     {
-        return new Items\Role(RolesEnum::PASTE_STYLE);
+        return new Items\Role(RolesEnum::PASTE_STYLE, $label);
     }
 
-    public function reload(): Items\Role
+    public function reload(?string $label = null): Items\Role
     {
-        return new Items\Role(RolesEnum::RELOAD);
+        return new Items\Role(RolesEnum::RELOAD, $label);
     }
 
-    public function minimize(): Items\Role
+    public function minimize(?string $label = null): Items\Role
     {
-        return new Items\Role(RolesEnum::MINIMIZE);
+        return new Items\Role(RolesEnum::MINIMIZE, $label);
     }
 
-    public function close(): Items\Role
+    public function close(?string $label = null): Items\Role
     {
-        return new Items\Role(RolesEnum::PASTE_STYLE);
+        return new Items\Role(RolesEnum::CLOSE, $label);
     }
 
-    public function quit(): Items\Role
+    public function quit(?string $label = null): Items\Role
     {
-        return new Items\Role(RolesEnum::QUIT);
+        return new Items\Role(RolesEnum::QUIT, $label);
     }
 
-    public function help(): Items\Role
+    public function help(?string $label = null): Items\Role
     {
-        return new Items\Role(RolesEnum::HELP);
+        return new Items\Role(RolesEnum::HELP, $label);
     }
 
-    public function hide(): Items\Role
+    public function hide(?string $label = null): Items\Role
     {
-        return new Items\Role(RolesEnum::HIDE);
+        return new Items\Role(RolesEnum::HIDE, $label);
     }
 }
