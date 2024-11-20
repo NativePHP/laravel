@@ -9,7 +9,17 @@ enum RolesEnum: string
     case EDIT_MENU = 'editMenu';
     case VIEW_MENU = 'viewMenu';
     case WINDOW_MENU = 'windowMenu';
+    case UNDO = 'undo';
+    case REDO = 'redo';
+    case CUT = 'cut';
+    case COPY = 'copy';
+    case PASTE = 'paste';
+    case PASTE_STYLE = 'pasteAndMatchStyle';
+    case RELOAD = 'reload';
+    case MINIMIZE = 'minimize';
+    case CLOSE = 'close';
     case QUIT = 'quit';
     case TOGGLE_FULL_SCREEN = 'togglefullscreen';
     case TOGGLE_DEV_TOOLS = 'toggleDevTools';
+    case ABOUT = 'about';
 }
