@@ -46,7 +46,7 @@ class Dock
     public function badge(?string $label = null): void|string
     {
         if (is_null($label)) {
-            return $this->client - get('dock/badge');
+            return $this->client->get('dock/badge');
         }
 
         $this->client->post('dock/badge', ['label' => $label]);
