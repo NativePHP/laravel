@@ -5,13 +5,6 @@ namespace Native\Laravel\Menu;
 use Illuminate\Support\Traits\Conditionable;
 use Native\Laravel\Client\Client;
 use Native\Laravel\Contracts\MenuItem;
-use Native\Laravel\Enums\RolesEnum;
-use Native\Laravel\Menu\Items\Checkbox;
-use Native\Laravel\Menu\Items\Event;
-use Native\Laravel\Menu\Items\Label;
-use Native\Laravel\Menu\Items\Link;
-use Native\Laravel\Menu\Items\Role;
-use Native\Laravel\Menu\Items\Separator;
 
 class Menu implements MenuItem
 {

@@ -5,7 +5,6 @@ namespace Native\Laravel\Menu;
 use Native\Laravel\Client\Client;
 use Native\Laravel\Contracts\MenuItem;
 use Native\Laravel\Enums\RolesEnum;
-use Native\Laravel\Menu\Items;
 
 class MenuBuilder
 {
@@ -21,7 +20,7 @@ class MenuBuilder
 
         return $menu;
     }
-    
+
     public function create(MenuItem ...$items): void
     {
         $this->make(...$items)
@@ -44,12 +43,12 @@ class MenuBuilder
         return new Items\Label($label);
     }
 
-    public function goToUrl(string $url, string $label = null, ?string $hotkey = null): Items\GoToUrl
+    public function goToUrl(string $url, ?string $label = null, ?string $hotkey = null): Items\GoToUrl
     {
         return new Items\GoToUrl($url, $label, $hotkey);
     }
 
-    public function goToRoute(string $route, string $label = null, ?string $hotkey = null): Items\GoToUrl
+    public function goToRoute(string $route, ?string $label = null, ?string $hotkey = null): Items\GoToUrl
     {
         return new Items\GoToUrl(route($route), $label, $hotkey);
     }
@@ -59,12 +58,12 @@ class MenuBuilder
         return new Items\Checkbox($label, $checked, $hotkey);
     }
 
-    public function event(string $event, string $label = null, ?string $hotkey = null): Items\Event
+    public function event(string $event, ?string $label = null, ?string $hotkey = null): Items\Event
     {
         return new Items\Event($event, $label, $hotkey);
     }
 
-    public function link(string $url, string $label = null, ?string $hotkey = null): Items\Link
+    public function link(string $url, ?string $label = null, ?string $hotkey = null): Items\Link
     {
         return new Items\Link($url, $label, $hotkey);
     }
