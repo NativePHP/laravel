@@ -157,4 +157,14 @@ class MenuBuilder
     {
         return new Items\Role(RolesEnum::QUIT);
     }
+
+    public function help(): Items\Role
+    {
+        return new Items\Role(RolesEnum::HELP);
+    }
+
+    public function hide(): Items\Role
+    {
+        return new Items\Role(RolesEnum::HIDE);
+    }
 }
