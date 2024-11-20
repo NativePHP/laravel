@@ -5,7 +5,6 @@ namespace Native\Laravel\Menu;
 use Native\Laravel\Client\Client;
 use Native\Laravel\Contracts\MenuItem;
 use Native\Laravel\Enums\RolesEnum;
-use Native\Laravel\Menu\Items;
 
 class MenuBuilder
 {
