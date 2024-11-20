@@ -3,6 +3,7 @@
 namespace Native\Laravel;
 
 use Illuminate\Console\Application;
+use Illuminate\Foundation\Application as Foundation;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
@@ -12,9 +13,11 @@ use Native\Laravel\Commands\LoadStartupConfigurationCommand;
 use Native\Laravel\Commands\MigrateCommand;
 use Native\Laravel\Commands\MinifyApplicationCommand;
 use Native\Laravel\Commands\SeedDatabaseCommand;
+use Native\Laravel\Contracts\WindowManager as WindowManagerContract;
 use Native\Laravel\Events\EventWatcher;
 use Native\Laravel\Exceptions\Handler;
 use Native\Laravel\Logging\LogWatcher;
+use Native\Laravel\Windows\WindowManager as WindowManagerImplementation;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -45,6 +48,10 @@ class NativeServiceProvider extends PackageServiceProvider
 
         $this->app->singleton(MigrateCommand::class, function ($app) {
             return new MigrateCommand($app['migrator'], $app['events']);
+        });
+
+        $this->app->bind(WindowManagerContract::class, function (Foundation $app) {
+            return $app->make(WindowManagerImplementation::class);
         });
 
         if (config('nativephp-internal.running')) {
