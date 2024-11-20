@@ -6,7 +6,6 @@ use Illuminate\Support\Arr;
 use Native\Laravel\Contracts\WindowManager as WindowManagerContract;
 use Native\Laravel\Windows\Window;
 use PHPUnit\Framework\Assert as PHPUnit;
-use RuntimeException;
 
 class WindowManagerFake implements WindowManagerContract
 {
