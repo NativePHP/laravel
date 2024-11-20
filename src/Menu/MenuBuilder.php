@@ -64,11 +64,6 @@ class MenuBuilder
         return new Items\Radio($label, $checked, $hotkey);
     }
 
-    public function event(string $event, ?string $label = null, ?string $hotkey = null): Items\Event
-    {
-        return new Items\Event($event, $label, $hotkey);
-    }
-
     public function link(string $url, ?string $label = null, ?string $hotkey = null): Items\Link
     {
         return new Items\Link($url, $label, $hotkey);
