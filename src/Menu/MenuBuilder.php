@@ -39,7 +39,7 @@ class MenuBuilder
         );
     }
 
-    public function label(): Items\Label
+    public function label(string $label): Items\Label
     {
         return new Items\Label($label);
     }
