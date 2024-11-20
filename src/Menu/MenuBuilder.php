@@ -5,6 +5,7 @@ namespace Native\Laravel\Menu;
 use Native\Laravel\Client\Client;
 use Native\Laravel\Contracts\MenuItem;
 use Native\Laravel\Enums\RolesEnum;
+use Native\Laravel\Menu\Items;
 
 class MenuBuilder
 {
@@ -56,6 +57,11 @@ class MenuBuilder
     public function checkbox(string $label, bool $checked = false, ?string $hotkey = null): Items\Checkbox
     {
         return new Items\Checkbox($label, $checked, $hotkey);
+    }
+
+    public function radio(string $label, bool $checked = false, ?string $hotkey = null): Items\Radio
+    {
+        return new Items\Radio($label, $checked, $hotkey);
     }
 
     public function event(string $event, ?string $label = null, ?string $hotkey = null): Items\Event
