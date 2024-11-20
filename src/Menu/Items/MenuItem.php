@@ -10,6 +10,8 @@ abstract class MenuItem implements MenuItemContract
 {
     protected string $type = 'normal';
 
+    protected ?string $id = null;
+
     protected ?string $label = null;
 
     protected ?string $sublabel = null;
@@ -38,6 +40,13 @@ abstract class MenuItem implements MenuItemContract
     public function disabled(): self
     {
         $this->isEnabled = false;
+
+        return $this;
+    }
+
+    public function id(string $id): self
+    {
+        $this->id = $id;
 
         return $this;
     }
@@ -84,7 +93,7 @@ abstract class MenuItem implements MenuItemContract
         return $this;
     }
 
-    public function toolTip(string $toolTip): self
+    public function tooltip(string $toolTip): self
     {
         $this->toolTip = $toolTip;
 
@@ -102,6 +111,7 @@ abstract class MenuItem implements MenuItemContract
     {
         return array_filter([
             'type' => $this->type,
+            'id' => $this->id,
             'label' => $this->label,
             'sublabel' => $this->sublabel,
             'toolTip' => $this->toolTip,
