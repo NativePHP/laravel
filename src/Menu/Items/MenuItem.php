@@ -3,6 +3,8 @@
 namespace Native\Laravel\Menu\Items;
 
 use Native\Laravel\Contracts\MenuItem as MenuItemContract;
+use Native\Laravel\Facades\Menu as MenuFacade;
+use Native\Laravel\Menu\Menu;
 
 abstract class MenuItem implements MenuItemContract
 {
@@ -17,6 +19,8 @@ abstract class MenuItem implements MenuItemContract
     protected ?string $icon = null;
 
     protected ?string $toolTip = null;
+
+    protected ?Menu $submenu = null;
 
     protected bool $isEnabled = true;
 
@@ -80,6 +84,13 @@ abstract class MenuItem implements MenuItemContract
         return $this;
     }
 
+    public function submenu(MenuItemContract ...$items): self
+    {
+        $this->submenu = MenuFacade::make(...$items);
+
+        return $this;
+    }
+
     public function toArray(): array
     {
         return array_filter([
@@ -92,6 +103,7 @@ abstract class MenuItem implements MenuItemContract
             'checked' => $this->isChecked,
             'accelerator' => $this->accelerator,
             'icon' => $this->icon,
+            'submenu' => $this->submenu?->toArray(),
         ], fn ($value) => $value !== null);
     }
 }
