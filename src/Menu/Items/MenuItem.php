@@ -28,9 +28,16 @@ abstract class MenuItem implements MenuItemContract
 
     protected bool $isChecked = false;
 
-    public function enabled($enabled = true): self
+    public function enabled(): self
     {
-        $this->isEnabled = $enabled;
+        $this->isEnabled = true;
+
+        return $this;
+    }
+
+    public function disabled(): self
+    {
+        $this->isEnabled = false;
 
         return $this;
     }
