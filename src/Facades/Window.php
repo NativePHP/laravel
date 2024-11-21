@@ -22,7 +22,7 @@ class Window extends Facade
 {
     public static function fake()
     {
-        return tap(new WindowManagerFake, function ($fake) {
+        return tap(static::getFacadeApplication()->make(WindowManagerFake::class), function ($fake) {
             static::swap($fake);
         });
     }

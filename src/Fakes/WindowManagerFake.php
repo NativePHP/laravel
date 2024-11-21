@@ -4,9 +4,11 @@ namespace Native\Laravel\Fakes;
 
 use Closure;
 use Illuminate\Support\Arr;
+use Native\Laravel\Client\Client;
 use Native\Laravel\Contracts\WindowManager as WindowManagerContract;
 use Native\Laravel\Windows\Window;
 use PHPUnit\Framework\Assert as PHPUnit;
+use Webmozart\Assert\Assert;
 
 class WindowManagerFake implements WindowManagerContract
 {
@@ -17,6 +19,10 @@ class WindowManagerFake implements WindowManagerContract
     public array $hidden = [];
 
     public array $forcedWindowReturnValues = [];
+
+    public function __construct(
+        protected Client $client
+    ) {}
 
     /**
      * @param  array<int, Window>  $windows
@@ -31,6 +37,21 @@ class WindowManagerFake implements WindowManagerContract
     public function open(string $id = 'main')
     {
         $this->opened[] = $id;
+
+        $this->ensureForceReturnWindowsProvided();
+
+        $matchingWindows = array_filter(
+            $this->forcedWindowReturnValues,
+            fn (Window $window) => $window->getId() === $id
+        );
+
+        if (empty($matchingWindows)) {
+            return $this->forcedWindowReturnValues[array_rand($this->forcedWindowReturnValues)]->setClient($this->client);
+        }
+
+        Assert::count($matchingWindows, 1);
+
+        return Arr::first($matchingWindows)->setClient($this->client);
     }
 
     public function close($id = null)
@@ -66,8 +87,8 @@ class WindowManagerFake implements WindowManagerContract
 
         $matchingWindows = array_filter($this->forcedWindowReturnValues, fn (Window $window) => $window->getId() === $id);
 
-        PHPUnit::assertNotEmpty($matchingWindows);
-        PHPUnit::assertCount(1, $matchingWindows);
+        Assert::notEmpty($matchingWindows);
+        Assert::count($matchingWindows, 1);
 
         return Arr::first($matchingWindows);
     }
@@ -152,6 +173,6 @@ class WindowManagerFake implements WindowManagerContract
 
     private function ensureForceReturnWindowsProvided(): void
     {
-        PHPUnit::assertNotEmpty($this->forcedWindowReturnValues);
+        Assert::notEmpty($this->forcedWindowReturnValues, 'No windows were provided to return');
     }
 }
