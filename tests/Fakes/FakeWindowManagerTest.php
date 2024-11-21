@@ -26,8 +26,24 @@ it('asserts that a window was opened', function () {
     try {
         $fake->assertOpened('tertiary');
     } catch (AssertionFailedError) {
-        expect(true)->toBeTrue();
+        return;
+    }
 
+    $this->fail('Expected assertion to fail');
+});
+
+it('asserts that a window was opened using callable', function () {
+    swap(WindowManagerContract::class, $fake = new WindowManagerFake);
+
+    app(WindowManagerContract::class)->open('main');
+    app(WindowManagerContract::class)->open('secondary');
+
+    $fake->assertOpened(fn (string $id) => $id === 'main');
+    $fake->assertOpened(fn (string $id) => $id === 'secondary');
+
+    try {
+        $fake->assertOpened(fn (string $id) => $id === 'tertiary');
+    } catch (AssertionFailedError) {
         return;
     }
 
@@ -46,8 +62,24 @@ it('asserts that a window was closed', function () {
     try {
         $fake->assertClosed('tertiary');
     } catch (AssertionFailedError) {
-        expect(true)->toBeTrue();
+        return;
+    }
 
+    $this->fail('Expected assertion to fail');
+});
+
+it('asserts that a window was closed using callable', function () {
+    swap(WindowManagerContract::class, $fake = new WindowManagerFake);
+
+    app(WindowManagerContract::class)->close('main');
+    app(WindowManagerContract::class)->close('secondary');
+
+    $fake->assertClosed(fn (string $id) => $id === 'main');
+    $fake->assertClosed(fn (string $id) => $id === 'secondary');
+
+    try {
+        $fake->assertClosed(fn (string $id) => $id === 'tertiary');
+    } catch (AssertionFailedError) {
         return;
     }
 
@@ -66,8 +98,78 @@ it('asserts that a window was hidden', function () {
     try {
         $fake->assertHidden('tertiary');
     } catch (AssertionFailedError) {
-        expect(true)->toBeTrue();
+        return;
+    }
 
+    $this->fail('Expected assertion to fail');
+});
+
+it('asserts that a window was hidden using callable', function () {
+    swap(WindowManagerContract::class, $fake = new WindowManagerFake);
+
+    app(WindowManagerContract::class)->hide('main');
+    app(WindowManagerContract::class)->hide('secondary');
+
+    $fake->assertHidden(fn (string $id) => $id === 'main');
+    $fake->assertHidden(fn (string $id) => $id === 'secondary');
+
+    try {
+        $fake->assertHidden(fn (string $id) => $id === 'tertiary');
+    } catch (AssertionFailedError) {
+        return;
+    }
+
+    $this->fail('Expected assertion to fail');
+});
+
+it('asserts opened count', function () {
+    swap(WindowManagerContract::class, $fake = new WindowManagerFake);
+
+    app(WindowManagerContract::class)->open('main');
+    app(WindowManagerContract::class)->open();
+    app(WindowManagerContract::class)->open();
+
+    $fake->assertOpenedCount(3);
+
+    try {
+        $fake->assertOpenedCount(4);
+    } catch (AssertionFailedError) {
+        return;
+    }
+
+    $this->fail('Expected assertion to fail');
+});
+
+it('asserts closed count', function () {
+    swap(WindowManagerContract::class, $fake = new WindowManagerFake);
+
+    app(WindowManagerContract::class)->close('main');
+    app(WindowManagerContract::class)->close();
+    app(WindowManagerContract::class)->close();
+
+    $fake->assertClosedCount(3);
+
+    try {
+        $fake->assertClosedCount(4);
+    } catch (AssertionFailedError) {
+        return;
+    }
+
+    $this->fail('Expected assertion to fail');
+});
+
+it('asserts hidden count', function () {
+    swap(WindowManagerContract::class, $fake = new WindowManagerFake);
+
+    app(WindowManagerContract::class)->hide('main');
+    app(WindowManagerContract::class)->hide();
+    app(WindowManagerContract::class)->hide();
+
+    $fake->assertHiddenCount(3);
+
+    try {
+        $fake->assertHiddenCount(4);
+    } catch (AssertionFailedError) {
         return;
     }
 

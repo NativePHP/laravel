@@ -2,6 +2,7 @@
 
 namespace Native\Laravel\Fakes;
 
+use Closure;
 use Illuminate\Support\Arr;
 use Native\Laravel\Contracts\WindowManager as WindowManagerContract;
 use Native\Laravel\Windows\Window;
@@ -71,19 +72,82 @@ class WindowManagerFake implements WindowManagerContract
         return Arr::first($matchingWindows);
     }
 
-    public function assertOpened(string $id): void
+    /**
+     * @param  string|Closure(string): bool  $id
+     */
+    public function assertOpened(string|Closure $id): void
     {
-        PHPUnit::assertContains($id, $this->opened);
+        if (is_callable($id) === false) {
+            PHPUnit::assertContains($id, $this->opened);
+
+            return;
+        }
+
+        $hit = empty(
+            array_filter(
+                $this->opened,
+                fn (string $openedId) => $id($openedId) === true
+            )
+        ) === false;
+
+        PHPUnit::assertTrue($hit);
     }
 
-    public function assertClosed(?string $id): void
+    /**
+     * @param  string|Closure(string): bool  $id
+     */
+    public function assertClosed(string|Closure $id): void
     {
-        PHPUnit::assertContains($id, $this->closed);
+        if (is_callable($id) === false) {
+            PHPUnit::assertContains($id, $this->closed);
+
+            return;
+        }
+
+        $hit = empty(
+            array_filter(
+                $this->closed,
+                fn (mixed $closedId) => $id($closedId) === true
+            )
+        ) === false;
+
+        PHPUnit::assertTrue($hit);
     }
 
-    public function assertHidden(?string $id): void
+    /**
+     * @param  string|Closure(string): bool  $id
+     */
+    public function assertHidden(string|Closure $id): void
     {
-        PHPUnit::assertContains($id, $this->hidden);
+        if (is_callable($id) === false) {
+            PHPUnit::assertContains($id, $this->hidden);
+
+            return;
+        }
+
+        $hit = empty(
+            array_filter(
+                $this->hidden,
+                fn (mixed $hiddenId) => $id($hiddenId) === true
+            )
+        ) === false;
+
+        PHPUnit::assertTrue($hit);
+    }
+
+    public function assertOpenedCount(int $expected): void
+    {
+        PHPUnit::assertCount($expected, $this->opened);
+    }
+
+    public function assertClosedCount(int $expected): void
+    {
+        PHPUnit::assertCount($expected, $this->closed);
+    }
+
+    public function assertHiddenCount(int $expected): void
+    {
+        PHPUnit::assertCount($expected, $this->hidden);
     }
 
     private function ensureForceReturnWindowsProvided(): void
