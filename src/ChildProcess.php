@@ -58,10 +58,11 @@ class ChildProcess
         ?array $env = null,
         bool $persistent = false
     ): static {
+        $cmd = is_array($cmd) ? array_values($cmd) : [$cmd];
 
         $process = $this->client->post('child-process/start', [
             'alias' => $alias,
-            'cmd' => (array) $cmd,
+            'cmd' => $cmd,
             'cwd' => $cwd ?? base_path(),
             'env' => $env,
             'persistent' => $persistent,
@@ -72,9 +73,11 @@ class ChildProcess
 
     public function php(string|array $cmd, string $alias, ?array $env = null, ?bool $persistent = false): self
     {
+        $cmd = is_array($cmd) ? array_values($cmd) : [$cmd];
+        
         $process = $this->client->post('child-process/start-php', [
             'alias' => $alias,
-            'cmd' => (array) $cmd,
+            'cmd' => $cmd,
             'cwd' => $cwd ?? base_path(),
             'env' => $env,
             'persistent' => $persistent,
