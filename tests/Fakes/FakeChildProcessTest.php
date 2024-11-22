@@ -215,5 +215,3 @@ it('asserts message using callable', function () {
 
     $this->fail('Expected assertion to fail');
 });
-
-
