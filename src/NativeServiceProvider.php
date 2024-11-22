@@ -7,12 +7,14 @@ use Illuminate\Foundation\Application as Foundation;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
+use Native\Laravel\ChildProcess as ChildProcessImplementation;
 use Native\Laravel\Commands\FreshCommand;
 use Native\Laravel\Commands\LoadPHPConfigurationCommand;
 use Native\Laravel\Commands\LoadStartupConfigurationCommand;
 use Native\Laravel\Commands\MigrateCommand;
 use Native\Laravel\Commands\MinifyApplicationCommand;
 use Native\Laravel\Commands\SeedDatabaseCommand;
+use Native\Laravel\Contracts\ChildProcess as ChildProcessContract;
 use Native\Laravel\Contracts\WindowManager as WindowManagerContract;
 use Native\Laravel\Events\EventWatcher;
 use Native\Laravel\Exceptions\Handler;
@@ -52,6 +54,10 @@ class NativeServiceProvider extends PackageServiceProvider
 
         $this->app->bind(WindowManagerContract::class, function (Foundation $app) {
             return $app->make(WindowManagerImplementation::class);
+        });
+
+        $this->app->bind(ChildProcessContract::class, function (Foundation $app) {
+            return $app->make(ChildProcessImplementation::class);
         });
 
         if (config('nativephp-internal.running')) {
