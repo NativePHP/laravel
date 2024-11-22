@@ -3,7 +3,8 @@
 namespace Native\Laravel\Facades;
 
 use Illuminate\Support\Facades\Facade;
-use Native\Laravel\ChildProcess as Implement;
+use Native\Laravel\Contracts\ChildProcess as ChildProcessContract;
+use Native\Laravel\Fakes\ChildProcessFake;
 
 /**
  * @method static \Native\Laravel\ChildProcess[] all()
@@ -17,10 +18,17 @@ use Native\Laravel\ChildProcess as Implement;
  */
 class ChildProcess extends Facade
 {
+    public static function fake()
+    {
+        return tap(static::getFacadeApplication()->make(ChildProcessFake::class), function ($fake) {
+            static::swap($fake);
+        });
+    }
+
     protected static function getFacadeAccessor()
     {
-        self::clearResolvedInstance(Implement::class);
+        self::clearResolvedInstance(ChildProcessContract::class);
 
-        return Implement::class;
+        return ChildProcessContract::class;
     }
 }

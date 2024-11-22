@@ -3,8 +3,9 @@
 namespace Native\Laravel;
 
 use Native\Laravel\Client\Client;
+use Native\Laravel\Contracts\ChildProcess as ChildProcessContract;
 
-class ChildProcess
+class ChildProcess implements ChildProcessContract
 {
     public readonly int $pid;
 
