@@ -58,7 +58,7 @@ class ChildProcess
         ?array $env = null,
         bool $persistent = false
     ): static {
-        $cmd = is_array($cmd) ? array_values($cmd) : [$cmd];
+        $cmd = $this->ensureCmdIsAnIndexedArray($cmd);
 
         $process = $this->client->post('child-process/start', [
             'alias' => $alias,
@@ -73,8 +73,8 @@ class ChildProcess
 
     public function php(string|array $cmd, string $alias, ?array $env = null, ?bool $persistent = false): self
     {
-        $cmd = is_array($cmd) ? array_values($cmd) : [$cmd];
-        
+        $cmd = $this->ensureCmdIsAnIndexedArray($cmd);
+
         $process = $this->client->post('child-process/start-php', [
             'alias' => $alias,
             'cmd' => $cmd,
@@ -134,5 +134,16 @@ class ChildProcess
         }
 
         return $this;
+    }
+
+    protected function ensureCmdIsAnIndexedArray(string|array $cmd): array
+    {
+        if (is_string($cmd)) {
+            return [$cmd];
+        }
+
+        if (array_keys($cmd) !== range(0, count($cmd) - 1)) {
+            throw new \InvalidArgumentException('Only indexed arrays are supported for the cmd: argument.');
+        }
     }
 }
