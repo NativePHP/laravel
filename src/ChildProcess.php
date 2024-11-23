@@ -52,6 +52,10 @@ class ChildProcess implements ChildProcessContract
         return $hydrated;
     }
 
+    /**
+     * @param  string|string[]  $cmd
+     * @return $this
+     */
     public function start(
         string|array $cmd,
         string $alias,
@@ -59,10 +63,11 @@ class ChildProcess implements ChildProcessContract
         ?array $env = null,
         bool $persistent = false
     ): static {
+        $cmd = is_array($cmd) ? array_values($cmd) : [$cmd];
 
         $process = $this->client->post('child-process/start', [
             'alias' => $alias,
-            'cmd' => (array) $cmd,
+            'cmd' => $cmd,
             'cwd' => $cwd ?? base_path(),
             'env' => $env,
             'persistent' => $persistent,
@@ -71,11 +76,17 @@ class ChildProcess implements ChildProcessContract
         return $this->fromRuntimeProcess($process);
     }
 
+    /**
+     * @param  string|string[]  $cmd
+     * @return $this
+     */
     public function php(string|array $cmd, string $alias, ?array $env = null, ?bool $persistent = false): self
     {
+        $cmd = is_array($cmd) ? array_values($cmd) : [$cmd];
+
         $process = $this->client->post('child-process/start-php', [
             'alias' => $alias,
-            'cmd' => (array) $cmd,
+            'cmd' => $cmd,
             'cwd' => $cwd ?? base_path(),
             'env' => $env,
             'persistent' => $persistent,
@@ -84,9 +95,15 @@ class ChildProcess implements ChildProcessContract
         return $this->fromRuntimeProcess($process);
     }
 
+    /**
+     * @param  string|string[]  $cmd
+     * @return $this
+     */
     public function artisan(string|array $cmd, string $alias, ?array $env = null, ?bool $persistent = false): self
     {
-        $cmd = ['artisan', ...(array) $cmd];
+        $cmd = is_array($cmd) ? array_values($cmd) : [$cmd];
+
+        $cmd = ['artisan', ...$cmd];
 
         return $this->php($cmd, $alias, env: $env, persistent: $persistent);
     }
