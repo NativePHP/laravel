@@ -51,6 +51,10 @@ class ChildProcess
         return $hydrated;
     }
 
+    /**
+     * @param  string|string[]  $cmd
+     * @return $this
+     */
     public function start(
         string|array $cmd,
         string $alias,
@@ -58,7 +62,7 @@ class ChildProcess
         ?array $env = null,
         bool $persistent = false
     ): static {
-        $cmd = $this->ensureCmdIsAnIndexedArray($cmd);
+        $cmd = is_array($cmd) ? array_values($cmd) : [$cmd];
 
         $process = $this->client->post('child-process/start', [
             'alias' => $alias,
@@ -71,9 +75,13 @@ class ChildProcess
         return $this->fromRuntimeProcess($process);
     }
 
+    /**
+     * @param  string|string[]  $cmd
+     * @return $this
+     */
     public function php(string|array $cmd, string $alias, ?array $env = null, ?bool $persistent = false): self
     {
-        $cmd = $this->ensureCmdIsAnIndexedArray($cmd);
+        $cmd = is_array($cmd) ? array_values($cmd) : [$cmd];
 
         $process = $this->client->post('child-process/start-php', [
             'alias' => $alias,
@@ -86,9 +94,15 @@ class ChildProcess
         return $this->fromRuntimeProcess($process);
     }
 
+    /**
+     * @param  string|string[]  $cmd
+     * @return $this
+     */
     public function artisan(string|array $cmd, string $alias, ?array $env = null, ?bool $persistent = false): self
     {
-        $cmd = ['artisan', ...(array) $cmd];
+        $cmd = is_array($cmd) ? array_values($cmd) : [$cmd];
+
+        $cmd = ['artisan', ...$cmd];
 
         return $this->php($cmd, $alias, env: $env, persistent: $persistent);
     }
@@ -134,16 +148,5 @@ class ChildProcess
         }
 
         return $this;
-    }
-
-    protected function ensureCmdIsAnIndexedArray(string|array $cmd): array
-    {
-        if (is_string($cmd)) {
-            return [$cmd];
-        }
-
-        if (array_keys($cmd) !== range(0, count($cmd) - 1)) {
-            throw new \InvalidArgumentException('Only indexed arrays are supported for the cmd: argument.');
-        }
     }
 }
