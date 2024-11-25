@@ -17,4 +17,8 @@ router.delete('/:key', (req, res) => {
     state.store.delete(key);
     res.sendStatus(200);
 });
+router.delete('/', (req, res) => {
+    state.store.clear();
+    res.sendStatus(200);
+});
 export default router;
