@@ -33,6 +33,7 @@ interface State {
   randomSecret: string;
   store: Store;
   findWindow: (id: string) => BrowserWindow | null;
+  dockBounce: number;
 }
 
 function generateRandomString(length: number) {
