@@ -56,7 +56,7 @@ router.post("/create", (req, res) => {
     res.sendStatus(200);
 
     if (state.activeMenuBar) {
-        return;
+        state.activeMenuBar.tray.destroy();
     }
 
     const {
@@ -82,19 +82,6 @@ router.post("/create", (req, res) => {
         const tray = new Tray(icon || state.icon.replace("icon.png", "IconTemplate.png"));
 
         tray.setContextMenu(buildMenu(contextMenu));
-
-        if (event) {
-            tray.on('click', (combo, bounds, position) => {
-                notifyLaravel('events', {
-                    event,
-                    payload: {
-                        combo,
-                        bounds,
-                        position,
-                    },
-                });
-            });
-        }
 
         state.activeMenuBar = menubar({
             tray,
@@ -164,14 +151,40 @@ router.post("/create", (req, res) => {
             });
         });
 
-        state.activeMenuBar.tray.on("right-click", () => {
+        state.activeMenuBar.tray.on('click', (combo, bounds, position) => {
+            notifyLaravel('events', {
+                event: "\\Native\\Laravel\\Events\\MenuBar\\MenuBarClicked",
+                payload: {
+                    combo,
+                    bounds,
+                    position,
+                },
+            });
+        });
+
+        state.activeMenuBar.tray.on("right-click", (combo, bounds) => {
             notifyLaravel("events", {
-                event: "\\Native\\Laravel\\Events\\MenuBar\\MenuBarContextMenuOpened"
+                event: "\\Native\\Laravel\\Events\\MenuBar\\MenuBarRightClicked",
+                payload: {
+                    combo,
+                    bounds,
+                }
             });
 
             if (! onlyShowContextMenu) {
+                state.activeMenuBar.hideWindow();
                 state.activeMenuBar.tray.popUpContextMenu(buildMenu(contextMenu));
             }
+        });
+
+        state.activeMenuBar.tray.on('double-click', (combo, bounds) => {
+            notifyLaravel('events', {
+                event: "\\Native\\Laravel\\Events\\MenuBar\\MenuBarDoubleClicked",
+                payload: {
+                    combo,
+                    bounds,
+                },
+            });
         });
     });
 });
