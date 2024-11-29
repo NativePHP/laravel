@@ -3,8 +3,9 @@
 namespace Native\Laravel;
 
 use Native\Laravel\Client\Client;
+use Native\Laravel\Contracts\GlobalShortcut as GlobalShortcutContract;
 
-class GlobalShortcut
+class GlobalShortcut implements GlobalShortcutContract
 {
     protected string $key;
 
