@@ -15,9 +15,11 @@ use Native\Laravel\Commands\MigrateCommand;
 use Native\Laravel\Commands\MinifyApplicationCommand;
 use Native\Laravel\Commands\SeedDatabaseCommand;
 use Native\Laravel\Contracts\ChildProcess as ChildProcessContract;
+use Native\Laravel\Contracts\GlobalShortcut as GlobalShortcutContract;
 use Native\Laravel\Contracts\WindowManager as WindowManagerContract;
 use Native\Laravel\Events\EventWatcher;
 use Native\Laravel\Exceptions\Handler;
+use Native\Laravel\GlobalShortcut as GlobalShortcutImplementation;
 use Native\Laravel\Logging\LogWatcher;
 use Native\Laravel\Windows\WindowManager as WindowManagerImplementation;
 use Spatie\LaravelPackageTools\Package;
@@ -58,6 +60,10 @@ class NativeServiceProvider extends PackageServiceProvider
 
         $this->app->bind(ChildProcessContract::class, function (Foundation $app) {
             return $app->make(ChildProcessImplementation::class);
+        });
+
+        $this->app->bind(GlobalShortcutContract::class, function (Foundation $app) {
+            return $app->make(GlobalShortcutImplementation::class);
         });
 
         if (config('nativephp-internal.running')) {
