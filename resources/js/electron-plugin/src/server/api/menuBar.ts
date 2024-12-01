@@ -1,6 +1,6 @@
 import express from "express";
 import { Menu, Tray } from "electron";
-import { mapMenu } from "./helper";
+import { compileMenu } from "./helper";
 import state from "../state";
 import { menubar } from "menubar";
 import { notifyLaravel } from "../utils";
@@ -193,7 +193,7 @@ function buildMenu(contextMenu) {
     let menu = Menu.buildFromTemplate([{ role: "quit" }]);
 
     if (contextMenu) {
-        const menuEntries = contextMenu.map(mapMenu);
+        const menuEntries = contextMenu.map(compileMenu);
         menu = Menu.buildFromTemplate(menuEntries);
     }
 

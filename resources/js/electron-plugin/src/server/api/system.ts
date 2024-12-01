@@ -1,5 +1,5 @@
 import express from 'express';
-import {BrowserWindow, systemPreferences, safeStorage} from 'electron';
+import { BrowserWindow, systemPreferences, safeStorage } from 'electron';
 
 const router = express.Router();
 

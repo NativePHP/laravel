@@ -1,5 +1,6 @@
-import express from 'express'
-import state from "../state";
+import express from 'express';
+import state from '../state';
+
 const router = express.Router();
 
 router.get('/:key', (req, res) => {
@@ -28,7 +29,6 @@ router.delete('/:key', (req, res) => {
 });
 
 router.delete('/', (req, res) => {
-
   state.store.clear();
 
   res.sendStatus(200)

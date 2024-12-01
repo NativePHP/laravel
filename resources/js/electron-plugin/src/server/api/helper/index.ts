@@ -1,73 +1,82 @@
-import {shell} from "electron";
-import {notifyLaravel} from "../../utils";
+import { shell } from 'electron';
+import { notifyLaravel, goToUrl } from '../../utils';
+import state from '../../state';
 
-function triggerMenuItemEvent(menuItem) {
+function triggerMenuItemEvent(menuItem, combo) {
     notifyLaravel('events', {
-        event: '\\Native\\Laravel\\Events\\Menu\\MenuItemClicked',
-        payload: [
-            {
+        event: menuItem.event || '\\Native\\Laravel\\Events\\Menu\\MenuItemClicked',
+        payload: {
+            item: {
                 id: menuItem.id,
                 label: menuItem.label,
-                checked: menuItem.checked
-            }
-        ]
-    })
+                checked: menuItem.checked,
+            },
+            combo,
+        },
+    });
 }
 
-const mapMenu = (menu) => {
-    if (menu.submenu) {
-        menu.submenu = menu.submenu.map(mapMenu)
-    }
-
-    if (menu.type === 'link') {
-        menu.type = 'normal'
-        menu.click = () => {
-            triggerMenuItemEvent(menu)
-            shell.openExternal(menu.url)
-        }
-        return menu
-    }
-
-    if (menu.type === 'checkbox') {
-        menu.click = () => {
-            menu.checked = !menu.checked
-            triggerMenuItemEvent(menu)
+export function compileMenu (item) {
+    if (item.submenu) {
+        if (Array.isArray(item.submenu)) {
+            item.submenu = item.submenu?.map(compileMenu);
+        } else {
+            item.submenu = item.submenu.submenu?.map(compileMenu);
         }
     }
 
-    if (menu.type === 'event') {
-        return {
-            label: menu.label,
-            accelerator: menu.accelerator,
-            click() {
-                notifyLaravel('events', {
-                    event: menu.event
-                })
+    if (item.type === 'link') {
+        item.type = 'normal';
+
+        item.click = (menuItem, focusedWindow, combo) => {
+            triggerMenuItemEvent(item, combo);
+
+            if (item.openInBrowser) {
+                shell.openExternal(item.url);
+                return;
             }
+
+            if (! focusedWindow) {
+                // TODO: Bring a window to the front?
+                return;
+            }
+
+            const id = Object.keys(state.windows)
+                .find(key => state.windows[key] === focusedWindow);
+
+            goToUrl(item.url, id);
         }
+
+        return item;
     }
 
-    if (menu.type === 'role') {
-        let menuItem = {
-          role: menu.role
+    if (item.type === 'checkbox' || item.type === 'radio') {
+        item.click = (menuItem, focusedWindow, combo) => {
+            item.checked = !item.checked;
+            triggerMenuItemEvent(item, combo);
         };
 
-        if (menu.label) {
-          menuItem['label'] = menu.label;
+        return item;
+    }
+
+    if (item.type === 'role') {
+        let menuItem = {
+            role: item.role
+        };
+
+        if (item.label) {
+            menuItem['label'] = item.label;
         }
 
         return menuItem;
     }
 
-    if (! menu.click) {
-        menu.click = () => {
-            triggerMenuItemEvent(menu)
+    // Default click event
+    if (! item.click) {
+        item.click = (menuItem, focusedWindow, combo) => {
+            triggerMenuItemEvent(item, combo);
         }
     }
 
-    return menu
-}
-
-export {
-    mapMenu,
+    return item;
 }

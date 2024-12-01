@@ -1,7 +1,6 @@
 import express from 'express'
 import {app, Menu} from 'electron'
 import state from "../state";
-import {mapMenu} from "./helper";
 const router = express.Router();
 
 router.post('/update', (req, res) => {
