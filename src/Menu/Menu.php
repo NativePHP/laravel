@@ -7,7 +7,7 @@ use JsonSerializable;
 use Native\Laravel\Client\Client;
 use Native\Laravel\Contracts\MenuItem;
 
-class Menu implements MenuItem, JsonSerializable
+class Menu implements JsonSerializable, MenuItem
 {
     use Conditionable;
 
