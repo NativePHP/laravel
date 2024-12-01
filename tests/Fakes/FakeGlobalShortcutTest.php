@@ -1,9 +1,8 @@
 <?php
 
-use Native\Laravel\Facades\GlobalShortcut;
 use Native\Laravel\Contracts\GlobalShortcut as GlobalShortcutContract;
+use Native\Laravel\Facades\GlobalShortcut;
 use Native\Laravel\Fakes\GlobalShortcutFake;
-
 use PHPUnit\Framework\AssertionFailedError;
 
 use function Pest\Laravel\swap;
@@ -121,4 +120,3 @@ it('asserts unregistered count', function () {
 
     $this->fail('Expected assertion to fail');
 });
-
