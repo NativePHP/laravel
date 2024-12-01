@@ -88,6 +88,11 @@ abstract class MenuItem implements MenuItemContract
         return $this;
     }
 
+    public function hotkey(string $hotkey): self
+    {
+        return $this->accelerator($hotkey);
+    }
+
     public function checked($checked = true): self
     {
         $this->isChecked = $checked;
