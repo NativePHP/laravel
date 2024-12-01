@@ -11,7 +11,7 @@ use Native\Laravel\Menu\Items\Role;
 use Native\Laravel\Menu\Items\Separator;
 
 /**
- * @method static \Native\Laravel\Menu\Menu make(MenuItem ...$items)
+ * @method static \Native\Laravel\Menu\Menu make(\Native\Laravel\Menu\Items\MenuItem ...$items)
  * @method static Checkbox checkbox(string $label, bool $checked = false, ?string $hotkey = null)
  * @method static Label label(string $label)
  * @method static Link link(string $url, string $label = null, ?string $hotkey = null)
