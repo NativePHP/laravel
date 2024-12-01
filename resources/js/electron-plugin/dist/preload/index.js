@@ -9,6 +9,10 @@ const Native = {
                 return callback(data.payload, event);
             }
         });
+    },
+    contextMenu: (template) => {
+        let menu = remote.Menu.buildFromTemplate(template);
+        menu.popup({ window: remote.getCurrentWindow() });
     }
 };
 window.Native = Native;
