@@ -7,9 +7,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { session } from "electron";
-import state from "./state";
-import axios from "axios";
+import { session } from 'electron';
+import state from './state';
+import axios from 'axios';
 export function appendCookie() {
     return __awaiter(this, void 0, void 0, function* () {
         const cookie = {
@@ -48,4 +48,11 @@ export function broadcastToWindows(event, payload) {
 export function trimOptions(options) {
     Object.keys(options).forEach(key => options[key] == null && delete options[key]);
     return options;
+}
+export function appendWindowIdToUrl(url, id) {
+    return url + (url.indexOf('?') === -1 ? '?' : '&') + '_windowId=' + id;
+}
+export function goToUrl(url, windowId) {
+    var _a;
+    (_a = state.windows[windowId]) === null || _a === void 0 ? void 0 : _a.loadURL(appendWindowIdToUrl(url, windowId));
 }

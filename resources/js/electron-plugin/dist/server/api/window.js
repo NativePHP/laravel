@@ -1,10 +1,10 @@
 import express from 'express';
 import { BrowserWindow } from 'electron';
 import state from '../state';
-import { join } from "path";
-import { notifyLaravel } from "../utils";
+import { join } from 'path';
+import { notifyLaravel, goToUrl, appendWindowIdToUrl } from '../utils';
+import windowStateKeeper from 'electron-window-state';
 const router = express.Router();
-import windowStateKeeper from "electron-window-state";
 router.post('/maximize', (req, res) => {
     var _a;
     const { id } = req.body;
@@ -30,9 +30,8 @@ router.post('/title', (req, res) => {
     res.sendStatus(200);
 });
 router.post('/url', (req, res) => {
-    var _a;
     const { id, url } = req.body;
-    (_a = state.windows[id]) === null || _a === void 0 ? void 0 : _a.loadURL(appendWindowIdToUrl(url, id));
+    goToUrl(url, id);
     res.sendStatus(200);
 });
 router.post('/closable', (req, res) => {
@@ -102,9 +101,6 @@ router.get('/get/:id', (req, res) => {
     }
     res.json(getWindowData(id));
 });
-function appendWindowIdToUrl(url, id) {
-    return url + (url.indexOf('?') === -1 ? '?' : '&') + '_windowId=' + id;
-}
 function getWindowData(id) {
     const currentWindow = state.windows[id];
     if (state.windows[id] === undefined) {

@@ -1,9 +1,10 @@
 import express from 'express';
 import { Menu } from 'electron';
-import { mapMenu } from "./helper";
+import { compileMenu } from './helper';
 const router = express.Router();
 router.post('/', (req, res) => {
-    const menuEntries = req.body.items.map(mapMenu);
+    Menu.setApplicationMenu(null);
+    const menuEntries = req.body.items.map(compileMenu);
     const menu = Menu.buildFromTemplate(menuEntries);
     Menu.setApplicationMenu(menu);
     res.sendStatus(200);
