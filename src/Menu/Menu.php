@@ -3,10 +3,11 @@
 namespace Native\Laravel\Menu;
 
 use Illuminate\Support\Traits\Conditionable;
+use JsonSerializable;
 use Native\Laravel\Client\Client;
 use Native\Laravel\Contracts\MenuItem;
 
-class Menu implements MenuItem
+class Menu implements MenuItem, JsonSerializable
 {
     use Conditionable;
 
@@ -49,5 +50,10 @@ class Menu implements MenuItem
             'label' => $this->label,
             'submenu' => $items,
         ];
+    }
+
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
     }
 }
