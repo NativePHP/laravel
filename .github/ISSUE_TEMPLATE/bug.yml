@@ -1,12 +1,20 @@
 name: Bug Report
 description: |
-    Found a bug in NativePHP? Before submitting your report, please make sure you've been through the section "Debugging" in the docs: https://nativephp.com/docs/getting-started/debugging.
+    Found a bug in NativePHP? You're in the right place!
 labels: ["bug"]
 body:
     - type: markdown
       attributes:
           value: |
-              We're sorry to hear you have a problem. Please help us solve it by providing the following details.
+              We're sorry to hear you have a problem.
+              
+              Before submitting your report, please make sure you've been through the section "[Debugging](https://nativephp.com/docs/getting-started/debugging)" in the docs.
+
+              If nothing here has helped you, please provide as much useful context as you can here to help us solve help you.
+
+              Note that reams and reams of logs isn't helpful - please share only relevant errors.
+
+              If possible, please prepare a reproduction repo and link to it in the Notes field.
     - type: textarea
       id: what-doing
       attributes:
@@ -31,7 +39,7 @@ body:
           placeholder: When I do X I see Y.
       validations:
           required: true
-    - type: markdown
+    - type: textarea
       id: package-version
       attributes:
           label: Package Versions
@@ -84,6 +92,6 @@ body:
       id: notes
       attributes:
           label: Notes
-          description: Use this field to provide any other notes that you feel might be relevant to the issue.
+          description: Use this field to provide any other notes that you feel might be relevant to the issue. Include links to any reproduction repos you've created here.
       validations:
           required: false
