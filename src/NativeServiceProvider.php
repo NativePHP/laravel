@@ -84,6 +84,13 @@ class NativeServiceProvider extends PackageServiceProvider
         }
     }
 
+    public function bootingPackage()
+    {
+        if (config('nativephp-internal.running')) {
+            $this->rewriteDatabase();
+        }
+    }
+
     protected function configureApp()
     {
         if (config('app.debug')) {
@@ -93,8 +100,6 @@ class NativeServiceProvider extends PackageServiceProvider
         app(EventWatcher::class)->register();
 
         $this->rewriteStoragePath();
-
-        $this->rewriteDatabase();
 
         $this->configureDisks();
 
