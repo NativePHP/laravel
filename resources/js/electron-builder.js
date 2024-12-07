@@ -45,11 +45,13 @@ try {
 
 if (isBuilding) {
 
-    console.log('=====================');
-    console.log('Building for ' + targetOs);
-    console.log('=====================');
-    console.log('updater config', updaterConfig);
-    console.log('=====================');
+    console.log();
+    console.log('===================================================================');
+    console.log('                    Building for ' + targetOs);
+    console.log('===================================================================');
+    console.log();
+    console.log('Updater config', updaterConfig);
+    console.log();
 
     try {
         const appPath = join(__dirname, 'resources', 'app');
@@ -104,15 +106,18 @@ if (isBuilding) {
 
         removeSync(tmpDir);
 
-        console.log('=====================');
+        console.log();
         console.log('Copied app to resources');
         console.log(join(process.env.APP_PATH, 'dist'));
-        console.log('=====================');
+        console.log();
+        console.log('===================================================================');
+        console.log('                       Starting build...');
+        console.log();
     } catch (e) {
-        console.error('=====================');
-        console.error('Error copying app to resources');
+        console.error();
+        console.error('Error copying app into build environment');
         console.error(e);
-        console.error('=====================');
+        console.error();
     }
 
 }

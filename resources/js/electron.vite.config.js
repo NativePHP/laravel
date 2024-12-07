@@ -1,6 +1,6 @@
-import {resolve, join} from 'path'
-import {defineConfig, externalizeDepsPlugin} from 'electron-vite'
-import vue from '@vitejs/plugin-vue'
+import { resolve, join } from 'path';
+import { defineConfig, externalizeDepsPlugin } from 'electron-vite';
+import vue from '@vitejs/plugin-vue';
 
 export default defineConfig({
     main: {
@@ -9,8 +9,8 @@ export default defineConfig({
                 plugins: [
                     {
                         name: 'watch-external',
-                        buildStart(){
-                            this.addWatchFile(join(process.env.APP_PATH, 'app', 'Providers', 'NativeAppServiceProvider.php'))
+                        buildStart() {
+                            this.addWatchFile(join(process.env.APP_PATH, 'app', 'Providers', 'NativeAppServiceProvider.php'));
                         }
                     }
                 ]
@@ -20,13 +20,5 @@ export default defineConfig({
     },
     preload: {
         plugins: [externalizeDepsPlugin()]
-    },
-    renderer: {
-        resolve: {
-            alias: {
-                '@renderer': resolve('src/renderer/src')
-            }
-        },
-        plugins: [vue()]
-    },
-})
+    }
+});

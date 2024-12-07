@@ -39,7 +39,6 @@ class BuildCommand extends Command
                 echo $output;
             });
 
-        // Added checks for correct input for os and arch
         $os = $this->selectOs($this->argument('os'));
 
         $this->installIcon();
@@ -51,10 +50,11 @@ class BuildCommand extends Command
             $os .= $arch != 'all' ? "-{$arch}" : '';
 
             // Should we publish?
-            if ($publish = ($this->option('publish'))) {
+            if ($publish = $this->option('publish')) {
                 $buildCommand = 'publish';
             }
         }
+
         $this->info((($publish ?? false) ? 'Publishing' : 'Building')." for {$os}");
 
         Process::path(__DIR__.'/../../resources/js/')
