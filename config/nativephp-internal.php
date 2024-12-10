@@ -29,4 +29,9 @@ return [
      * The URL to the NativePHP API.
      */
     'api_url' => env('NATIVEPHP_API_URL', 'http://localhost:4000/api/'),
+
+    'zephpyr' => [
+        'host' => env('ZEPHPYR_HOST', 'zephpyr.com'),
+        'key' => env('ZEPHPYR_SECRET'),
+    ],
 ];
