@@ -4,7 +4,6 @@ namespace Native\Laravel\Commands;
 
 use Illuminate\Console\Command;
 use Native\Electron\Traits\CleansEnvFile;
-use Native\Laravel\NativeServiceProvider;
 use Symfony\Component\Finder\Finder;
 use ZipArchive;
 
@@ -17,14 +16,16 @@ class BundleCommand extends Command
     protected $description = 'Bundle your application for distribution.';
 
     private ?string $key;
+
     private string $zipPath;
+
     private string $zipName;
 
     public function handle()
     {
         $this->key = config('nativephp-internal.zephpyr.key');
 
-        if (!$this->key) {
+        if (! $this->key) {
             $this->line('');
             $this->warn('No ZEPHPYR_SECRET found. Cannot bundle!');
             $this->line('');
@@ -41,12 +42,14 @@ class BundleCommand extends Command
         // Package the app up into a zip
         if (! $this->zipApplication()) {
             $this->error("Failed to create zip archive at {$this->zipPath}.");
+
             return static::FAILURE;
         }
 
         // Send the zip file
         if (! $this->sendToZephpyr()) {
             $this->error("Failed to upload zip [{$this->zipPath}] to Zephpyr.");
+
             return static::FAILURE;
         }
 
@@ -55,7 +58,7 @@ class BundleCommand extends Command
 
     private function zipApplication(): bool
     {
-        $this->zipName = 'app_' . str()->random(8) . '.zip';
+        $this->zipName = 'app_'.str()->random(8).'.zip';
         $this->zipPath = storage_path($this->zipName);
 
         $zip = new ZipArchive;
@@ -77,7 +80,7 @@ class BundleCommand extends Command
 
     private function addFilesToZip(ZipArchive $zip): void
     {
-        $app = (new Finder())->files()
+        $app = (new Finder)->files()
             ->followLinks()
             ->ignoreVCSIgnored(true)
             ->in(base_path())
@@ -88,7 +91,7 @@ class BundleCommand extends Command
 
         $this->finderToZip($app, $zip);
 
-        $vendor = (new Finder())->files()
+        $vendor = (new Finder)->files()
             ->exclude([
                 'vendor/nativephp/php-bin',
             ])
@@ -96,12 +99,12 @@ class BundleCommand extends Command
 
         $this->finderToZip($vendor, $zip);
 
-        $nodeModules = (new Finder())->files()
+        $nodeModules = (new Finder)->files()
             ->in(base_path('node_modules'));
 
         $this->finderToZip($nodeModules, $zip);
 
-        $env = (new Finder())->files()
+        $env = (new Finder)->files()
             ->ignoreDotFiles(false)
             ->name('.env')
             ->in(base_path());
