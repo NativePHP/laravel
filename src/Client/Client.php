@@ -21,9 +21,9 @@ class Client
             ->asJson();
     }
 
-    public function get(string $endpoint): Response
+    public function get(string $endpoint, array|string|null $query = null): Response
     {
-        return $this->client->get($endpoint);
+        return $this->client->get($endpoint, $query);
     }
 
     public function post(string $endpoint, array $data = []): Response
