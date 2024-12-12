@@ -163,7 +163,7 @@ class NativeServiceProvider extends PackageServiceProvider
 
         @unlink($databasePath);
         @unlink($databasePath.'-shm');
-        @unlink($database.'-wal');
+        @unlink($databasePath.'-wal');
     }
 
     protected function configureDisks(): void
