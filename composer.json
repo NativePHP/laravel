@@ -38,7 +38,7 @@
     },
     "require-dev": {
         "guzzlehttp/guzzle": "^7.0",
-        "larastan/larastan": "^2.9",
+        "larastan/larastan": "^2.9|^3.0",
         "laravel/pint": "^1.0",
         "nunomaduro/collision": "^7.9",
         "orchestra/testbench": "^8.0",
@@ -52,8 +52,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Native\\Laravel\\": "src/",
-            "Native\\Laravel\\Database\\Factories\\": "database/factories/"
+            "Native\\Laravel\\": "src/"
         }
     },
     "autoload-dev": {
