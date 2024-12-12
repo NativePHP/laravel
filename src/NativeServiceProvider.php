@@ -46,14 +46,8 @@ class NativeServiceProvider extends PackageServiceProvider
     {
         $this->mergeConfigFrom($this->package->basePath('/../config/nativephp-internal.php'), 'nativephp-internal');
 
-        $this->app->singleton(FreshCommand::class, function ($app) {
-
-            // if Laravel 11 or higher, send the migrator instance to the FreshCommand
-            if (version_compare($app->version(), '11.0.0', '>=')) {
-                return new FreshCommand($app['migrator']);
-            }
-
-            return new FreshCommand();
+        $this->app->singleton(FreshCommand::class, function () {
+            return new FreshCommand;
         });
 
         $this->app->singleton(MigrateCommand::class, function ($app) {
