@@ -15,6 +15,6 @@ class SeedDatabaseCommand extends BaseSeedCommand
     {
         (new NativeServiceProvider($this->laravel))->rewriteDatabase();
 
-        parent::handle();
+        return parent::handle();
     }
 }
