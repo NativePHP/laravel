@@ -7,17 +7,17 @@ use Native\Laravel\Contracts\ChildProcess as ChildProcessContract;
 
 class ChildProcess implements ChildProcessContract
 {
-    public readonly int $pid;
+    public int $pid;
 
-    public readonly string $alias;
+    public string $alias;
 
-    public readonly array $cmd;
+    public array $cmd;
 
-    public readonly ?string $cwd;
+    public ?string $cwd;
 
-    public readonly ?array $env;
+    public ?array $env;
 
-    public readonly bool $persistent;
+    public bool $persistent;
 
     final public function __construct(protected Client $client) {}
 
@@ -54,7 +54,6 @@ class ChildProcess implements ChildProcessContract
 
     /**
      * @param  string|string[]  $cmd
-     * @return $this
      */
     public function start(
         string|array $cmd,
@@ -78,16 +77,15 @@ class ChildProcess implements ChildProcessContract
 
     /**
      * @param  string|string[]  $cmd
-     * @return $this
      */
-    public function php(string|array $cmd, string $alias, ?array $env = null, ?bool $persistent = false): self
+    public function php(string|array $cmd, string $alias, ?array $env = null, ?bool $persistent = false): static
     {
         $cmd = is_array($cmd) ? array_values($cmd) : [$cmd];
 
         $process = $this->client->post('child-process/start-php', [
             'alias' => $alias,
             'cmd' => $cmd,
-            'cwd' => $cwd ?? base_path(),
+            'cwd' => base_path(),
             'env' => $env,
             'persistent' => $persistent,
         ])->json();
@@ -97,9 +95,8 @@ class ChildProcess implements ChildProcessContract
 
     /**
      * @param  string|string[]  $cmd
-     * @return $this
      */
-    public function artisan(string|array $cmd, string $alias, ?array $env = null, ?bool $persistent = false): self
+    public function artisan(string|array $cmd, string $alias, ?array $env = null, ?bool $persistent = false): static
     {
         $cmd = is_array($cmd) ? array_values($cmd) : [$cmd];
 
