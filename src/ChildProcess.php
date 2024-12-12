@@ -19,7 +19,7 @@ class ChildProcess implements ChildProcessContract
 
     public readonly bool $persistent;
 
-    public function __construct(protected Client $client) {}
+    final public function __construct(protected Client $client) {}
 
     public function get(?string $alias = null): ?static
     {

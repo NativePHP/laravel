@@ -16,7 +16,7 @@ class ProgressBar
 
     protected float $maxSecondsBetweenRedraws = 1;
 
-    public function __construct(protected int $maxSteps, protected Client $client) {}
+    final public function __construct(protected int $maxSteps, protected Client $client) {}
 
     public static function create(int $maxSteps): static
     {
