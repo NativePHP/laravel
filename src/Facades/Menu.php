@@ -3,6 +3,7 @@
 namespace Native\Laravel\Facades;
 
 use Illuminate\Support\Facades\Facade;
+use Native\Laravel\Contracts\MenuItem;
 use Native\Laravel\Menu\Items\Checkbox;
 use Native\Laravel\Menu\Items\Label;
 use Native\Laravel\Menu\Items\Link;
@@ -11,7 +12,7 @@ use Native\Laravel\Menu\Items\Role;
 use Native\Laravel\Menu\Items\Separator;
 
 /**
- * @method static \Native\Laravel\Menu\Menu make(\Native\Laravel\Menu\Items\MenuItem ...$items)
+ * @method static \Native\Laravel\Menu\Menu make(MenuItem ...$items)
  * @method static Checkbox checkbox(string $label, bool $checked = false, ?string $hotkey = null)
  * @method static Label label(string $label)
  * @method static Link link(string $url, string $label = null, ?string $hotkey = null)
@@ -23,7 +24,6 @@ use Native\Laravel\Menu\Items\Separator;
  * @method static Role view()
  * @method static Role window()
  * @method static Role help()
- * @method static Role window()
  * @method static Role fullscreen()
  * @method static Role separator()
  * @method static Role devTools()
@@ -37,7 +37,6 @@ use Native\Laravel\Menu\Items\Separator;
  * @method static Role minimize()
  * @method static Role close()
  * @method static Role quit()
- * @method static Role help()
  * @method static Role hide()
  * @method static void create(MenuItem ...$items)
  * @method static void default()
