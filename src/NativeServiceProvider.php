@@ -47,6 +47,7 @@ class NativeServiceProvider extends PackageServiceProvider
         $this->mergeConfigFrom($this->package->basePath('/../config/nativephp-internal.php'), 'nativephp-internal');
 
         $this->app->singleton(FreshCommand::class, function ($app) {
+            /* @phpstan-ignore-next-line (beacause we support Laravel 10 & 11) */
             return new FreshCommand($app['migrator']);
         });
 
@@ -137,13 +138,15 @@ class NativeServiceProvider extends PackageServiceProvider
             }
         }
 
-        config(['database.connections.nativephp' => [
-            'driver' => 'sqlite',
-            'url' => env('DATABASE_URL'),
-            'database' => $databasePath,
-            'prefix' => '',
-            'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
-        ]]);
+        config([
+            'database.connections.nativephp' => [
+                'driver' => 'sqlite',
+                'url' => env('DATABASE_URL'),
+                'database' => $databasePath,
+                'prefix' => '',
+                'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
+            ],
+        ]);
 
         config(['database.default' => 'nativephp']);
 
@@ -186,12 +189,14 @@ class NativeServiceProvider extends PackageServiceProvider
                 continue;
             }
 
-            config(['filesystems.disks.'.$disk => [
-                'driver' => 'local',
-                'root' => env($env, ''),
-                'throw' => false,
-                'links' => 'skip',
-            ]]);
+            config([
+                'filesystems.disks.'.$disk => [
+                    'driver' => 'local',
+                    'root' => env($env, ''),
+                    'throw' => false,
+                    'links' => 'skip',
+                ],
+            ]);
         }
     }
 }
