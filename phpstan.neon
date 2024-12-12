@@ -9,7 +9,8 @@ parameters:
     # Level 9 is the highest level
     level: 5
 
-#    ignoreErrors:
+    ignoreErrors:
+       - '#Class App\\Providers\\NativeAppServiceProvider not found#'
 #        - '#PHPDoc tag @var#'
 #
 #    excludePaths:
