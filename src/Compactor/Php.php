@@ -3,6 +3,8 @@
 namespace Native\Laravel\Compactor;
 
 use PhpToken;
+use RuntimeException;
+use Webmozart\Assert\Assert;
 
 class Php
 {
@@ -17,7 +19,7 @@ class Php
             return $this->compactContent($contents);
         }
 
-        $this->compactContent($contents);
+        return $this->compactContent($contents);
     }
 
     protected function compactContent(string $contents): string
@@ -145,7 +147,6 @@ class Php
     {
         Assert::keyExists($tokens, $opener);
 
-        /** @var PhpToken $token */
         $token = $tokens[$opener];
         $attributeBody = mb_substr($token->text, 2);
         $subTokens = PhpToken::tokenize('<?php '.$attributeBody);
