@@ -38,7 +38,7 @@
     },
     "require-dev": {
         "guzzlehttp/guzzle": "^7.0",
-        "larastan/larastan": "^2.9|^3.0",
+        "larastan/larastan": "^2.0|^3.0",
         "laravel/pint": "^1.0",
         "nunomaduro/collision": "^7.9",
         "orchestra/testbench": "^8.0",
