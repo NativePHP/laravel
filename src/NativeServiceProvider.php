@@ -16,11 +16,13 @@ use Native\Laravel\Commands\MinifyApplicationCommand;
 use Native\Laravel\Commands\SeedDatabaseCommand;
 use Native\Laravel\Contracts\ChildProcess as ChildProcessContract;
 use Native\Laravel\Contracts\GlobalShortcut as GlobalShortcutContract;
+use Native\Laravel\Contracts\PowerMonitor as PowerMonitorContract;
 use Native\Laravel\Contracts\WindowManager as WindowManagerContract;
 use Native\Laravel\Events\EventWatcher;
 use Native\Laravel\Exceptions\Handler;
 use Native\Laravel\GlobalShortcut as GlobalShortcutImplementation;
 use Native\Laravel\Logging\LogWatcher;
+use Native\Laravel\PowerMonitor as PowerMonitorImplementation;
 use Native\Laravel\Windows\WindowManager as WindowManagerImplementation;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -64,6 +66,10 @@ class NativeServiceProvider extends PackageServiceProvider
 
         $this->app->bind(GlobalShortcutContract::class, function (Foundation $app) {
             return $app->make(GlobalShortcutImplementation::class);
+        });
+
+        $this->app->bind(PowerMonitorContract::class, function (Foundation $app) {
+            return $app->make(PowerMonitorImplementation::class);
         });
 
         if (config('nativephp-internal.running')) {

@@ -3,10 +3,11 @@
 namespace Native\Laravel;
 
 use Native\Laravel\Client\Client;
+use Native\Laravel\Contracts\PowerMonitor as PowerMonitorContract;
 use Native\Laravel\Enums\SystemIdleStatesEnum;
 use Native\Laravel\Enums\ThermalStatesEnum;
 
-class PowerMonitor
+class PowerMonitor implements PowerMonitorContract
 {
     public function __construct(protected Client $client) {}
 
