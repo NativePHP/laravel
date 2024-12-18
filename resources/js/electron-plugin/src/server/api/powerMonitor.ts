@@ -4,8 +4,10 @@ import { notifyLaravel } from '../utils';
 const router = express.Router();
 
 router.get('/get-system-idle-state', (req, res) => {
+    let threshold = Number(req.query.threshold) || 60;
+
     res.json({
-        result: powerMonitor.getSystemIdleState(req.body.threshold),
+        result: powerMonitor.getSystemIdleState(threshold),
     })
 });
 
@@ -62,6 +64,44 @@ powerMonitor.addListener('speed-limit-change', (details) => {
         payload: {
             limit: details.limit,
         },
+    });
+})
+
+// @ts-ignore
+powerMonitor.addListener('lock-screen', () => {
+    notifyLaravel("events", {
+        event: `\\Native\\Laravel\\Events\\PowerMonitor\\ScreenLocked`,
+    });
+})
+
+// @ts-ignore
+powerMonitor.addListener('unlock-screen', () => {
+    notifyLaravel("events", {
+        event: `\\Native\\Laravel\\Events\\PowerMonitor\\ScreenUnlocked`,
+    });
+})
+
+
+// @ts-ignore
+powerMonitor.addListener('shutdown', () => {
+    notifyLaravel("events", {
+        event: `\\Native\\Laravel\\Events\\PowerMonitor\\Shutdown`,
+    });
+})
+
+
+// @ts-ignore
+powerMonitor.addListener('user-did-become-active', () => {
+    notifyLaravel("events", {
+        event: `\\Native\\Laravel\\Events\\PowerMonitor\\UserDidBecomeActive`,
+    });
+})
+
+
+// @ts-ignore
+powerMonitor.addListener('user-did-resign-active', () => {
+    notifyLaravel("events", {
+        event: `\\Native\\Laravel\\Events\\PowerMonitor\\UserDidResignActive`,
     });
 })
 
