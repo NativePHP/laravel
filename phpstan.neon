@@ -11,7 +11,8 @@ parameters:
 
     ignoreErrors:
        - '#Class App\\Providers\\NativeAppServiceProvider not found#'
-#        - '#PHPDoc tag @var#'
+       - '#Class Native\\Laravel\\ChildProcess has an uninitialized readonly property#'
+
 #
 #    excludePaths:
 #        - ./*/*/FileToBeExcluded.php
