@@ -2,6 +2,22 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 0.9.0 - 2024-12-19
+
+### What's Changed
+
+* Fix script identity by @simonhamp in https://github.com/NativePHP/electron/pull/136
+* feat: add clear endpoint to settings by @SRWieZ in https://github.com/NativePHP/electron/pull/141
+* Dock goodies by @simonhamp in https://github.com/NativePHP/electron/pull/138
+* MenuBars continued by @simonhamp in https://github.com/NativePHP/electron/pull/137
+* Menu improvements by @simonhamp in https://github.com/NativePHP/electron/pull/139
+* Feature/context menu helper by @gwleuverink in https://github.com/NativePHP/electron/pull/140
+* Cleanup by @simonhamp in https://github.com/NativePHP/electron/pull/142
+* latest.yml overwritten when building multiple architectures by @gwleuverink in https://github.com/NativePHP/electron/pull/145
+* Fixes and improvements to powerMonitor by @SRWieZ in https://github.com/NativePHP/electron/pull/143
+
+**Full Changelog**: https://github.com/NativePHP/electron/compare/0.8.7...0.9.0
+
 ## 0.8.7 - 2024-11-17
 
 ### What's Changed
