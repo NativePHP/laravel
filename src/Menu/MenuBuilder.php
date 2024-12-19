@@ -38,9 +38,9 @@ class MenuBuilder
         );
     }
 
-    public function label(string $label): Items\Label
+    public function label(string $label, ?string $hotkey = null): Items\Label
     {
-        return new Items\Label($label);
+        return new Items\Label($label, $hotkey);
     }
 
     public function checkbox(string $label, bool $checked = false, ?string $hotkey = null): Items\Checkbox
@@ -161,5 +161,10 @@ class MenuBuilder
     public function hide(?string $label = null): Items\Role
     {
         return new Items\Role(RolesEnum::HIDE, $label);
+    }
+
+    public function about(?string $label = null): Items\Role
+    {
+        return new Items\Role(RolesEnum::ABOUT, $label);
     }
 }

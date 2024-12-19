@@ -8,7 +8,10 @@ class Role extends MenuItem
 {
     protected string $type = 'role';
 
-    public function __construct(protected RolesEnum $role, protected ?string $label = '') {}
+    public function __construct(
+        protected RolesEnum $role,
+        protected ?string $label = ''
+    ) {}
 
     public function toArray(): array
     {

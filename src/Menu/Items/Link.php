@@ -8,7 +8,11 @@ class Link extends MenuItem
 
     protected bool $openInBrowser = false;
 
-    public function __construct(protected string $url, protected ?string $label, protected ?string $accelerator = null) {}
+    public function __construct(
+        protected string $url,
+        protected ?string $label,
+        protected ?string $accelerator = null
+    ) {}
 
     public function openInBrowser(bool $openInBrowser = true): self
     {
