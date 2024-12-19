@@ -1,0 +1,18 @@
+parameters:
+
+    paths:
+        - src/
+        - config/
+#        - tests/
+
+
+    # Level 9 is the highest level
+    level: 5
+
+    ignoreErrors:
+       - '#Class App\\Providers\\NativeAppServiceProvider not found#'
+       - '#Class Native\\Laravel\\ChildProcess has an uninitialized readonly property#'
+
+#
+#    excludePaths:
+#        - ./*/*/FileToBeExcluded.php

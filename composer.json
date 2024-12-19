@@ -38,9 +38,9 @@
     },
     "require-dev": {
         "guzzlehttp/guzzle": "^7.0",
+        "larastan/larastan": "^2.0|^3.0",
         "laravel/pint": "^1.0",
         "nunomaduro/collision": "^7.9",
-        "nunomaduro/larastan": "^2.0.1",
         "orchestra/testbench": "^8.0",
         "pestphp/pest": "^2.0",
         "pestphp/pest-plugin-arch": "^2.0",
@@ -52,8 +52,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Native\\Laravel\\": "src/",
-            "Native\\Laravel\\Database\\Factories\\": "database/factories/"
+            "Native\\Laravel\\": "src/"
         }
     },
     "autoload-dev": {
@@ -62,6 +61,11 @@
         }
     },
     "scripts": {
+        "qa" : [
+            "@composer format",
+            "@composer analyse",
+            "@composer test"
+        ],
         "post-autoload-dump": "@php ./vendor/bin/testbench package:discover --ansi",
         "analyse": "vendor/bin/phpstan analyse",
         "test": "vendor/bin/pest",

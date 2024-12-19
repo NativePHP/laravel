@@ -1,26 +1,42 @@
 name: PHPStan
 
 on:
+  workflow_dispatch:
   push:
-    paths:
-      - '**.php'
-      - 'phpstan.neon.dist'
+    branches-ignore:
+      - 'dependabot/npm_and_yarn/*'
 
 jobs:
   phpstan:
-    name: phpstan
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        php: [8.3]
+
     steps:
-      - uses: actions/checkout@v4
+
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.1'
-          coverage: none
+          php-version: ${{ matrix.php }}
 
-      - name: Install composer dependencies
-        uses: ramsey/composer-install@v3
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
-      - name: Run PHPStan
-        run: ./vendor/bin/phpstan --error-format=github
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-${{ matrix.php }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-${{ matrix.php }}-composer-
+
+      - name: Install Dependencies
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+      - name: Run analysis
+        run: ./vendor/bin/phpstan analyse --error-format=github

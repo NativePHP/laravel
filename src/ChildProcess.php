@@ -19,9 +19,9 @@ class ChildProcess implements ChildProcessContract
 
     public readonly bool $persistent;
 
-    public function __construct(protected Client $client) {}
+    final public function __construct(protected Client $client) {}
 
-    public function get(?string $alias = null): ?static
+    public function get(?string $alias = null): ?self
     {
         $alias = $alias ?? $this->alias;
 
@@ -62,7 +62,7 @@ class ChildProcess implements ChildProcessContract
         ?string $cwd = null,
         ?array $env = null,
         bool $persistent = false
-    ): static {
+    ): self {
         $cmd = is_array($cmd) ? array_values($cmd) : [$cmd];
 
         $process = $this->client->post('child-process/start', [
@@ -87,7 +87,7 @@ class ChildProcess implements ChildProcessContract
         $process = $this->client->post('child-process/start-php', [
             'alias' => $alias,
             'cmd' => $cmd,
-            'cwd' => $cwd ?? base_path(),
+            'cwd' => base_path(),
             'env' => $env,
             'persistent' => $persistent,
         ])->json();
@@ -115,7 +115,7 @@ class ChildProcess implements ChildProcessContract
         ])->json();
     }
 
-    public function restart(?string $alias = null): ?static
+    public function restart(?string $alias = null): ?self
     {
         $process = $this->client->post('child-process/restart', [
             'alias' => $alias ?? $this->alias,
@@ -128,7 +128,7 @@ class ChildProcess implements ChildProcessContract
         return $this->fromRuntimeProcess($process);
     }
 
-    public function message(string $message, ?string $alias = null): static
+    public function message(string $message, ?string $alias = null): self
     {
         $this->client->post('child-process/message', [
             'alias' => $alias ?? $this->alias,
@@ -138,9 +138,10 @@ class ChildProcess implements ChildProcessContract
         return $this;
     }
 
-    protected function fromRuntimeProcess($process): static
+    protected function fromRuntimeProcess($process)
     {
         if (isset($process['pid'])) {
+            // @phpstan-ignore-next-line
             $this->pid = $process['pid'];
         }
 
