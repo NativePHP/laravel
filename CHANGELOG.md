@@ -2,6 +2,32 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 0.7.0 - 2024-12-19
+
+### What's Changed
+
+* Fix Settings facade DocBloc by @SRWieZ in https://github.com/NativePHP/laravel/pull/419
+* Fake test double for WindowManager::Class by @XbNz in https://github.com/NativePHP/laravel/pull/422
+* Child process test double by @XbNz in https://github.com/NativePHP/laravel/pull/430
+* fix: Notification facade docbloc by @SRWieZ in https://github.com/NativePHP/laravel/pull/428
+* Improvements to window test doubles by @XbNz in https://github.com/NativePHP/laravel/pull/426
+* fix: child process cmd: option except iterable array by @SRWieZ in https://github.com/NativePHP/laravel/pull/429
+* feat: improve Settings by @SRWieZ in https://github.com/NativePHP/laravel/pull/432
+* Dock goodies by @simonhamp in https://github.com/NativePHP/laravel/pull/421
+* MenuBars continued by @simonhamp in https://github.com/NativePHP/laravel/pull/420
+* Global shortcut test double by @XbNz in https://github.com/NativePHP/laravel/pull/436
+* Menu improvements by @simonhamp in https://github.com/NativePHP/laravel/pull/423
+* fix: database migration on first launch by @SRWieZ in https://github.com/NativePHP/laravel/pull/439
+* Fixes and improvements to powerMonitor by @SRWieZ in https://github.com/NativePHP/laravel/pull/445
+* feat: phpstan level 5 by @SRWieZ in https://github.com/NativePHP/laravel/pull/446
+
+### New Contributors
+
+* @SRWieZ made their first contribution in https://github.com/NativePHP/laravel/pull/419
+* @XbNz made their first contribution in https://github.com/NativePHP/laravel/pull/422
+
+**Full Changelog**: https://github.com/NativePHP/laravel/compare/0.6.4...0.7.0
+
 ## 0.6.4 - 2024-11-17
 
 ### What's Changed
