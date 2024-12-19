@@ -32,6 +32,7 @@ return [
 
     'zephpyr' => [
         'host' => env('ZEPHPYR_HOST', 'zephpyr.com'),
-        'key' => env('ZEPHPYR_SECRET'),
+        'token' => env('ZEPHPYR_TOKEN'),
+        'key' => env('ZEPHPYR_KEY'),
     ],
 ];
