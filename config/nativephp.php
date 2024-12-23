@@ -114,4 +114,12 @@ return [
             ],
         ],
     ],
+
+    'queue_workers' => [
+        'default' => [
+            'queues' => ['default'],
+            'memory_limit' => 128,
+            'timeout' => 60,
+        ],
+    ],
 ];
