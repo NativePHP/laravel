@@ -2,7 +2,6 @@
 
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
-use Mockery;
 use Native\Laravel\ChildProcess as ChildProcessImplement;
 use Native\Laravel\Client\Client;
 use Native\Laravel\Facades\ChildProcess;
