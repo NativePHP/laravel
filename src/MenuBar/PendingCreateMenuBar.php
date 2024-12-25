@@ -9,11 +9,11 @@ class PendingCreateMenuBar extends MenuBar
     public function __destruct()
     {
         if (! $this->created) {
-            $this->create();
+            $this->now();
         }
     }
 
-    public function create(): void
+    public function now(): void
     {
         $this->client->post('menu-bar/create', $this->toArray());
         $this->created = true;
