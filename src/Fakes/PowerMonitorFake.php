@@ -64,7 +64,7 @@ class PowerMonitorFake implements PowerMonitorContract
         $hit = empty(
             array_filter(
                 $this->getSystemIdleStateCalls,
-                fn (string $keyIteration) => $key($keyIteration) === true
+                fn (int $keyIteration) => $key($keyIteration) === true
             )
         ) === false;
 
