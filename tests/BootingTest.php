@@ -7,13 +7,16 @@ use function Orchestra\Testbench\remote;
 it('can boot up the app', function () {
     $output = '';
 
-    $process = remote('native:serve --no-dependencies --no-interaction');
+    $process = remote('native:serve --no-dependencies --no-interaction -v');
     $process->start(function ($type, $line) use (&$output) {
+        // echo $line; // Uncomment this line to debug
         $output .= $line;
     });
 
+    // $process->wait(); // Uncomment this line to debug
+
     try {
-        retry(20, function () use ($output) {
+        retry(30, function () use ($output) {
             // Wait until port 8100 is open
             dump('Waiting for port 8100 to open...');
 

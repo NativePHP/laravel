@@ -2,6 +2,7 @@
 
 namespace Native\Electron;
 
+use Illuminate\Foundation\Application;
 use Native\Electron\Commands\BuildCommand;
 use Native\Electron\Commands\DevelopCommand;
 use Native\Electron\Commands\InstallCommand;
@@ -27,7 +28,7 @@ class ElectronServiceProvider extends PackageServiceProvider
 
     public function packageRegistered(): void
     {
-        $this->app->singleton('nativephp.updater', function ($app) {
+        $this->app->bind('nativephp.updater', function (Application $app) {
             return new UpdaterManager($app);
         });
     }

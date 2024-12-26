@@ -52,7 +52,7 @@ class UpdaterManager
      */
     public function driver($driver = null)
     {
-        return $this->store($driver);
+        return $this->resolve($driver);
     }
 
     /**
@@ -83,7 +83,7 @@ class UpdaterManager
     /**
      * Get the updater provider configuration.
      *
-     * @param  string  $name
+     * @param  ?string  $name
      * @return array|null
      */
     protected function getConfig($name)

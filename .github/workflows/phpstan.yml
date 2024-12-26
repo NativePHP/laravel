@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - '**.php'
-      - 'phpstan.neon.dist'
+      - '../../phpstan.neon'
 
 jobs:
   phpstan:

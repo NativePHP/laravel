@@ -1,21 +1,18 @@
 import startAPIServer, { APIProcess } from "../../src/server/api";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import electron from "electron";
 
 let apiServer: APIProcess;
 
-const mockReadImage = {
-  isEmpty: jest.fn(() => true),
-  toDataURL: jest.fn(() => 'clipboard image'),
-};
-
 jest.mock('electron', () => ({
-  dialog: {
-    showOpenDialogSync: jest.fn(() => ['open dialog result']),
-    showSaveDialogSync: jest.fn(() => ['save dialog result']),
-    showMessageBoxSync: jest.fn(() => 1),
-    showErrorBox: jest.fn(),
-  }
+    ...jest.requireActual('electron'),
+
+    dialog: {
+        showOpenDialogSync: jest.fn(() => ['open dialog result']),
+        showSaveDialogSync: jest.fn(() => ['save dialog result']),
+        showMessageBoxSync: jest.fn(() => 1),
+        showErrorBox: jest.fn(),
+    }
 }));
 
 describe('Dialog test', () => {

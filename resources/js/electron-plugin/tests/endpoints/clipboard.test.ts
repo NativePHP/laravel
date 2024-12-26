@@ -1,5 +1,5 @@
 import startAPIServer, { APIProcess } from "../../src/server/api";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import electron from "electron";
 
 let apiServer: APIProcess;
@@ -10,18 +10,20 @@ const mockReadImage = {
 };
 
 jest.mock('electron', () => ({
-  clipboard: {
-    readText: jest.fn(() => 'clipboard text'),
-    readHTML: jest.fn(() => 'clipboard html'),
-    readImage: jest.fn(() => mockReadImage),
-    writeText: jest.fn(),
-    writeHTML: jest.fn(),
-    writeImage: jest.fn(),
-    clear: jest.fn(),
-  },
-  nativeImage: {
-    createFromDataURL: jest.fn(() => 'native image'),
-  }
+    ...jest.requireActual('electron'),
+
+    clipboard: {
+        readText: jest.fn(() => 'clipboard text'),
+        readHTML: jest.fn(() => 'clipboard html'),
+        readImage: jest.fn(() => mockReadImage),
+        writeText: jest.fn(),
+        writeHTML: jest.fn(),
+        writeImage: jest.fn(),
+        clear: jest.fn(),
+    },
+    nativeImage: {
+        createFromDataURL: jest.fn(() => 'native image'),
+    }
 }));
 
 describe('Clipboard test', () => {
@@ -65,7 +67,7 @@ describe('Clipboard test', () => {
 
   it('returns an error when trying to write an invalid data URL as image', async () => {
     try {
-      const response = await axios.post('/clipboard/image', {
+       await axios.post('/clipboard/image', {
         image: 'new image data URL',
       });
     } catch (error) {
@@ -76,7 +78,7 @@ describe('Clipboard test', () => {
   it('can write new images to clipboard', async () => {
     const exampleImage = 'example image url';
 
-    const response = await axios.post('/clipboard/image', {
+    await axios.post('/clipboard/image', {
       image: exampleImage,
     });
 

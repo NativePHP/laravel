@@ -103,7 +103,7 @@ if (certificatePath) {
     try {
         let certDest = join(__dirname, 'resources', 'cacert.pem');
         copySync(certificatePath, certDest);
-        console.log('Copied certificate file to', certDest);
+        console.log('Copied certificate file from ' + certificatePath + ' to ' + certDest);
     } catch (e) {
         console.error('Error copying certificate file', e);
     }

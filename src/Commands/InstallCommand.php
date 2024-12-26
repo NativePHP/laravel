@@ -4,6 +4,7 @@ namespace Native\Electron\Commands;
 
 use Illuminate\Console\Command;
 use Native\Electron\Traits\Installer;
+use RuntimeException;
 
 use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\info;
@@ -32,7 +33,7 @@ class InstallCommand extends Command
 
         $this->installComposerScript();
 
-        $installer = $this->getInstaller($this->option('installer'), $withoutInteraction);
+        $installer = $this->getInstaller($this->option('installer'));
 
         $this->installNPMDependencies(
             force: $this->option('force'),

@@ -46,7 +46,8 @@ trait OsAndArch
         $archs = match ($os) {
             'win' => ['x64'],
             'mac' => ['x86', 'arm64'],
-            'linux' => ['x64']
+            'linux' => ['x64'],
+            default => throw new \InvalidArgumentException('Invalid OS'),
         };
 
         return [...$archs, 'all'];

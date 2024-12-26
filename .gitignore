@@ -5,7 +5,6 @@ composer.lock
 coverage
 docs
 phpunit.xml
-phpstan.neon
 vendor
 node_modules
 resources/js/*.log
