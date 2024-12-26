@@ -71,9 +71,19 @@ router.post('/print', (req, res) => __awaiter(void 0, void 0, void 0, function* 
             silent: true,
             deviceName: printer,
         }, (success, errorType) => {
-            res.sendStatus(200);
+            if (success) {
+                console.log('Print job completed successfully.');
+                res.sendStatus(200);
+            }
+            else {
+                console.error('Print job failed:', errorType);
+                res.sendStatus(500);
+            }
+            if (printWindow) {
+                printWindow.close();
+                printWindow = null;
+            }
         });
-        printWindow = null;
     });
     yield printWindow.loadURL(`data:text/html;charset=UTF-8,${html}`);
 }));
