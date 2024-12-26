@@ -3,7 +3,6 @@ import {
   retrieveNativePHPConfig,
   retrievePhpIniSettings,
   serveApp,
-  startQueueWorker,
   startScheduler,
 } from "./php";
 import { appendCookie } from "./utils";
@@ -21,18 +20,6 @@ export async function startPhpApp() {
   await appendCookie();
 
   return result.process;
-}
-
-export function startQueue() {
-  if (!process.env.NATIVE_PHP_SKIP_QUEUE) {
-    return startQueueWorker(
-      state.randomSecret,
-      state.electronApiPort,
-      state.phpIni
-    );
-  } else {
-    return undefined;
-  }
 }
 
 export function runScheduler() {

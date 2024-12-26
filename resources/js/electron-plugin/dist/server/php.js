@@ -95,14 +95,6 @@ function ensureAppFoldersAreAvailable() {
         writeFileSync(databaseFile, '');
     }
 }
-function startQueueWorker(secret, apiPort, phpIniSettings = {}) {
-    const env = getDefaultEnvironmentVariables(secret, apiPort);
-    const phpOptions = {
-        cwd: appPath,
-        env
-    };
-    return callPhp(['artisan', 'queue:work', '-q'], phpOptions, phpIniSettings);
-}
 function startScheduler(secret, apiPort, phpIniSettings = {}) {
     const env = getDefaultEnvironmentVariables(secret, apiPort);
     const phpOptions = {
@@ -214,4 +206,4 @@ function serveApp(secret, apiPort, phpIniSettings) {
         });
     }));
 }
-export { startQueueWorker, startScheduler, serveApp, getAppPath, retrieveNativePHPConfig, retrievePhpIniSettings, getDefaultEnvironmentVariables, getDefaultPhpIniSettings };
+export { startScheduler, serveApp, getAppPath, retrieveNativePHPConfig, retrievePhpIniSettings, getDefaultEnvironmentVariables, getDefaultPhpIniSettings };

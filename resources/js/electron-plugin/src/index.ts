@@ -9,7 +9,6 @@ import {
   runScheduler,
   startAPI,
   startPhpApp,
-  startQueue,
 } from "./server";
 import { notifyLaravel } from "./server/utils";
 import { resolve } from "path";
@@ -101,7 +100,6 @@ class NativePHP {
     state.phpIni = await this.loadPhpIni();
 
     await this.startPhpApp();
-    await this.startQueueWorker();
     this.startScheduler();
 
     await notifyLaravel("booted");
@@ -182,10 +180,6 @@ class NativePHP {
 
   private async startPhpApp() {
     this.processes.push(await startPhpApp());
-  }
-
-  private async startQueueWorker() {
-    this.processes.push(await startQueue());
   }
 
   private startScheduler() {
