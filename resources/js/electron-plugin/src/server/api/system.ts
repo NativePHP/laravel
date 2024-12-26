@@ -71,9 +71,18 @@ router.post('/print', async (req, res) => {
             silent: true,
             deviceName: printer,
         }, (success, errorType) => {
-            res.sendStatus(200);
+            if (success) {
+                console.log('Print job completed successfully.');
+                res.sendStatus(200);
+            } else {
+                console.error('Print job failed:', errorType);
+                res.sendStatus(500);
+            }
+            if (printWindow) {
+                printWindow.close(); // Close the window and the process
+                printWindow = null;  // Free memory
+            }
         });
-        printWindow = null;
     });
 
     await printWindow.loadURL(`data:text/html;charset=UTF-8,${html}`);
