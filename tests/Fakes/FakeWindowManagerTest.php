@@ -136,6 +136,24 @@ it('asserts that a window was hidden using callable', function () {
     $this->fail('Expected assertion to fail');
 });
 
+it('asserts that a window was shown', function () {
+    swap(WindowManagerContract::class, $fake = app(WindowManagerFake::class));
+
+    app(WindowManagerContract::class)->show('main');
+    app(WindowManagerContract::class)->show('secondary');
+
+    $fake->assertShown('main');
+    $fake->assertShown('secondary');
+
+    try {
+        $fake->assertShown('tertiary');
+    } catch (AssertionFailedError) {
+        return;
+    }
+
+    $this->fail('Expected assertion to fail');
+});
+
 it('asserts opened count', function () {
     Http::fake(['*' => Http::response(status: 200)]);
 
@@ -189,6 +207,24 @@ it('asserts hidden count', function () {
 
     try {
         $fake->assertHiddenCount(4);
+    } catch (AssertionFailedError) {
+        return;
+    }
+
+    $this->fail('Expected assertion to fail');
+});
+
+it('asserts shown count', function () {
+    swap(WindowManagerContract::class, $fake = app(WindowManagerFake::class));
+
+    app(WindowManagerContract::class)->show('main');
+    app(WindowManagerContract::class)->show();
+    app(WindowManagerContract::class)->show();
+
+    $fake->assertShownCount(3);
+
+    try {
+        $fake->assertShownCount(4);
     } catch (AssertionFailedError) {
         return;
     }

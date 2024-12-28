@@ -31,6 +31,13 @@ class WindowManager implements WindowManagerContract
         ]);
     }
 
+    public function show($id = null)
+    {
+        $this->client->post('window/show', [
+            'id' => $id ?? $this->detectId(),
+        ]);
+    }
+
     public function current(): Window
     {
         $window = (object) $this->client->get('window/current')->json();
