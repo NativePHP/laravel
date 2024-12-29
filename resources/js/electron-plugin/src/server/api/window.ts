@@ -108,6 +108,16 @@ router.post('/hide', (req, res) => {
     return res.sendStatus(200);
 });
 
+router.post('/show', (req, res) => {
+    const { id } = req.body;
+
+    if (state.windows[id]) {
+        state.windows[id].show();
+    }
+
+    return res.sendStatus(200);
+});
+
 router.post('/always-on-top', (req, res) => {
     const {id, alwaysOnTop} = req.body;
 
