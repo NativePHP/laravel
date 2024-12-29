@@ -17,7 +17,9 @@ use Native\Laravel\Commands\SeedDatabaseCommand;
 use Native\Laravel\Contracts\ChildProcess as ChildProcessContract;
 use Native\Laravel\Contracts\GlobalShortcut as GlobalShortcutContract;
 use Native\Laravel\Contracts\PowerMonitor as PowerMonitorContract;
+use Native\Laravel\Contracts\QueueWorker as QueueWorkerContract;
 use Native\Laravel\Contracts\WindowManager as WindowManagerContract;
+use Native\Laravel\DTOs\QueueConfig;
 use Native\Laravel\Events\EventWatcher;
 use Native\Laravel\Exceptions\Handler;
 use Native\Laravel\GlobalShortcut as GlobalShortcutImplementation;
@@ -73,6 +75,10 @@ class NativeServiceProvider extends PackageServiceProvider
             return $app->make(PowerMonitorImplementation::class);
         });
 
+        $this->app->bind(QueueWorkerContract::class, function (Foundation $app) {
+            return $app->make(QueueWorker::class);
+        });
+
         if (config('nativephp-internal.running')) {
             $this->app->singleton(
                 \Illuminate\Contracts\Debug\ExceptionHandler::class,
@@ -112,6 +118,11 @@ class NativeServiceProvider extends PackageServiceProvider
 
         config(['session.driver' => 'file']);
         config(['queue.default' => 'database']);
+
+        // XXX: This logic may need to change when we ditch the internal web server
+        if (! $this->app->runningInConsole()) {
+            $this->fireUpQueueWorkers();
+        }
     }
 
     protected function rewriteStoragePath()
@@ -208,6 +219,15 @@ class NativeServiceProvider extends PackageServiceProvider
                     'links' => 'skip',
                 ],
             ]);
+        }
+    }
+
+    protected function fireUpQueueWorkers(): void
+    {
+        $queueConfigs = QueueConfig::fromConfigArray(config('nativephp.queue_workers'));
+
+        foreach ($queueConfigs as $queueConfig) {
+            $this->app->make(QueueWorkerContract::class)->up($queueConfig);
         }
     }
 }
