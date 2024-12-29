@@ -42,11 +42,13 @@ class BundleCommand extends Command
 
         if ($this->option('fetch')) {
             if (! $this->fetchLatestBundle()) {
-                $this->warn("Latest bundle not yet available. Try again soon.");
+                $this->warn('Latest bundle not yet available. Try again soon.');
+
                 return static::FAILURE;
             }
 
-            $this->info("Latest bundle downloaded.");
+            $this->info('Latest bundle downloaded.');
+
             return static::SUCCESS;
         }
 
@@ -138,7 +140,7 @@ class BundleCommand extends Command
                 continue;
             }
 
-            $zip->addFile($file->getRealPath(), str($path)->finish(DIRECTORY_SEPARATOR) . $file->getRelativePathname());
+            $zip->addFile($file->getRealPath(), str($path)->finish(DIRECTORY_SEPARATOR).$file->getRelativePathname());
         }
     }
 
@@ -146,13 +148,13 @@ class BundleCommand extends Command
     {
         return Http::withToken(config('nativephp-internal.zephpyr.token'))
             ->attach('archive', fopen($this->zipPath, 'r'), $this->zipName)
-            ->post(str(config('nativephp-internal.zephpyr.host'))->finish('/') . 'api/build/' . $this->key);
+            ->post(str(config('nativephp-internal.zephpyr.host'))->finish('/').'api/build/'.$this->key);
     }
 
     private function fetchLatestBundle(): bool
     {
         $response = Http::withToken(config('nativephp-internal.zephpyr.token'))
-            ->get(str(config('nativephp-internal.zephpyr.host'))->finish('/') . 'api/download/' . $this->key);
+            ->get(str(config('nativephp-internal.zephpyr.host'))->finish('/').'api/download/'.$this->key);
 
         if ($response->failed()) {
             return false;
