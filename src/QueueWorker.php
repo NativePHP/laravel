@@ -16,7 +16,7 @@ class QueueWorker implements QueueWorkerContract
     {
         if (is_string($config) && config()->has("nativephp.queue_workers.{$config}")) {
             $config = QueueConfig::fromConfigArray([
-                $config => config("nativephp.queue_workers.{$config}")
+                $config => config("nativephp.queue_workers.{$config}"),
             ])[0];
         }
 
