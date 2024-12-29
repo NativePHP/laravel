@@ -4,18 +4,13 @@ namespace Native\Laravel\MenuBar;
 
 class PendingCreateMenuBar extends MenuBar
 {
-    protected bool $created = false;
-
     public function __destruct()
     {
-        if (! $this->created) {
-            $this->create();
-        }
+        $this->create();
     }
 
-    public function create(): void
+    protected function create(): void
     {
         $this->client->post('menu-bar/create', $this->toArray());
-        $this->created = true;
     }
 }
