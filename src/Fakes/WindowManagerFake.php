@@ -18,6 +18,8 @@ class WindowManagerFake implements WindowManagerContract
 
     public array $hidden = [];
 
+    public array $shown = [];
+
     public array $forcedWindowReturnValues = [];
 
     public function __construct(
@@ -62,6 +64,11 @@ class WindowManagerFake implements WindowManagerContract
     public function hide($id = null)
     {
         $this->hidden[] = $id;
+    }
+
+    public function show($id = null)
+    {
+        $this->shown[] = $id;
     }
 
     public function current(): Window
@@ -156,6 +163,27 @@ class WindowManagerFake implements WindowManagerContract
         PHPUnit::assertTrue($hit);
     }
 
+    /**
+     * @param  string|Closure(string): bool  $id
+     */
+    public function assertShown(string|Closure $id): void
+    {
+        if (is_callable($id) === false) {
+            PHPUnit::assertContains($id, $this->shown);
+
+            return;
+        }
+
+        $hit = empty(
+            array_filter(
+                $this->shown,
+                fn (mixed $shownId) => $id($shownId) === true
+            )
+        ) === false;
+
+        PHPUnit::assertTrue($hit);
+    }
+
     public function assertOpenedCount(int $expected): void
     {
         PHPUnit::assertCount($expected, $this->opened);
@@ -169,6 +197,11 @@ class WindowManagerFake implements WindowManagerContract
     public function assertHiddenCount(int $expected): void
     {
         PHPUnit::assertCount($expected, $this->hidden);
+    }
+
+    public function assertShownCount(int $expected): void
+    {
+        PHPUnit::assertCount($expected, $this->shown);
     }
 
     private function ensureForceReturnWindowsProvided(): void
