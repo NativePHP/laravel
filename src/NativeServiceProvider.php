@@ -119,7 +119,10 @@ class NativeServiceProvider extends PackageServiceProvider
         config(['session.driver' => 'file']);
         config(['queue.default' => 'database']);
 
-        $this->fireUpQueueWorkers();
+        // XXX: This logic may need to change when we ditch the internal web server
+        if (! $this->app->runningInConsole()) {
+            $this->fireUpQueueWorkers();
+        }
     }
 
     protected function rewriteStoragePath()
