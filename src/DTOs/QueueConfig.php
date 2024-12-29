@@ -21,10 +21,6 @@ class QueueConfig
     {
         return array_map(
             function (array|string $worker, string $alias) {
-                if (is_string($worker)) {
-                    return new self($worker, ['default'], 128, 60);
-                }
-
                 return new self(
                     $alias,
                     $worker['queues'] ?? ['default'],
