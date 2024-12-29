@@ -12,7 +12,8 @@ class Notification
 
     protected string $event = '';
 
-    final public function __construct(protected Client $client) {
+    final public function __construct(protected Client $client)
+    {
         $this->title = config('app.name');
     }
 
