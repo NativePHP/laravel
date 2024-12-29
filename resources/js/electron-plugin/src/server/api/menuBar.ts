@@ -55,8 +55,11 @@ router.post("/hide", (req, res) => {
 router.post("/create", (req, res) => {
     res.sendStatus(200);
 
+    let shouldSendCreatedEvent = true;
+
     if (state.activeMenuBar) {
         state.activeMenuBar.tray.destroy();
+        shouldSendCreatedEvent = false;
     }
 
     const {
@@ -77,6 +80,7 @@ router.post("/create", (req, res) => {
         resizable,
         event,
     } = req.body;
+
 
     if (onlyShowContextMenu) {
         const tray = new Tray(icon || state.icon.replace("icon.png", "IconTemplate.png"));
@@ -128,7 +132,14 @@ router.post("/create", (req, res) => {
     }
 
     state.activeMenuBar.on("ready", () => {
+
         state.activeMenuBar.tray.setTitle(label);
+
+        if (shouldSendCreatedEvent) {
+            notifyLaravel("events", {
+                event: "\\Native\\Laravel\\Events\\MenuBar\\MenuBarCreated"
+            });
+        }
 
         state.activeMenuBar.on("hide", () => {
             notifyLaravel("events", {
