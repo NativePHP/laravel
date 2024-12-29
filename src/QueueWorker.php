@@ -12,8 +12,18 @@ class QueueWorker implements QueueWorkerContract
         private readonly ChildProcessContract $childProcess,
     ) {}
 
-    public function up(QueueConfig $config): void
+    public function up(string|QueueConfig $config): void
     {
+        if (is_string($config) && config()->has("nativephp.queue_workers.{$config}")) {
+            $config = QueueConfig::fromConfigArray([
+                $config => config("nativephp.queue_workers.{$config}")
+            ])[0];
+        }
+
+        if (! $config instanceof QueueConfig) {
+            throw new \InvalidArgumentException("Invalid queue configuration alias [$config]");
+        }
+
         $this->childProcess->php(
             [
                 '-d',
