@@ -44,8 +44,8 @@ test('the factory method generates an array of config objects for several format
     ],
     [
         'queue_workers' => [
-            'some_worker',
-            'another_worker',
+            'some_worker' => [],
+            'another_worker' => [],
         ],
     ],
     [
