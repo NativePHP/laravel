@@ -6,7 +6,7 @@ return [
      * It is used to determine if the app needs to be updated.
      * Increment this value every time you release a new version of your app.
      */
-    'version' => env('NATIVEPHP_APP_VERSION', '1.0.0'),
+    'version' => env('NATIVEPHP_APP_VERSION', 1),
 
     /**
      * The ID of your application. This should be a unique identifier
@@ -47,6 +47,7 @@ return [
         'AWS_*',
         'GITHUB_*',
         'DO_SPACES_*',
+        'ZEPHPYR_*',
         '*_SECRET',
         'NATIVEPHP_UPDATER_PATH',
         'NATIVEPHP_APPLE_ID',
