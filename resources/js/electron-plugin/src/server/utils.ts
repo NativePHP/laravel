@@ -1,5 +1,5 @@
 import { session } from 'electron';
-import state from './state';
+import state from './state.js';
 import axios from 'axios';
 
 export async function appendCookie() {

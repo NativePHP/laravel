@@ -1,7 +1,7 @@
 import express from 'express';
 import { dialog } from 'electron';
-import state from '../state';
-import { trimOptions } from '../utils';
+import state from '../state.js';
+import { trimOptions } from '../utils.js';
 const router = express.Router();
 router.post('/open', (req, res) => {
     const { title, buttonLabel, filters, properties, defaultPath, message, windowReference } = req.body;

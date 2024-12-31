@@ -1,5 +1,5 @@
 import Store from "electron-store";
-import { notifyLaravel } from "./utils";
+import { notifyLaravel } from "./utils.js";
 const settingsStore = new Store();
 settingsStore.onDidAnyChange((newValue, oldValue) => {
     const changedKey = Object.keys(newValue).find((key) => newValue[key] !== oldValue[key]);

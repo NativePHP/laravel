@@ -1,9 +1,11 @@
 import express from 'express';
-import { BrowserWindow, clipboard, NativeImage } from 'electron';
-import state from '../state';
-import { join } from 'path';
-import { notifyLaravel, goToUrl, appendWindowIdToUrl } from '../utils';
+import { BrowserWindow } from 'electron';
+import state from '../state.js';
+import { fileURLToPath } from 'url'
+import { notifyLaravel, goToUrl, appendWindowIdToUrl } from '../utils.js';
 import windowStateKeeper from 'electron-window-state';
+
+import {enable} from "@electron/remote/main/index.js";
 
 const router = express.Router();
 
@@ -95,7 +97,7 @@ router.post('/close', (req, res) => {
         delete state.windows[id];
     }
 
-    return res.sendStatus(200);
+    res.sendStatus(200);
 });
 
 router.post('/hide', (req, res) => {
@@ -105,7 +107,7 @@ router.post('/hide', (req, res) => {
         state.windows[id].hide();
     }
 
-    return res.sendStatus(200);
+    res.sendStatus(200);
 });
 
 router.post('/show', (req, res) => {
@@ -226,10 +228,12 @@ router.post('/open', (req, res) => {
     if (state.windows[id]) {
         state.windows[id].show();
         state.windows[id].focus();
-        return res.sendStatus(200);
+        res.sendStatus(200);
+
+        return;
     }
 
-    let preloadPath = join(__dirname, '../../electron-plugin/dist/preload/index.js');
+    let preloadPath = fileURLToPath(new URL('../../electron-plugin/dist/preload/index.mjs', import.meta.url));
 
     const defaultWebPreferences = {
         backgroundThrottling: false,
@@ -290,10 +294,10 @@ router.post('/open', (req, res) => {
         window.webContents.openDevTools();
     }
 
-    require("@electron/remote/main").enable(window.webContents);
+    enable(window.webContents);
 
     if (req.body.rememberState === true) {
-        windowState.manage(window);
+        windowState?.manage(window);
     }
 
     window.on('blur', () => {

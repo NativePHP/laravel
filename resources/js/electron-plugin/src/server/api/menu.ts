@@ -1,6 +1,6 @@
 import express from 'express';
 import { Menu } from 'electron';
-import { compileMenu } from './helper';
+import { compileMenu } from './helper/index.js';
 
 const router = express.Router();
 

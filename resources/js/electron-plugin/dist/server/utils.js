@@ -8,7 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { session } from 'electron';
-import state from './state';
+import state from './state.js';
 import axios from 'axios';
 export function appendCookie() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -20,8 +20,8 @@ export function appendCookie() {
         yield session.defaultSession.cookies.set(cookie);
     });
 }
-export function notifyLaravel(endpoint, payload = {}) {
-    return __awaiter(this, void 0, void 0, function* () {
+export function notifyLaravel(endpoint_1) {
+    return __awaiter(this, arguments, void 0, function* (endpoint, payload = {}) {
         if (endpoint === 'events') {
             broadcastToWindows('native-event', payload);
         }

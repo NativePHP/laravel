@@ -1,5 +1,5 @@
-const { contextBridge, ipcRenderer } = require('electron');
-const remote = require('@electron/remote');
+import remote from "@electron/remote";
+import { ipcRenderer } from "electron";
 const Native = {
     on: (event, callback) => {
         ipcRenderer.on('native-event', (_, data) => {

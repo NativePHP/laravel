@@ -9,32 +9,32 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import express from "express";
 import bodyParser from "body-parser";
-import getPort from "get-port";
-import middleware from "./api/middleware";
-import clipboardRoutes from "./api/clipboard";
-import appRoutes from "./api/app";
-import screenRoutes from "./api/screen";
-import dialogRoutes from "./api/dialog";
-import debugRoutes from "./api/debug";
-import broadcastingRoutes from "./api/broadcasting";
-import systemRoutes from "./api/system";
-import globalShortcutRoutes from "./api/globalShortcut";
-import notificationRoutes from "./api/notification";
-import dockRoutes from "./api/dock";
-import menuRoutes from "./api/menu";
-import menuBarRoutes from "./api/menuBar";
-import windowRoutes from "./api/window";
-import processRoutes from "./api/process";
-import contextMenuRoutes from "./api/contextMenu";
-import settingsRoutes from "./api/settings";
-import shellRoutes from "./api/shell";
-import progressBarRoutes from "./api/progressBar";
-import powerMonitorRoutes from "./api/powerMonitor";
-import childProcessRoutes from "./api/childProcess";
+import getPort, { portNumbers } from "get-port";
+import middleware from "./api/middleware.js";
+import clipboardRoutes from "./api/clipboard.js";
+import appRoutes from "./api/app.js";
+import screenRoutes from "./api/screen.js";
+import dialogRoutes from "./api/dialog.js";
+import debugRoutes from "./api/debug.js";
+import broadcastingRoutes from "./api/broadcasting.js";
+import systemRoutes from "./api/system.js";
+import globalShortcutRoutes from "./api/globalShortcut.js";
+import notificationRoutes from "./api/notification.js";
+import dockRoutes from "./api/dock.js";
+import menuRoutes from "./api/menu.js";
+import menuBarRoutes from "./api/menuBar.js";
+import windowRoutes from "./api/window.js";
+import processRoutes from "./api/process.js";
+import contextMenuRoutes from "./api/contextMenu.js";
+import settingsRoutes from "./api/settings.js";
+import shellRoutes from "./api/shell.js";
+import progressBarRoutes from "./api/progressBar.js";
+import powerMonitorRoutes from "./api/powerMonitor.js";
+import childProcessRoutes from "./api/childProcess.js";
 function startAPIServer(randomSecret) {
     return __awaiter(this, void 0, void 0, function* () {
         const port = yield getPort({
-            port: getPort.makeRange(4000, 5000),
+            port: portNumbers(4000, 5000),
         });
         return new Promise((resolve, reject) => {
             const httpServer = express();

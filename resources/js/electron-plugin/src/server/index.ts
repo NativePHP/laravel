@@ -1,12 +1,12 @@
-import startAPIServer, { APIProcess } from "./api";
+import startAPIServer, { APIProcess } from "./api.js";
 import {
   retrieveNativePHPConfig,
   retrievePhpIniSettings,
   serveApp,
   startScheduler,
-} from "./php";
-import { appendCookie } from "./utils";
-import state from "./state";
+} from "./php.js";
+import { appendCookie } from "./utils.js";
+import state from "./state.js";
 
 export async function startPhpApp() {
   const result = await serveApp(

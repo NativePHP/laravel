@@ -1,6 +1,5 @@
-import { resolve, join } from 'path';
+import { join } from 'path';
 import { defineConfig, externalizeDepsPlugin } from 'electron-vite';
-import vue from '@vitejs/plugin-vue';
 
 export default defineConfig({
     main: {

@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     app: {
         getPath: jest.fn().mockReturnValue('path'),
         isPackaged: jest.fn().mockResolvedValue(function () {

@@ -1,13 +1,15 @@
 import {mkdirSync, statSync, writeFileSync, existsSync} from 'fs'
-import {copySync} from 'fs-extra'
+import fs_extra from 'fs-extra';
+const { copySync } = fs_extra;
+
 import Store from 'electron-store'
 import {promisify} from 'util'
 import {join} from 'path'
 import {app} from 'electron'
-import {exec, execFile, spawn} from 'child_process'
-import state from "./state";
-import getPort from 'get-port';
-import { ProcessResult } from "./ProcessResult";
+import {execFile, spawn} from 'child_process'
+import state from "./state.js";
+import getPort, {portNumbers} from 'get-port';
+import { ProcessResult } from "./ProcessResult.js";
 
 const storagePath = join(app.getPath('userData'), 'storage')
 const databasePath = join(app.getPath('userData'), 'database')
@@ -18,7 +20,7 @@ const appPath = getAppPath();
 async function getPhpPort() {
     return await getPort({
         host: '127.0.0.1',
-        port: getPort.makeRange(8100, 9000)
+        port: portNumbers(8100, 9000)
     });
 }
 
@@ -91,7 +93,7 @@ function getArgumentEnv() {
 }
 
 function getAppPath() {
-    let appPath = join(__dirname, '../../resources/app/').replace('app.asar', 'app.asar.unpacked')
+    let appPath = join(import.meta.dirname, '../../resources/app/').replace('app.asar', 'app.asar.unpacked')
 
     if (process.env.NODE_ENV === 'development' || argumentEnv.TESTING == 1) {
         appPath = process.env.APP_PATH || argumentEnv.APP_PATH;

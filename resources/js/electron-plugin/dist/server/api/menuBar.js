@@ -1,10 +1,11 @@
 import express from "express";
 import { Menu, Tray } from "electron";
-import { compileMenu } from "./helper";
-import state from "../state";
+import { compileMenu } from "./helper/index.js";
+import state from "../state.js";
 import { menubar } from "menubar";
-import { notifyLaravel } from "../utils";
-import { join } from "path";
+import { notifyLaravel } from "../utils.js";
+import { fileURLToPath } from 'url';
+import { enable } from "@electron/remote/main/index.js";
 const router = express.Router();
 router.post("/label", (req, res) => {
     res.sendStatus(200);
@@ -77,7 +78,7 @@ router.post("/create", (req, res) => {
                 backgroundColor,
                 transparent: transparency,
                 webPreferences: {
-                    preload: join(__dirname, '../../electron-plugin/dist/preload/index.js'),
+                    preload: fileURLToPath(new URL('../../electron-plugin/dist/preload/index.mjs', import.meta.url)),
                     nodeIntegration: true,
                     sandbox: false,
                     contextIsolation: false,
@@ -85,7 +86,7 @@ router.post("/create", (req, res) => {
             }
         });
         state.activeMenuBar.on("after-create-window", () => {
-            require("@electron/remote/main").enable(state.activeMenuBar.window.webContents);
+            enable(state.activeMenuBar.window.webContents);
         });
     }
     state.activeMenuBar.on("ready", () => {

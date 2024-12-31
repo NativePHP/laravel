@@ -1,7 +1,10 @@
-const os = require('os');
-const { join } = require("path");
-const { mkdtempSync } = require("fs");
-const { copySync, removeSync, writeJsonSync } = require("fs-extra");
+import os from 'os';
+import { join } from 'path';
+import { mkdtempSync } from 'fs';
+
+// Workaround for CommonJS module
+import fs_extra from 'fs-extra';
+const { copySync, removeSync, writeJsonSync } = fs_extra;
 
 const isBuilding = process.env.NATIVEPHP_BUILDING;
 const appId = process.env.NATIVEPHP_APP_ID;
@@ -54,7 +57,7 @@ if (isBuilding) {
     console.log();
 
     try {
-        const appPath = join(__dirname, 'resources', 'app');
+        const appPath = join(import.meta.dirname, 'resources', 'app');
 
         removeSync(appPath);
 
@@ -122,7 +125,7 @@ if (isBuilding) {
 
 }
 
-module.exports = {
+export default {
     appId: appId,
     productName: appName,
     directories: {

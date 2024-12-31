@@ -1,6 +1,5 @@
 import express from 'express'
-import {app, Menu} from 'electron'
-import state from "../state";
+import state from "../state.js";
 const router = express.Router();
 
 router.post('/update', (req, res) => {

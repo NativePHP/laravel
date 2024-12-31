@@ -9,18 +9,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import express from 'express';
 import { utilityProcess } from 'electron';
-import state from '../state';
-import { notifyLaravel } from "../utils";
-import { join } from 'path';
-import { getDefaultEnvironmentVariables, getDefaultPhpIniSettings } from "../php";
+import state from '../state.js';
+import { notifyLaravel } from "../utils.js";
+import { getDefaultEnvironmentVariables, getDefaultPhpIniSettings } from "../php.js";
+import killSync from "kill-sync";
+import { fileURLToPath } from "url";
 const router = express.Router();
-const killSync = require('kill-sync');
 function startProcess(settings) {
     const { alias, cmd, cwd, env, persistent } = settings;
     if (getProcess(alias) !== undefined) {
         return state.processes[alias];
     }
-    const proc = utilityProcess.fork(join(__dirname, '../../electron-plugin/dist/server/childProcess.js'), cmd, {
+    const proc = utilityProcess.fork(fileURLToPath(new URL('../../electron-plugin/dist/server/childProcess.js', import.meta.url)), cmd, {
         cwd,
         stdio: 'pipe',
         serviceName: alias,

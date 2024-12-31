@@ -1,4 +1,4 @@
-const { spawn } = require('child_process');
+import { spawn } from "child_process";
 const proc = spawn(process.argv[2], process.argv.slice(3));
 process.parentPort.on('message', (message) => {
     proc.stdin.write(message.data);

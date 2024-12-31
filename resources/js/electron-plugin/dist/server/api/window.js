@@ -1,9 +1,10 @@
 import express from 'express';
 import { BrowserWindow } from 'electron';
-import state from '../state';
-import { join } from 'path';
-import { notifyLaravel, goToUrl, appendWindowIdToUrl } from '../utils';
+import state from '../state.js';
+import { fileURLToPath } from 'url';
+import { notifyLaravel, goToUrl, appendWindowIdToUrl } from '../utils.js';
 import windowStateKeeper from 'electron-window-state';
+import { enable } from "@electron/remote/main/index.js";
 const router = express.Router();
 router.post('/maximize', (req, res) => {
     var _a;
@@ -70,14 +71,14 @@ router.post('/close', (req, res) => {
         state.windows[id].close();
         delete state.windows[id];
     }
-    return res.sendStatus(200);
+    res.sendStatus(200);
 });
 router.post('/hide', (req, res) => {
     const { id } = req.body;
     if (state.windows[id]) {
         state.windows[id].hide();
     }
-    return res.sendStatus(200);
+    res.sendStatus(200);
 });
 router.post('/show', (req, res) => {
     const { id } = req.body;
@@ -142,9 +143,10 @@ router.post('/open', (req, res) => {
     if (state.windows[id]) {
         state.windows[id].show();
         state.windows[id].focus();
-        return res.sendStatus(200);
+        res.sendStatus(200);
+        return;
     }
-    let preloadPath = join(__dirname, '../../electron-plugin/dist/preload/index.js');
+    let preloadPath = fileURLToPath(new URL('../../electron-plugin/dist/preload/index.mjs', import.meta.url));
     const defaultWebPreferences = {
         backgroundThrottling: false,
         spellcheck: false,
@@ -179,9 +181,9 @@ router.post('/open', (req, res) => {
     if ((process.env.NODE_ENV === 'development' || showDevTools === true) && showDevTools !== false) {
         window.webContents.openDevTools();
     }
-    require("@electron/remote/main").enable(window.webContents);
+    enable(window.webContents);
     if (req.body.rememberState === true) {
-        windowState.manage(window);
+        windowState === null || windowState === void 0 ? void 0 : windowState.manage(window);
     }
     window.on('blur', () => {
         notifyLaravel('events', {

@@ -1,6 +1,6 @@
 import express from 'express'
 import {globalShortcut} from 'electron'
-import {notifyLaravel} from "../utils";
+import {notifyLaravel} from "../utils.js";
 const router = express.Router();
 
 router.post('/', (req, res) => {

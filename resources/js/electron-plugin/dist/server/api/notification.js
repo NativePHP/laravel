@@ -1,6 +1,6 @@
 import express from 'express';
 import { Notification } from 'electron';
-import { notifyLaravel } from "../utils";
+import { notifyLaravel } from "../utils.js";
 const router = express.Router();
 router.post('/', (req, res) => {
     const { title, body, subtitle, silent, icon, hasReply, timeoutType, replyPlaceholder, sound, urgency, actions, closeButtonText, toastXml, event: customEvent } = req.body;

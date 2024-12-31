@@ -1,7 +1,7 @@
 import express from 'express';
 import { app, Menu } from 'electron';
-import { compileMenu } from './helper';
-import state from '../state';
+import { compileMenu } from './helper/index.js';
+import state from '../state.js';
 const router = express.Router();
 router.post('/', (req, res) => {
     const menuEntries = req.body.items.map(compileMenu);

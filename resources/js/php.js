@@ -1,9 +1,9 @@
-const { log } = require("console");
-const fs = require("fs");
-const {copySync, removeSync, existsSync, ensureDirSync} = require("fs-extra");
-const {join} = require("path");
-const { exit } = require("process");
-const unzip = require("yauzl");
+import fs from "fs";
+import fs_extra from 'fs-extra';
+const { copySync, removeSync, ensureDirSync } = fs_extra;
+import { join } from "path";
+import unzip from "yauzl";
+
 
 const isBuilding = Boolean(process.env.NATIVEPHP_BUILDING);
 const phpBinaryPath = process.env.NATIVEPHP_PHP_BINARY_PATH;
@@ -53,7 +53,7 @@ if (isBuilding) {
 
 const phpVersionZip = 'php-' + phpVersion + '.zip';
 const binarySrcDir = join(phpBinaryPath, platform.os, platform.arch, phpVersionZip);
-const binaryDestDir = join(__dirname, 'resources/php');
+const binaryDestDir = join(import.meta.dirname, 'resources/php');
 
 console.log('Binary Source: ', binarySrcDir);
 console.log('Binary Filename: ', platform.phpBinary);
@@ -101,7 +101,7 @@ if (platform.phpBinary) {
 
 if (certificatePath) {
     try {
-        let certDest = join(__dirname, 'resources', 'cacert.pem');
+        let certDest = join(import.meta.dirname, 'resources', 'cacert.pem');
         copySync(certificatePath, certDest);
         console.log('Copied certificate file from ' + certificatePath + ' to ' + certDest);
     } catch (e) {

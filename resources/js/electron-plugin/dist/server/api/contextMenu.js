@@ -1,5 +1,5 @@
 import express from 'express';
-import { compileMenu } from "./helper";
+import { compileMenu } from "./helper/index.js";
 import contextMenu from "electron-context-menu";
 const router = express.Router();
 let contextMenuDisposable = null;

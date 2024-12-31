@@ -1,6 +1,6 @@
 import express from 'express';
 import { powerMonitor } from 'electron';
-import { notifyLaravel } from '../utils';
+import { notifyLaravel } from '../utils.js';
 const router = express.Router();
 router.get('/get-system-idle-state', (req, res) => {
     let threshold = Number(req.query.threshold) || 60;

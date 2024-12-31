@@ -7,10 +7,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import startAPIServer from "./api";
-import { retrieveNativePHPConfig, retrievePhpIniSettings, serveApp, startScheduler, } from "./php";
-import { appendCookie } from "./utils";
-import state from "./state";
+import startAPIServer from "./api.js";
+import { retrieveNativePHPConfig, retrievePhpIniSettings, serveApp, startScheduler, } from "./php.js";
+import { appendCookie } from "./utils.js";
+import state from "./state.js";
 export function startPhpApp() {
     return __awaiter(this, void 0, void 0, function* () {
         const result = yield serveApp(state.randomSecret, state.electronApiPort, state.phpIni);

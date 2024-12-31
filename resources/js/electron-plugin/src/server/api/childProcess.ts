@@ -1,13 +1,14 @@
 import express from 'express';
 import { utilityProcess } from 'electron';
-import state from '../state';
-import { notifyLaravel } from "../utils";
-import { join } from 'path';
-import { getDefaultEnvironmentVariables, getDefaultPhpIniSettings } from "../php";
+import state from '../state.js';
+import { notifyLaravel } from "../utils.js";
+import { getDefaultEnvironmentVariables, getDefaultPhpIniSettings } from "../php.js";
 
+
+import killSync from "kill-sync";
+import {fileURLToPath} from "url";
 
 const router = express.Router();
-const killSync = require('kill-sync');
 
 function startProcess(settings) {
     const {alias, cmd, cwd, env, persistent} = settings;
@@ -17,7 +18,7 @@ function startProcess(settings) {
     }
 
     const proc = utilityProcess.fork(
-        join(__dirname, '../../electron-plugin/dist/server/childProcess.js'),
+        fileURLToPath(new URL('../../electron-plugin/dist/server/childProcess.js', import.meta.url)),
         cmd,
         {
             cwd,
@@ -126,11 +127,12 @@ function stopProcess(alias) {
         return;
     }
 
-    // Set persistent to false to prevent the process from restarting.
+    // Set persistent to false and prevent the process from restarting.
     state.processes[alias].settings.persistent = false;
 
     console.log('Process [' + alias + '] stopping with PID [' + proc.pid + '].');
 
+    // @ts-ignore
     killSync(proc.pid, 'SIGTERM', true); // Kill tree
     proc.kill(); // Does not work but just in case. (do not put before killSync)
 }

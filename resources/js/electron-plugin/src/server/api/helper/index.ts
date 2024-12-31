@@ -1,6 +1,6 @@
 import { shell } from 'electron';
-import { notifyLaravel, goToUrl } from '../../utils';
-import state from '../../state';
+import { notifyLaravel, goToUrl } from '../../utils.js';
+import state from '../../state.js';
 
 function triggerMenuItemEvent(menuItem, combo) {
     notifyLaravel('events', {

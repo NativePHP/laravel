@@ -1,6 +1,6 @@
 import { BrowserWindow, UtilityProcess } from "electron";
 import Store from "electron-store";
-import { notifyLaravel } from "./utils";
+import { notifyLaravel } from "./utils.js";
 
 const settingsStore = new Store();
 settingsStore.onDidAnyChange((newValue, oldValue) => {

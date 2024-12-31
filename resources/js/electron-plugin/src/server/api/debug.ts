@@ -1,5 +1,5 @@
 import express from 'express'
-import { broadcastToWindows } from '../utils';
+import { broadcastToWindows } from '../utils.js';
 const router = express.Router();
 
 router.post('/log', (req, res) => {
