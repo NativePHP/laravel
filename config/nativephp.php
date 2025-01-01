@@ -122,4 +122,8 @@ return [
             'timeout' => 60,
         ],
     ],
+
+    'on_php_file_change' => [
+        \Native\Laravel\Pipelines\ProjectFileChanged\RestartQueueWorkers::class,
+    ],
 ];
