@@ -1,12 +1,11 @@
 import express from "express";
-import { Menu, Tray } from "electron";
+import { app, Menu, Tray } from "electron";
 import { compileMenu } from "./helper/index.js";
 import state from "../state.js";
 import { menubar } from "menubar";
 import { notifyLaravel } from "../utils.js";
 import { fileURLToPath } from 'url'
-
-import {enable} from "@electron/remote/main/index.js";
+import { enable } from "@electron/remote/main/index.js";
 
 const router = express.Router();
 
@@ -88,19 +87,11 @@ router.post("/create", (req, res) => {
         const tray = new Tray(icon || state.icon.replace("icon.png", "IconTemplate.png"));
 
         tray.setContextMenu(buildMenu(contextMenu));
+        tray.setToolTip(tooltip);
 
-        state.activeMenuBar = menubar({
-            tray,
-            tooltip,
-            index: false,
-            showDockIcon,
-            showOnAllWorkspaces: false,
-            browserWindow: {
-                show: false,
-                width: 0,
-                height: 0,
-            }
-        });
+        if (!showDockIcon) {
+            app.dock.hide();
+        }
     } else {
         state.activeMenuBar = menubar({
             icon: icon || state.icon.replace("icon.png", "IconTemplate.png"),
