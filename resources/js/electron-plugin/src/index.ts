@@ -1,6 +1,6 @@
 import type CrossProcessExports from "electron";
-import { app } from "electron";
-import {initialize} from "@electron/remote/main/index.js";
+import { app, session } from "electron";
+import { initialize } from "@electron/remote/main/index.js";
 import state from "./server/state.js";
 import { electronApp, optimizer } from "@electron-toolkit/utils";
 import {
@@ -106,6 +106,16 @@ class NativePHP {
 
     await this.startPhpApp();
     this.startScheduler();
+
+    const filter = {
+        urls: [`http://127.0.0.1:${state.phpPort}/*`]
+    };
+
+    session.defaultSession.webRequest.onBeforeSendHeaders(filter, (details, callback) => {
+        details.requestHeaders['X-NativePHP-Secret'] = state.randomSecret;
+
+        callback({ requestHeaders: details.requestHeaders });
+    });
 
     await notifyLaravel("booted");
   }
