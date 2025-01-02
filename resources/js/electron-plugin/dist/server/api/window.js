@@ -85,7 +85,7 @@ router.post('/show', (req, res) => {
     if (state.windows[id]) {
         state.windows[id].show();
     }
-    return res.sendStatus(200);
+    res.sendStatus(200);
 });
 router.post('/always-on-top', (req, res) => {
     var _a;
