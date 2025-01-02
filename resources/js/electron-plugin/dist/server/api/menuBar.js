@@ -1,5 +1,5 @@
 import express from "express";
-import { Menu, Tray } from "electron";
+import { app, Menu, Tray } from "electron";
 import { compileMenu } from "./helper/index.js";
 import state from "../state.js";
 import { menubar } from "menubar";
@@ -46,18 +46,10 @@ router.post("/create", (req, res) => {
     if (onlyShowContextMenu) {
         const tray = new Tray(icon || state.icon.replace("icon.png", "IconTemplate.png"));
         tray.setContextMenu(buildMenu(contextMenu));
-        state.activeMenuBar = menubar({
-            tray,
-            tooltip,
-            index: false,
-            showDockIcon,
-            showOnAllWorkspaces: false,
-            browserWindow: {
-                show: false,
-                width: 0,
-                height: 0,
-            }
-        });
+        tray.setToolTip(tooltip);
+        if (!showDockIcon) {
+            app.dock.hide();
+        }
     }
     else {
         state.activeMenuBar = menubar({
