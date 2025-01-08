@@ -40,6 +40,28 @@ class BundleCommand extends Command
             return static::FAILURE;
         }
 
+        if (! config('nativephp-internal.zephpyr.token')) {
+            $this->line('');
+            $this->warn('No ZEPHPYR_TOKEN found. Cannot bundle!');
+            $this->line('');
+            $this->line('Add your api ZEPHPYR_TOKEN to its .env file:');
+            $this->line(base_path('.env'));
+            $this->line('');
+            $this->info('Not set up with Zephpyr yet? Secure your NativePHP app builds and more!');
+            $this->info('Check out https://zephpyr.com');
+            $this->line('');
+
+            return static::FAILURE;
+        }
+
+        $result = $this->checkAuthenticated();
+
+        if ($result->failed()) {
+            $this->error('Invalid API token: check your ZEPHPYR_TOKEN on https://zephpyr.com/user/api-tokens');
+
+            return;
+        }
+
         if ($this->option('fetch')) {
             if (! $this->fetchLatestBundle()) {
                 $this->warn('Latest bundle not yet available. Try again soon.');
@@ -58,11 +80,19 @@ class BundleCommand extends Command
 
             return static::FAILURE;
         }
+        // $this->zipName = 'app_CcINfsoQ.zip';
+        // $this->zipPath = base_path('temp/'.$this->zipName);
 
         // Send the zip file
-        dd($result = $this->sendToZephpyr());
+        $result = $this->sendToZephpyr();
 
-        if ($result->failed()) {
+        //dd($result->status(), json_decode($result->body()));
+
+        if ($result->code() === 413) {
+            $this->error('The zip file is too large to upload to Zephpyr. Please contact support.');
+
+            return static::FAILURE;
+        } elseif ($result->failed()) {
             $this->error("Failed to upload zip [{$this->zipPath}] to Zephpyr.");
 
             return static::FAILURE;
@@ -79,7 +109,12 @@ class BundleCommand extends Command
     private function zipApplication(): bool
     {
         $this->zipName = 'app_'.str()->random(8).'.zip';
-        $this->zipPath = storage_path($this->zipName);
+        $this->zipPath = base_path('temp/'.$this->zipName);
+
+        // Create zip path
+        if (! @mkdir(dirname($this->zipPath), recursive: true) && ! is_dir(dirname($this->zipPath))) {
+            return false;
+        }
 
         $zip = new ZipArchive;
 
@@ -100,8 +135,10 @@ class BundleCommand extends Command
 
     private function addFilesToZip(ZipArchive $zip): void
     {
-        // TODO: Check the composer.json to make sure there are no symlinked or private packages as these will be a
-        // pain later
+        // TODO: Check the composer.json to make sure there are no symlinked
+        // or private packages as these will be a pain later
+
+        $this->line('Adding files to zip…');
 
         $app = (new Finder)->files()
             ->followLinks()
@@ -144,17 +181,36 @@ class BundleCommand extends Command
         }
     }
 
+    private function baseUrl(): string
+    {
+        return str(config('nativephp-internal.zephpyr.host'))->finish('/');
+    }
+
     private function sendToZephpyr()
     {
-        return Http::withToken(config('nativephp-internal.zephpyr.token'))
+        $this->line('Uploading to Zephpyr…');
+
+        return Http::acceptJson()
+            ->withoutRedirecting() // Upload won't work if we follow the redirect
+            ->withToken(config('nativephp-internal.zephpyr.token'))
             ->attach('archive', fopen($this->zipPath, 'r'), $this->zipName)
-            ->post(str(config('nativephp-internal.zephpyr.host'))->finish('/').'api/build/'.$this->key);
+            ->post($this->baseUrl().'api/build/'.$this->key);
+    }
+
+    private function checkAuthenticated()
+    {
+        $this->line('Checking authentication…');
+
+        return Http::acceptJson()
+            ->withToken(config('nativephp-internal.zephpyr.token'))
+            ->get($this->baseUrl().'api/user');
     }
 
     private function fetchLatestBundle(): bool
     {
-        $response = Http::withToken(config('nativephp-internal.zephpyr.token'))
-            ->get(str(config('nativephp-internal.zephpyr.host'))->finish('/').'api/download/'.$this->key);
+        $response = Http::acceptJson()
+            ->withToken(config('nativephp-internal.zephpyr.token'))
+            ->get($this->baseUrl().'api/download/'.$this->key);
 
         if ($response->failed()) {
             return false;
