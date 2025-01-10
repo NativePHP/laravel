@@ -4,7 +4,7 @@ namespace Native\Laravel\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
-use Native\Electron\Traits\CleansEnvFile;
+use Native\Laravel\Commands\Traits\CleansEnvFile;
 use Symfony\Component\Finder\Finder;
 use ZipArchive;
 
