@@ -58,9 +58,11 @@ return [
     /**
      * A list of files and folders that should be removed from the
      * final app before it is bundled for production.
-     * You may use glob / wildcard patterns here.
+     * You may use glob wildcard patterns here.
      */
     'cleanup_exclude_files' => [
+        'build',
+        'temp',
         'content',
         'storage/app/framework/{sessions,testing,cache}',
         'storage/logs/laravel.log',

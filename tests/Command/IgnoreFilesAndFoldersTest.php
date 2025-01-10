@@ -1,6 +1,24 @@
 <?php
 
-it('will remove laravel.log by default before building', function () {
+beforeAll(function () {
+    // Set up the environment variables
+    putenv('ZEPHPYR_KEY=dummy');
+    putenv('ZEPHPYR_TOKEN=dummy');
+});
+
+afterAll(function () {
+    // Clean up the temp folder
+    foreach (glob(base_path('temp/app_*.zip')) as $zip) {
+        unlink($zip);
+    }
+});
+
+afterEach(function () {
+    // Clean up the app folder recursively
+    rmdir_recursive(base_path('resources/app'));
+});
+
+it('will remove laravel.log by default before bundling', function () {
     $logPath = 'resources/app/storage/logs';
     $laravelLog = $logPath.'/laravel.log';
 
@@ -11,23 +29,15 @@ it('will remove laravel.log by default before building', function () {
     file_put_contents($laravelLog, 'TEST');
 
     // Run the test
-    $this->artisan('native:minify resources/app');
-    $this->assertFalse(file_exists($laravelLog));
+    $this->artisan('native:bundle --without-cleanup')
+        ->expectsOutput('Creating zip archive');
 
-    // Clean up after ourselves
-    if (file_exists($laravelLog)) {
-        unlink($laravelLog);
-    }
-    if (file_exists('resources/app/storage/logs')) {
-        rmdir('resources/app/storage/logs');
-    }
-    if (file_exists('resources/app/storage')) {
-        rmdir('resources/app/storage');
-    }
-    removeAppFolder();
+    // Assert
+    expect(basename($laravelLog))
+        ->not->toBeInZip(findLatestZipPath());
 });
 
-it('will remove the content folder by default before building', function () {
+it('will remove the content folder by default before bundling', function () {
     $contentPath = 'resources/app/content';
 
     // Create a dummy copy of the folder
@@ -36,14 +46,12 @@ it('will remove the content folder by default before building', function () {
     }
 
     // Run the test
-    $this->artisan('native:minify resources/app');
-    $this->assertFalse(file_exists($contentPath));
+    $this->artisan('native:bundle --without-cleanup')
+        ->expectsOutput('Creating zip archive');
 
-    // Clean up after ourselves
-    if (file_exists($contentPath)) {
-        unlink($contentPath);
-    }
-    removeAppFolder();
+    // Assert
+    expect($contentPath)
+        ->not->toBeInZip(findLatestZipPath());
 });
 
 it('will remove only files that match a globbed path', function () {
@@ -63,26 +71,17 @@ it('will remove only files that match a globbed path', function () {
     file_put_contents($noDeletePath, 'DO NOT DELETE ME');
 
     // Run the test
-    $this->artisan('native:minify resources/app');
-    $this->assertFalse(file_exists($yes1DeletePath));
-    $this->assertFalse(file_exists($yes2DeletePath));
-    $this->assertTrue(file_exists($noDeletePath));
+    $this->artisan('native:bundle --without-cleanup')
+        ->expectsOutput('Creating zip archive');
 
-    // Clean up after ourselves
-    foreach ([$yes1DeletePath, $yes2DeletePath, $noDeletePath] as $remove) {
-        if (file_exists($remove)) {
-            unlink($remove);
-        }
-    }
-    if (file_exists($wildcardPath)) {
-        rmdir($wildcardPath);
-    }
-    removeAppFolder();
+    // Assert
+    $latestZip = findLatestZipPath();
+
+    expect($yes1DeletePath)
+        ->not->toBeInZip($latestZip);
+    expect($yes2DeletePath)
+        ->not->toBeInZip($latestZip);
+    expect($noDeletePath)
+        ->toBeInZip($latestZip);
+
 });
-
-function removeAppFolder()
-{
-    if (file_exists('resources/app')) {
-        rmdir('resources/app');
-    }
-}

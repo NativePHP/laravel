@@ -4,6 +4,7 @@ namespace Native\Laravel\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Number;
 use Native\Laravel\Commands\Traits\CleansEnvFile;
 use Symfony\Component\Finder\Finder;
 use ZipArchive;
@@ -12,7 +13,7 @@ class BundleCommand extends Command
 {
     use CleansEnvFile;
 
-    protected $signature = 'native:bundle {--fetch}';
+    protected $signature = 'native:bundle {--fetch} {--without-cleanup}';
 
     protected $description = 'Bundle your application for distribution.';
 
@@ -24,42 +25,18 @@ class BundleCommand extends Command
 
     public function handle()
     {
-        $this->key = config('nativephp-internal.zephpyr.key');
-
-        if (! $this->key) {
-            $this->line('');
-            $this->warn('No ZEPHPYR_KEY found. Cannot bundle!');
-            $this->line('');
-            $this->line('Add this app\'s ZEPHPYR_KEY to its .env file:');
-            $this->line(base_path('.env'));
-            $this->line('');
-            $this->info('Not set up with Zephpyr yet? Secure your NativePHP app builds and more!');
-            $this->info('Check out https://zephpyr.com');
-            $this->line('');
-
+        if (! $this->checkForZephpyrKey()) {
             return static::FAILURE;
         }
 
-        if (! config('nativephp-internal.zephpyr.token')) {
-            $this->line('');
-            $this->warn('No ZEPHPYR_TOKEN found. Cannot bundle!');
-            $this->line('');
-            $this->line('Add your api ZEPHPYR_TOKEN to its .env file:');
-            $this->line(base_path('.env'));
-            $this->line('');
-            $this->info('Not set up with Zephpyr yet? Secure your NativePHP app builds and more!');
-            $this->info('Check out https://zephpyr.com');
-            $this->line('');
-
+        if (! $this->checkForZephpyrToken()) {
             return static::FAILURE;
         }
 
-        $result = $this->checkAuthenticated();
-
-        if ($result->failed()) {
+        if (! $this->checkAuthenticated()) {
             $this->error('Invalid API token: check your ZEPHPYR_TOKEN on https://zephpyr.com/user/api-tokens');
 
-            return;
+            return static::FAILURE;
         }
 
         if ($this->option('fetch')) {
@@ -80,30 +57,45 @@ class BundleCommand extends Command
 
             return static::FAILURE;
         }
-        // $this->zipName = 'app_CcINfsoQ.zip';
-        // $this->zipPath = base_path('temp/'.$this->zipName);
 
         // Send the zip file
         $result = $this->sendToZephpyr();
 
-        // dd($result->status(), json_decode($result->body()));
+        if ($result->status() === 413) {
+            $fileSize = Number::fileSize(filesize($this->zipPath));
+            $this->error('The zip file is too large to upload to Zephpyr ('.$fileSize.'). Please contact support.');
 
-        if ($result->code() === 413) {
-            $this->error('The zip file is too large to upload to Zephpyr. Please contact support.');
+            $this->cleanUp();
 
             return static::FAILURE;
         } elseif ($result->failed()) {
-            $this->error("Failed to upload zip [{$this->zipPath}] to Zephpyr.");
+            $this->error("Failed to upload zip to Zephpyr. Error: {$result->status()}");
+            $this->cleanUp();
 
             return static::FAILURE;
         }
 
-        @unlink($this->zipPath);
-
         $this->info('Successfully uploaded to Zephpyr.');
         $this->line('Use native:bundle --fetch to retrieve the latest bundle.');
 
+        $this->cleanUp();
+
         return static::SUCCESS;
+    }
+
+    protected function cleanUp(): void
+    {
+        if ($this->option('without-cleanup')) {
+            return;
+        }
+
+        $this->line('Cleaning up…');
+
+        $previousBuilds = glob(base_path('temp/app_*.zip'));
+
+        foreach ($previousBuilds as $previousBuild) {
+            @unlink($previousBuild);
+        }
     }
 
     private function zipApplication(): bool
@@ -138,7 +130,7 @@ class BundleCommand extends Command
         // TODO: Check the composer.json to make sure there are no symlinked
         // or private packages as these will be a pain later
 
-        $this->line('Adding files to zip…');
+        $this->line('Creating zip archive…');
 
         $app = (new Finder)->files()
             ->followLinks()
@@ -188,7 +180,7 @@ class BundleCommand extends Command
 
     private function sendToZephpyr()
     {
-        $this->line('Uploading to Zephpyr…');
+        $this->line('Uploading zip to Zephpyr…');
 
         return Http::acceptJson()
             ->withoutRedirecting() // Upload won't work if we follow the redirect
@@ -203,7 +195,7 @@ class BundleCommand extends Command
 
         return Http::acceptJson()
             ->withToken(config('nativephp-internal.zephpyr.token'))
-            ->get($this->baseUrl().'api/user');
+            ->get($this->baseUrl().'api/user')->successful();
     }
 
     private function fetchLatestBundle(): bool
@@ -217,6 +209,46 @@ class BundleCommand extends Command
         }
 
         file_put_contents(base_path('build/__nativephp_app_bundle'), $response->body());
+
+        return true;
+    }
+
+    private function checkForZephpyrKey()
+    {
+        $this->key = config('nativephp-internal.zephpyr.key');
+
+        if (! $this->key) {
+            $this->line('');
+            $this->warn('No ZEPHPYR_KEY found. Cannot bundle!');
+            $this->line('');
+            $this->line('Add this app\'s ZEPHPYR_KEY to its .env file:');
+            $this->line(base_path('.env'));
+            $this->line('');
+            $this->info('Not set up with Zephpyr yet? Secure your NativePHP app builds and more!');
+            $this->info('Check out https://zephpyr.com');
+            $this->line('');
+
+            return false;
+        }
+
+        return true;
+    }
+
+    private function checkForZephpyrToken()
+    {
+        if (! config('nativephp-internal.zephpyr.token')) {
+            $this->line('');
+            $this->warn('No ZEPHPYR_TOKEN found. Cannot bundle!');
+            $this->line('');
+            $this->line('Add your api ZEPHPYR_TOKEN to its .env file:');
+            $this->line(base_path('.env'));
+            $this->line('');
+            $this->info('Not set up with Zephpyr yet? Secure your NativePHP app builds and more!');
+            $this->info('Check out https://zephpyr.com');
+            $this->line('');
+
+            return false;
+        }
 
         return true;
     }
