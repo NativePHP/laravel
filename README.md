@@ -27,6 +27,7 @@ Thanks to the following sponsors for funding NativePHP development. Please consi
 - [RedGalaxy](https://www.redgalaxy.co.uk) - A web application development studio based in Cambridgeshire, building solutions to help businesses improve efficiency and profitability.
 - [Sevalla](https://sevalla.com/?utm_source=nativephp&utm_medium=Referral&utm_campaign=homepage) - Host and manage your applications, databases, and static sites in a single, intuitive platform.
 - [KaasHosting](https://www.kaashosting.nl/?lang=en) - Minecraft Server and VPS hosting from The Netherlands.
+- [Borah Digital Labs](https://borah.digital/) - An MVP building studio from the sunny Canary Islands focusing on AI, SaaS and online platforms.
 
 ## Changelog
 
