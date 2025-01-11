@@ -18,12 +18,12 @@ class Screen
         return $this->client->get('screen/displays')->json('displays');
     }
 
-    public function primary(): object
+    public function primary(): array
     {
         return $this->client->get('screen/primary-display')->json('primaryDisplay');
     }
 
-    public function active(): object
+    public function active(): array
     {
         return $this->client->get('screen/active')->json();
     }
