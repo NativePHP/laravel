@@ -4,6 +4,7 @@ namespace Native\Laravel\Commands;
 
 use Carbon\CarbonInterface;
 use Illuminate\Console\Command;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Number;
 use Native\Laravel\Commands\Traits\CleansEnvFile;
@@ -35,7 +36,7 @@ class BundleCommand extends Command
         }
 
         if (! $this->checkAuthenticated()) {
-            $this->error('Invalid API token: check your ZEPHPYR_TOKEN on https://'.$this->hostname().'/user/api-tokens');
+            $this->error('Invalid API token: check your ZEPHPYR_TOKEN on '.$this->baseUrl().'user/api-tokens');
 
             return static::FAILURE;
         }
@@ -60,7 +61,15 @@ class BundleCommand extends Command
         }
 
         // Send the zip file
-        $result = $this->sendToZephpyr();
+        try {
+            $result = $this->sendToZephpyr();
+        } catch (ConnectionException $e) {
+            // Timeout, etc.
+            $this->error('Failed to send to Zephpyr: '.$e->getMessage());
+            $this->cleanUp();
+
+            return static::FAILURE;
+        }
 
         if ($result->status() === 413) {
             $fileSize = Number::fileSize(filesize($this->zipPath));
@@ -145,6 +154,9 @@ class BundleCommand extends Command
         // TODO: Check the composer.json to make sure there are no symlinked
         // or private packages as these will be a pain later
 
+        // TODO: Fail if there is symlinked packages
+        // TODO: For private packages: make an endpoint to check if user gave us their credentials
+
         $this->line('Creating zip archive…');
 
         $app = (new Finder)->files()
@@ -152,21 +164,24 @@ class BundleCommand extends Command
             ->ignoreVCSIgnored(true)
             ->in(base_path())
             ->exclude([
-                'vendor',
-                'dist',
-                'build',
-                'tests',
-                ...config('nativephp.cleanup_exclude_files', []),
+                'vendor', // We add this later
+                'node_modules', // We add this later
+                'dist', // Compiled nativephp assets
+                'build', // Compiled box assets
+                'tests', // Tests
+                ...config('nativephp.cleanup_exclude_files', []), // User defined
             ]);
 
         $this->finderToZip($app, $zip);
 
         $vendor = (new Finder)->files()
-            ->exclude([
+            // ->followLinks()
+            ->exclude(array_filter([
                 'nativephp/php-bin',
                 'nativephp/electron/resources/js',
                 'nativephp/*/vendor',
-            ])
+                config('nativephp.binary_path'), // User defined binary paths
+            ]))
             ->in(base_path('vendor'));
 
         $this->finderToZip($vendor, $zip, 'vendor');
@@ -195,16 +210,12 @@ class BundleCommand extends Command
         return str(config('nativephp-internal.zephpyr.host'))->finish('/');
     }
 
-    protected function hostname(): string
-    {
-        return parse_url(config('nativephp-internal.zephpyr.host'), PHP_URL_HOST);
-    }
-
     private function sendToZephpyr()
     {
         $this->line('Uploading zip to Zephpyr…');
 
         return Http::acceptJson()
+            ->timeout(300) // 5 minutes
             ->withoutRedirecting() // Upload won't work if we follow the redirect
             ->withToken(config('nativephp-internal.zephpyr.token'))
             ->attach('archive', fopen($this->zipPath, 'r'), $this->zipName)
@@ -247,7 +258,7 @@ class BundleCommand extends Command
             $this->line(base_path('.env'));
             $this->line('');
             $this->info('Not set up with Zephpyr yet? Secure your NativePHP app builds and more!');
-            $this->info('Check out https://'.$this->hostname().'');
+            $this->info('Check out '.$this->baseUrl().'');
             $this->line('');
 
             return false;
@@ -266,7 +277,7 @@ class BundleCommand extends Command
             $this->line(base_path('.env'));
             $this->line('');
             $this->info('Not set up with Zephpyr yet? Secure your NativePHP app builds and more!');
-            $this->info('Check out https://'.$this->hostname().'');
+            $this->info('Check out '.$this->baseUrl().'');
             $this->line('');
 
             return false;

@@ -31,7 +31,7 @@ return [
     'api_url' => env('NATIVEPHP_API_URL', 'http://localhost:4000/api/'),
 
     'zephpyr' => [
-        'host' => env('ZEPHPYR_HOST', 'zephpyr.com'),
+        'host' => env('ZEPHPYR_HOST', 'https://zephpyr.com'),
         'token' => env('ZEPHPYR_TOKEN'),
         'key' => env('ZEPHPYR_KEY'),
     ],

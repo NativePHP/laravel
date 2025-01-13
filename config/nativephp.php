@@ -125,4 +125,9 @@ return [
             'timeout' => 60,
         ],
     ],
+
+    /**
+     * Custom PHP binary path.
+     */
+    'binary_path' => env('NATIVEPHP_BINARY_PATH', null),
 ];
