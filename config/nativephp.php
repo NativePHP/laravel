@@ -61,8 +61,8 @@ return [
      */
     'cleanup_exclude_files' => [
         'content',
-        'storage/app/framework/{sessions,testing,cache}',
-        'storage/logs/laravel.log',
+        'vendor/bin',
+        'node_modules',
     ],
 
     /**
