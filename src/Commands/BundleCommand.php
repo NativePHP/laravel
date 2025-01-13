@@ -2,6 +2,7 @@
 
 namespace Native\Laravel\Commands;
 
+use Carbon\CarbonInterface;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Number;
@@ -34,7 +35,7 @@ class BundleCommand extends Command
         }
 
         if (! $this->checkAuthenticated()) {
-            $this->error('Invalid API token: check your ZEPHPYR_TOKEN on https://zephpyr.com/user/api-tokens');
+            $this->error('Invalid API token: check your ZEPHPYR_TOKEN on https://'.$this->hostname().'/user/api-tokens');
 
             return static::FAILURE;
         }
@@ -68,8 +69,20 @@ class BundleCommand extends Command
             $this->cleanUp();
 
             return static::FAILURE;
+        } elseif ($result->status() === 422) {
+            $this->error('Zephpyr returned the following error:');
+            $this->error(' → '.$result->json('message'));
+            $this->cleanUp();
+
+            return static::FAILURE;
+        } elseif ($result->status() === 429) {
+            $this->error('Zephpyr has a rate limit on builds per hour. Please try again in '.now()->addSeconds(intval($result->header('Retry-After')))->diffForHumans(syntax: CarbonInterface::DIFF_ABSOLUTE).'.');
+            $this->cleanUp();
+
+            return static::FAILURE;
         } elseif ($result->failed()) {
-            $this->error("Failed to upload zip to Zephpyr. Error: {$result->status()}");
+            $this->error("Failed to upload zip to Zephpyr. Error code: {$result->status()}");
+            ray($result->body());
             $this->cleanUp();
 
             return static::FAILURE;
@@ -92,9 +105,11 @@ class BundleCommand extends Command
         $this->line('Cleaning up…');
 
         $previousBuilds = glob(base_path('temp/app_*.zip'));
+        $failedZips = glob(base_path('temp/app_*.part'));
 
-        foreach ($previousBuilds as $previousBuild) {
-            @unlink($previousBuild);
+        $deleteFiles = array_merge($previousBuilds, $failedZips);
+        foreach ($deleteFiles as $file) {
+            @unlink($file);
         }
     }
 
@@ -156,10 +171,12 @@ class BundleCommand extends Command
 
         $this->finderToZip($vendor, $zip, 'vendor');
 
-        $nodeModules = (new Finder)->files()
-            ->in(base_path('node_modules'));
+        if (file_exists(base_path('node_modules'))) {
+            $nodeModules = (new Finder)->files()
+                ->in(base_path('node_modules'));
 
-        $this->finderToZip($nodeModules, $zip, 'node_modules');
+            $this->finderToZip($nodeModules, $zip, 'node_modules');
+        }
     }
 
     private function finderToZip(Finder $finder, ZipArchive $zip, ?string $path = null): void
@@ -178,6 +195,11 @@ class BundleCommand extends Command
         return str(config('nativephp-internal.zephpyr.host'))->finish('/');
     }
 
+    protected function hostname(): string
+    {
+        return parse_url(config('nativephp-internal.zephpyr.host'), PHP_URL_HOST);
+    }
+
     private function sendToZephpyr()
     {
         $this->line('Uploading zip to Zephpyr…');
@@ -186,7 +208,7 @@ class BundleCommand extends Command
             ->withoutRedirecting() // Upload won't work if we follow the redirect
             ->withToken(config('nativephp-internal.zephpyr.token'))
             ->attach('archive', fopen($this->zipPath, 'r'), $this->zipName)
-            ->post($this->baseUrl().'api/build/'.$this->key);
+            ->post($this->baseUrl().'api/v1/project/'.$this->key.'/build/');
     }
 
     private function checkAuthenticated()
@@ -195,14 +217,14 @@ class BundleCommand extends Command
 
         return Http::acceptJson()
             ->withToken(config('nativephp-internal.zephpyr.token'))
-            ->get($this->baseUrl().'api/user')->successful();
+            ->get($this->baseUrl().'api/v1/user')->successful();
     }
 
     private function fetchLatestBundle(): bool
     {
         $response = Http::acceptJson()
             ->withToken(config('nativephp-internal.zephpyr.token'))
-            ->get($this->baseUrl().'api/download/'.$this->key);
+            ->get($this->baseUrl().'api/v1/project/'.$this->key.'/build/download');
 
         if ($response->failed()) {
             return false;
@@ -225,7 +247,7 @@ class BundleCommand extends Command
             $this->line(base_path('.env'));
             $this->line('');
             $this->info('Not set up with Zephpyr yet? Secure your NativePHP app builds and more!');
-            $this->info('Check out https://zephpyr.com');
+            $this->info('Check out https://'.$this->hostname().'');
             $this->line('');
 
             return false;
@@ -244,7 +266,7 @@ class BundleCommand extends Command
             $this->line(base_path('.env'));
             $this->line('');
             $this->info('Not set up with Zephpyr yet? Secure your NativePHP app builds and more!');
-            $this->info('Check out https://zephpyr.com');
+            $this->info('Check out https://'.$this->hostname().'');
             $this->line('');
 
             return false;
