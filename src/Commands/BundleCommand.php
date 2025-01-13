@@ -168,14 +168,18 @@ class BundleCommand extends Command
                 'node_modules', // We add this later
                 'dist', // Compiled nativephp assets
                 'build', // Compiled box assets
+                'temp', // Temp files
                 'tests', // Tests
                 ...config('nativephp.cleanup_exclude_files', []), // User defined
             ]);
 
         $this->finderToZip($app, $zip);
 
+        // Add .env file
+        $zip->addFile(base_path('.env'), '.env');
+
         $vendor = (new Finder)->files()
-            // ->followLinks()
+            // ->followLinks() // This is causing issues with excluded files
             ->exclude(array_filter([
                 'nativephp/php-bin',
                 'nativephp/electron/resources/js',
@@ -233,6 +237,8 @@ class BundleCommand extends Command
 
     private function fetchLatestBundle(): bool
     {
+        $this->line('Fetching latest bundle…');
+
         $response = Http::acceptJson()
             ->withToken(config('nativephp-internal.zephpyr.token'))
             ->get($this->baseUrl().'api/v1/project/'.$this->key.'/build/download');
@@ -241,6 +247,7 @@ class BundleCommand extends Command
             return false;
         }
 
+        @mkdir(base_path('build'), recursive: true);
         file_put_contents(base_path('build/__nativephp_app_bundle'), $response->body());
 
         return true;
