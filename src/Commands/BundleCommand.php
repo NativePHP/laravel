@@ -121,29 +121,30 @@ class BundleCommand extends Command
                 $this->error('Symlinked packages are not supported. Please remove them from your composer.json.');
 
                 return false;
-            } elseif ($repository['type'] === 'composer') {
-                if (! $this->checkComposerPackageAuth($repository['url'])) {
-                    $this->error('Cannot authenticate with '.$repository['url'].'.');
-                    $this->error('Go to '.$this->baseUrl().' and add your credentials for '.$repository['url'].'.');
-
-                    return false;
-                }
             }
+            // elseif ($repository['type'] === 'composer') {
+            //     if (! $this->checkComposerPackageAuth($repository['url'])) {
+            //         $this->error('Cannot authenticate with '.$repository['url'].'.');
+            //         $this->error('Go to '.$this->baseUrl().' and add your composer package credentials.');
+            //
+            //         return false;
+            //     }
+            // }
         }
 
         return true;
     }
 
-    private function checkComposerPackageAuth(string $repositoryUrl): bool
-    {
-        $host = parse_url($repositoryUrl, PHP_URL_HOST);
-        $this->line('Checking '.$host.' authentication…');
-
-        return Http::acceptJson()
-            ->withToken(config('nativephp-internal.zephpyr.token'))
-            ->get($this->baseUrl().'api/v1/project/'.$this->key.'/composer/auth/'.$host)
-            ->successful();
-    }
+    // private function checkComposerPackageAuth(string $repositoryUrl): bool
+    // {
+    //     $host = parse_url($repositoryUrl, PHP_URL_HOST);
+    //     $this->line('Checking '.$host.' authentication…');
+    //
+    //     return Http::acceptJson()
+    //         ->withToken(config('nativephp-internal.zephpyr.token'))
+    //         ->get($this->baseUrl().'api/v1/project/'.$this->key.'/composer/auth/'.$host)
+    //         ->successful();
+    // }
 
     private function addFilesToZip(ZipArchive $zip): void
     {
@@ -165,8 +166,11 @@ class BundleCommand extends Command
 
         $this->finderToZip($app, $zip);
 
-        // Add .env file
+        // Add .env file manually because Finder ignores hidden files
         $zip->addFile(base_path('.env'), '.env');
+
+        // Add auth.json file to support private packages
+        $zip->addFile(base_path('auth.json'), 'auth.json');
 
         // Custom binaries
         $binaryPath = Str::replaceStart(base_path('vendor'), '', config('nativephp.binary_path'));
