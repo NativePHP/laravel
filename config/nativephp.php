@@ -61,8 +61,8 @@ return [
      */
     'cleanup_exclude_files' => [
         'content',
-        'vendor/bin',
         'node_modules',
+        '*/tests'
     ],
 
     /**
