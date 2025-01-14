@@ -4,16 +4,18 @@ namespace Native\Laravel\Commands;
 
 use Carbon\CarbonInterface;
 use Illuminate\Console\Command;
-use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Number;
+use Illuminate\Support\Str;
 use Native\Laravel\Commands\Traits\CleansEnvFile;
+use Native\Laravel\Commands\Traits\HandleApiRequests;
 use Symfony\Component\Finder\Finder;
 use ZipArchive;
 
 class BundleCommand extends Command
 {
-    use CleansEnvFile;
+    use CleansEnvFile, HandleApiRequests;
 
     protected $signature = 'native:bundle {--fetch} {--without-cleanup}';
 
@@ -25,25 +27,28 @@ class BundleCommand extends Command
 
     private string $zipName;
 
-    public function handle()
+    public function handle(): int
     {
+        // Check for ZEPHPYR_KEY
         if (! $this->checkForZephpyrKey()) {
             return static::FAILURE;
         }
 
+        // Check for ZEPHPYR_TOKEN
         if (! $this->checkForZephpyrToken()) {
             return static::FAILURE;
         }
 
+        // Check if the token is valid
         if (! $this->checkAuthenticated()) {
             $this->error('Invalid API token: check your ZEPHPYR_TOKEN on '.$this->baseUrl().'user/api-tokens');
 
             return static::FAILURE;
         }
 
+        // Download the latest bundle if requested
         if ($this->option('fetch')) {
             if (! $this->fetchLatestBundle()) {
-                $this->warn('Latest bundle not yet available. Try again soon.');
 
                 return static::FAILURE;
             }
@@ -51,6 +56,11 @@ class BundleCommand extends Command
             $this->info('Latest bundle downloaded.');
 
             return static::SUCCESS;
+        }
+
+        // Check composer.json for symlinked or private packages
+        if (! $this->checkComposerJson()) {
+            return static::FAILURE;
         }
 
         // Package the app up into a zip
@@ -61,65 +71,17 @@ class BundleCommand extends Command
         }
 
         // Send the zip file
-        try {
-            $result = $this->sendToZephpyr();
-        } catch (ConnectionException $e) {
-            // Timeout, etc.
-            $this->error('Failed to send to Zephpyr: '.$e->getMessage());
-            $this->cleanUp();
+        $result = $this->sendToZephpyr();
+        $this->handleApiErrors($result);
 
-            return static::FAILURE;
-        }
-
-        if ($result->status() === 413) {
-            $fileSize = Number::fileSize(filesize($this->zipPath));
-            $this->error('The zip file is too large to upload to Zephpyr ('.$fileSize.'). Please contact support.');
-
-            $this->cleanUp();
-
-            return static::FAILURE;
-        } elseif ($result->status() === 422) {
-            $this->error('Zephpyr returned the following error:');
-            $this->error(' → '.$result->json('message'));
-            $this->cleanUp();
-
-            return static::FAILURE;
-        } elseif ($result->status() === 429) {
-            $this->error('Zephpyr has a rate limit on builds per hour. Please try again in '.now()->addSeconds(intval($result->header('Retry-After')))->diffForHumans(syntax: CarbonInterface::DIFF_ABSOLUTE).'.');
-            $this->cleanUp();
-
-            return static::FAILURE;
-        } elseif ($result->failed()) {
-            $this->error("Failed to upload zip to Zephpyr. Error code: {$result->status()}");
-            ray($result->body());
-            $this->cleanUp();
-
-            return static::FAILURE;
-        }
-
+        // Success
         $this->info('Successfully uploaded to Zephpyr.');
         $this->line('Use native:bundle --fetch to retrieve the latest bundle.');
 
+        // Clean up temp files
         $this->cleanUp();
 
         return static::SUCCESS;
-    }
-
-    protected function cleanUp(): void
-    {
-        if ($this->option('without-cleanup')) {
-            return;
-        }
-
-        $this->line('Cleaning up…');
-
-        $previousBuilds = glob(base_path('temp/app_*.zip'));
-        $failedZips = glob(base_path('temp/app_*.part'));
-
-        $deleteFiles = array_merge($previousBuilds, $failedZips);
-        foreach ($deleteFiles as $file) {
-            @unlink($file);
-        }
     }
 
     private function zipApplication(): bool
@@ -149,14 +111,42 @@ class BundleCommand extends Command
         return true;
     }
 
+    private function checkComposerJson(): bool
+    {
+        $composerJson = json_decode(file_get_contents(base_path('composer.json')), true);
+
+        // Fail if there is symlinked packages
+        foreach ($composerJson['repositories'] ?? [] as $repository) {
+            if ($repository['type'] === 'path') {
+                $this->error('Symlinked packages are not supported. Please remove them from your composer.json.');
+
+                return false;
+            } elseif ($repository['type'] === 'composer') {
+                if (! $this->checkComposerPackageAuth($repository['url'])) {
+                    $this->error('Cannot authenticate with '.$repository['url'].'.');
+                    $this->error('Go to '.$this->baseUrl().' and add your credentials for '.$repository['url'].'.');
+
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private function checkComposerPackageAuth(string $repositoryUrl): bool
+    {
+        $host = parse_url($repositoryUrl, PHP_URL_HOST);
+        $this->line('Checking '.$host.' authentication…');
+
+        return Http::acceptJson()
+            ->withToken(config('nativephp-internal.zephpyr.token'))
+            ->get($this->baseUrl().'api/v1/project/'.$this->key.'/composer/auth/'.$host)
+            ->successful();
+    }
+
     private function addFilesToZip(ZipArchive $zip): void
     {
-        // TODO: Check the composer.json to make sure there are no symlinked
-        // or private packages as these will be a pain later
-
-        // TODO: Fail if there is symlinked packages
-        // TODO: For private packages: make an endpoint to check if user gave us their credentials
-
         $this->line('Creating zip archive…');
 
         $app = (new Finder)->files()
@@ -178,18 +168,22 @@ class BundleCommand extends Command
         // Add .env file
         $zip->addFile(base_path('.env'), '.env');
 
+        // Custom binaries
+        $binaryPath = Str::replaceStart(base_path('vendor'), '', config('nativephp.binary_path'));
+
+        // Add composer dependencies without unnecessary files
         $vendor = (new Finder)->files()
-            // ->followLinks() // This is causing issues with excluded files
             ->exclude(array_filter([
                 'nativephp/php-bin',
                 'nativephp/electron/resources/js',
                 'nativephp/*/vendor',
-                config('nativephp.binary_path'), // User defined binary paths
+                $binaryPath,
             ]))
             ->in(base_path('vendor'));
 
         $this->finderToZip($vendor, $zip, 'vendor');
 
+        // Add javascript dependencies
         if (file_exists(base_path('node_modules'))) {
             $nodeModules = (new Finder)->files()
                 ->in(base_path('node_modules'));
@@ -209,30 +203,16 @@ class BundleCommand extends Command
         }
     }
 
-    private function baseUrl(): string
-    {
-        return str(config('nativephp-internal.zephpyr.host'))->finish('/');
-    }
-
     private function sendToZephpyr()
     {
         $this->line('Uploading zip to Zephpyr…');
 
         return Http::acceptJson()
             ->timeout(300) // 5 minutes
-            ->withoutRedirecting() // Upload won't work if we follow the redirect
+            ->withoutRedirecting() // Upload won't work if we follow redirects (it transform POST to GET)
             ->withToken(config('nativephp-internal.zephpyr.token'))
             ->attach('archive', fopen($this->zipPath, 'r'), $this->zipName)
             ->post($this->baseUrl().'api/v1/project/'.$this->key.'/build/');
-    }
-
-    private function checkAuthenticated()
-    {
-        $this->line('Checking authentication…');
-
-        return Http::acceptJson()
-            ->withToken(config('nativephp-internal.zephpyr.token'))
-            ->get($this->baseUrl().'api/v1/user')->successful();
     }
 
     private function fetchLatestBundle(): bool
@@ -244,52 +224,68 @@ class BundleCommand extends Command
             ->get($this->baseUrl().'api/v1/project/'.$this->key.'/build/download');
 
         if ($response->failed()) {
+
+            if ($response->status() === 404) {
+                $this->error('Project or bundle not found.');
+            } elseif ($response->status() === 500) {
+                $this->error('Build failed. Please try again later.');
+            } elseif ($response->status() === 503) {
+                $this->warn('Bundle not ready. Please try again in '.now()->addSeconds(intval($response->header('Retry-After')))->diffForHumans(syntax: CarbonInterface::DIFF_ABSOLUTE).'.');
+            } else {
+                $this->handleApiErrors($response);
+            }
+
             return false;
         }
 
+        // Save the bundle
         @mkdir(base_path('build'), recursive: true);
         file_put_contents(base_path('build/__nativephp_app_bundle'), $response->body());
 
         return true;
     }
 
-    private function checkForZephpyrKey()
+    protected function exitWithMessage(string $message): void
     {
-        $this->key = config('nativephp-internal.zephpyr.key');
+        $this->error($message);
+        $this->cleanUp();
 
-        if (! $this->key) {
-            $this->line('');
-            $this->warn('No ZEPHPYR_KEY found. Cannot bundle!');
-            $this->line('');
-            $this->line('Add this app\'s ZEPHPYR_KEY to its .env file:');
-            $this->line(base_path('.env'));
-            $this->line('');
-            $this->info('Not set up with Zephpyr yet? Secure your NativePHP app builds and more!');
-            $this->info('Check out '.$this->baseUrl().'');
-            $this->line('');
-
-            return false;
-        }
-
-        return true;
+        exit(static::FAILURE);
     }
 
-    private function checkForZephpyrToken()
+    private function handleApiErrors(Response $result): void
     {
-        if (! config('nativephp-internal.zephpyr.token')) {
-            $this->line('');
-            $this->warn('No ZEPHPYR_TOKEN found. Cannot bundle!');
-            $this->line('');
-            $this->line('Add your api ZEPHPYR_TOKEN to its .env file:');
-            $this->line(base_path('.env'));
-            $this->line('');
-            $this->info('Not set up with Zephpyr yet? Secure your NativePHP app builds and more!');
-            $this->info('Check out '.$this->baseUrl().'');
-            $this->line('');
+        if ($result->status() === 413) {
+            $fileSize = Number::fileSize(filesize($this->zipPath));
+            $this->exitWithMessage('File is too large to upload ('.$fileSize.'). Please contact support.');
+        } elseif ($result->status() === 422) {
+            $this->error('Request refused:'.$result->json('message'));
+        } elseif ($result->status() === 429) {
+            $this->exitWithMessage('Too many requests. Please try again in '.now()->addSeconds(intval($result->header('Retry-After')))->diffForHumans(syntax: CarbonInterface::DIFF_ABSOLUTE).'.');
+        } elseif ($result->failed()) {
+            $this->exitWithMessage("Request failed. Error code: {$result->status()}");
+        }
+    }
 
-            return false;
+    protected function cleanUp(): void
+    {
+        if ($this->option('without-cleanup')) {
+            return;
         }
 
-        return true;
+        $previousBuilds = glob(base_path('temp/app_*.zip'));
+        $failedZips = glob(base_path('temp/app_*.part'));
+
+        $deleteFiles = array_merge($previousBuilds, $failedZips);
+
+        if (empty($deleteFiles)) {
+            return;
+        }
+
+        $this->line('Cleaning up…');
+
+        foreach ($deleteFiles as $file) {
+            @unlink($file);
+        }
     }
 }
