@@ -8,7 +8,7 @@ use Native\Laravel\Fakes\ChildProcessFake;
 
 /**
  * @method static \Native\Laravel\ChildProcess[] all()
- * @method static \Native\Laravel\ChildProcess get(string $alias = null)
+ * @method static \Native\Laravel\ChildProcess|null get(string $alias = null)
  * @method static \Native\Laravel\ChildProcess message(string $message, string $alias = null)
  * @method static \Native\Laravel\ChildProcess restart(string $alias = null)
  * @method static \Native\Laravel\ChildProcess start(string|array $cmd, string $alias, string $cwd = null, array $env = null, bool $persistent = false)
