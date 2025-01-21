@@ -22,6 +22,7 @@ const { autoUpdater } = electronUpdater;
 class NativePHP {
   processes = [];
   schedulerInterval = undefined;
+  mainWindow = null;
 
   public bootstrap(
     app: CrossProcessExports.App,
@@ -88,6 +89,17 @@ class NativePHP {
 
       event.preventDefault();
     });
+
+    // Handle deep linking for Windows
+    if (process.platform === 'win32') {
+        app.on('second-instance', (event, commandLine, workingDirectory) => {
+            if (this.mainWindow) {
+                if (this.mainWindow.isMinimized()) this.mainWindow.restore();
+                this.mainWindow.focus();
+            }
+            this.handleDeepLink(commandLine.pop());
+        });
+    }
   }
 
   private async bootstrapApp(app: Electron.CrossProcessExports.App) {
@@ -160,6 +172,15 @@ class NativePHP {
         }
       } else {
         app.setAsDefaultProtocolClient(deepLinkProtocol);
+      }
+
+
+      if (process.platform === 'win32') {
+          const gotTheLock = app.requestSingleInstanceLock();
+          if (!gotTheLock) {
+              app.quit();
+              return;
+          }
       }
     }
   }
