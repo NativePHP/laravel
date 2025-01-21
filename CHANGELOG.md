@@ -2,6 +2,29 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 1.0.0-beta.1 - 2025-01-21
+
+### What's Changed
+
+* Remove queue worker initialization by @XbNz in https://github.com/NativePHP/electron/pull/149
+* close print window before freeing mem by @labomatik in https://github.com/NativePHP/electron/pull/146
+* fix: all test suites by @SRWieZ in https://github.com/NativePHP/electron/pull/148
+* Fix menubar not ready by @SRWieZ in https://github.com/NativePHP/electron/pull/150
+* Add support for window.show() by @curtisblackwell in https://github.com/NativePHP/electron/pull/151
+* chore: cleaning + major versions upgrade  by @SRWieZ in https://github.com/NativePHP/electron/pull/147
+* fix: menubar tray state by @SRWieZ in https://github.com/NativePHP/electron/pull/156
+* Add Windows support and deep linking configuration by @JulianaChiabai in https://github.com/NativePHP/electron/pull/158
+* fix: kill tree php server by @SRWieZ in https://github.com/NativePHP/electron/pull/157
+
+### New Contributors
+
+* @XbNz made their first contribution in https://github.com/NativePHP/electron/pull/149
+* @labomatik made their first contribution in https://github.com/NativePHP/electron/pull/146
+* @curtisblackwell made their first contribution in https://github.com/NativePHP/electron/pull/151
+* @JulianaChiabai made their first contribution in https://github.com/NativePHP/electron/pull/158
+
+**Full Changelog**: https://github.com/NativePHP/electron/compare/0.9.0...0.10.0
+
 ## 0.9.0 - 2024-12-19
 
 ### What's Changed
