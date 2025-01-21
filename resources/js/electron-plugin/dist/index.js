@@ -16,6 +16,7 @@ import { notifyLaravel } from "./server/utils.js";
 import { resolve } from "path";
 import { stopAllProcesses } from "./server/api/childProcess.js";
 import ps from "ps-node";
+import killSync from "kill-sync";
 import electronUpdater from 'electron-updater';
 const { autoUpdater } = electronUpdater;
 class NativePHP {
@@ -173,6 +174,7 @@ class NativePHP {
             .filter((p) => p !== undefined)
             .forEach((process) => {
             try {
+                killSync(process.pid, 'SIGTERM', true);
                 ps.kill(process.pid);
             }
             catch (err) {

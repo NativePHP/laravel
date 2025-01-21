@@ -14,6 +14,7 @@ import { notifyLaravel } from "./server/utils.js";
 import { resolve } from "path";
 import { stopAllProcesses } from "./server/api/childProcess.js";
 import ps from "ps-node";
+import killSync from "kill-sync";
 
 // Workaround for CommonJS module
 import electronUpdater from 'electron-updater';
@@ -241,7 +242,9 @@ class NativePHP {
       .filter((p) => p !== undefined)
       .forEach((process) => {
         try {
-          ps.kill(process.pid);
+          // @ts-ignore
+          killSync(process.pid, 'SIGTERM', true); // Kill tree
+          ps.kill(process.pid); // Sometimes does not kill the subprocess of php server
         } catch (err) {
           console.error(err);
         }
