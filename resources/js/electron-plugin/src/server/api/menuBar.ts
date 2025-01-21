@@ -14,7 +14,7 @@ router.post("/label", (req, res) => {
 
     const { label } = req.body;
 
-    state.activeMenuBar.tray.setTitle(label);
+    state.tray.setTitle(label);
 });
 
 router.post("/tooltip", (req, res) => {
@@ -22,7 +22,7 @@ router.post("/tooltip", (req, res) => {
 
     const { tooltip } = req.body;
 
-    state.activeMenuBar.tray.setToolTip(tooltip);
+    state.tray.setToolTip(tooltip);
 });
 
 router.post("/icon", (req, res) => {
@@ -30,7 +30,7 @@ router.post("/icon", (req, res) => {
 
     const { icon } = req.body;
 
-    state.activeMenuBar.tray.setImage(icon);
+    state.tray.setImage(icon);
 });
 
 router.post("/context-menu", (req, res) => {
@@ -38,7 +38,7 @@ router.post("/context-menu", (req, res) => {
 
     const { contextMenu } = req.body;
 
-    state.activeMenuBar.tray.setContextMenu(buildMenu(contextMenu));
+    state.tray.setContextMenu(buildMenu(contextMenu));
 });
 
 router.post("/show", (req, res) => {
@@ -84,14 +84,24 @@ router.post("/create", (req, res) => {
 
 
     if (onlyShowContextMenu) {
+        // Create a tray icon
         const tray = new Tray(icon || state.icon.replace("icon.png", "IconTemplate.png"));
 
+        // Set the context menu
         tray.setContextMenu(buildMenu(contextMenu));
         tray.setToolTip(tooltip);
+        tray.setTitle(label);
+
+        // Set the event listeners + send created event
+        eventsForTray(tray, onlyShowContextMenu, contextMenu, shouldSendCreatedEvent);
+
+        // Set the tray to the state
+        state.tray = tray;
 
         if (!showDockIcon) {
             app.dock.hide();
         }
+
     } else {
         state.activeMenuBar = menubar({
             icon: icon || state.icon.replace("icon.png", "IconTemplate.png"),
@@ -122,76 +132,89 @@ router.post("/create", (req, res) => {
         state.activeMenuBar.on("after-create-window", () => {
             enable(state.activeMenuBar.window.webContents);
         });
+
+        state.activeMenuBar.on("ready", () => {
+            // Set the event listeners
+            eventsForTray(state.activeMenuBar.tray, onlyShowContextMenu, contextMenu, shouldSendCreatedEvent);
+
+            // Set the tray to the state
+            state.tray = state.activeMenuBar.tray;
+
+            // Set the title
+            state.tray.setTitle(label);
+
+            state.activeMenuBar.on("hide", () => {
+                notifyLaravel("events", {
+                    event: "\\Native\\Laravel\\Events\\MenuBar\\MenuBarHidden"
+                });
+            });
+
+            state.activeMenuBar.on("show", () => {
+                notifyLaravel("events", {
+                    event: "\\Native\\Laravel\\Events\\MenuBar\\MenuBarShown"
+                });
+            });
+
+        });
     }
 
-    state.activeMenuBar.on("ready", () => {
+});
 
-        state.activeMenuBar.tray.setTitle(label);
 
-        if (shouldSendCreatedEvent) {
-            notifyLaravel("events", {
-                event: "\\Native\\Laravel\\Events\\MenuBar\\MenuBarCreated"
-            });
-        }
 
-        state.activeMenuBar.on("hide", () => {
-            notifyLaravel("events", {
-                event: "\\Native\\Laravel\\Events\\MenuBar\\MenuBarHidden"
-            });
+function eventsForTray(tray, onlyShowContextMenu, contextMenu, shouldSendCreatedEvent) {
+
+    if (shouldSendCreatedEvent) {
+        notifyLaravel("events", {
+            event: "\\Native\\Laravel\\Events\\MenuBar\\MenuBarCreated"
         });
+    }
 
-        state.activeMenuBar.on("show", () => {
-            notifyLaravel("events", {
-                event: "\\Native\\Laravel\\Events\\MenuBar\\MenuBarShown"
-            });
+    tray.on("drop-files", (event, files) => {
+        notifyLaravel("events", {
+            event: "\\Native\\Laravel\\Events\\MenuBar\\MenuBarDroppedFiles",
+            payload: [
+                files
+            ]
         });
+    });
 
-        state.activeMenuBar.tray.on("drop-files", (event, files) => {
-            notifyLaravel("events", {
-                event: "\\Native\\Laravel\\Events\\MenuBar\\MenuBarDroppedFiles",
-                payload: [
-                    files
-                ]
-            });
+    tray.on('click', (combo, bounds, position) => {
+        notifyLaravel('events', {
+            event: "\\Native\\Laravel\\Events\\MenuBar\\MenuBarClicked",
+            payload: {
+                combo,
+                bounds,
+                position,
+            },
         });
+    });
 
-        state.activeMenuBar.tray.on('click', (combo, bounds, position) => {
-            notifyLaravel('events', {
-                event: "\\Native\\Laravel\\Events\\MenuBar\\MenuBarClicked",
-                payload: {
-                    combo,
-                    bounds,
-                    position,
-                },
-            });
-        });
-
-        state.activeMenuBar.tray.on("right-click", (combo, bounds) => {
-            notifyLaravel("events", {
-                event: "\\Native\\Laravel\\Events\\MenuBar\\MenuBarRightClicked",
-                payload: {
-                    combo,
-                    bounds,
-                }
-            });
-
-            if (! onlyShowContextMenu) {
-                state.activeMenuBar.hideWindow();
-                state.activeMenuBar.tray.popUpContextMenu(buildMenu(contextMenu));
+    tray.on("right-click", (combo, bounds) => {
+        notifyLaravel("events", {
+            event: "\\Native\\Laravel\\Events\\MenuBar\\MenuBarRightClicked",
+            payload: {
+                combo,
+                bounds,
             }
         });
 
-        state.activeMenuBar.tray.on('double-click', (combo, bounds) => {
-            notifyLaravel('events', {
-                event: "\\Native\\Laravel\\Events\\MenuBar\\MenuBarDoubleClicked",
-                payload: {
-                    combo,
-                    bounds,
-                },
-            });
+        if (!onlyShowContextMenu) {
+            state.activeMenuBar.hideWindow();
+            tray.popUpContextMenu(buildMenu(contextMenu));
+        }
+    });
+
+    tray.on('double-click', (combo, bounds) => {
+        notifyLaravel('events', {
+            event: "\\Native\\Laravel\\Events\\MenuBar\\MenuBarDoubleClicked",
+            payload: {
+                combo,
+                bounds,
+            },
         });
     });
-});
+}
 
 function buildMenu(contextMenu) {
     let menu = Menu.buildFromTemplate([{ role: "quit" }]);

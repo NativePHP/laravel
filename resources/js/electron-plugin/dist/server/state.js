@@ -25,6 +25,7 @@ function generateRandomString(length) {
 export default {
     electronApiPort: null,
     activeMenuBar: null,
+    tray: null,
     php: null,
     phpPort: null,
     phpIni: null,

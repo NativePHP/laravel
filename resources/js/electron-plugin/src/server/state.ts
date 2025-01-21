@@ -1,4 +1,4 @@
-import { BrowserWindow, UtilityProcess } from "electron";
+import {BrowserWindow, Tray, UtilityProcess} from "electron";
 import Store from "electron-store";
 import { notifyLaravel } from "./utils.js";
 
@@ -23,6 +23,7 @@ settingsStore.onDidAnyChange((newValue, oldValue) => {
 interface State {
   electronApiPort: number | null;
   activeMenuBar: any;
+  tray: Tray | null;
   php: string | null;
   phpPort: number | null;
   phpIni: any;
@@ -52,6 +53,7 @@ function generateRandomString(length: number) {
 export default {
   electronApiPort: null,
   activeMenuBar: null,
+  tray: null,
   php: null,
   phpPort: null,
   phpIni: null,
