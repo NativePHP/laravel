@@ -115,6 +115,9 @@ return [
         ],
     ],
 
+    /**
+     * The queue workers that get auto-started on your application start.
+     */
     'queue_workers' => [
         'default' => [
             'queues' => ['default'],
