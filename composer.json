@@ -34,7 +34,7 @@
         "php": "^8.1",
         "illuminate/contracts": "^10.0|^11.0",
         "laravel/prompts": "^0.1.1|^0.2|^0.3",
-        "nativephp/laravel": "*",
+        "nativephp/laravel": "^1.0",
         "nativephp/php-bin": "^0.5.1",
         "spatie/laravel-package-tools": "^1.14.0"
     },
