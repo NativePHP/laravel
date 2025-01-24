@@ -122,6 +122,7 @@ class BundleCommand extends Command
 
                 return false;
             }
+            // Work with private packages but will not in the future
             // elseif ($repository['type'] === 'composer') {
             //     if (! $this->checkComposerPackageAuth($repository['url'])) {
             //         $this->error('Cannot authenticate with '.$repository['url'].'.');
@@ -170,7 +171,8 @@ class BundleCommand extends Command
         $zip->addFile(base_path('.env'), '.env');
 
         // Add auth.json file to support private packages
-        $zip->addFile(base_path('auth.json'), 'auth.json');
+        // WARNING: Only for testing purposes, don't uncomment this
+        // $zip->addFile(base_path('auth.json'), 'auth.json');
 
         // Custom binaries
         $binaryPath = Str::replaceStart(base_path('vendor'), '', config('nativephp.binary_path'));
