@@ -151,7 +151,7 @@ class NativeServiceProvider extends PackageServiceProvider
     {
         $databasePath = config('nativephp-internal.database_path');
 
-        if (config('app.debug') && !Phar::running()) {
+        if (config('app.debug') && ! Phar::running()) {
             $databasePath = database_path('nativephp.sqlite');
 
             if (! file_exists($databasePath)) {
