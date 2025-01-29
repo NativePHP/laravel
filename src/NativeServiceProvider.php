@@ -26,6 +26,7 @@ use Native\Laravel\GlobalShortcut as GlobalShortcutImplementation;
 use Native\Laravel\Logging\LogWatcher;
 use Native\Laravel\PowerMonitor as PowerMonitorImplementation;
 use Native\Laravel\Windows\WindowManager as WindowManagerImplementation;
+use Phar;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -150,7 +151,7 @@ class NativeServiceProvider extends PackageServiceProvider
     {
         $databasePath = config('nativephp-internal.database_path');
 
-        if (config('app.debug')) {
+        if (config('app.debug') && !Phar::running()) {
             $databasePath = database_path('nativephp.sqlite');
 
             if (! file_exists($databasePath)) {
