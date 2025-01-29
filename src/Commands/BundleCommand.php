@@ -116,10 +116,10 @@ class BundleCommand extends Command
         $composerJson = json_decode(file_get_contents(base_path('composer.json')), true);
 
         // Fail if there is symlinked packages
-        foreach ($composerJson['repositories'] ?? [] as $key => $repository) {
+        foreach ($composerJson['repositories'] ?? [] as $repository) {
 
-            // Unless Eser is working on a PR ^^
-            if ($repository['type'] === 'path' && ! in_array($key, ['nativephp-laravel', 'nativephp-electron'])) {
+            $symlinked = $repository['options']['symlink'] ?? true;
+            if ($repository['type'] === 'path' && $symlinked) {
                 $this->error('Symlinked packages are not supported. Please remove them from your composer.json.');
 
                 return false;
