@@ -35,6 +35,11 @@ router.post("/hide", (req, res) => {
     res.sendStatus(200);
     state.activeMenuBar.hideWindow();
 });
+router.post("/resize", (req, res) => {
+    res.sendStatus(200);
+    const { width, height } = req.body;
+    state.activeMenuBar.window.setSize(width, height);
+});
 router.post("/create", (req, res) => {
     res.sendStatus(200);
     let shouldSendCreatedEvent = true;
