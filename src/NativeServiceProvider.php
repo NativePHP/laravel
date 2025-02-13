@@ -12,7 +12,6 @@ use Native\Laravel\Commands\FreshCommand;
 use Native\Laravel\Commands\LoadPHPConfigurationCommand;
 use Native\Laravel\Commands\LoadStartupConfigurationCommand;
 use Native\Laravel\Commands\MigrateCommand;
-use Native\Laravel\Commands\MinifyApplicationCommand;
 use Native\Laravel\Commands\SeedDatabaseCommand;
 use Native\Laravel\Contracts\ChildProcess as ChildProcessContract;
 use Native\Laravel\Contracts\GlobalShortcut as GlobalShortcutContract;
@@ -39,7 +38,6 @@ class NativeServiceProvider extends PackageServiceProvider
                 MigrateCommand::class,
                 FreshCommand::class,
                 SeedDatabaseCommand::class,
-                MinifyApplicationCommand::class,
             ])
             ->hasConfigFile()
             ->hasRoute('api')
