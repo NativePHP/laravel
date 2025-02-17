@@ -85,11 +85,23 @@
               "Native\\Laravel\\NativeServiceProvider"
             ],
             "aliases": {
+                "App": "Native\\Laravel\\Facades\\App",
+                "ChildProcess": "Native\\Laravel\\Facades\\ChildProcess",
+                "Clipboard": "Native\\Laravel\\Facades\\Clipboard",
                 "ContextMenu": "Native\\Laravel\\Facades\\ContextMenu",
                 "Dock": "Native\\Laravel\\Facades\\Dock",
+                "GlobalShortcut": "Native\\Laravel\\Facades\\GlobalShortcut",
+                "Menu": "Native\\Laravel\\Facades\\Menu",
+                "MenuBar": "Native\\Laravel\\Facades\\MenuBar",
+                "Notification": "Native\\Laravel\\Facades\\Notification",
+                "PowerMonitor": "Native\\Laravel\\Facades\\PowerMonitor",
                 "Process": "Native\\Laravel\\Facades\\Process",
-                "Window": "Native\\Laravel\\Facades\\Window",
-                "Clipboard": "Native\\Laravel\\Facades\\Clipboard"
+                "QueueWorker": "Native\\Laravel\\Facades\\QueueWorker",
+                "Screen": "Native\\Laravel\\Facades\\Screen",
+                "Settings": "Native\\Laravel\\Facades\\Settings",
+                "Shell": "Native\\Laravel\\Facades\\Shell",
+                "System": "Native\\Laravel\\Facades\\System",
+                "Window": "Native\\Laravel\\Facades\\Window"
             }
         }
     },

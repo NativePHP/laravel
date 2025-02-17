@@ -22,4 +22,3 @@ class MenuBar extends Facade
         return \Native\Laravel\MenuBar\MenuBarManager::class;
     }
 }
-
