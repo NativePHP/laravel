@@ -8,11 +8,11 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Native\Laravel\ChildProcess as ChildProcessImplementation;
+use Native\Laravel\Commands\BundleCommand;
 use Native\Laravel\Commands\FreshCommand;
 use Native\Laravel\Commands\LoadPHPConfigurationCommand;
 use Native\Laravel\Commands\LoadStartupConfigurationCommand;
 use Native\Laravel\Commands\MigrateCommand;
-use Native\Laravel\Commands\MinifyApplicationCommand;
 use Native\Laravel\Commands\SeedDatabaseCommand;
 use Native\Laravel\Contracts\ChildProcess as ChildProcessContract;
 use Native\Laravel\Contracts\GlobalShortcut as GlobalShortcutContract;
@@ -26,6 +26,7 @@ use Native\Laravel\GlobalShortcut as GlobalShortcutImplementation;
 use Native\Laravel\Logging\LogWatcher;
 use Native\Laravel\PowerMonitor as PowerMonitorImplementation;
 use Native\Laravel\Windows\WindowManager as WindowManagerImplementation;
+use Phar;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -39,7 +40,7 @@ class NativeServiceProvider extends PackageServiceProvider
                 MigrateCommand::class,
                 FreshCommand::class,
                 SeedDatabaseCommand::class,
-                MinifyApplicationCommand::class,
+                BundleCommand::class,
             ])
             ->hasConfigFile()
             ->hasRoute('api')
@@ -150,7 +151,7 @@ class NativeServiceProvider extends PackageServiceProvider
     {
         $databasePath = config('nativephp-internal.database_path');
 
-        if (config('app.debug')) {
+        if (config('app.debug') && ! Phar::running()) {
             $databasePath = database_path('nativephp.sqlite');
 
             if (! file_exists($databasePath)) {
