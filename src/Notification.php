@@ -14,6 +14,12 @@ class Notification
 
     protected string $event = '';
 
+    private bool $hasReply = false;
+
+    private string $replyPlaceholder = '';
+
+    private array $actions = [];
+
     final public function __construct(protected Client $client)
     {
         $this->title = config('app.name');
@@ -45,6 +51,21 @@ class Notification
         return $this;
     }
 
+    public function hasReply(string $placeholder = ''): self
+    {
+        $this->hasReply = true;
+        $this->replyPlaceholder = $placeholder;
+
+        return $this;
+    }
+
+    public function addAction(string $label): self
+    {
+        $this->actions[] = $label;
+
+        return $this;
+    }
+
     public function message(string $body): self
     {
         $this->body = $body;
@@ -59,6 +80,9 @@ class Notification
             'title' => $this->title,
             'body' => $this->body,
             'event' => $this->event,
+            'hasReply' => $this->hasReply,
+            'replyPlaceholder' => $this->replyPlaceholder,
+            'actions' => $this->actions,
         ]);
 
         $this->reference = $response->json('reference');
