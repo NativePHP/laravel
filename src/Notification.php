@@ -6,6 +6,8 @@ use Native\Laravel\Client\Client;
 
 class Notification
 {
+    protected ?string $reference = null;
+
     protected string $title;
 
     protected string $body;
@@ -20,6 +22,13 @@ class Notification
     public static function new()
     {
         return new static(new Client);
+    }
+
+    public function reference(string $reference): self
+    {
+        $this->reference = $reference;
+
+        return $this;
     }
 
     public function title(string $title): self
@@ -43,12 +52,17 @@ class Notification
         return $this;
     }
 
-    public function show(): void
+    public function show(): self
     {
-        $this->client->post('notification', [
+        $response = $this->client->post('notification', [
+            'reference' => $this->reference,
             'title' => $this->title,
             'body' => $this->body,
             'event' => $this->event,
         ]);
+
+        $this->reference = $response->json('reference');
+
+        return $this;
     }
 }
