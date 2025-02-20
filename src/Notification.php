@@ -6,7 +6,7 @@ use Native\Laravel\Client\Client;
 
 class Notification
 {
-    protected ?string $reference = null;
+    public ?string $reference = null;
 
     protected string $title;
 
