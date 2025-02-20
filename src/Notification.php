@@ -82,7 +82,10 @@ class Notification
             'event' => $this->event,
             'hasReply' => $this->hasReply,
             'replyPlaceholder' => $this->replyPlaceholder,
-            'actions' => $this->actions,
+            'actions' => array_map(fn(string $label) => [
+                'type' => 'button',
+                'text' => $label
+            ], $this->actions),
         ]);
 
         $this->reference = $response->json('reference');
