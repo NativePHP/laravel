@@ -82,9 +82,9 @@ class Notification
             'event' => $this->event,
             'hasReply' => $this->hasReply,
             'replyPlaceholder' => $this->replyPlaceholder,
-            'actions' => array_map(fn(string $label) => [
+            'actions' => array_map(fn (string $label) => [
                 'type' => 'button',
-                'text' => $label
+                'text' => $label,
             ], $this->actions),
         ]);
 
