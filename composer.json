@@ -36,7 +36,8 @@
         "laravel/prompts": "^0.1.1|^0.2|^0.3",
         "nativephp/laravel": "*",
         "nativephp/php-bin": "^0.5.1",
-        "spatie/laravel-package-tools": "^1.16.4"
+        "spatie/laravel-package-tools": "^1.16.4",
+        "symfony/filesystem": "^6.4|^7.2"
     },
     "require-dev": {
         "laravel/pint": "^1.0",

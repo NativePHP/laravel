@@ -2,7 +2,6 @@
 
 namespace Native\Electron\Tests;
 
-use Illuminate\Support\Facades\Artisan;
 use Orchestra\Testbench\Attributes\WithConfig;
 use Orchestra\Testbench\Concerns\WithWorkbench;
 use Orchestra\Testbench\TestCase as Orchestra;
@@ -15,7 +14,5 @@ class TestCase extends Orchestra
     protected function setUp(): void
     {
         parent::setUp();
-
-        Artisan::call('native:install', ['--force' => true, '--no-interaction' => true]);
     }
 }

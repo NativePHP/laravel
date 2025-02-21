@@ -4,7 +4,7 @@ namespace Native\Electron\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
-use Native\Electron\Concerns\LocatesPhpBinary;
+use Native\Electron\Traits\LocatesPhpBinary;
 use Native\Electron\Traits\OsAndArch;
 
 class PublishCommand extends Command

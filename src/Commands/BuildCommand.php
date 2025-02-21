@@ -5,17 +5,27 @@ namespace Native\Electron\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Str;
-use Native\Electron\Concerns\LocatesPhpBinary;
 use Native\Electron\Facades\Updater;
+use Native\Electron\Traits\CleansEnvFile;
+use Native\Electron\Traits\CopiesToBuildDirectory;
 use Native\Electron\Traits\InstallsAppIcon;
+use Native\Electron\Traits\LocatesPhpBinary;
 use Native\Electron\Traits\OsAndArch;
+use Native\Electron\Traits\PrunesVendorDirectory;
+use Native\Electron\Traits\SetsAppName;
 use Symfony\Component\Process\Process as SymfonyProcess;
+
+use function Laravel\Prompts\intro;
 
 class BuildCommand extends Command
 {
+    use CleansEnvFile;
+    use CopiesToBuildDirectory;
     use InstallsAppIcon;
     use LocatesPhpBinary;
     use OsAndArch;
+    use PrunesVendorDirectory;
+    use SetsAppName;
 
     protected $signature = 'native:build
         {os? : The operating system to build for (all, linux, mac, win)}
@@ -24,25 +34,19 @@ class BuildCommand extends Command
 
     protected $availableOs = ['win', 'linux', 'mac', 'all'];
 
+    protected function buildPath(string $path = ''): string
+    {
+        return __DIR__.'/../../resources/js/resources/app/'.$path;
+    }
+
+    protected function sourcePath(string $path = ''): string
+    {
+        return base_path($path);
+    }
+
     public function handle(): void
     {
-        $this->info('Build NativePHP app…');
-
-        Process::path(__DIR__.'/../../resources/js/')
-            ->env($this->getEnvironmentVariables())
-            ->forever()
-            ->run('npm update', function (string $type, string $output) {
-                echo $output;
-            });
-
-        Process::path(base_path())
-            ->run('composer install --no-dev', function (string $type, string $output) {
-                echo $output;
-            });
-
         $os = $this->selectOs($this->argument('os'));
-
-        $this->installIcon();
 
         $buildCommand = 'build';
         if ($os != 'all') {
@@ -56,8 +60,35 @@ class BuildCommand extends Command
             }
         }
 
-        $this->info((($publish ?? false) ? 'Publishing' : 'Building')." for {$os}");
+        $this->setAppName(slugify: true);
 
+        $this->newLine();
+        intro('Updating Electron dependencies...');
+        Process::path(__DIR__.'/../../resources/js/')
+            ->env($this->getEnvironmentVariables())
+            ->forever()
+            ->run('npm ci', function (string $type, string $output) {
+                echo $output;
+            });
+
+        $this->newLine();
+        intro('Copying App to build directory...');
+        $this->copyToBuildDirectory();
+
+        $this->newLine();
+        intro('Cleaning .env file...');
+        $this->cleanEnvFile();
+
+        $this->newLine();
+        intro('Copying app icons...');
+        $this->installIcon();
+
+        $this->newLine();
+        intro('Pruning vendor directory');
+        $this->pruneVendorDirectory();
+
+        $this->newLine();
+        intro((($publish ?? false) ? 'Publishing' : 'Building')." for {$os}");
         Process::path(__DIR__.'/../../resources/js/')
             ->env($this->getEnvironmentVariables())
             ->forever()
@@ -71,12 +102,12 @@ class BuildCommand extends Command
     {
         return array_merge(
             [
-                'APP_PATH' => base_path(),
+                'APP_PATH' => $this->sourcePath(),
                 'APP_URL' => config('app.url'),
                 'NATIVEPHP_BUILDING' => true,
                 'NATIVEPHP_PHP_BINARY_VERSION' => PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION,
-                'NATIVEPHP_PHP_BINARY_PATH' => base_path($this->phpBinaryPath()),
-                'NATIVEPHP_CERTIFICATE_FILE_PATH' => base_path($this->binaryPackageDirectory().'cacert.pem'),
+                'NATIVEPHP_PHP_BINARY_PATH' => $this->sourcePath($this->phpBinaryPath()),
+                'NATIVEPHP_CERTIFICATE_FILE_PATH' => $this->sourcePath($this->binaryPackageDirectory().'cacert.pem'),
                 'NATIVEPHP_APP_NAME' => config('app.name'),
                 'NATIVEPHP_APP_ID' => config('nativephp.app_id'),
                 'NATIVEPHP_APP_VERSION' => config('nativephp.version'),

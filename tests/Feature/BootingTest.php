@@ -1,10 +1,13 @@
 <?php
 
+use Illuminate\Support\Facades\Artisan;
 use PHPUnit\Framework\ExpectationFailedException;
 
 use function Orchestra\Testbench\remote;
 
 it('can boot up the app', function () {
+    Artisan::call('native:install', ['--force' => true, '--no-interaction' => true]);
+
     $output = '';
 
     $process = remote('native:serve --no-dependencies --no-interaction -v');

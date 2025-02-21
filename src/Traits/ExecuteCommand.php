@@ -3,7 +3,6 @@
 namespace Native\Electron\Traits;
 
 use Illuminate\Support\Facades\Process;
-use Native\Electron\Concerns\LocatesPhpBinary;
 
 use function Laravel\Prompts\note;
 

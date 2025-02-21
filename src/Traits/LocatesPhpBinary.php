@@ -1,6 +1,6 @@
 <?php
 
-namespace Native\Electron\Concerns;
+namespace Native\Electron\Traits;
 
 trait LocatesPhpBinary
 {
