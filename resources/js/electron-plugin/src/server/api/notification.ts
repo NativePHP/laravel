@@ -18,10 +18,13 @@ router.post('/', (req, res) => {
         actions,
         closeButtonText,
         toastXml,
-        event: customEvent
+        event: customEvent,
+        reference,
     } = req.body;
 
     const eventName = customEvent ?? '\\Native\\Laravel\\Events\\Notifications\\NotificationClicked';
+
+    const notificationReference = reference ?? (Date.now() + '.' + Math.random().toString(36).slice(2, 9));
 
     const notification = new Notification({
         title,
@@ -42,13 +45,50 @@ router.post('/', (req, res) => {
     notification.on("click", (event) => {
         notifyLaravel('events', {
             event: eventName || '\\Native\\Laravel\\Events\\Notifications\\NotificationClicked',
-            payload: JSON.stringify(event)
+            payload: {
+                reference: notificationReference,
+                event: JSON.stringify(event),
+            },
+        });
+    });
+
+    notification.on("action", (event, index) => {
+        notifyLaravel('events', {
+            event: '\\Native\\Laravel\\Events\\Notifications\\NotificationActionClicked',
+            payload: {
+                reference: notificationReference,
+                index,
+                event: JSON.stringify(event),
+            },
+        });
+    });
+
+    notification.on("reply", (event, reply) => {
+        notifyLaravel('events', {
+            event: '\\Native\\Laravel\\Events\\Notifications\\NotificationReply',
+            payload: {
+                reference: notificationReference,
+                reply,
+                event: JSON.stringify(event),
+            },
+        });
+    });
+
+    notification.on("close", (event) => {
+        notifyLaravel('events', {
+            event: '\\Native\\Laravel\\Events\\Notifications\\NotificationClosed',
+            payload: {
+                reference: notificationReference,
+                event: JSON.stringify(event),
+            },
         });
     });
 
     notification.show();
 
-    res.sendStatus(200);
+    res.status(200).json({
+        reference: notificationReference,
+    });
 });
 
 export default router;
