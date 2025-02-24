@@ -13,6 +13,6 @@ parameters:
        - '#Class App\\Providers\\NativeAppServiceProvider not found#'
        - '#Class Native\\Laravel\\ChildProcess has an uninitialized readonly property#'
 
-#
-#    excludePaths:
-#        - ./*/*/FileToBeExcluded.php
+
+    excludePaths:
+        - ./src/NativeServiceProvider.php
