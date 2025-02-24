@@ -14,6 +14,8 @@ class LoadPHPConfigurationCommand extends Command
         /** @var ProvidesPhpIni $provider */
         $provider = app(config('nativephp.provider'));
         $phpIni = [];
+
+        /* * @phpstan-ignore-next-line */
         if (method_exists($provider, 'phpIni')) {
             $phpIni = $provider->phpIni();
         }
