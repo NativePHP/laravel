@@ -62,7 +62,7 @@ return [
     'cleanup_exclude_files' => [
         'content',
         'node_modules',
-        '*/tests'
+        '*/tests',
     ],
 
     /**
