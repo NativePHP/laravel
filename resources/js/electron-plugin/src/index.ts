@@ -90,17 +90,6 @@ class NativePHP {
 
       event.preventDefault();
     });
-
-    // Handle deep linking for Windows
-    if (process.platform === 'win32') {
-        app.on('second-instance', (event, commandLine, workingDirectory) => {
-            if (this.mainWindow) {
-                if (this.mainWindow.isMinimized()) this.mainWindow.restore();
-                this.mainWindow.focus();
-            }
-            this.handleDeepLink(commandLine.pop());
-        });
-    }
   }
 
   private async bootstrapApp(app: Electron.CrossProcessExports.App) {
@@ -175,16 +164,43 @@ class NativePHP {
         app.setAsDefaultProtocolClient(deepLinkProtocol);
       }
 
+            /**
+             * Handle protocol url for windows and linux
+             * This code will be different in Windows and Linux compared to MacOS.
+             * This is due to both platforms emitting the second-instance event rather
+             * than the open-url event and Windows requiring additional code in order to
+             * open the contents of the protocol link within the same Electron instance.
+             */
+            if (process.platform !== "darwin") {
+                const gotTheLock = app.requestSingleInstanceLock();
+                if (!gotTheLock) {
+                    app.quit();
+                    return;
+                } else {
+                    app.on(
+                        "second-instance",
+                        (event, commandLine, workingDirectory) => {
+                            // Someone tried to run a second instance, we should focus our window.
+                            if (this.mainWindow) {
+                                if (this.mainWindow.isMinimized())
+                                    this.mainWindow.restore();
+                                this.mainWindow.focus();
+                            }
 
-      if (process.platform === 'win32') {
-          const gotTheLock = app.requestSingleInstanceLock();
-          if (!gotTheLock) {
-              app.quit();
-              return;
-          }
-      }
+                            // the commandLine is array of strings in which last element is deep link url
+                            notifyLaravel("events", {
+                                event: "\\Native\\Laravel\\Events\\App\\OpenedFromURL",
+                                payload: {
+                                    url: commandLine[commandLine.length - 1],
+                                    workingDirectory: workingDirectory,
+                                },
+                            });
+                        },
+                    );
+                }
+            }
+        }
     }
-  }
 
   private startAutoUpdater(config) {
     if (config?.updater?.enabled === true) {
