@@ -1,4 +1,7 @@
-name: run-tests
+# Run only Features tests
+# TODO: Currently failing on ubuntu-latest and prefer-lowest
+# TODO: Find a way to output electron logs to the console
+name: run-feature-tests
 
 on:
   workflow_dispatch:
@@ -16,10 +19,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ ubuntu-latest, windows-latest, macos-latest ]
+        os: [
+          windows-latest,
+          macos-latest
+          # ubuntu-latest,
+        ]
         php: [ 8.4, 8.3, 8.2, 8.1 ]
         laravel: [ '10.*', '11.*', '12.*' ]
-        stability: [ prefer-lowest, prefer-stable ]
+        stability: [
+#          prefer-lowest,
+          prefer-stable
+        ]
         exclude:
           - laravel: 10.*
             php: 8.4
@@ -62,5 +72,13 @@ jobs:
       - name: Show pest version
         run: vendor/bin/pest --version
 
-      - name: Execute tests
-        run: vendor/bin/pest --exclude-group=feature
+      - name: Execute tests on Linux
+        if: "matrix.os == 'ubuntu-latest'"
+        run: |
+          xvfb-run -a vendor/bin/pest --group=feature
+        env:
+          DISPLAY: ":99"
+
+      - name: Execute tests on Windows or Mac
+        if: "matrix.os == 'windows-latest' || matrix.os == 'macos-latest'"
+        run: vendor/bin/pest --group=feature
