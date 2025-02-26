@@ -3,6 +3,7 @@
 namespace Native\Laravel;
 
 use Illuminate\Console\Application;
+use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Foundation\Application as Foundation;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Artisan;
@@ -19,9 +20,11 @@ use Native\Laravel\Contracts\PowerMonitor as PowerMonitorContract;
 use Native\Laravel\Contracts\QueueWorker as QueueWorkerContract;
 use Native\Laravel\Contracts\WindowManager as WindowManagerContract;
 use Native\Laravel\DTOs\QueueConfig;
+use Native\Laravel\Events\App\ProjectFileChanged;
 use Native\Laravel\Events\EventWatcher;
 use Native\Laravel\Exceptions\Handler;
 use Native\Laravel\GlobalShortcut as GlobalShortcutImplementation;
+use Native\Laravel\Listeners\ProjectFileChangedListener;
 use Native\Laravel\Logging\LogWatcher;
 use Native\Laravel\PowerMonitor as PowerMonitorImplementation;
 use Native\Laravel\Windows\WindowManager as WindowManagerImplementation;
@@ -97,6 +100,8 @@ class NativeServiceProvider extends PackageServiceProvider
 
     public function bootingPackage()
     {
+        $this->app->make(Dispatcher::class)->listen(ProjectFileChanged::class, ProjectFileChangedListener::class);
+
         if (config('nativephp-internal.running')) {
             $this->rewriteDatabase();
         }
