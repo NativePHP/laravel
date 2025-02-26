@@ -61,8 +61,8 @@ return [
      */
     'cleanup_exclude_files' => [
         'content',
-        'storage/app/framework/{sessions,testing,cache}',
-        'storage/logs/laravel.log',
+        'node_modules',
+        '*/tests',
     ],
 
     /**
@@ -115,6 +115,9 @@ return [
         ],
     ],
 
+    /**
+     * The queue workers that get auto-started on your application start.
+     */
     'queue_workers' => [
         'default' => [
             'queues' => ['default'],
@@ -125,5 +128,16 @@ return [
 
     'on_php_file_change' => [
         \Native\Laravel\Pipelines\ProjectFileChanged\RestartQueueWorkers::class,
+    ],
+
+    /**
+     * Define your own scripts to run before and after the build process.
+     */
+    'prebuild' => [
+        // 'npm run build',
+    ],
+
+    'postbuild' => [
+        // 'rm -rf public/build',
     ],
 ];

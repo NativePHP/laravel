@@ -45,6 +45,14 @@ class MenuBarManager
         ]);
     }
 
+    public function resize(int $width, int $height)
+    {
+        $this->client->post('menu-bar/resize', [
+            'width' => $width,
+            'height' => $height,
+        ]);
+    }
+
     public function contextMenu(Menu $contextMenu)
     {
         $this->client->post('menu-bar/context-menu', [

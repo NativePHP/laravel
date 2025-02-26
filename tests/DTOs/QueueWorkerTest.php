@@ -17,8 +17,10 @@ test('the factory method generates an array of config objects for several format
             )->queuesToConsume->toBe(['default']
             );
 
-            expect(Arr::first(array_filter($configObject, fn (QueueConfig $config) => $config->alias === $worker)))->memoryLimit->toBe(128);
-            expect(Arr::first(array_filter($configObject, fn (QueueConfig $config) => $config->alias === $worker)))->timeout->toBe(60);
+            expect(Arr::first(array_filter($configObject,
+                fn (QueueConfig $config) => $config->alias === $worker)))->memoryLimit->toBe(128);
+            expect(Arr::first(array_filter($configObject,
+                fn (QueueConfig $config) => $config->alias === $worker)))->timeout->toBe(60);
 
             continue;
         }
@@ -29,37 +31,45 @@ test('the factory method generates an array of config objects for several format
         )->queuesToConsume->toBe($worker['queues'] ?? ['default']
         );
 
-        expect(Arr::first(array_filter($configObject, fn (QueueConfig $config) => $config->alias === $alias)))->memoryLimit->toBe($worker['memory_limit'] ?? 128);
-        expect(Arr::first(array_filter($configObject, fn (QueueConfig $config) => $config->alias === $alias)))->timeout->toBe($worker['timeout'] ?? 60);
+        expect(Arr::first(array_filter($configObject,
+            fn (QueueConfig $config) => $config->alias === $alias)))->memoryLimit->toBe($worker['memory_limit'] ?? 128);
+        expect(Arr::first(array_filter($configObject,
+            fn (QueueConfig $config) => $config->alias === $alias)))->timeout->toBe($worker['timeout'] ?? 60);
     }
 })->with([
     [
-        'queue_workers' => [
-            'some_worker' => [
-                'queues' => ['default'],
-                'memory_limit' => 64,
-                'timeout' => 60,
+        [
+            'queue_workers' => [
+                'some_worker' => [
+                    'queues' => ['default'],
+                    'memory_limit' => 64,
+                    'timeout' => 60,
+                ],
             ],
         ],
     ],
     [
-        'queue_workers' => [
-            'some_worker' => [],
-            'another_worker' => [],
+        [
+            'queue_workers' => [
+                'some_worker' => [],
+                'another_worker' => [],
+            ],
         ],
     ],
     [
-        'queue_workers' => [
-            'some_worker' => [
-            ],
-            'another_worker' => [
-                'queues' => ['default', 'another'],
-            ],
-            'yet_another_worker' => [
-                'memory_limit' => 256,
-            ],
-            'one_more_worker' => [
-                'timeout' => 120,
+        [
+            'queue_workers' => [
+                'some_worker' => [
+                ],
+                'another_worker' => [
+                    'queues' => ['default', 'another'],
+                ],
+                'yet_another_worker' => [
+                    'memory_limit' => 256,
+                ],
+                'one_more_worker' => [
+                    'timeout' => 120,
+                ],
             ],
         ],
     ],
