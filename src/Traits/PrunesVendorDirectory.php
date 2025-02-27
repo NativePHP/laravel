@@ -21,6 +21,9 @@ trait PrunesVendorDirectory
             });
 
         $filesystem = new Filesystem;
-        $filesystem->remove($this->buildPath('/vendor/bin'));
+        $filesystem->remove([
+            $this->buildPath('/vendor/bin'),
+            $this->buildPath('/vendor/nativephp/php-bin'),
+        ]);
     }
 }
