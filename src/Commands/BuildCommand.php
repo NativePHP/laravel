@@ -14,6 +14,7 @@ use Native\Electron\Traits\LocatesPhpBinary;
 use Native\Electron\Traits\OsAndArch;
 use Native\Electron\Traits\PrunesVendorDirectory;
 use Native\Electron\Traits\SetsAppName;
+use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Process\Process as SymfonyProcess;
 
 use function Laravel\Prompts\intro;
@@ -78,6 +79,13 @@ class BuildCommand extends Command
         $this->newLine();
         intro('Copying App to build directory...');
         $this->copyToBuildDirectory();
+
+        $this->newLine();
+        intro('Copying latest CA Certificate...');
+        copy(
+            Path::join($this->sourcePath(), 'vendor', 'nativephp', 'php-bin', 'cacert.pem'),
+            Path::join($this->sourcePath(), 'vendor', 'nativephp', 'electron', 'resources', 'js', 'resources', 'cacert.pem')
+        );
 
         $this->newLine();
         intro('Cleaning .env file...');
