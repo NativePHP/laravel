@@ -3,6 +3,7 @@
 namespace Native\Electron\Commands;
 
 use Illuminate\Console\Command;
+use Native\Electron\Traits\CopiesCertificateAuthority;
 use Native\Electron\Traits\Developer;
 use Native\Electron\Traits\Installer;
 use Native\Electron\Traits\InstallsAppIcon;
@@ -12,7 +13,10 @@ use function Laravel\Prompts\note;
 
 class DevelopCommand extends Command
 {
-    use Developer, Installer, InstallsAppIcon;
+    use CopiesCertificateAuthority;
+    use Developer;
+    use Installer;
+    use InstallsAppIcon;
 
     protected $signature = 'native:serve {--no-queue} {--D|no-dependencies} {--installer=npm}';
 
@@ -39,6 +43,8 @@ class DevelopCommand extends Command
         $this->patchPackageJson();
 
         $this->installIcon();
+
+        $this->copyCertificateAuthorityCertificate();
 
         $this->runDeveloper(
             installer: $this->option('installer'),

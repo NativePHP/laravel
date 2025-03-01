@@ -8,7 +8,6 @@ import unzip from "yauzl";
 const isBuilding = Boolean(process.env.NATIVEPHP_BUILDING);
 const phpBinaryPath = process.env.NATIVEPHP_PHP_BINARY_PATH;
 const phpVersion = process.env.NATIVEPHP_PHP_BINARY_VERSION;
-const certificatePath = process.env.NATIVEPHP_CERTIFICATE_FILE_PATH;
 
 // Differentiates for Serving and Building
 const isArm64 = isBuilding ? process.argv.includes('--arm64') : process.arch.includes('arm64');
@@ -96,15 +95,5 @@ if (platform.phpBinary) {
         });
     } catch (e) {
         console.error('Error copying PHP binary', e);
-    }
-}
-
-if (certificatePath) {
-    try {
-        let certDest = join(import.meta.dirname, 'resources', 'cacert.pem');
-        copySync(certificatePath, certDest);
-        console.log('Copied certificate file from ' + certificatePath + ' to ' + certDest);
-    } catch (e) {
-        console.error('Error copying certificate file', e);
     }
 }
