@@ -32,23 +32,23 @@
     ],
     "require": {
         "php": "^8.1",
-        "illuminate/contracts": "^10.0|^11.0",
+        "illuminate/contracts": "^10.0|^11.0|^12.0",
         "spatie/laravel-package-tools": "^1.16.4",
         "symfony/finder": "^6.2|^7.0",
         "ext-zip": "*"
     },
     "require-dev": {
         "guzzlehttp/guzzle": "^7.0",
-        "larastan/larastan": "^2.0|^3.0",
         "laravel/pint": "^1.0",
-        "nunomaduro/collision": "^7.9",
-        "orchestra/testbench": "^8.0",
-        "pestphp/pest": "^2.0",
-        "pestphp/pest-plugin-arch": "^2.0",
-        "pestphp/pest-plugin-laravel": "^2.0",
+        "larastan/larastan": "^2.0|^3.1",
+        "nunomaduro/collision": "^7.11|^8.1.1",
+        "orchestra/testbench": "^8.0|^9.0|^10.0",
+        "pestphp/pest": "^v2.30|^3.0",
+        "pestphp/pest-plugin-arch": "^2.0|^3.0",
+        "pestphp/pest-plugin-laravel": "^2.0|^3.1",
         "phpstan/extension-installer": "^1.1",
-        "phpstan/phpstan-deprecation-rules": "^1.0",
-        "phpstan/phpstan-phpunit": "^1.0",
+        "phpstan/phpstan-deprecation-rules": "^1.0|^2.0",
+        "phpstan/phpstan-phpunit": "^1.0|^2.0",
         "spatie/laravel-ray": "^1.26"
     },
     "autoload": {
@@ -86,11 +86,23 @@
               "Native\\Laravel\\NativeServiceProvider"
             ],
             "aliases": {
+                "App": "Native\\Laravel\\Facades\\App",
+                "ChildProcess": "Native\\Laravel\\Facades\\ChildProcess",
+                "Clipboard": "Native\\Laravel\\Facades\\Clipboard",
                 "ContextMenu": "Native\\Laravel\\Facades\\ContextMenu",
                 "Dock": "Native\\Laravel\\Facades\\Dock",
+                "GlobalShortcut": "Native\\Laravel\\Facades\\GlobalShortcut",
+                "Menu": "Native\\Laravel\\Facades\\Menu",
+                "MenuBar": "Native\\Laravel\\Facades\\MenuBar",
+                "Notification": "Native\\Laravel\\Facades\\Notification",
+                "PowerMonitor": "Native\\Laravel\\Facades\\PowerMonitor",
                 "Process": "Native\\Laravel\\Facades\\Process",
-                "Window": "Native\\Laravel\\Facades\\Window",
-                "Clipboard": "Native\\Laravel\\Facades\\Clipboard"
+                "QueueWorker": "Native\\Laravel\\Facades\\QueueWorker",
+                "Screen": "Native\\Laravel\\Facades\\Screen",
+                "Settings": "Native\\Laravel\\Facades\\Settings",
+                "Shell": "Native\\Laravel\\Facades\\Shell",
+                "System": "Native\\Laravel\\Facades\\System",
+                "Window": "Native\\Laravel\\Facades\\Window"
             }
         }
     },

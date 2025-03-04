@@ -6,7 +6,7 @@ return [
      * It is used to determine if the app needs to be updated.
      * Increment this value every time you release a new version of your app.
      */
-    'version' => env('NATIVEPHP_APP_VERSION', 1),
+    'version' => env('NATIVEPHP_APP_VERSION', '1.0.0'),
 
     /**
      * The ID of your application. This should be a unique identifier
@@ -64,8 +64,8 @@ return [
         'build',
         'temp',
         'content',
-        'storage/app/framework/{sessions,testing,cache}',
-        'storage/logs/laravel.log',
+        'node_modules',
+        '*/tests',
     ],
 
     /**
@@ -118,12 +118,26 @@ return [
         ],
     ],
 
+    /**
+     * The queue workers that get auto-started on your application start.
+     */
     'queue_workers' => [
         'default' => [
             'queues' => ['default'],
             'memory_limit' => 128,
             'timeout' => 60,
         ],
+    ],
+
+    /**
+     * Define your own scripts to run before and after the build process.
+     */
+    'prebuild' => [
+        // 'npm run build',
+    ],
+
+    'postbuild' => [
+        // 'rm -rf public/build',
     ],
 
     /**

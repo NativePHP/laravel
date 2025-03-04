@@ -2,6 +2,23 @@
 
 All notable changes to `nativephp-laravel` will be documented in this file.
 
+## 1.0.0-beta.1 - 2025-01-21
+
+### What's Changed
+
+* Child process queue workers by @XbNz in https://github.com/NativePHP/laravel/pull/450
+* fix: static analysis by @SRWieZ in https://github.com/NativePHP/laravel/pull/452
+* feat: default notification title by @SRWieZ in https://github.com/NativePHP/laravel/pull/451
+* Fix menubar not ready by @SRWieZ in https://github.com/NativePHP/laravel/pull/453
+* Add support for Window::show() by @curtisblackwell in https://github.com/NativePHP/laravel/pull/454
+* Fix: Return type mismatch between screen facade and screen class methods. by @kondi3 in https://github.com/NativePHP/laravel/pull/463
+
+### New Contributors
+
+* @kondi3 made their first contribution in https://github.com/NativePHP/laravel/pull/463
+
+**Full Changelog**: https://github.com/NativePHP/laravel/compare/0.7.0...0.8.0
+
 ## 0.7.0 - 2024-12-19
 
 ### What's Changed
