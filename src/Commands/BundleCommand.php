@@ -103,6 +103,8 @@ class BundleCommand extends Command
         intro('Pruning vendor directory');
         $this->pruneVendorDirectory();
 
+        $this->cleanEnvFile();
+
         // Check composer.json for symlinked or private packages
         if (! $this->checkComposerJson()) {
             return static::FAILURE;
@@ -145,8 +147,6 @@ class BundleCommand extends Command
             return false;
         }
 
-        $this->cleanEnvFile();
-
         $this->addFilesToZip($zip);
 
         $zip->close();
@@ -184,11 +184,13 @@ class BundleCommand extends Command
             $this->newLine();
             intro('Patching composer.json in development mode…');
 
-            $filteredRepo = array_filter($composerJson['repositories'], fn ($repository) => $repository['type'] !== 'path');
+            $filteredRepo = array_filter($composerJson['repositories'],
+                fn ($repository) => $repository['type'] !== 'path');
 
             if (count($filteredRepo) !== count($composerJson['repositories'])) {
                 $composerJson['repositories'] = $filteredRepo;
-                file_put_contents($this->buildPath('composer.json'), json_encode($composerJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+                file_put_contents($this->buildPath('composer.json'),
+                    json_encode($composerJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 
                 Process::path($this->buildPath())
                     ->run('composer update --no-dev', function (string $type, string $output) {
@@ -218,7 +220,7 @@ class BundleCommand extends Command
         $this->newLine();
         intro('Creating zip archive…');
 
-        $app = (new Finder)->files()
+        $finder = (new Finder)->files()
             ->followLinks()
             ->ignoreVCSIgnored(true)
             ->in($this->buildPath())
@@ -232,16 +234,15 @@ class BundleCommand extends Command
                 'build', // Compiled box assets
                 'temp', // Temp files
                 'tests', // Tests
+            ])
+            ->exclude(config('nativephp.cleanup_exclude_files', []));
 
-                // TODO: include everything in the .gitignore file
+        $this->finderToZip($finder, $zip);
 
-                ...config('nativephp.cleanup_exclude_files', []), // User defined
-            ]);
-
-        $this->finderToZip($app, $zip);
-
-        // Add .env file manually because Finder ignores hidden files
+        // Add .env file manually because Finder ignores VSC ignored files
         $zip->addFile($this->buildPath('.env'), '.env');
+        $zip->addFile($this->buildPath('bootstrap/cache/services.php'), 'bootstrap/cache/services.php');
+        $zip->addFile($this->buildPath('bootstrap/cache/packages.php'), 'bootstrap/cache/packages.php');
 
         // Add auth.json file to support private packages
         // WARNING: Only for testing purposes, don't uncomment this
