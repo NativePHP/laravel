@@ -4,6 +4,7 @@ namespace Native\Electron;
 
 use Illuminate\Foundation\Application;
 use Native\Electron\Commands\BuildCommand;
+use Native\Electron\Commands\BundleCommand;
 use Native\Electron\Commands\DevelopCommand;
 use Native\Electron\Commands\InstallCommand;
 use Native\Electron\Commands\PublishCommand;
@@ -23,6 +24,7 @@ class ElectronServiceProvider extends PackageServiceProvider
                 DevelopCommand::class,
                 BuildCommand::class,
                 PublishCommand::class,
+                BundleCommand::class,
             ]);
     }
 
