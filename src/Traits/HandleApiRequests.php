@@ -4,6 +4,8 @@ namespace Native\Electron\Traits;
 
 use Illuminate\Support\Facades\Http;
 
+use function Laravel\Prompts\intro;
+
 trait HandleApiRequests
 {
     private function baseUrl(): string
@@ -13,7 +15,7 @@ trait HandleApiRequests
 
     private function checkAuthenticated()
     {
-        $this->line('Checking authentication…');
+        intro('Checking authentication…');
 
         return Http::acceptJson()
             ->withToken(config('nativephp-internal.zephpyr.token'))

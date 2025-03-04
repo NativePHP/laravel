@@ -31,7 +31,7 @@ class BundleCommand extends Command
     use PrunesVendorDirectory;
     use SetsAppName;
 
-    protected $signature = 'native:bundle {--fetch} {--without-cleanup}';
+    protected $signature = 'native:bundle {--fetch} {--clear} {--without-cleanup}';
 
     protected $description = 'Bundle your application for distribution.';
 
@@ -43,6 +43,17 @@ class BundleCommand extends Command
 
     public function handle(): int
     {
+        // Remove the bundle
+        if ($this->option('clear')) {
+            if (file_exists(base_path('build/__nativephp_app_bundle'))) {
+                unlink(base_path('build/__nativephp_app_bundle'));
+            }
+
+            $this->info('Bundle removed. Building in this state would be unsecure.');
+
+            return static::SUCCESS;
+        }
+
         // Check for ZEPHPYR_KEY
         if (! $this->checkForZephpyrKey()) {
             return static::FAILURE;
