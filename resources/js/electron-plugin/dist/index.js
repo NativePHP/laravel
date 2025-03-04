@@ -67,16 +67,6 @@ class NativePHP {
             }
             event.preventDefault();
         });
-        if (process.platform === 'win32') {
-            app.on('second-instance', (event, commandLine, workingDirectory) => {
-                if (this.mainWindow) {
-                    if (this.mainWindow.isMinimized())
-                        this.mainWindow.restore();
-                    this.mainWindow.focus();
-                }
-                this.handleDeepLink(commandLine.pop());
-            });
-        }
     }
     bootstrapApp(app) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -135,11 +125,27 @@ class NativePHP {
             else {
                 app.setAsDefaultProtocolClient(deepLinkProtocol);
             }
-            if (process.platform === 'win32') {
+            if (process.platform !== "darwin") {
                 const gotTheLock = app.requestSingleInstanceLock();
                 if (!gotTheLock) {
                     app.quit();
                     return;
+                }
+                else {
+                    app.on("second-instance", (event, commandLine, workingDirectory) => {
+                        if (this.mainWindow) {
+                            if (this.mainWindow.isMinimized())
+                                this.mainWindow.restore();
+                            this.mainWindow.focus();
+                        }
+                        notifyLaravel("events", {
+                            event: "\\Native\\Laravel\\Events\\App\\OpenedFromURL",
+                            payload: {
+                                url: commandLine[commandLine.length - 1],
+                                workingDirectory: workingDirectory,
+                            },
+                        });
+                    });
                 }
             }
         }
