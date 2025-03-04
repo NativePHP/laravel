@@ -222,7 +222,7 @@ class BundleCommand extends Command
 
         $finder = (new Finder)->files()
             ->followLinks()
-            ->ignoreVCSIgnored(true)
+            // ->ignoreVCSIgnored(true) // TODO: Make our own list of ignored files
             ->in($this->buildPath())
             ->exclude([
                 // We add those a few lines below
@@ -240,9 +240,9 @@ class BundleCommand extends Command
         $this->finderToZip($finder, $zip);
 
         // Add .env file manually because Finder ignores VSC ignored files
-        $zip->addFile($this->buildPath('.env'), '.env');
-        $zip->addFile($this->buildPath('bootstrap/cache/services.php'), 'bootstrap/cache/services.php');
-        $zip->addFile($this->buildPath('bootstrap/cache/packages.php'), 'bootstrap/cache/packages.php');
+        // $zip->addFile($this->buildPath('.env'), '.env');
+        // $zip->addFile($this->buildPath('bootstrap/cache/services.php'), 'bootstrap/cache/services.php');
+        // $zip->addFile($this->buildPath('bootstrap/cache/packages.php'), 'bootstrap/cache/packages.php');
 
         // Add auth.json file to support private packages
         // WARNING: Only for testing purposes, don't uncomment this
