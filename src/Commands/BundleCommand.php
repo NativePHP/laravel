@@ -239,10 +239,8 @@ class BundleCommand extends Command
 
         $this->finderToZip($finder, $zip);
 
-        // Add .env file manually because Finder ignores VSC ignored files
-        // $zip->addFile($this->buildPath('.env'), '.env');
-        // $zip->addFile($this->buildPath('bootstrap/cache/services.php'), 'bootstrap/cache/services.php');
-        // $zip->addFile($this->buildPath('bootstrap/cache/packages.php'), 'bootstrap/cache/packages.php');
+        // Add .env file manually because Finder ignores VCS and dot files
+        $zip->addFile($this->buildPath('.env'), '.env');
 
         // Add auth.json file to support private packages
         // WARNING: Only for testing purposes, don't uncomment this
