@@ -150,7 +150,7 @@ class NativeServiceProvider extends PackageServiceProvider
         $databasePath = config('nativephp-internal.database_path');
 
         // Automatically create the database in development mode but not if we are running in a Phar
-        if (config('app.debug')  && ! Phar::running()) {
+        if (config('app.debug') && ! Phar::running()) {
             $databasePath = database_path('nativephp.sqlite');
 
             if (! file_exists($databasePath)) {
