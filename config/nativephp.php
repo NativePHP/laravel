@@ -48,6 +48,7 @@ return [
         'GITHUB_*',
         'DO_SPACES_*',
         '*_SECRET',
+        'ZEPHPYR_*',
         'NATIVEPHP_UPDATER_PATH',
         'NATIVEPHP_APPLE_ID',
         'NATIVEPHP_APPLE_ID_PASS',
@@ -60,6 +61,8 @@ return [
      * You may use glob / wildcard patterns here.
      */
     'cleanup_exclude_files' => [
+        'build',
+        'temp',
         'content',
         'node_modules',
         '*/tests',
@@ -136,4 +139,9 @@ return [
     'postbuild' => [
         // 'rm -rf public/build',
     ],
+
+    /**
+     * Custom PHP binary path.
+     */
+    'binary_path' => env('NATIVEPHP_BINARY_PATH', null),
 ];
