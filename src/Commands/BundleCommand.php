@@ -221,8 +221,8 @@ class BundleCommand extends Command
         intro('Creating zip archive…');
 
         $finder = (new Finder)->files()
-            ->followLinks()
-            // ->ignoreVCSIgnored(true) // TODO: Make our own list of ignored files
+            // ->followLinks()
+            ->ignoreVCSIgnored(true) // TODO: Make our own list of ignored files
             ->in($this->buildPath())
             ->exclude([
                 // We add those a few lines below
@@ -238,6 +238,12 @@ class BundleCommand extends Command
             ->exclude(config('nativephp.cleanup_exclude_files', []));
 
         $this->finderToZip($finder, $zip);
+
+        // Why do I have to force this? please someone explain.
+        $this->finderToZip(
+            (new Finder)->files()
+                ->followLinks()
+                ->in($this->buildPath('public/build')), $zip, 'public/build');
 
         // Add .env file manually because Finder ignores VCS and dot files
         $zip->addFile($this->buildPath('.env'), '.env');
@@ -306,9 +312,18 @@ class BundleCommand extends Command
             if ($response->status() === 404) {
                 $this->error('Project or bundle not found.');
             } elseif ($response->status() === 500) {
-                $this->error('Build failed. Please try again later.');
+                $url = $response->json('url');
+
+                if ($url) {
+                    $this->error('Build failed. Inspect the build here: '.$url);
+                } else {
+                    $this->error('Build failed. Please try again later.');
+                }
             } elseif ($response->status() === 503) {
-                $this->warn('Bundle not ready. Please try again in '.now()->addSeconds(intval($response->header('Retry-After')))->diffForHumans(syntax: CarbonInterface::DIFF_ABSOLUTE).'.');
+                $retryAfter = intval($response->header('Retry-After'));
+                $diff = now()->addSeconds($retryAfter);
+                $diffMessage = $retryAfter <= 60 ? 'a minute' : $diff->diffForHumans(syntax: CarbonInterface::DIFF_ABSOLUTE);
+                $this->warn('Bundle not ready. Please try again in '.$diffMessage.'.');
             } else {
                 $this->handleApiErrors($response);
             }
@@ -371,12 +386,12 @@ class BundleCommand extends Command
 
     protected function buildPath(string $path = ''): string
     {
-        return base_path('temp/build/'.$path);
+        return base_path('build/app/'.$path);
     }
 
     protected function zipPath(string $path = ''): string
     {
-        return base_path('temp/zip/'.$path);
+        return base_path('build/zip/'.$path);
     }
 
     protected function sourcePath(string $path = ''): string

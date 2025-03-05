@@ -252,7 +252,10 @@ function serveApp(secret, apiPort, phpIniSettings): Promise<ProcessResult> {
 
         phpServer.stdout.on('data', (data) => {
             // [Tue Jan 14 19:51:00 2025] 127.0.0.1:52779 [POST] URI: /_native/api/events
-            console.log('D:', data.toString());
+
+            if (parseInt(process.env.SHELL_VERBOSITY) > 0) {
+                console.log(data.toString());
+            }
         })
 
 

@@ -51,6 +51,10 @@ trait CopiesToBuildDirectory
 
         // Also deleted in PrunesVendorDirectory after fresh composer install
         'vendor/bin',
+
+        // Exlude build & temp directory
+        'build',
+        'temp',
     ];
 
     public function copyToBuildDirectory()
