@@ -222,10 +222,10 @@ class BundleCommand extends Command
 
         $finder = (new Finder)->files()
             // ->followLinks()
-            ->ignoreVCSIgnored(true) // TODO: Make our own list of ignored files
+            // ->ignoreVCSIgnored(true) // TODO: Make our own list of ignored files
             ->in($this->buildPath())
             ->exclude([
-                // We add those a few lines below
+                // We add those a few lines below and they are ignored by most .gitignore anyway
                 'vendor',
                 'node_modules',
 

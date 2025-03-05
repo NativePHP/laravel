@@ -7,8 +7,8 @@ use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Str;
 use Native\Electron\Facades\Updater;
 use Native\Electron\Traits\CleansEnvFile;
+use Native\Electron\Traits\CopiesBundleToBuildDirectory;
 use Native\Electron\Traits\CopiesCertificateAuthority;
-use Native\Electron\Traits\CopiesToBuildDirectory;
 use Native\Electron\Traits\HasPreAndPostProcessing;
 use Native\Electron\Traits\InstallsAppIcon;
 use Native\Electron\Traits\LocatesPhpBinary;
@@ -22,8 +22,8 @@ use function Laravel\Prompts\intro;
 class BuildCommand extends Command
 {
     use CleansEnvFile;
+    use CopiesBundleToBuildDirectory;
     use CopiesCertificateAuthority;
-    use CopiesToBuildDirectory;
     use HasPreAndPostProcessing;
     use InstallsAppIcon;
     use LocatesPhpBinary;
@@ -79,7 +79,8 @@ class BuildCommand extends Command
 
         $this->newLine();
         intro('Copying App to build directory...');
-        $this->copyToBuildDirectory();
+
+        $this->copyBundleToBuildDirectory();
 
         $this->newLine();
         $this->copyCertificateAuthorityCertificate();

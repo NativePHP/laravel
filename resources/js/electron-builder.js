@@ -40,13 +40,7 @@ try {
 }
 
 if (isBuilding) {
-    console.log();
-    console.log('===================================================================');
-    console.log('                    Building for ' + targetOs);
-    console.log('===================================================================');
-    console.log();
-    console.log('Updater config', updaterConfig);
-    console.log();
+    console.log('  • updater config', updaterConfig);
 }
 
 export default {
