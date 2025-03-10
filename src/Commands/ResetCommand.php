@@ -9,7 +9,7 @@ use function Laravel\Prompts\intro;
 
 class ResetCommand extends Command
 {
-    protected $signature = 'native:reset';
+    protected $signature = 'native:reset {--with-app-data : Clear the app data as well}';
 
     protected $description = 'Clear all build and dist files';
 
@@ -41,6 +41,38 @@ class ResetCommand extends Command
             $filesystem->remove($builtPath);
         }
 
+        if ($this->option('with-app-data')) {
+
+            // Fetch last generated app name
+            $packageJsonPath = __DIR__.'/../../resources/js/package.json';
+            $packageJson = json_decode(file_get_contents($packageJsonPath), true);
+            $appName = $packageJson['name'];
+
+            $appDataPath = $this->appDataDirectory($appName);
+            $this->line('Clearing: '.$appDataPath);
+
+            if ($filesystem->exists($appDataPath)) {
+                $filesystem->remove($appDataPath);
+            }
+        }
+
         return 0;
+    }
+
+    protected function appDataDirectory(string $name): string
+    {
+        /*
+         * Platform	Location
+         * macOS	~/Library/Application Support
+         * Linux	$XDG_CONFIG_HOME or ~/.config
+         * Windows	%APPDATA%
+         */
+
+        return match (PHP_OS_FAMILY) {
+            'Darwin' => $_SERVER['HOME'].'/Library/Application Support/'.$name,
+            'Linux' => $_SERVER['XDG_CONFIG_HOME'] ?? $_SERVER['HOME'].'/.config/'.$name,
+            'Windows' => $_SERVER['APPDATA'].'/'.$name,
+            default => $_SERVER['HOME'].'/.config/'.$name,
+        };
     }
 }

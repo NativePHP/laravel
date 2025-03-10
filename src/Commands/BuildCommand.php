@@ -40,7 +40,7 @@ class BuildCommand extends Command
 
     protected function buildPath(string $path = ''): string
     {
-        return realpath(__DIR__.'/../../resources/js/resources/app/'.$path);
+        return __DIR__.'/../../resources/js/resources/app/'.$path;
     }
 
     protected function sourcePath(string $path = ''): string
@@ -79,7 +79,6 @@ class BuildCommand extends Command
 
         $this->newLine();
         intro('Copying App to build directory...');
-
         $this->copyBundleToBuildDirectory();
 
         $this->newLine();
