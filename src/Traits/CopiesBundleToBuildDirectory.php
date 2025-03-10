@@ -25,6 +25,8 @@ trait CopiesBundleToBuildDirectory
             $this->line('From: '.realpath(dirname($this->sourcePath(self::$bundlePath))));
             $this->line('To: '.realpath(dirname($this->buildPath(self::$bundlePath))));
 
+            // TODO: copy only the files that you need.
+            $this->copyToBuildDirectory();
             $filesToCopy = [
                 self::$bundlePath,
                 '.env',
@@ -33,6 +35,7 @@ trait CopiesBundleToBuildDirectory
             foreach ($filesToCopy as $file) {
                 $filesystem->copy($this->sourcePath($file), $this->buildPath($file), true);
             }
+            // $this->keepRequiredDirectories();
 
             return true;
         }
