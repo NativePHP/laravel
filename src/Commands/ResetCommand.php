@@ -48,11 +48,14 @@ class ResetCommand extends Command
             $packageJson = json_decode(file_get_contents($packageJsonPath), true);
             $appName = $packageJson['name'];
 
-            $appDataPath = $this->appDataDirectory($appName);
-            $this->line('Clearing: '.$appDataPath);
+            // Eh, just in case, I don't want to delete all user data by accident.
+            if (! empty($appName)) {
+                $appDataPath = $this->appDataDirectory($appName);
+                $this->line('Clearing: '.$appDataPath);
 
-            if ($filesystem->exists($appDataPath)) {
-                $filesystem->remove($appDataPath);
+                if ($filesystem->exists($appDataPath)) {
+                    $filesystem->remove($appDataPath);
+                }
             }
         }
 
