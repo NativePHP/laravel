@@ -40,7 +40,7 @@ class BuildCommand extends Command
 
     protected function buildPath(string $path = ''): string
     {
-        return __DIR__.'/../../resources/js/resources/app/'.$path;
+        return realpath(__DIR__.'/../../resources/js/resources/app/'.$path);
     }
 
     protected function sourcePath(string $path = ''): string

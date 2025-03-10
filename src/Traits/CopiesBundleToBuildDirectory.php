@@ -25,10 +25,14 @@ trait CopiesBundleToBuildDirectory
             $this->line('From: '.realpath(dirname($this->sourcePath(self::$bundlePath))));
             $this->line('To: '.realpath(dirname($this->buildPath(self::$bundlePath))));
 
-            (new Filesystem)->copy(
-                $this->sourcePath(self::$bundlePath),
-                $this->buildPath(self::$bundlePath),
-            );
+            $filesToCopy = [
+                self::$bundlePath,
+                '.env',
+            ];
+            $filesystem = new Filesystem;
+            foreach ($filesToCopy as $file) {
+                $filesystem->copy($this->sourcePath($file), $this->buildPath($file), true);
+            }
 
             return true;
         }
