@@ -66,7 +66,7 @@ class BuildCommand extends Command
 
         $this->preProcess();
 
-        $this->setAppName(slugify: true);
+        $this->setAppName();
 
         $this->newLine();
         intro('Updating Electron dependencies...');

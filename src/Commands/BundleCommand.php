@@ -85,7 +85,7 @@ class BundleCommand extends Command
 
         $this->preProcess();
 
-        $this->setAppName(slugify: true);
+        $this->setAppName();
         intro('Copying App to build directory...');
 
         // We update composer.json later,

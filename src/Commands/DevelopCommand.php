@@ -7,6 +7,7 @@ use Native\Electron\Traits\CopiesCertificateAuthority;
 use Native\Electron\Traits\Developer;
 use Native\Electron\Traits\Installer;
 use Native\Electron\Traits\InstallsAppIcon;
+use Native\Electron\Traits\SetsAppName;
 
 use function Laravel\Prompts\intro;
 use function Laravel\Prompts\note;
@@ -17,6 +18,7 @@ class DevelopCommand extends Command
     use Developer;
     use Installer;
     use InstallsAppIcon;
+    use SetsAppName;
 
     protected $signature = 'native:serve {--no-queue} {--D|no-dependencies} {--installer=npm}';
 
@@ -40,7 +42,7 @@ class DevelopCommand extends Command
             $this->patchPlist();
         }
 
-        $this->patchPackageJson();
+        $this->setAppName(developmentMode: true);
 
         $this->installIcon();
 
@@ -69,15 +71,5 @@ class DevelopCommand extends Command
         $pList = preg_replace($pattern, '$1'.config('app.name').'$3', $pList);
 
         file_put_contents(__DIR__.'/../../resources/js/node_modules/electron/dist/Electron.app/Contents/Info.plist', $pList);
-    }
-
-    protected function patchPackageJson(): void
-    {
-        $packageJsonPath = __DIR__.'/../../resources/js/package.json';
-        $packageJson = json_decode(file_get_contents($packageJsonPath), true);
-
-        $packageJson['name'] = config('app.name');
-
-        file_put_contents($packageJsonPath, json_encode($packageJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
     }
 }
