@@ -66,7 +66,7 @@ function startProcess(settings) {
         });
 
         proc.stderr.on('data', (data) => {
-            console.error('Error received from process [' + alias + ']:', data.toString());
+            console.error('Process [' + alias + '] ERROR:', data.toString().trim());
 
             notifyLaravel('events', {
                 event: 'Native\\Laravel\\Events\\ChildProcess\\ErrorReceived',
@@ -77,6 +77,8 @@ function startProcess(settings) {
             });
         });
 
+        // Experimental feature on Electron,
+        // I keep this here to remember and retry when we upgrade
         // proc.on('error', (error) => {
         //     clearTimeout(startTimeout);
         //     console.error(`Process [${alias}] error: ${error.message}`);
@@ -160,7 +162,8 @@ function startPhpProcess(settings) {
     );
 
     // Construct command args from ini settings
-    const iniSettings = {...getDefaultPhpIniSettings(), ...state.phpIni};
+    const customIniSettings = settings.phpIni || {};
+    const iniSettings = {...getDefaultPhpIniSettings(), ...state.phpIni, ...customIniSettings};
     const iniArgs = Object.keys(iniSettings).map(key => {
         return ['-d', `${key}=${iniSettings[key]}`];
     }).flat();

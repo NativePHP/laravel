@@ -55,7 +55,7 @@ function startProcess(settings) {
             });
         });
         proc.stderr.on('data', (data) => {
-            console.error('Error received from process [' + alias + ']:', data.toString());
+            console.error('Process [' + alias + '] ERROR:', data.toString().trim());
             notifyLaravel('events', {
                 event: 'Native\\Laravel\\Events\\ChildProcess\\ErrorReceived',
                 payload: {
@@ -119,7 +119,8 @@ function startProcess(settings) {
 }
 function startPhpProcess(settings) {
     const defaultEnv = getDefaultEnvironmentVariables(state.randomSecret, state.electronApiPort);
-    const iniSettings = Object.assign(Object.assign({}, getDefaultPhpIniSettings()), state.phpIni);
+    const customIniSettings = settings.phpIni || {};
+    const iniSettings = Object.assign(Object.assign(Object.assign({}, getDefaultPhpIniSettings()), state.phpIni), customIniSettings);
     const iniArgs = Object.keys(iniSettings).map(key => {
         return ['-d', `${key}=${iniSettings[key]}`];
     }).flat();
