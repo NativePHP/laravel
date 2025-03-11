@@ -268,11 +268,11 @@ function serveApp(secret, apiPort, phpIniSettings) {
             }
             else {
                 if (error.includes('[NATIVE_EXCEPTION]:')) {
-                    let logFile = join(storagePath, 'logs', 'laravel.log');
+                    let logFile = join(storagePath, 'logs');
                     console.log();
                     console.error('Error in PHP:');
                     console.error('  ' + error.split('[NATIVE_EXCEPTION]:')[1].trim());
-                    console.log('Please check your log file:');
+                    console.log('Please check your log files:');
                     console.log('  ' + logFile);
                     console.log();
                 }
@@ -286,4 +286,4 @@ function serveApp(secret, apiPort, phpIniSettings) {
         });
     }));
 }
-export { startScheduler, serveApp, getAppPath, retrieveNativePHPConfig, retrievePhpIniSettings, getDefaultEnvironmentVariables, getDefaultPhpIniSettings };
+export { startScheduler, serveApp, getAppPath, retrieveNativePHPConfig, retrievePhpIniSettings, getDefaultEnvironmentVariables, getDefaultPhpIniSettings, runningSecureBuild };
