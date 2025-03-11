@@ -162,7 +162,7 @@ function startPhpProcess(settings) {
     );
 
     // Construct command args from ini settings
-    const customIniSettings = settings.phpIni || {};
+    const customIniSettings = settings.iniSettings || {};
     const iniSettings = {...getDefaultPhpIniSettings(), ...state.phpIni, ...customIniSettings};
     const iniArgs = Object.keys(iniSettings).map(key => {
         return ['-d', `${key}=${iniSettings[key]}`];

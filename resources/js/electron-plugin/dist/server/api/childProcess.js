@@ -119,7 +119,7 @@ function startProcess(settings) {
 }
 function startPhpProcess(settings) {
     const defaultEnv = getDefaultEnvironmentVariables(state.randomSecret, state.electronApiPort);
-    const customIniSettings = settings.phpIni || {};
+    const customIniSettings = settings.iniSettings || {};
     const iniSettings = Object.assign(Object.assign(Object.assign({}, getDefaultPhpIniSettings()), state.phpIni), customIniSettings);
     const iniArgs = Object.keys(iniSettings).map(key => {
         return ['-d', `${key}=${iniSettings[key]}`];
