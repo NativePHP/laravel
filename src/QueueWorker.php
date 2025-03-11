@@ -32,13 +32,16 @@ class QueueWorker implements QueueWorkerContract
                 "--memory={$config->memoryLimit}",
                 "--timeout={$config->timeout}",
             ],
-            $config->alias,
+            'queue_'.$config->alias,
             persistent: true,
+            iniSettings: [
+                'memory_limit' => "{$config->memoryLimit}M",
+            ]
         );
     }
 
     public function down(string $alias): void
     {
-        $this->childProcess->stop($alias);
+        $this->childProcess->stop('queue_'.$alias);
     }
 }
