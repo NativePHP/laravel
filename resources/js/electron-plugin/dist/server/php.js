@@ -25,14 +25,15 @@ const argumentEnv = getArgumentEnv();
 const appPath = getAppPath();
 mkdirpSync(bootstrapCache);
 function runningSecureBuild() {
-    return existsSync(join(appPath, 'build', '__nativephp_app_bundle'));
+    return existsSync(join(appPath, 'build', '__nativephp_app_bundle'))
+        && process.env.NODE_ENV !== 'development';
 }
 function shouldMigrateDatabase(store) {
     return store.get('migrated_version') !== app.getVersion()
         && process.env.NODE_ENV !== 'development';
 }
 function shouldOptimize(store) {
-    return store.get('optimized_version') !== app.getVersion();
+    return runningSecureBuild();
 }
 function getPhpPort() {
     return __awaiter(this, void 0, void 0, function* () {

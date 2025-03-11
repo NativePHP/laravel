@@ -23,6 +23,7 @@ mkdirpSync(bootstrapCache);
 
 function runningSecureBuild() {
     return existsSync(join(appPath, 'build', '__nativephp_app_bundle'))
+        && process.env.NODE_ENV !== 'development';
 }
 
 function shouldMigrateDatabase(store) {
@@ -31,7 +32,13 @@ function shouldMigrateDatabase(store) {
 }
 
 function shouldOptimize(store) {
-    return store.get('optimized_version') !== app.getVersion();
+    /*
+     * For some weird reason,
+     * the cached config is not picked up on subsequent launches,
+     * so we'll just rebuilt it every time for now
+     */
+    return runningSecureBuild();
+    // return runningSecureBuild() && store.get('optimized_version') !== app.getVersion();
 }
 
 async function getPhpPort() {
