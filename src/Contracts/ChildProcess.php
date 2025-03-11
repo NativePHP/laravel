@@ -16,9 +16,9 @@ interface ChildProcess
         bool $persistent = false
     ): self;
 
-    public function php(string|array $cmd, string $alias, ?array $env = null, ?bool $persistent = false): self;
+    public function php(string|array $cmd, string $alias, ?array $env = null, ?bool $persistent = false, ?array $iniSettings = null): self;
 
-    public function artisan(string|array $cmd, string $alias, ?array $env = null, ?bool $persistent = false): self;
+    public function artisan(string|array $cmd, string $alias, ?array $env = null, ?bool $persistent = false, ?array $iniSettings = null): self;
 
     public function stop(?string $alias = null): void;
 

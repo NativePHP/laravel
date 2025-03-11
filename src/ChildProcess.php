@@ -80,7 +80,7 @@ class ChildProcess implements ChildProcessContract
      * @param  string|string[]  $cmd
      * @return $this
      */
-    public function php(string|array $cmd, string $alias, ?array $env = null, ?bool $persistent = false): self
+    public function php(string|array $cmd, string $alias, ?array $env = null, ?bool $persistent = false, ?array $iniSettings = null): self
     {
         $cmd = is_array($cmd) ? array_values($cmd) : [$cmd];
 
@@ -90,6 +90,7 @@ class ChildProcess implements ChildProcessContract
             'cwd' => base_path(),
             'env' => $env,
             'persistent' => $persistent,
+            'iniSettings' => $iniSettings,
         ])->json();
 
         return $this->fromRuntimeProcess($process);
@@ -99,13 +100,13 @@ class ChildProcess implements ChildProcessContract
      * @param  string|string[]  $cmd
      * @return $this
      */
-    public function artisan(string|array $cmd, string $alias, ?array $env = null, ?bool $persistent = false): self
+    public function artisan(string|array $cmd, string $alias, ?array $env = null, ?bool $persistent = false, ?array $iniSettings = null): self
     {
         $cmd = is_array($cmd) ? array_values($cmd) : [$cmd];
 
         $cmd = ['artisan', ...$cmd];
 
-        return $this->php($cmd, $alias, env: $env, persistent: $persistent);
+        return $this->php($cmd, $alias, env: $env, persistent: $persistent, iniSettings: $iniSettings);
     }
 
     public function stop(?string $alias = null): void

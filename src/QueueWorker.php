@@ -26,9 +26,6 @@ class QueueWorker implements QueueWorkerContract
 
         $this->childProcess->artisan(
             [
-                // '-d',
-                // "memory_limit={$config->memoryLimit}M",
-                // 'artisan',
                 'queue:work',
                 "--name={$config->alias}",
                 '--queue='.implode(',', $config->queuesToConsume),

@@ -77,13 +77,15 @@ class ChildProcessFake implements ChildProcessContract
         array|string $cmd,
         string $alias,
         ?array $env = null,
-        ?bool $persistent = false
+        ?bool $persistent = false,
+        ?array $iniSettings = null
     ): self {
         $this->phps[] = [
             'cmd' => $cmd,
             'alias' => $alias,
             'env' => $env,
             'persistent' => $persistent,
+            'iniSettings' => $iniSettings,
         ];
 
         return $this;
@@ -93,13 +95,15 @@ class ChildProcessFake implements ChildProcessContract
         array|string $cmd,
         string $alias,
         ?array $env = null,
-        ?bool $persistent = false
+        ?bool $persistent = false,
+        ?array $iniSettings = null
     ): self {
         $this->artisans[] = [
             'cmd' => $cmd,
             'alias' => $alias,
             'env' => $env,
             'persistent' => $persistent,
+            'iniSettings' => $iniSettings,
         ];
 
         return $this;
