@@ -31,8 +31,7 @@ function shouldMigrateDatabase(store) {
 }
 
 function shouldOptimize(store) {
-    return store.get('optimized_version') !== app.getVersion()
-        && process.env.NODE_ENV !== 'development';
+    return store.get('optimized_version') !== app.getVersion();
 }
 
 async function getPhpPort() {
@@ -253,7 +252,7 @@ function getDefaultEnvironmentVariables(secret, apiPort): EnvironmentVariables {
     };
 
     // Only add cache paths if in production mode
-    if(runningSecureBuild()) {
+    if (runningSecureBuild()) {
         variables.APP_SERVICES_CACHE = join(bootstrapCache, 'services.php');
         variables.APP_PACKAGES_CACHE = join(bootstrapCache, 'packages.php');
         variables.APP_CONFIG_CACHE = join(bootstrapCache, 'config.php');
@@ -296,6 +295,7 @@ function serveApp(secret, apiPort, phpIniSettings): Promise<ProcessResult> {
         // Make sure the storage path is linked - as people can move the app around, we
         // need to run this every time the app starts
         if (!runningSecureBuild()) {
+            console.log('Linking storage path...');
             callPhpSync(['artisan', 'storage:link', '--force'], phpOptions, phpIniSettings)
         }
 
@@ -333,33 +333,38 @@ function serveApp(secret, apiPort, phpIniSettings): Promise<ProcessResult> {
         const phpPort = await getPhpPort();
 
 
-        let serverPath = join(appPath, 'build', '__nativephp_app_bundle');
+        let serverPath: string;
+        let cwd: string;
 
-        if (!runningSecureBuild()) {
+        if (runningSecureBuild()) {
+            serverPath = join(appPath, 'build', '__nativephp_app_bundle');
+        } else {
             console.log('* * * Running from source * * *');
             serverPath = join(appPath, 'vendor', 'laravel', 'framework', 'src', 'Illuminate', 'Foundation', 'resources', 'server.php');
+            cwd = join(appPath, 'public');
         }
 
         const phpServer = callPhp(['-S', `127.0.0.1:${phpPort}`, serverPath], {
-            cwd: join(appPath, 'public'),
+            cwd: cwd,
             env
         }, phpIniSettings)
 
         const portRegex = /Development Server \(.*:([0-9]+)\) started/gm
 
+        // Show urls called
         phpServer.stdout.on('data', (data) => {
             // [Tue Jan 14 19:51:00 2025] 127.0.0.1:52779 [POST] URI: /_native/api/events
 
             if (parseInt(process.env.SHELL_VERBOSITY) > 0) {
-                console.log(data.toString());
+                console.log(data.toString().trim());
             }
         })
 
-
+        // Show PHP errors and indicate which port the server is running on
         phpServer.stderr.on('data', (data) => {
             const error = data.toString();
             const match = portRegex.exec(data.toString());
-            // console.log('E:', error);
+
             if (match) {
                 const port = parseInt(match[1]);
                 console.log("PHP Server started on port: ", port);
@@ -368,23 +373,25 @@ function serveApp(secret, apiPort, phpIniSettings): Promise<ProcessResult> {
                     process: phpServer,
                 });
             } else {
-
-                // Starting at [NATIVE_EXCEPTION]:
                 if (error.includes('[NATIVE_EXCEPTION]:')) {
+                    let logFile = join(storagePath, 'logs', 'laravel.log');
+
                     console.log();
                     console.error('Error in PHP:');
                     console.error('  ' + error.split('[NATIVE_EXCEPTION]:')[1].trim());
                     console.log('Please check your log file:');
-                    console.log('  ' + join(appPath, 'storage', 'logs', 'laravel.log'));
+                    console.log('  ' + logFile);
                     console.log();
                 }
             }
         });
 
+        // Log when any error occurs (not started, not killed, couldn't send message, etc)
         phpServer.on('error', (error) => {
             reject(error)
         });
 
+        // Log when the PHP server exits
         phpServer.on('close', (code) => {
             console.log(`PHP server exited with code ${code}`);
         });

@@ -32,8 +32,7 @@ function shouldMigrateDatabase(store) {
         && process.env.NODE_ENV !== 'development';
 }
 function shouldOptimize(store) {
-    return store.get('optimized_version') !== app.getVersion()
-        && process.env.NODE_ENV !== 'development';
+    return store.get('optimized_version') !== app.getVersion();
 }
 function getPhpPort() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -207,6 +206,7 @@ function serveApp(secret, apiPort, phpIniSettings) {
             name: 'nativephp',
         });
         if (!runningSecureBuild()) {
+            console.log('Linking storage path...');
             callPhpSync(['artisan', 'storage:link', '--force'], phpOptions, phpIniSettings);
         }
         if (shouldOptimize(store)) {
@@ -235,19 +235,24 @@ function serveApp(secret, apiPort, phpIniSettings) {
         }
         console.log('Starting PHP server...');
         const phpPort = yield getPhpPort();
-        let serverPath = join(appPath, 'build', '__nativephp_app_bundle');
-        if (!runningSecureBuild()) {
+        let serverPath;
+        let cwd;
+        if (runningSecureBuild()) {
+            serverPath = join(appPath, 'build', '__nativephp_app_bundle');
+        }
+        else {
             console.log('* * * Running from source * * *');
             serverPath = join(appPath, 'vendor', 'laravel', 'framework', 'src', 'Illuminate', 'Foundation', 'resources', 'server.php');
+            cwd = join(appPath, 'public');
         }
         const phpServer = callPhp(['-S', `127.0.0.1:${phpPort}`, serverPath], {
-            cwd: join(appPath, 'public'),
+            cwd: cwd,
             env
         }, phpIniSettings);
         const portRegex = /Development Server \(.*:([0-9]+)\) started/gm;
         phpServer.stdout.on('data', (data) => {
             if (parseInt(process.env.SHELL_VERBOSITY) > 0) {
-                console.log(data.toString());
+                console.log(data.toString().trim());
             }
         });
         phpServer.stderr.on('data', (data) => {
@@ -263,11 +268,12 @@ function serveApp(secret, apiPort, phpIniSettings) {
             }
             else {
                 if (error.includes('[NATIVE_EXCEPTION]:')) {
+                    let logFile = join(storagePath, 'logs', 'laravel.log');
                     console.log();
                     console.error('Error in PHP:');
                     console.error('  ' + error.split('[NATIVE_EXCEPTION]:')[1].trim());
                     console.log('Please check your log file:');
-                    console.log('  ' + join(appPath, 'storage', 'logs', 'laravel.log'));
+                    console.log('  ' + logFile);
                     console.log();
                 }
             }
