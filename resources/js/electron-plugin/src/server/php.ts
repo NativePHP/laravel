@@ -21,17 +21,17 @@ const appPath = getAppPath();
 
 mkdirpSync(bootstrapCache);
 
-function runningProdVersion() {
-    //TODO: Check if the app is running the production version
-    return existsSync(join(appPath, 'build', '__nativephp_app_bundle'))
-}
-
 function runningSecureBuild() {
     return existsSync(join(appPath, 'build', '__nativephp_app_bundle'))
 }
 
 function shouldMigrateDatabase(store) {
     return store.get('migrated_version') !== app.getVersion()
+        && process.env.NODE_ENV !== 'development';
+}
+
+function shouldOptimize(store) {
+    return store.get('optimized_version') !== app.getVersion()
         && process.env.NODE_ENV !== 'development';
 }
 
@@ -253,11 +253,11 @@ function getDefaultEnvironmentVariables(secret, apiPort): EnvironmentVariables {
     };
 
     // Only add cache paths if in production mode
-    if(runningProdVersion()) {
+    if(runningSecureBuild()) {
         variables.APP_SERVICES_CACHE = join(bootstrapCache, 'services.php');
         variables.APP_PACKAGES_CACHE = join(bootstrapCache, 'packages.php');
         variables.APP_CONFIG_CACHE = join(bootstrapCache, 'config.php');
-        variables.APP_ROUTES_CACHE = join(bootstrapCache, 'routes.php');
+        variables.APP_ROUTES_CACHE = join(bootstrapCache, 'routes-v7.php');
         variables.APP_EVENTS_CACHE = join(bootstrapCache, 'events.php');
     }
 
@@ -289,7 +289,9 @@ function serveApp(secret, apiPort, phpIniSettings): Promise<ProcessResult> {
             env
         };
 
-        const store = new Store();
+        const store = new Store({
+            name: 'nativephp', // So it doesn't conflict with settings of the app
+        });
 
         // Make sure the storage path is linked - as people can move the app around, we
         // need to run this every time the app starts
@@ -298,18 +300,28 @@ function serveApp(secret, apiPort, phpIniSettings): Promise<ProcessResult> {
         }
 
         // Cache the project
-        if (runningProdVersion()) {
+        if (shouldOptimize(store)) {
             console.log('Caching view and routes...');
-            // TODO: once per version
-            callPhpSync(['artisan', 'optimize'], phpOptions, phpIniSettings)
+
+            let result = callPhpSync(['artisan', 'optimize'], phpOptions, phpIniSettings);
+
+            if (result.status !== 0) {
+                console.error('Failed to cache view and routes:', result.stderr.toString());
+            } else {
+                store.set('optimized_version', app.getVersion())
+            }
         }
 
         // Migrate the database
         if (shouldMigrateDatabase(store)) {
             console.log('Migrating database...')
-            callPhpSync(['artisan', 'migrate', '--force'], phpOptions, phpIniSettings)
-            // TODO: fail if callPhp fails and don't store migrated version
-            store.set('migrated_version', app.getVersion())
+            let result = callPhpSync(['artisan', 'migrate', '--force'], phpOptions, phpIniSettings);
+
+            if (result.status !== 0) {
+                console.error('Failed to migrate database:', result.stderr.toString());
+            } else {
+                store.set('migrated_version', app.getVersion())
+            }
         }
 
         if (process.env.NODE_ENV === 'development') {

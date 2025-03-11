@@ -24,14 +24,15 @@ const bootstrapCache = join(app.getPath('userData'), 'bootstrap', 'cache');
 const argumentEnv = getArgumentEnv();
 const appPath = getAppPath();
 mkdirpSync(bootstrapCache);
-function runningProdVersion() {
-    return existsSync(join(appPath, 'build', '__nativephp_app_bundle'));
-}
 function runningSecureBuild() {
     return existsSync(join(appPath, 'build', '__nativephp_app_bundle'));
 }
 function shouldMigrateDatabase(store) {
     return store.get('migrated_version') !== app.getVersion()
+        && process.env.NODE_ENV !== 'development';
+}
+function shouldOptimize(store) {
+    return store.get('optimized_version') !== app.getVersion()
         && process.env.NODE_ENV !== 'development';
 }
 function getPhpPort() {
@@ -175,11 +176,11 @@ function getDefaultEnvironmentVariables(secret, apiPort) {
         NATIVEPHP_VIDEOS_PATH: getPath('videos'),
         NATIVEPHP_RECENT_PATH: getPath('recent'),
     };
-    if (runningProdVersion()) {
+    if (runningSecureBuild()) {
         variables.APP_SERVICES_CACHE = join(bootstrapCache, 'services.php');
         variables.APP_PACKAGES_CACHE = join(bootstrapCache, 'packages.php');
         variables.APP_CONFIG_CACHE = join(bootstrapCache, 'config.php');
-        variables.APP_ROUTES_CACHE = join(bootstrapCache, 'routes.php');
+        variables.APP_ROUTES_CACHE = join(bootstrapCache, 'routes-v7.php');
         variables.APP_EVENTS_CACHE = join(bootstrapCache, 'events.php');
     }
     return variables;
@@ -202,18 +203,31 @@ function serveApp(secret, apiPort, phpIniSettings) {
             cwd: appPath,
             env
         };
-        const store = new Store();
+        const store = new Store({
+            name: 'nativephp',
+        });
         if (!runningSecureBuild()) {
             callPhpSync(['artisan', 'storage:link', '--force'], phpOptions, phpIniSettings);
         }
-        if (runningProdVersion()) {
+        if (shouldOptimize(store)) {
             console.log('Caching view and routes...');
-            callPhpSync(['artisan', 'optimize'], phpOptions, phpIniSettings);
+            let result = callPhpSync(['artisan', 'optimize'], phpOptions, phpIniSettings);
+            if (result.status !== 0) {
+                console.error('Failed to cache view and routes:', result.stderr.toString());
+            }
+            else {
+                store.set('optimized_version', app.getVersion());
+            }
         }
         if (shouldMigrateDatabase(store)) {
             console.log('Migrating database...');
-            callPhpSync(['artisan', 'migrate', '--force'], phpOptions, phpIniSettings);
-            store.set('migrated_version', app.getVersion());
+            let result = callPhpSync(['artisan', 'migrate', '--force'], phpOptions, phpIniSettings);
+            if (result.status !== 0) {
+                console.error('Failed to migrate database:', result.stderr.toString());
+            }
+            else {
+                store.set('migrated_version', app.getVersion());
+            }
         }
         if (process.env.NODE_ENV === 'development') {
             console.log('Skipping Database migration while in development.');
