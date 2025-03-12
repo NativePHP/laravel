@@ -25,7 +25,6 @@ use Native\Laravel\GlobalShortcut as GlobalShortcutImplementation;
 use Native\Laravel\Logging\LogWatcher;
 use Native\Laravel\PowerMonitor as PowerMonitorImplementation;
 use Native\Laravel\Windows\WindowManager as WindowManagerImplementation;
-use Phar;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
