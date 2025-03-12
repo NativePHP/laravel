@@ -33,7 +33,7 @@ function shouldMigrateDatabase(store) {
         && process.env.NODE_ENV !== 'development';
 }
 function shouldOptimize(store) {
-    return runningSecureBuild();
+    return true;
 }
 function getPhpPort() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -45,11 +45,7 @@ function getPhpPort() {
 }
 function retrievePhpIniSettings() {
     return __awaiter(this, void 0, void 0, function* () {
-        const env = {
-            NATIVEPHP_RUNNING: 'true',
-            NATIVEPHP_STORAGE_PATH: storagePath,
-            NATIVEPHP_DATABASE_PATH: databaseFile,
-        };
+        const env = getDefaultEnvironmentVariables();
         const phpOptions = {
             cwd: appPath,
             env
@@ -63,11 +59,7 @@ function retrievePhpIniSettings() {
 }
 function retrieveNativePHPConfig() {
     return __awaiter(this, void 0, void 0, function* () {
-        const env = {
-            NATIVEPHP_RUNNING: 'true',
-            NATIVEPHP_STORAGE_PATH: storagePath,
-            NATIVEPHP_DATABASE_PATH: databaseFile,
-        };
+        const env = getDefaultEnvironmentVariables();
         const phpOptions = {
             cwd: appPath,
             env
@@ -128,7 +120,10 @@ function getAppPath() {
     return appPath;
 }
 function ensureAppFoldersAreAvailable() {
+    console.log('Copying storage folder...');
+    console.log('Storage path:', storagePath);
     if (!existsSync(storagePath) || process.env.NODE_ENV === 'development') {
+        console.log("App path:", appPath);
         copySync(join(appPath, 'storage'), storagePath);
     }
     mkdirSync(databasePath, { recursive: true });
@@ -160,11 +155,9 @@ function getDefaultEnvironmentVariables(secret, apiPort) {
         APP_ENV: process.env.NODE_ENV === 'development' ? 'local' : 'production',
         APP_DEBUG: process.env.NODE_ENV === 'development' ? 'true' : 'false',
         LARAVEL_STORAGE_PATH: storagePath,
+        NATIVEPHP_RUNNING: 'true',
         NATIVEPHP_STORAGE_PATH: storagePath,
         NATIVEPHP_DATABASE_PATH: databaseFile,
-        NATIVEPHP_API_URL: `http://localhost:${apiPort}/api/`,
-        NATIVEPHP_RUNNING: 'true',
-        NATIVEPHP_SECRET: secret,
         NATIVEPHP_USER_HOME_PATH: getPath('home'),
         NATIVEPHP_APP_DATA_PATH: getPath('appData'),
         NATIVEPHP_USER_DATA_PATH: getPath('userData'),
@@ -176,6 +169,10 @@ function getDefaultEnvironmentVariables(secret, apiPort) {
         NATIVEPHP_VIDEOS_PATH: getPath('videos'),
         NATIVEPHP_RECENT_PATH: getPath('recent'),
     };
+    if (secret && apiPort) {
+        variables.NATIVEPHP_API_URL = `http://localhost:${apiPort}/api/`;
+        variables.NATIVEPHP_SECRET = secret;
+    }
     if (runningSecureBuild()) {
         variables.APP_SERVICES_CACHE = join(bootstrapCache, 'services.php');
         variables.APP_PACKAGES_CACHE = join(bootstrapCache, 'packages.php');
@@ -222,6 +219,9 @@ function serveApp(secret, apiPort, phpIniSettings) {
         }
         if (shouldMigrateDatabase(store)) {
             console.log('Migrating database...');
+            if (parseInt(process.env.SHELL_VERBOSITY) > 0) {
+                console.log('Database path:', databaseFile);
+            }
             let result = callPhpSync(['artisan', 'migrate', '--force'], phpOptions, phpIniSettings);
             if (result.status !== 0) {
                 console.error('Failed to migrate database:', result.stderr.toString());

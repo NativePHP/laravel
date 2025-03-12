@@ -12,6 +12,7 @@ import state from "./state.js";
 import getPort, {portNumbers} from 'get-port';
 import {ProcessResult} from "./ProcessResult.js";
 
+// TODO: maybe in dev, don't go to the userData folder and stay in the Laravel app folder
 const storagePath = join(app.getPath('userData'), 'storage')
 const databasePath = join(app.getPath('userData'), 'database')
 const databaseFile = join(databasePath, 'database.sqlite')
@@ -37,7 +38,8 @@ function shouldOptimize(store) {
      * the cached config is not picked up on subsequent launches,
      * so we'll just rebuilt it every time for now
      */
-    return runningSecureBuild();
+    return true;
+    // return runningSecureBuild();
     // return runningSecureBuild() && store.get('optimized_version') !== app.getVersion();
 }
 
@@ -49,11 +51,7 @@ async function getPhpPort() {
 }
 
 async function retrievePhpIniSettings() {
-    const env = {
-        NATIVEPHP_RUNNING: 'true',
-        NATIVEPHP_STORAGE_PATH: storagePath,
-        NATIVEPHP_DATABASE_PATH: databaseFile,
-    };
+    const env = getDefaultEnvironmentVariables() as any;
 
     const phpOptions = {
         cwd: appPath,
@@ -70,11 +68,7 @@ async function retrievePhpIniSettings() {
 }
 
 async function retrieveNativePHPConfig() {
-    const env = {
-        NATIVEPHP_RUNNING: 'true',
-        NATIVEPHP_STORAGE_PATH: storagePath,
-        NATIVEPHP_DATABASE_PATH: databaseFile,
-    };
+    const env = getDefaultEnvironmentVariables() as any;
 
     const phpOptions = {
         cwd: appPath,
@@ -173,9 +167,15 @@ function getAppPath() {
 }
 
 function ensureAppFoldersAreAvailable() {
-    if (!existsSync(storagePath) || process.env.NODE_ENV === 'development') {
-        copySync(join(appPath, 'storage'), storagePath)
-    }
+
+    // if (!runningSecureBuild()) {
+    console.log('Copying storage folder...');
+    console.log('Storage path:', storagePath);
+        if (!existsSync(storagePath) || process.env.NODE_ENV === 'development') {
+            console.log("App path:", appPath);
+            copySync(join(appPath, 'storage'), storagePath)
+        }
+    // }
 
     mkdirSync(databasePath, {recursive: true})
 
@@ -214,9 +214,9 @@ interface EnvironmentVariables {
     LARAVEL_STORAGE_PATH: string;
     NATIVEPHP_STORAGE_PATH: string;
     NATIVEPHP_DATABASE_PATH: string;
-    NATIVEPHP_API_URL: string;
+    NATIVEPHP_API_URL?: string;
     NATIVEPHP_RUNNING: string;
-    NATIVEPHP_SECRET: string;
+    NATIVEPHP_SECRET?: string;
     NATIVEPHP_USER_HOME_PATH: string;
     NATIVEPHP_APP_DATA_PATH: string;
     NATIVEPHP_USER_DATA_PATH: string;
@@ -233,19 +233,18 @@ interface EnvironmentVariables {
     APP_CONFIG_CACHE?: string;
     APP_ROUTES_CACHE?: string;
     APP_EVENTS_CACHE?: string;
+    VIEW_COMPILED_PATH?: string;
 }
 
-function getDefaultEnvironmentVariables(secret, apiPort): EnvironmentVariables {
+function getDefaultEnvironmentVariables(secret?: string, apiPort?: number): EnvironmentVariables {
     // Base variables with string values (no null values)
     let variables: EnvironmentVariables = {
         APP_ENV: process.env.NODE_ENV === 'development' ? 'local' : 'production',
         APP_DEBUG: process.env.NODE_ENV === 'development' ? 'true' : 'false',
         LARAVEL_STORAGE_PATH: storagePath,
+        NATIVEPHP_RUNNING: 'true',
         NATIVEPHP_STORAGE_PATH: storagePath,
         NATIVEPHP_DATABASE_PATH: databaseFile,
-        NATIVEPHP_API_URL: `http://localhost:${apiPort}/api/`,
-        NATIVEPHP_RUNNING: 'true',
-        NATIVEPHP_SECRET: secret,
         NATIVEPHP_USER_HOME_PATH: getPath('home'),
         NATIVEPHP_APP_DATA_PATH: getPath('appData'),
         NATIVEPHP_USER_DATA_PATH: getPath('userData'),
@@ -258,6 +257,12 @@ function getDefaultEnvironmentVariables(secret, apiPort): EnvironmentVariables {
         NATIVEPHP_RECENT_PATH: getPath('recent'),
     };
 
+    // Only if the server has already started
+    if (secret && apiPort) {
+        variables.NATIVEPHP_API_URL = `http://localhost:${apiPort}/api/`;
+        variables.NATIVEPHP_SECRET = secret;
+    }
+
     // Only add cache paths if in production mode
     if (runningSecureBuild()) {
         variables.APP_SERVICES_CACHE = join(bootstrapCache, 'services.php');
@@ -265,6 +270,7 @@ function getDefaultEnvironmentVariables(secret, apiPort): EnvironmentVariables {
         variables.APP_CONFIG_CACHE = join(bootstrapCache, 'config.php');
         variables.APP_ROUTES_CACHE = join(bootstrapCache, 'routes-v7.php');
         variables.APP_EVENTS_CACHE = join(bootstrapCache, 'events.php');
+        // variables.VIEW_COMPILED_PATH; // TODO: keep those in the phar file if we can.
     }
 
     return variables;
@@ -321,7 +327,12 @@ function serveApp(secret, apiPort, phpIniSettings): Promise<ProcessResult> {
 
         // Migrate the database
         if (shouldMigrateDatabase(store)) {
-            console.log('Migrating database...')
+            console.log('Migrating database...');
+
+            if(parseInt(process.env.SHELL_VERBOSITY) > 0) {
+                console.log('Database path:', databaseFile);
+            }
+
             let result = callPhpSync(['artisan', 'migrate', '--force'], phpOptions, phpIniSettings);
 
             if (result.status !== 0) {

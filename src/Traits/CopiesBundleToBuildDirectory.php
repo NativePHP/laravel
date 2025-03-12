@@ -19,30 +19,26 @@ trait CopiesBundleToBuildDirectory
 
     public function copyBundleToBuildDirectory(): bool
     {
-        if ($this->hasBundled()) {
+        $filesystem = new Filesystem;
 
-            $this->line('Copying secure app bundle to build directory...');
-            $this->line('From: '.realpath(dirname($this->sourcePath(self::$bundlePath))));
-            $this->line('To: '.realpath(dirname($this->buildPath(self::$bundlePath))));
+        $this->line('Copying secure app bundle to build directory...');
+        $this->line('From: '.realpath(dirname($this->sourcePath(self::$bundlePath))));
+        $this->line('To: '.realpath(dirname($this->buildPath(self::$bundlePath))));
 
-            // TODO: copy only the files that you need.
-            $this->copyToBuildDirectory();
-            $filesToCopy = [
-                self::$bundlePath,
-                '.env',
-            ];
-            $filesystem = new Filesystem;
-            foreach ($filesToCopy as $file) {
-                $filesystem->copy($this->sourcePath($file), $this->buildPath($file), true);
-            }
-            // $this->keepRequiredDirectories();
+        // Clean and create build directory
+        $filesystem->remove($this->buildPath());
+        $filesystem->mkdir($this->buildPath());
 
-            return true;
+        $filesToCopy = [
+            self::$bundlePath,
+            // '.env',
+        ];
+        foreach ($filesToCopy as $file) {
+            $filesystem->copy($this->sourcePath($file), $this->buildPath($file), true);
         }
+        // $this->keepRequiredDirectories();
 
-        $this->warnUnsecureBuild();
-
-        return $this->copyToBuildDirectory();
+        return true;
     }
 
     public function warnUnsecureBuild(): void
