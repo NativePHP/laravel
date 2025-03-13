@@ -37,6 +37,9 @@ class DebugCommand extends Command implements PromptsForMissingInput
             case 'File':
                 $this->outputToFile();
                 break;
+            case 'Clipboard':
+                $this->outputToClipboard();
+                break;
             case 'Console':
                 $this->outputToConsole();
                 break;
@@ -156,7 +159,7 @@ class DebugCommand extends Command implements PromptsForMissingInput
         return [
             'output' => fn () => select(
                 'Where would you like to output the debug information?',
-                ['File', 'Console'],
+                ['File', 'Clipboard', 'Console'],
                 'File'
             ),
         ];
@@ -173,5 +176,19 @@ class DebugCommand extends Command implements PromptsForMissingInput
         $this->output->writeln(
             print_r($this->debugInfo->toArray(), true)
         );
+    }
+
+    private function outputToClipboard(): void
+    {
+        $json = json_encode($this->debugInfo->toArray(), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+
+        // Copy json to clipboard
+        if (PHP_OS_FAMILY === 'Windows') {
+            Process::run('echo ' . escapeshellarg($json) . ' | clip');
+        } elseif (PHP_OS_FAMILY === 'Linux') {
+            Process::run('echo ' . escapeshellarg($json) . ' | xclip -selection clipboard');
+        } else {
+            Process::run('echo ' . escapeshellarg($json) . ' | pbcopy');
+        }
     }
 }
