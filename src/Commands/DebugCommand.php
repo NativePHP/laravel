@@ -193,11 +193,11 @@ class DebugCommand extends Command implements PromptsForMissingInput
 
         // Copy json to clipboard
         if (PHP_OS_FAMILY === 'Windows') {
-            Process::run('echo ' . escapeshellarg($json) . ' | clip');
+            Process::run('echo '.escapeshellarg($json).' | clip');
         } elseif (PHP_OS_FAMILY === 'Linux') {
-            Process::run('echo ' . escapeshellarg($json) . ' | xclip -selection clipboard');
+            Process::run('echo '.escapeshellarg($json).' | xclip -selection clipboard');
         } else {
-            Process::run('echo ' . escapeshellarg($json) . ' | pbcopy');
+            Process::run('echo '.escapeshellarg($json).' | pbcopy');
         }
     }
 }
