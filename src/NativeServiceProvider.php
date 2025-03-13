@@ -8,6 +8,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Native\Laravel\ChildProcess as ChildProcessImplementation;
+use Native\Laravel\Commands\DebugCommand;
 use Native\Laravel\Commands\FreshCommand;
 use Native\Laravel\Commands\LoadPHPConfigurationCommand;
 use Native\Laravel\Commands\LoadStartupConfigurationCommand;
@@ -35,8 +36,9 @@ class NativeServiceProvider extends PackageServiceProvider
         $package
             ->name('nativephp')
             ->hasCommands([
-                MigrateCommand::class,
+                DebugCommand::class,
                 FreshCommand::class,
+                MigrateCommand::class,
                 SeedDatabaseCommand::class,
             ])
             ->hasConfigFile()
