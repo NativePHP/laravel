@@ -8,9 +8,10 @@ use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Process;
+
 use function Laravel\Prompts\error;
-use function Laravel\Prompts\intro;
 use function Laravel\Prompts\info;
+use function Laravel\Prompts\intro;
 use function Laravel\Prompts\note;
 use function Laravel\Prompts\outro;
 use function Laravel\Prompts\select;
@@ -18,6 +19,7 @@ use function Laravel\Prompts\select;
 class DebugCommand extends Command implements PromptsForMissingInput
 {
     protected $signature = 'native:debug {output}';
+
     protected $description = 'Generate debug information required for opening an issue.';
 
     private Collection $debugInfo;
@@ -56,7 +58,7 @@ class DebugCommand extends Command implements PromptsForMissingInput
             'Laravel' => [
                 'Version' => app()->version(),
                 'ConfigCached' => file_exists($this->laravel->getCachedConfigPath()),
-                'DebugEnabled' => $this->laravel->hasDebugModeEnabled()
+                'DebugEnabled' => $this->laravel->hasDebugModeEnabled(),
             ],
             'Node' => [
                 'Version' => trim(Process::run('node -v')->output()),
@@ -132,17 +134,17 @@ class DebugCommand extends Command implements PromptsForMissingInput
 
             // Check if string starts with date format Y-m-d H:i:s in square brackets
             if (preg_match('/^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\]/', $line)) {
-                if (!empty($currentLine)) {
+                if (! empty($currentLine)) {
                     $errors[] = $currentLine;
                     $currentLine = '';
                     $errorCount++;
                 }
             }
 
-            $currentLine .= $line . PHP_EOL;
+            $currentLine .= $line.PHP_EOL;
         }
 
-        if (!empty($currentLine)) {
+        if (! empty($currentLine)) {
             $errors[] = $currentLine;
         }
 
@@ -156,14 +158,14 @@ class DebugCommand extends Command implements PromptsForMissingInput
                 'Where would you like to output the debug information?',
                 ['File', 'Console'],
                 'File'
-            )
+            ),
         ];
     }
 
     private function outputToFile(): void
     {
         File::put(base_path('nativephp_debug.json'), json_encode($this->debugInfo->toArray(), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
-        note('Debug information saved to ' . base_path('nativephp_debug.json'));
+        note('Debug information saved to '.base_path('nativephp_debug.json'));
     }
 
     private function outputToConsole(): void
