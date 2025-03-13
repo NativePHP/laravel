@@ -52,6 +52,12 @@ class DebugCommand extends Command implements PromptsForMissingInput
 
     private function processEnvironment(): static
     {
+        $locationCommand = 'which';
+
+        if (PHP_OS_FAMILY === 'Windows') {
+            $locationCommand = 'where';
+        }
+
         info('Generating Environment Data...');
         $environment = [
             'PHP' => [
@@ -65,8 +71,11 @@ class DebugCommand extends Command implements PromptsForMissingInput
             ],
             'Node' => [
                 'Version' => trim(Process::run('node -v')->output()),
-                'Path' => trim(Process::run('which node')->output()),
-                'NPM' => trim(Process::run('npm -v')->output()),
+                'Path' => trim(Process::run("$locationCommand node")->output()),
+            ],
+            'NPM' => [
+                'Version' => trim(Process::run('npm -v')->output()),
+                'Path' => trim(Process::run("$locationCommand npm")->output()),
             ],
             'OperatingSystem' => PHP_OS,
         ];
