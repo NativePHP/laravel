@@ -103,7 +103,7 @@ class DebugCommand extends Command implements PromptsForMissingInput
             return [$key => $version];
         });
 
-        $isNotarisationConfigured = env('NATIVEPHP_APPLE_ID')
+        $isNotarizationConfigured = env('NATIVEPHP_APPLE_ID')
             && env('NATIVEPHP_APPLE_ID_PASS')
             && env('NATIVEPHP_APPLE_TEAM_ID');
 
@@ -117,7 +117,7 @@ class DebugCommand extends Command implements PromptsForMissingInput
                         'Pre' => config('nativephp.prebuild'),
                         'Post' => config('nativephp.postbuild'),
                     ],
-                    'NotarizationEnabled' => $isNotarisationConfigured,
+                    'NotarizationEnabled' => $isNotarizationConfigured,
                     'CustomPHPBinary' => env('NATIVEPHP_PHP_BINARY_PATH') ?: false,
                 ],
             ]
