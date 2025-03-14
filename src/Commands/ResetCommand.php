@@ -50,7 +50,7 @@ class ResetCommand extends Command
                 $appName = $this->setAppName($developmentMode);
 
                 // Eh, just in case, I don't want to delete all user data by accident.
-                if ( ! empty($appName)) {
+                if (! empty($appName)) {
                     $appDataPath = $this->appDataDirectory($appName);
                     $this->line('Clearing: '.$appDataPath);
 

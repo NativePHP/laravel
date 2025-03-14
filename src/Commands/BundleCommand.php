@@ -178,7 +178,7 @@ class BundleCommand extends Command
         //     // }
         // }
 
-        // Remove repositories with type path
+        // Remove repositories with type path, we include symlinked packages
         if (! empty($composerJson['repositories'])) {
 
             $this->newLine();
@@ -192,10 +192,10 @@ class BundleCommand extends Command
                 file_put_contents($this->buildPath('composer.json'),
                     json_encode($composerJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 
-                Process::path($this->buildPath())
-                    ->run('composer update --no-dev', function (string $type, string $output) {
-                        echo $output;
-                    });
+                // Process::path($this->buildPath())
+                //     ->run('composer install --no-dev', function (string $type, string $output) {
+                //         echo $output;
+                //     });
             }
 
         }
@@ -221,7 +221,7 @@ class BundleCommand extends Command
         intro('Creating zip archive…');
 
         $finder = (new Finder)->files()
-            // ->followLinks()
+            ->followLinks()
             // ->ignoreVCSIgnored(true) // TODO: Make our own list of ignored files
             ->in($this->buildPath())
             ->exclude([
