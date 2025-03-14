@@ -265,8 +265,8 @@ function getDefaultEnvironmentVariables(secret?: string, apiPort?: number): Envi
 
     // Only add cache paths if in production mode
     if (runningSecureBuild()) {
-        variables.APP_SERVICES_CACHE = join(bootstrapCache, 'services.php');
-        variables.APP_PACKAGES_CACHE = join(bootstrapCache, 'packages.php');
+        variables.APP_SERVICES_CACHE = join(bootstrapCache, 'services.php'); // Should be present and writable
+        variables.APP_PACKAGES_CACHE = join(bootstrapCache, 'packages.php'); // Should be present and writable
         variables.APP_CONFIG_CACHE = join(bootstrapCache, 'config.php');
         variables.APP_ROUTES_CACHE = join(bootstrapCache, 'routes-v7.php');
         variables.APP_EVENTS_CACHE = join(bootstrapCache, 'events.php');
