@@ -30,8 +30,7 @@ class DebugCommand extends Command implements PromptsForMissingInput
         intro('Generating Debug Information...');
 
         $this->processEnvironment()
-            ->processNativePHP()
-            ->processErrorLog();
+            ->processNativePHP();
 
         switch ($this->argument('output')) {
             case 'File':
@@ -124,43 +123,6 @@ class DebugCommand extends Command implements PromptsForMissingInput
         );
 
         return $this;
-    }
-
-    private function processErrorLog(): void
-    {
-        info('Processing Error Log Data...');
-        $errorLog = file_exists($logPath = storage_path('logs/laravel.log'))
-            ? file_get_contents($logPath)
-            : 'No logs found.';
-
-        // Process each line as a single array element
-        $errorLog = explode(PHP_EOL, $errorLog);
-        $errorCount = 0;
-        $errors = [];
-
-        $currentLine = '';
-        foreach ($errorLog as $line) {
-            if ($errorCount === 5) {
-                break;
-            }
-
-            // Check if string starts with date format Y-m-d H:i:s in square brackets
-            if (preg_match('/^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\]/', $line)) {
-                if (! empty($currentLine)) {
-                    $errors[] = $currentLine;
-                    $currentLine = '';
-                    $errorCount++;
-                }
-            }
-
-            $currentLine .= $line.PHP_EOL;
-        }
-
-        if (! empty($currentLine)) {
-            $errors[] = $currentLine;
-        }
-
-        $this->debugInfo->put('ErrorLog', $errors);
     }
 
     protected function promptForMissingArgumentsUsing(): array
