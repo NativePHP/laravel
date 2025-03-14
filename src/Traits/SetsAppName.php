@@ -4,7 +4,7 @@ namespace Native\Electron\Traits;
 
 trait SetsAppName
 {
-    protected function setAppName($developmentMode = false): void
+    protected function setAppName($developmentMode = false): string
     {
         $packageJsonPath = __DIR__.'/../../resources/js/package.json';
         $packageJson = json_decode(file_get_contents($packageJsonPath), true);
@@ -23,5 +23,7 @@ trait SetsAppName
         $packageJson['name'] = $name;
 
         file_put_contents($packageJsonPath, json_encode($packageJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+
+        return $name;
     }
 }

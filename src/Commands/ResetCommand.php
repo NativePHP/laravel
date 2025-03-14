@@ -3,12 +3,15 @@
 namespace Native\Electron\Commands;
 
 use Illuminate\Console\Command;
+use Native\Electron\Traits\SetsAppName;
 use Symfony\Component\Filesystem\Filesystem;
 
 use function Laravel\Prompts\intro;
 
 class ResetCommand extends Command
 {
+    use SetsAppName;
+
     protected $signature = 'native:reset {--with-app-data : Clear the app data as well}';
 
     protected $description = 'Clear all build and dist files';
@@ -43,18 +46,17 @@ class ResetCommand extends Command
 
         if ($this->option('with-app-data')) {
 
-            // Fetch last generated app name
-            $packageJsonPath = __DIR__.'/../../resources/js/package.json';
-            $packageJson = json_decode(file_get_contents($packageJsonPath), true);
-            $appName = $packageJson['name'];
+            foreach ([true, false] as $developmentMode) {
+                $appName = $this->setAppName($developmentMode);
 
-            // Eh, just in case, I don't want to delete all user data by accident.
-            if (! empty($appName)) {
-                $appDataPath = $this->appDataDirectory($appName);
-                $this->line('Clearing: '.$appDataPath);
+                // Eh, just in case, I don't want to delete all user data by accident.
+                if ( ! empty($appName)) {
+                    $appDataPath = $this->appDataDirectory($appName);
+                    $this->line('Clearing: '.$appDataPath);
 
-                if ($filesystem->exists($appDataPath)) {
-                    $filesystem->remove($appDataPath);
+                    if ($filesystem->exists($appDataPath)) {
+                        $filesystem->remove($appDataPath);
+                    }
                 }
             }
         }
