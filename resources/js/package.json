@@ -76,7 +76,7 @@
         "@typescript-eslint/parser": "^8.18.1",
         "@vue/eslint-config-prettier": "^10.1.0",
         "cross-env": "^7.0.3",
-        "electron": "^32.2.6",
+        "electron": "^32.2.7",
         "electron-builder": "^25.1.8",
         "electron-chromedriver": "^32.2.6",
         "electron-vite": "^3.0.0",

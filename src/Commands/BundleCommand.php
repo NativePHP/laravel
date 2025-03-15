@@ -11,7 +11,7 @@ use Illuminate\Support\Number;
 use Illuminate\Support\Str;
 use Native\Electron\Traits\CleansEnvFile;
 use Native\Electron\Traits\CopiesToBuildDirectory;
-use Native\Electron\Traits\HandleApiRequests;
+use Native\Electron\Traits\HandlesZephpyr;
 use Native\Electron\Traits\HasPreAndPostProcessing;
 use Native\Electron\Traits\InstallsAppIcon;
 use Native\Electron\Traits\PrunesVendorDirectory;
@@ -25,7 +25,7 @@ class BundleCommand extends Command
 {
     use CleansEnvFile;
     use CopiesToBuildDirectory;
-    use HandleApiRequests;
+    use HandlesZephpyr;
     use HasPreAndPostProcessing;
     use InstallsAppIcon;
     use PrunesVendorDirectory;

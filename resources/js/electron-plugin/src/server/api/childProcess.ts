@@ -79,6 +79,7 @@ function startProcess(settings) {
 
         // Experimental feature on Electron,
         // I keep this here to remember and retry when we upgrade
+        // https://www.electronjs.org/docs/latest/api/utility-process#event-error-experimental
         // proc.on('error', (error) => {
         //     clearTimeout(startTimeout);
         //     console.error(`Process [${alias}] error: ${error.message}`);
@@ -167,11 +168,6 @@ function startPhpProcess(settings) {
     const iniArgs = Object.keys(iniSettings).map(key => {
         return ['-d', `${key}=${iniSettings[key]}`];
     }).flat();
-
-
-    // if (args[0] === 'artisan' && runningSecureBuild()) {
-    //     args.unshift(join(appPath, 'build', '__nativephp_app_bundle'));
-    // }
 
     if (settings.cmd[0] === 'artisan' && runningSecureBuild()) {
         settings.cmd.unshift(join(getAppPath(), 'build', '__nativephp_app_bundle'));

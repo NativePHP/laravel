@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Http;
 
 use function Laravel\Prompts\intro;
 
-trait HandleApiRequests
+trait HandlesZephpyr
 {
     private function baseUrl(): string
     {
@@ -49,7 +49,7 @@ trait HandleApiRequests
             $this->line('');
             $this->warn('No ZEPHPYR_TOKEN found. Cannot bundle!');
             $this->line('');
-            $this->line('Add your api ZEPHPYR_TOKEN to its .env file:');
+            $this->line('Add your Zephpyr API token to your .env file (ZEPHPYR_TOKEN):');
             $this->line(base_path('.env'));
             $this->line('');
             $this->info('Not set up with Zephpyr yet? Secure your NativePHP app builds and more!');
