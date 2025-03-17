@@ -38,4 +38,9 @@ return [
         'apple_id_pass' => env('NATIVEPHP_APPLE_ID_PASS'),
         'apple_team_id' => env('NATIVEPHP_APPLE_TEAM_ID'),
     ],
+
+    /**
+     * The binary path of PHP for NativePHP to use at build.
+     */
+    'php_binary_path' => env('NATIVEPHP_PHP_BINARY_PATH'),
 ];

@@ -117,7 +117,7 @@ class DebugCommand extends Command implements PromptsForMissingInput
                         'Post' => config('nativephp.postbuild'),
                     ],
                     'NotarizationEnabled' => $isNotarizationConfigured,
-                    'CustomPHPBinary' => env('NATIVEPHP_PHP_BINARY_PATH') ?: false,
+                    'CustomPHPBinary' => config('nativephp-internal.php_binary_path') ?? false,
                 ],
             ]
         );
