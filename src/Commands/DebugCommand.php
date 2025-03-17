@@ -102,9 +102,9 @@ class DebugCommand extends Command implements PromptsForMissingInput
             return [$key => $version];
         });
 
-        $isNotarizationConfigured = env('NATIVEPHP_APPLE_ID')
-            && env('NATIVEPHP_APPLE_ID_PASS')
-            && env('NATIVEPHP_APPLE_TEAM_ID');
+        $isNotarizationConfigured = config('nativephp-internal.notarization.apple_id')
+            && config('nativephp-internal.notarization.apple_id_pass')
+            && config('nativephp-internal.notarization.apple_team_id');
 
         $this->debugInfo->put(
             'NativePHP',
