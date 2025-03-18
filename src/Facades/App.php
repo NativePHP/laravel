@@ -5,6 +5,7 @@ namespace Native\Laravel\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
+ * @method static void quit()
  * @method static void focus()
  * @method static void hide()
  * @method static bool isHidden()
