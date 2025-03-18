@@ -2,6 +2,11 @@ import express from 'express'
 import { app } from 'electron'
 const router = express.Router();
 
+router.post('/quit', (req, res) => {
+    app.quit()
+    res.sendStatus(200);
+});
+
 router.post('/show', (req, res) => {
     app.show()
     res.sendStatus(200);
