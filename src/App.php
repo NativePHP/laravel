@@ -62,4 +62,17 @@ class App
     {
         $this->client->delete('app/recent-documents');
     }
+
+    public function openAtLogin(?bool $open = null): bool
+    {
+        if ($open === null) {
+            return (bool) $this->client->get('app/open-at-login')->json('open');
+        }
+
+        $this->client->post('app/open-at-login', [
+            'open' => $open,
+        ]);
+
+        return $open;
+    }
 }
