@@ -9,6 +9,11 @@ class App
 {
     public function __construct(protected Client $client) {}
 
+    public function quit(): void
+    {
+        $this->client->post('app/quit');
+    }
+
     public function focus(): void
     {
         $this->client->post('app/focus');
@@ -62,5 +67,19 @@ class App
     public function isRunningBundled(): bool
     {
         return Phar::running() !== '';
+
+    }
+
+    public function openAtLogin(?bool $open = null): bool
+    {
+        if ($open === null) {
+            return (bool) $this->client->get('app/open-at-login')->json('open');
+        }
+
+        $this->client->post('app/open-at-login', [
+            'open' => $open,
+        ]);
+
+        return $open;
     }
 }
