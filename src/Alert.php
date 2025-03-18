@@ -53,20 +53,6 @@ class Alert
         return $this;
     }
 
-    public function defaultPath(string $defaultPath): self
-    {
-        $this->defaultPath = $defaultPath;
-
-        return $this;
-    }
-
-    public function button(string $buttonLabel): self
-    {
-        $this->buttonLabel = $buttonLabel;
-
-        return $this;
-    }
-
     public function defaultId(int $defaultId): self
     {
         $this->defaultId = $defaultId;
