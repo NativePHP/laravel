@@ -23,7 +23,7 @@ it('can boot up the app', function () {
             // Wait until port 8100 is open
             dump('Waiting for port 8100 to open...');
 
-            $fp = @fsockopen('localhost', 8100, $errno, $errstr, 1);
+            $fp = @fsockopen('127.0.0.1', 8100, $errno, $errstr, 1);
             if ($fp === false) {
                 throw new Exception(sprintf(
                     'Port 8100 is not open yet. Output: "%s", Errstr: "%s"',
