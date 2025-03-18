@@ -8,6 +8,11 @@ class App
 {
     public function __construct(protected Client $client) {}
 
+    public function quit(): void
+    {
+        $this->client->post('app/quit');
+    }
+
     public function focus(): void
     {
         $this->client->post('app/focus');
