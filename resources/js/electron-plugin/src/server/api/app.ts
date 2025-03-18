@@ -63,4 +63,17 @@ router.delete('/recent-documents', (req, res) => {
     res.sendStatus(200);
 });
 
+router.post('/open-at-login', (req, res) => {
+    app.setLoginItemSettings({
+        openAtLogin: req.body.open,
+    });
+    res.sendStatus(200);
+});
+
+router.get('/open-at-login', (req, res) => {
+    res.json({
+        open: app.getLoginItemSettings().openAtLogin,
+    });
+});
+
 export default router;
