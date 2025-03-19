@@ -18,6 +18,7 @@ trait CopiesCertificateAuthority
             $phpBinaryDirectory = base_path('vendor/nativephp/php-bin/');
 
             // Check if the class this trait is used in also uses LocatesPhpBinary
+            /* @phpstan-ignore-next-line */
             if (method_exists($this, 'phpBinaryPath')) {
                 // Get binary directory but up one level
                 $phpBinaryDirectory = dirname(base_path($this->phpBinaryPath()));

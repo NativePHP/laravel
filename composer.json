@@ -34,10 +34,11 @@
         "php": "^8.1",
         "illuminate/contracts": "^10.0|^11.0|^12.0",
         "laravel/prompts": "^0.1.1|^0.2|^0.3",
-        "nativephp/laravel": "^1.0-beta.2",
+        "nativephp/laravel": "dev-feat/bundle-builds",
         "nativephp/php-bin": "^0.6",
         "spatie/laravel-package-tools": "^1.16.4",
-        "symfony/filesystem": "^6.4|^7.2"
+        "symfony/filesystem": "^6.4|^7.2",
+        "ext-zip": "*"
     },
     "require-dev": {
         "laravel/pint": "^1.0",

@@ -27,6 +27,8 @@ trait CopiesToBuildDirectory
         // .git and dev directories
         '.git',
         'dist',
+        'build',
+        'temp',
         'docker',
         'packages',
         '**/.github',
@@ -53,7 +55,7 @@ trait CopiesToBuildDirectory
         'vendor/bin',
     ];
 
-    public function copyToBuildDirectory()
+    public function copyToBuildDirectory(): bool
     {
         $sourcePath = $this->sourcePath();
         $buildPath = $this->buildPath();
@@ -69,7 +71,10 @@ trait CopiesToBuildDirectory
         $filesystem->mkdir($buildPath);
 
         // A filtered iterator that will exclude files matching our skip patterns
-        $directory = new RecursiveDirectoryIterator($sourcePath, RecursiveDirectoryIterator::SKIP_DOTS | RecursiveDirectoryIterator::FOLLOW_SYMLINKS);
+        $directory = new RecursiveDirectoryIterator(
+            $sourcePath,
+            RecursiveDirectoryIterator::SKIP_DOTS | RecursiveDirectoryIterator::FOLLOW_SYMLINKS
+        );
 
         $filter = new RecursiveCallbackFilterIterator($directory, function ($current) use ($patterns) {
             $relativePath = substr($current->getPathname(), strlen($this->sourcePath()) + 1);
@@ -109,6 +114,8 @@ trait CopiesToBuildDirectory
         }
 
         $this->keepRequiredDirectories();
+
+        return true;
     }
 
     private function keepRequiredDirectories()

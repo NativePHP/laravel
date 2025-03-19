@@ -1,99 +1,159 @@
 import express from 'express';
-import { utilityProcess } from 'electron';
+import {utilityProcess} from 'electron';
 import state from '../state.js';
-import { notifyLaravel } from "../utils.js";
-import { getDefaultEnvironmentVariables, getDefaultPhpIniSettings } from "../php.js";
+import {notifyLaravel} from "../utils.js";
+import {getAppPath, getDefaultEnvironmentVariables, getDefaultPhpIniSettings, runningSecureBuild} from "../php.js";
 
 
 import killSync from "kill-sync";
 import {fileURLToPath} from "url";
+import {join} from "path";
 
 const router = express.Router();
 
 function startProcess(settings) {
-    const {alias, cmd, cwd, env, persistent} = settings;
+    const {alias, cmd, cwd, env, persistent, spawnTimeout = 30000} = settings;
 
     if (getProcess(alias) !== undefined) {
         return state.processes[alias];
     }
 
-    const proc = utilityProcess.fork(
-        fileURLToPath(new URL('../../electron-plugin/dist/server/childProcess.js', import.meta.url)),
-        cmd,
-        {
-            cwd,
-            stdio: 'pipe',
-            serviceName: alias,
-            env: {
-                ...process.env,
-                ...env,
+    try {
+        const proc = utilityProcess.fork(
+            fileURLToPath(new URL('../../electron-plugin/dist/server/childProcess.js', import.meta.url)),
+            cmd,
+            {
+                cwd,
+                stdio: 'pipe',
+                serviceName: alias,
+                env: {
+                    ...process.env,
+                    ...env,
+                }
             }
-        }
-    );
+        );
 
-    proc.stdout.on('data', (data) => {
-        notifyLaravel('events', {
-            event: 'Native\\Laravel\\Events\\ChildProcess\\MessageReceived',
-            payload: {
-                alias,
-                data: data.toString(),
+        // Set timeout to detect if process never spawns
+        const startTimeout = setTimeout(() => {
+            if (!state.processes[alias] || !state.processes[alias].pid) {
+                console.error(`Process [${alias}] failed to start within timeout period`);
+
+                // Attempt to clean up
+                try {
+                    proc.kill();
+                } catch (e) {
+                    // Ignore kill errors
+                }
+
+                notifyLaravel('events', {
+                    event: 'Native\\Laravel\\Events\\ChildProcess\\StartupError',
+                    payload: {
+                        alias,
+                        error: 'Startup timeout exceeded',
+                    }
+                });
+            }
+        }, spawnTimeout);
+
+        proc.stdout.on('data', (data) => {
+            notifyLaravel('events', {
+                event: 'Native\\Laravel\\Events\\ChildProcess\\MessageReceived',
+                payload: {
+                    alias,
+                    data: data.toString(),
+                }
+            });
+        });
+
+        proc.stderr.on('data', (data) => {
+            console.error('Process [' + alias + '] ERROR:', data.toString().trim());
+
+            notifyLaravel('events', {
+                event: 'Native\\Laravel\\Events\\ChildProcess\\ErrorReceived',
+                payload: {
+                    alias,
+                    data: data.toString(),
+                }
+            });
+        });
+
+        // Experimental feature on Electron,
+        // I keep this here to remember and retry when we upgrade
+        // https://www.electronjs.org/docs/latest/api/utility-process#event-error-experimental
+        // proc.on('error', (error) => {
+        //     clearTimeout(startTimeout);
+        //     console.error(`Process [${alias}] error: ${error.message}`);
+        //
+        //     notifyLaravel('events', {
+        //         event: 'Native\\Laravel\\Events\\ChildProcess\\StartupError',
+        //         payload: {
+        //             alias,
+        //             error: error.toString(),
+        //         }
+        //     });
+        // });
+
+        proc.on('spawn', () => {
+            clearTimeout(startTimeout);
+            console.log('Process [' + alias + '] spawned!');
+
+            state.processes[alias] = {
+                pid: proc.pid,
+                proc,
+                settings
+            };
+
+            notifyLaravel('events', {
+                event: 'Native\\Laravel\\Events\\ChildProcess\\ProcessSpawned',
+                payload: [alias, proc.pid]
+            });
+        });
+
+        proc.on('exit', (code) => {
+            clearTimeout(startTimeout);
+            console.log(`Process [${alias}] exited with code [${code}].`);
+
+            notifyLaravel('events', {
+                event: 'Native\\Laravel\\Events\\ChildProcess\\ProcessExited',
+                payload: {
+                    alias,
+                    code,
+                }
+            });
+
+            const settings = {...getSettings(alias)};
+            delete state.processes[alias];
+
+            if (settings?.persistent) {
+                console.log('Process [' + alias + '] watchdog restarting...');
+                // Add delay to prevent rapid restart loops
+                setTimeout(() => startProcess(settings), 1000);
             }
         });
-    });
 
-    proc.stderr.on('data', (data) => {
-        console.error('Error received from process [' + alias + ']:', data.toString());
-
-        notifyLaravel('events', {
-            event: 'Native\\Laravel\\Events\\ChildProcess\\ErrorReceived',
-            payload: {
-                alias,
-                data: data.toString(),
-            }
-        });
-    });
-
-    proc.on('spawn', () => {
-        console.log('Process [' + alias + '] spawned!');
-
-        state.processes[alias] = {
-            pid: proc.pid,
+        return {
+            pid: null,
             proc,
             settings
         };
+    } catch (error) {
+        console.error(`Failed to create process [${alias}]: ${error.message}`);
 
         notifyLaravel('events', {
-            event: 'Native\\Laravel\\Events\\ChildProcess\\ProcessSpawned',
-            payload: [alias, proc.pid]
-        });
-    });
-
-    proc.on('exit', (code) => {
-        console.log(`Process [${alias}] exited with code [${code}].`);
-
-        notifyLaravel('events', {
-            event: 'Native\\Laravel\\Events\\ChildProcess\\ProcessExited',
+            event: 'Native\\Laravel\\Events\\ChildProcess\\StartupError',
             payload: {
                 alias,
-                code,
+                error: error.toString(),
             }
         });
 
-        const settings = {...getSettings(alias)};
-
-        delete state.processes[alias];
-
-        if (settings.persistent) {
-            console.log('Process [' + alias + '] watchdog restarting...');
-            startProcess(settings);
-        }
-    });
-
-    return {
-        pid: null,
-        proc,
-        settings
-    };
+        return {
+            pid: null,
+            proc: null,
+            settings,
+            error: error.message
+        };
+    }
 }
 
 function startPhpProcess(settings) {
@@ -103,18 +163,22 @@ function startPhpProcess(settings) {
     );
 
     // Construct command args from ini settings
-    const iniSettings = { ...getDefaultPhpIniSettings(), ...state.phpIni };
+    const customIniSettings = settings.iniSettings || {};
+    const iniSettings = {...getDefaultPhpIniSettings(), ...state.phpIni, ...customIniSettings};
     const iniArgs = Object.keys(iniSettings).map(key => {
         return ['-d', `${key}=${iniSettings[key]}`];
     }).flat();
 
+    if (settings.cmd[0] === 'artisan' && runningSecureBuild()) {
+        settings.cmd.unshift(join(getAppPath(), 'build', '__nativephp_app_bundle'));
+    }
 
     settings = {
         ...settings,
         // Prepend cmd with php executable path & ini settings
-        cmd: [ state.php, ...iniArgs, ...settings.cmd ],
+        cmd: [state.php, ...iniArgs, ...settings.cmd],
         // Mix in the internal NativePHP env
-        env: { ...settings.env, ...defaultEnv }
+        env: {...settings.env, ...defaultEnv}
     };
 
     return startProcess(settings);
