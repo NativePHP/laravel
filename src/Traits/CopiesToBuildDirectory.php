@@ -111,6 +111,14 @@ trait CopiesToBuildDirectory
             } catch (Throwable $e) {
                 warning('[WARNING] '.$e->getMessage());
             }
+
+            $perms = fileperms($item->getPathname());
+
+            if ($perms === false) {
+                continue;
+            }
+
+            chmod($target, $perms);
         }
 
         $this->keepRequiredDirectories();

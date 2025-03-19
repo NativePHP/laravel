@@ -206,3 +206,15 @@ it('makes sure required folders are not empty', function () use ($buildPath, $co
 
     expect($required)->each->toBeFile();
 });
+
+it('preserves file permissions', function () use ($sourcePath, $buildPath, $command) {
+    createFiles("$sourcePath/file-under-test.txt");
+
+    chmod("$sourcePath/file-under-test.txt", octdec('0775'));
+
+    $originalPermissions = fileperms("$sourcePath/file-under-test.txt");
+
+    $command->copyToBuildDirectory();
+
+    expect(fileperms("$buildPath/file-under-test.txt"))->toBe($originalPermissions);
+});
