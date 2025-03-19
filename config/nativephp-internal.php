@@ -29,4 +29,18 @@ return [
      * The URL to the NativePHP API.
      */
     'api_url' => env('NATIVEPHP_API_URL', 'http://localhost:4000/api/'),
+
+    /**
+     * The credentials to use Apples Notarization service.
+     */
+    'notarization' => [
+        'apple_id' => env('NATIVEPHP_APPLE_ID'),
+        'apple_id_pass' => env('NATIVEPHP_APPLE_ID_PASS'),
+        'apple_team_id' => env('NATIVEPHP_APPLE_TEAM_ID'),
+    ],
+
+    /**
+     * The binary path of PHP for NativePHP to use at build.
+     */
+    'php_binary_path' => env('NATIVEPHP_PHP_BINARY_PATH'),
 ];
