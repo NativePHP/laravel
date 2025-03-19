@@ -82,18 +82,18 @@ it('asserts php using callable', function () {
     $fake->php('cmdA', 'aliasA', ['envA'], true);
     $fake->php('cmdB', 'aliasB', ['envB'], false);
 
-    $fake->assertPhp(fn ($cmd, $alias, $env, $persistent) => $alias === 'aliasA' &&
+    $fake->assertPhp(fn ($cmd, $alias, $env, $persistent, $iniSettings) => $alias === 'aliasA' &&
         $cmd === 'cmdA' &&
         $env === ['envA'] &&
         $persistent === true);
 
-    $fake->assertPhp(fn ($cmd, $alias, $env, $persistent) => $alias === 'aliasB' &&
+    $fake->assertPhp(fn ($cmd, $alias, $env, $persistent, $iniSettings) => $alias === 'aliasB' &&
         $cmd === 'cmdB' &&
         $env === ['envB'] &&
         $persistent === false);
 
     try {
-        $fake->assertPhp(fn ($cmd, $alias, $env, $persistent) => $alias === 'aliasC');
+        $fake->assertPhp(fn ($cmd, $alias, $env, $persistent, $iniSettings) => $alias === 'aliasC');
     } catch (AssertionFailedError) {
         return;
     }
@@ -107,18 +107,18 @@ it('asserts artisan using callable', function () {
     $fake->artisan('cmdA', 'aliasA', ['envA'], true);
     $fake->artisan('cmdB', 'aliasB', ['envB'], false);
 
-    $fake->assertArtisan(fn ($cmd, $alias, $env, $persistent) => $alias === 'aliasA' &&
+    $fake->assertArtisan(fn ($cmd, $alias, $env, $persistent, $iniSettings) => $alias === 'aliasA' &&
         $cmd === 'cmdA' &&
         $env === ['envA'] &&
         $persistent === true);
 
-    $fake->assertArtisan(fn ($cmd, $alias, $env, $persistent) => $alias === 'aliasB' &&
+    $fake->assertArtisan(fn ($cmd, $alias, $env, $persistent, $iniSettings) => $alias === 'aliasB' &&
         $cmd === 'cmdB' &&
         $env === ['envB'] &&
         $persistent === false);
 
     try {
-        $fake->assertArtisan(fn ($cmd, $alias, $env, $persistent) => $alias === 'aliasC');
+        $fake->assertArtisan(fn ($cmd, $alias, $env, $persistent, $iniSettings) => $alias === 'aliasC');
     } catch (AssertionFailedError) {
         return;
     }

@@ -31,6 +31,15 @@ return [
     'api_url' => env('NATIVEPHP_API_URL', 'http://localhost:4000/api/'),
 
     /**
+     * Configuration for the Zephpyr API.
+     */
+    'zephpyr' => [
+        'host' => env('ZEPHPYR_HOST', 'https://zephpyr.com'),
+        'token' => env('ZEPHPYR_TOKEN'),
+        'key' => env('ZEPHPYR_KEY'),
+    ],
+
+    /**
      * The credentials to use Apples Notarization service.
      */
     'notarization' => [

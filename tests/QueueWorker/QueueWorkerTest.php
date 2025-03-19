@@ -6,23 +6,27 @@ use Native\Laravel\Facades\QueueWorker;
 
 it('hits the child process with relevant queue config to spin up a new queue worker', function () {
     ChildProcess::fake();
-    $config = new QueueConfig('some_worker', ['default'], 128, 61);
+
+    $workerName = 'some_worker';
+
+    $config = new QueueConfig($workerName, ['default'], 128, 61);
 
     QueueWorker::up($config);
 
-    ChildProcess::assertPhp(function (array $cmd, string $alias, $env, $persistent) {
+    ChildProcess::assertArtisan(function (array $cmd, string $alias, $env, $persistent, $iniSettings) use ($workerName) {
         expect($cmd)->toBe([
-            '-d',
-            'memory_limit=128M',
-            'artisan',
             'queue:work',
-            "--name={$alias}",
+            "--name={$workerName}",
             '--queue=default',
             '--memory=128',
             '--timeout=61',
         ]);
 
-        expect($alias)->toBe('some_worker');
+        expect($iniSettings)->toBe([
+            'memory_limit' => '128M',
+        ]);
+
+        expect($alias)->toBe('queue_some_worker');
         expect($env)->toBeNull();
         expect($persistent)->toBeTrue();
 
@@ -35,5 +39,5 @@ it('hits the child process with relevant alias spin down a queue worker', functi
 
     QueueWorker::down('some_worker');
 
-    ChildProcess::assertStop('some_worker');
+    ChildProcess::assertStop('queue_some_worker');
 });

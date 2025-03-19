@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static void addRecentDocument(string $path)
  * @method static array recentDocuments()
  * @method static void clearRecentDocuments()
+ * @method static bool isRunningBundled()
  * @method static bool openAtLogin(?bool $open = null)
  */
 class App extends Facade

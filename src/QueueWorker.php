@@ -24,24 +24,24 @@ class QueueWorker implements QueueWorkerContract
             throw new \InvalidArgumentException("Invalid queue configuration alias [$config]");
         }
 
-        $this->childProcess->php(
+        $this->childProcess->artisan(
             [
-                '-d',
-                "memory_limit={$config->memoryLimit}M",
-                'artisan',
                 'queue:work',
                 "--name={$config->alias}",
                 '--queue='.implode(',', $config->queuesToConsume),
                 "--memory={$config->memoryLimit}",
                 "--timeout={$config->timeout}",
             ],
-            $config->alias,
+            'queue_'.$config->alias,
             persistent: true,
+            iniSettings: [
+                'memory_limit' => "{$config->memoryLimit}M",
+            ]
         );
     }
 
     public function down(string $alias): void
     {
-        $this->childProcess->stop($alias);
+        $this->childProcess->stop('queue_'.$alias);
     }
 }

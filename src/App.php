@@ -3,6 +3,7 @@
 namespace Native\Laravel;
 
 use Native\Laravel\Client\Client;
+use Phar;
 
 class App
 {
@@ -61,6 +62,12 @@ class App
     public function clearRecentDocuments(): void
     {
         $this->client->delete('app/recent-documents');
+    }
+
+    public function isRunningBundled(): bool
+    {
+        return Phar::running() !== '';
+
     }
 
     public function openAtLogin(?bool $open = null): bool
