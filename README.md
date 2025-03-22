@@ -32,6 +32,7 @@ Please review [our security policy](../../security/policy) on how to report secu
 ## Credits
 
 - [Marcel Pociot](https://github.com/mpociot)
+- [Simon Hamp](https://github.com/simonhamp)
 - [All Contributors](../../contributors)
 
 ## License
