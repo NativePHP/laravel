@@ -12,7 +12,11 @@ class EventWatcher
     public function register(): void
     {
         Event::listen('*', function (string $eventName, array $data) {
-            $event = (object)($data[0] ?? null);
+            $event = $data[0] ?? (object) null;
+
+            if(! is_object($event)) {
+                return;
+            }
 
             if (! method_exists($event, 'broadcastOn')) {
                 return;
