@@ -60,29 +60,4 @@ router.post('/save', (req, res) => {
     })
 });
 
-router.post('/message', (req, res) => {
-    const {title, message, type, buttons} = req.body
-
-    const result = dialog.showMessageBoxSync({
-        title,
-        message,
-        type,
-        buttons
-    })
-
-    res.json({
-        result
-    })
-});
-
-router.post('/error', (req, res) => {
-    const {title, message} = req.body
-
-    dialog.showErrorBox(title, message)
-
-    res.json({
-        result: true
-    })
-});
-
 export default router;

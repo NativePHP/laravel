@@ -66,30 +66,4 @@ describe('Dialog test', () => {
     expect(response.data.result).toEqual(['save dialog result']);
   });
 
-  it('can open a message dialog', async () => {
-    const options = {
-      title: 'Open Dialog',
-      message: 'Select an image',
-      type: 'info',
-      buttons: ['OK', 'Cancel']
-    }
-
-    const response = await axios.post('/dialog/message', options);
-
-    expect(electron.dialog.showMessageBoxSync).toHaveBeenCalledWith(options);
-    expect(response.data.result).toEqual(1);
-  });
-
-  it('can open an error dialog', async () => {
-    const options = {
-      title: 'Error Dialog',
-      message: 'Uh oh!',
-    }
-
-    const response = await axios.post('/dialog/error', options);
-
-    expect(electron.dialog.showErrorBox).toHaveBeenCalledWith(options.title, options.message);
-    expect(response.data.result).toEqual(true);
-  });
-
 });
