@@ -2,23 +2,23 @@
 
 namespace Native\Laravel;
 
-use Illuminate\Support\Traits\Conditionable;
-use Illuminate\Support\Traits\Macroable;
 use Native\Laravel\Client\Client;
-use Native\Laravel\Facades\Window;
 
 class Alert
 {
     protected ?string $type;
+
     protected ?string $title;
+
     protected ?string $detail;
+
     protected ?array $buttons;
+
     protected ?int $defaultId;
+
     protected ?int $cancelId;
 
-    final public function __construct(protected Client $client)
-    {
-    }
+    final public function __construct(protected Client $client) {}
 
     public static function new()
     {
@@ -76,7 +76,7 @@ class Alert
             'detail' => $this->detail,
             'buttons' => $this->buttons,
             'defaultId' => $this->defaultId,
-            'cancelId' => $this->cancelId
+            'cancelId' => $this->cancelId,
         ]);
 
         return (int) $response->json('result');
