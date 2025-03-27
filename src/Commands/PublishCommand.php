@@ -13,10 +13,10 @@ class PublishCommand extends Command
     use OsAndArch;
 
     protected $signature = 'native:publish
-        {os? : The operating system to build for (linux, mac, win)}
+        {os? : The operating system to build for (all, linux, mac, win)}
         {arch? : The Processor Architecture to build for (x64, x86, arm64)}';
 
-    protected array $availableOs = ['win', 'linux', 'mac'];
+    protected array $availableOs = ['win', 'linux', 'mac', 'all'];
 
     public function handle(): void
     {
@@ -24,7 +24,11 @@ class PublishCommand extends Command
 
         $os = $this->selectOs($this->argument('os'));
 
-        $arch = $this->selectArchitectureForOs($os, $this->argument('arch'));
+        $arch = null;
+
+        if ($os != 'all') {
+            $arch = $this->selectArchitectureForOs($os, $this->argument('arch'));
+        }
 
         Artisan::call('native:build', ['os' => $os, 'arch' => $arch, '--publish' => true], $this->output);
     }
