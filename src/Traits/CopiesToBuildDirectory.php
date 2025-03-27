@@ -111,14 +111,13 @@ trait CopiesToBuildDirectory
             } catch (Throwable $e) {
                 warning('[WARNING] '.$e->getMessage());
             }
-
-            $perms = fileperms($item->getPathname());
-
-            if ($perms === false) {
-                continue;
+            
+            if (PHP_OS_FAMILY !== 'Windows') {
+                $perms = fileperms($item->getPathname());
+                if ($perms !== false) {
+                    chmod($target, $perms);
+                }
             }
-
-            chmod($target, $perms);
         }
 
         $this->keepRequiredDirectories();
