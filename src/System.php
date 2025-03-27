@@ -4,6 +4,7 @@ namespace Native\Laravel;
 
 use Native\Laravel\Client\Client;
 use Native\Laravel\DataObjects\Printer;
+use Native\Laravel\Support\Environment;
 use Native\Laravel\Support\Timezones;
 
 class System
@@ -79,7 +80,7 @@ class System
     {
         $timezones = new Timezones;
 
-        if (PHP_OS_FAMILY === 'Windows') {
+        if (Environment::isWindows()) {
             $timezone = $timezones->translateFromWindowsString(exec('tzutil /g'));
         } else {
             $timezone = $timezones->translateFromAbbreviatedString(exec('date +%Z'));

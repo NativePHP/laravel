@@ -8,6 +8,7 @@ use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Process;
+use Native\Laravel\Support\Environment;
 
 use function Laravel\Prompts\error;
 use function Laravel\Prompts\info;
@@ -53,7 +54,7 @@ class DebugCommand extends Command implements PromptsForMissingInput
     {
         $locationCommand = 'which';
 
-        if (PHP_OS_FAMILY === 'Windows') {
+        if (Environment::isWindows()) {
             $locationCommand = 'where';
         }
 
@@ -154,9 +155,9 @@ class DebugCommand extends Command implements PromptsForMissingInput
         $json = json_encode($this->debugInfo->toArray(), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
 
         // Copy json to clipboard
-        if (PHP_OS_FAMILY === 'Windows') {
+        if (Environment::isWindows()) {
             Process::run('echo '.escapeshellarg($json).' | clip');
-        } elseif (PHP_OS_FAMILY === 'Linux') {
+        } elseif (Environment::isLinux()) {
             Process::run('echo '.escapeshellarg($json).' | xclip -selection clipboard');
         } else {
             Process::run('echo '.escapeshellarg($json).' | pbcopy');
