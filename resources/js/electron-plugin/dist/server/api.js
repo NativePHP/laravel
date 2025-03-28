@@ -12,6 +12,7 @@ import bodyParser from "body-parser";
 import getPort, { portNumbers } from "get-port";
 import middleware from "./api/middleware.js";
 import clipboardRoutes from "./api/clipboard.js";
+import alertRoutes from "./api/alert.js";
 import appRoutes from "./api/app.js";
 import screenRoutes from "./api/screen.js";
 import dialogRoutes from "./api/dialog.js";
@@ -41,6 +42,7 @@ function startAPIServer(randomSecret) {
             httpServer.use(middleware(randomSecret));
             httpServer.use(bodyParser.json());
             httpServer.use("/api/clipboard", clipboardRoutes);
+            httpServer.use("/api/alert", alertRoutes);
             httpServer.use("/api/app", appRoutes);
             httpServer.use("/api/screen", screenRoutes);
             httpServer.use("/api/dialog", dialogRoutes);
