@@ -6,21 +6,21 @@ use Native\Laravel\Client\Client;
 
 class Alert
 {
-    protected ?string $type;
+    protected ?string $type = null;
 
-    protected ?string $title;
+    protected ?string $title = null;
 
-    protected ?string $detail;
+    protected ?string $detail = null;
 
-    protected ?array $buttons;
+    protected ?array $buttons = null;
 
-    protected ?int $defaultId;
+    protected ?int $defaultId = null;
 
-    protected ?int $cancelId;
+    protected ?int $cancelId = null;
 
     final public function __construct(protected Client $client) {}
 
-    public static function new()
+    public static function new(): self
     {
         return new static(new Client);
     }

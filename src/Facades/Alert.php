@@ -5,6 +5,7 @@ namespace Native\Laravel\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
+ * @method static static new()
  * @method static static type(string $type)
  * @method static static title(string $title)
  * @method static static detail(string $detail)
