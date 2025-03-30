@@ -3,6 +3,7 @@
 namespace Native\Laravel\Facades;
 
 use Illuminate\Support\Facades\Facade;
+use Native\Laravel\Enums\SystemThemesEnum;
 
 /**
  * @method static bool canPromptTouchID()
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static void print(string $html, ?\Native\Laravel\DataObjects\Printer $printer = null)
  * @method static string printToPDF(string $reason)
  * @method static string timezone()
+ * @method static SystemThemesEnum theme(?SystemThemesEnum $theme = null)
  */
 class System extends Facade
 {
