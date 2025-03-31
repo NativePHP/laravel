@@ -6,12 +6,12 @@ router.post('/message', (req, res) => {
     const { message, type, title, detail, buttons, defaultId, cancelId } = req.body;
     const result = dialog.showMessageBoxSync({
         message,
-        type,
-        title,
-        detail,
-        buttons,
-        defaultId,
-        cancelId
+        type: type ?? undefined,
+        title: title ?? undefined,
+        detail: detail ?? undefined,
+        buttons: buttons ?? undefined,
+        defaultId: defaultId ?? undefined,
+        cancelId: cancelId ?? undefined
     });
     res.json({
         result
