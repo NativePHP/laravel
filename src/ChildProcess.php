@@ -19,6 +19,8 @@ class ChildProcess implements ChildProcessContract
 
     public readonly bool $persistent;
 
+    protected array $settings = [];
+
     final public function __construct(protected Client $client) {}
 
     public function get(?string $alias = null): ?self
@@ -146,10 +148,13 @@ class ChildProcess implements ChildProcessContract
             $this->pid = $process['pid'];
         }
 
-        foreach ($process['settings'] as $key => $value) {
-            $this->{$key} = $value;
-        }
+        $this->settings = $process['settings'] ?? [];
 
         return $this;
+    }
+
+    public function __get($name)
+    {
+        return $this->settings[$name] ?? null;
     }
 }
