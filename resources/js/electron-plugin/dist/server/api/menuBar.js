@@ -8,24 +8,28 @@ import { fileURLToPath } from 'url';
 import { enable } from "@electron/remote/main/index.js";
 const router = express.Router();
 router.post("/label", (req, res) => {
+    var _a;
     res.sendStatus(200);
     const { label } = req.body;
-    state.tray.setTitle(label);
+    (_a = state.tray) === null || _a === void 0 ? void 0 : _a.setTitle(label);
 });
 router.post("/tooltip", (req, res) => {
+    var _a;
     res.sendStatus(200);
     const { tooltip } = req.body;
-    state.tray.setToolTip(tooltip);
+    (_a = state.tray) === null || _a === void 0 ? void 0 : _a.setToolTip(tooltip);
 });
 router.post("/icon", (req, res) => {
+    var _a;
     res.sendStatus(200);
     const { icon } = req.body;
-    state.tray.setImage(icon);
+    (_a = state.tray) === null || _a === void 0 ? void 0 : _a.setImage(icon);
 });
 router.post("/context-menu", (req, res) => {
+    var _a;
     res.sendStatus(200);
     const { contextMenu } = req.body;
-    state.tray.setContextMenu(buildMenu(contextMenu));
+    (_a = state.tray) === null || _a === void 0 ? void 0 : _a.setContextMenu(buildMenu(contextMenu));
 });
 router.post("/show", (req, res) => {
     res.sendStatus(200);

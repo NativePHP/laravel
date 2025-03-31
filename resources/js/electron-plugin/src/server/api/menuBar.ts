@@ -14,7 +14,7 @@ router.post("/label", (req, res) => {
 
     const { label } = req.body;
 
-    state.tray.setTitle(label);
+    state.tray?.setTitle(label);
 });
 
 router.post("/tooltip", (req, res) => {
@@ -22,7 +22,7 @@ router.post("/tooltip", (req, res) => {
 
     const { tooltip } = req.body;
 
-    state.tray.setToolTip(tooltip);
+    state.tray?.setToolTip(tooltip);
 });
 
 router.post("/icon", (req, res) => {
@@ -30,7 +30,7 @@ router.post("/icon", (req, res) => {
 
     const { icon } = req.body;
 
-    state.tray.setImage(icon);
+    state.tray?.setImage(icon);
 });
 
 router.post("/context-menu", (req, res) => {
@@ -38,7 +38,7 @@ router.post("/context-menu", (req, res) => {
 
     const { contextMenu } = req.body;
 
-    state.tray.setContextMenu(buildMenu(contextMenu));
+    state.tray?.setContextMenu(buildMenu(contextMenu));
 });
 
 router.post("/show", (req, res) => {
