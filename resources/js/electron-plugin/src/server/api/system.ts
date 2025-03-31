@@ -1,5 +1,5 @@
 import express from 'express';
-import { BrowserWindow, systemPreferences, safeStorage } from 'electron';
+import {BrowserWindow, systemPreferences, safeStorage, nativeTheme} from 'electron';
 
 const router = express.Router();
 
@@ -111,6 +111,22 @@ router.post('/print-to-pdf', async (req, res) => {
     });
 
     await printWindow.loadURL(`data:text/html;charset=UTF-8,${html}`);
+});
+
+router.get('/theme', (req, res) => {
+    res.json({
+        result: nativeTheme.themeSource,
+    });
+});
+
+router.post('/theme', (req, res) => {
+    const { theme } = req.body;
+
+    nativeTheme.themeSource = theme;
+
+    res.json({
+        result: theme,
+    });
 });
 
 export default router;

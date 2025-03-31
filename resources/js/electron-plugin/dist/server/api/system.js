@@ -8,7 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import express from 'express';
-import { BrowserWindow, systemPreferences, safeStorage } from 'electron';
+import { BrowserWindow, systemPreferences, safeStorage, nativeTheme } from 'electron';
 const router = express.Router();
 router.get('/can-prompt-touch-id', (req, res) => {
     res.json({
@@ -107,4 +107,16 @@ router.post('/print-to-pdf', (req, res) => __awaiter(void 0, void 0, void 0, fun
     });
     yield printWindow.loadURL(`data:text/html;charset=UTF-8,${html}`);
 }));
+router.get('/theme', (req, res) => {
+    res.json({
+        result: nativeTheme.themeSource,
+    });
+});
+router.post('/theme', (req, res) => {
+    const { theme } = req.body;
+    nativeTheme.themeSource = theme;
+    res.json({
+        result: theme,
+    });
+});
 export default router;
