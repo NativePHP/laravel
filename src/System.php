@@ -4,6 +4,7 @@ namespace Native\Laravel;
 
 use Native\Laravel\Client\Client;
 use Native\Laravel\DataObjects\Printer;
+use Native\Laravel\Enums\SystemThemesEnum;
 use Native\Laravel\Support\Environment;
 use Native\Laravel\Support\Timezones;
 
@@ -87,5 +88,18 @@ class System
         }
 
         return $timezone;
+    }
+
+    public function theme(?SystemThemesEnum $theme = null): SystemThemesEnum
+    {
+        if ($theme) {
+            $result = $this->client->post('system/theme', [
+                'theme' => $theme,
+            ])->json('result');
+        } else {
+            $result = $this->client->get('system/theme')->json('result');
+        }
+
+        return SystemThemesEnum::from($result);
     }
 }
