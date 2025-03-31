@@ -19,6 +19,8 @@ class ChildProcess implements ChildProcessContract
 
     public readonly bool $persistent;
 
+    public readonly ?array $iniSettings;
+
     final public function __construct(protected Client $client) {}
 
     public function get(?string $alias = null): ?self
