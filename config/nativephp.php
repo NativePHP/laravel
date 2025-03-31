@@ -32,6 +32,11 @@ return [
     'author' => env('NATIVEPHP_APP_AUTHOR'),
 
     /**
+     * The copyright notice for your application.
+     */
+    'copyright' => env('NATIVEPHP_APP_COPYRIGHT'),
+
+    /**
      * The default service provider for your application. This provider
      * takes care of bootstrapping your application and configuring
      * any global hotkeys, menus, windows, etc.
