@@ -149,7 +149,9 @@ class ChildProcess implements ChildProcessContract
         }
 
         foreach ($process['settings'] as $key => $value) {
-            $this->{$key} = $value;
+            if (property_exists($this, $key)) {
+                $this->{$key} = $value;
+            }
         }
 
         return $this;
