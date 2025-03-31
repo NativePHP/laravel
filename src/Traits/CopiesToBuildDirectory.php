@@ -111,7 +111,7 @@ trait CopiesToBuildDirectory
             } catch (Throwable $e) {
                 warning('[WARNING] '.$e->getMessage());
             }
-            
+
             if (PHP_OS_FAMILY !== 'Windows') {
                 $perms = fileperms($item->getPathname());
                 if ($perms !== false) {

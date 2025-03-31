@@ -63,4 +63,4 @@ jobs:
         run: vendor/bin/pest --version
 
       - name: Execute tests
-        run: vendor/bin/pest --exclude-group=feature
+        run: vendor/bin/pest
