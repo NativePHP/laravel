@@ -19,6 +19,8 @@ class ChildProcess implements ChildProcessContract
 
     public readonly bool $persistent;
 
+    public readonly ?array $iniSettings;
+
     final public function __construct(protected Client $client) {}
 
     public function get(?string $alias = null): ?self
@@ -147,6 +149,10 @@ class ChildProcess implements ChildProcessContract
         }
 
         foreach ($process['settings'] as $key => $value) {
+            if (! property_exists($this, $key)) {
+                throw new \RuntimeException("Property {$key} does not exist on ".__CLASS__);
+            }
+
             $this->{$key} = $value;
         }
 
