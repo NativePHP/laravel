@@ -283,7 +283,10 @@ class BundleCommand extends Command
                 continue;
             }
 
-            $zip->addFile($file->getRealPath(), str($path)->finish(DIRECTORY_SEPARATOR).$file->getRelativePathname());
+            $zipPath = str($path)->finish('/').$file->getRelativePathname();
+            $zipPath = str_replace('\\', '/', $zipPath);
+
+            $zip->addFile($file->getRealPath(), $zipPath);
         }
     }
 
