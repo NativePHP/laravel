@@ -151,7 +151,7 @@ class MenuBuilder
     public function quit(?string $label = null): Items\Role
     {
         if (is_null($label)) {
-            $label = config('app.name');
+            $label = __('Quit').' '.config('app.name');
         }
 
         return new Items\Role(RolesEnum::QUIT, $label);
