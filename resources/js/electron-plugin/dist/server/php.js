@@ -33,7 +33,7 @@ function shouldMigrateDatabase(store) {
         && process.env.NODE_ENV !== 'development';
 }
 function shouldOptimize(store) {
-    return true;
+    return process.env.NODE_ENV !== 'development';
 }
 function getPhpPort() {
     return __awaiter(this, void 0, void 0, function* () {

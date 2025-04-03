@@ -38,7 +38,8 @@ function shouldOptimize(store) {
      * the cached config is not picked up on subsequent launches,
      * so we'll just rebuilt it every time for now
      */
-    return true;
+
+    return process.env.NODE_ENV !== 'development';
     // return runningSecureBuild();
     // return runningSecureBuild() && store.get('optimized_version') !== app.getVersion();
 }
