@@ -20,13 +20,15 @@ class ResetCommand extends Command
     {
         intro('Clearing build and dist directories...');
 
+        $filesystem = new Filesystem;
+
         // Removing and recreating the native serve resource path
         $nativeServeResourcePath = realpath(__DIR__.'/../../resources/js/resources/app/');
-        $this->line('Clearing: '.$nativeServeResourcePath);
-
-        $filesystem = new Filesystem;
-        $filesystem->remove($nativeServeResourcePath);
-        $filesystem->mkdir($nativeServeResourcePath);
+        if ($filesystem->exists($nativeServeResourcePath)) {
+            $this->line('Clearing: '.$nativeServeResourcePath);
+            $filesystem->remove($nativeServeResourcePath);
+            $filesystem->mkdir($nativeServeResourcePath);
+        }
 
         // Removing the bundling directories
         $bundlingPath = base_path('build/');
