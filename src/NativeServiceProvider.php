@@ -173,6 +173,7 @@ class NativeServiceProvider extends PackageServiceProvider
 
         config(['database.default' => 'nativephp']);
         config(['queue.failed.database' => 'nativephp']);
+        config(['queue.batching.database' => 'nativephp']);
 
         if (file_exists($databasePath)) {
             DB::statement('PRAGMA journal_mode=WAL;');
