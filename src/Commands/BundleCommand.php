@@ -240,10 +240,12 @@ class BundleCommand extends Command
         $this->finderToZip($finder, $zip);
 
         // Why do I have to force this? please someone explain.
-        $this->finderToZip(
-            (new Finder)->files()
-                ->followLinks()
-                ->in($this->buildPath('public/build')), $zip, 'public/build');
+        if (file_exists($this->buildPath('public/build'))) {
+            $this->finderToZip(
+                (new Finder)->files()
+                    ->followLinks()
+                    ->in($this->buildPath('public/build')), $zip, 'public/build');
+        }
 
         // Add .env file manually because Finder ignores VCS and dot files
         $zip->addFile($this->buildPath('.env'), '.env');
