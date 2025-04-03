@@ -108,15 +108,15 @@ trait CopiesToBuildDirectory
 
             try {
                 copy($item->getPathname(), $target);
+
+                if (PHP_OS_FAMILY !== 'Windows') {
+                    $perms = fileperms($item->getPathname());
+                    if ($perms !== false) {
+                        chmod($target, $perms);
+                    }
+                }
             } catch (Throwable $e) {
                 warning('[WARNING] '.$e->getMessage());
-            }
-
-            if (PHP_OS_FAMILY !== 'Windows') {
-                $perms = fileperms($item->getPathname());
-                if ($perms !== false) {
-                    chmod($target, $perms);
-                }
             }
         }
 
