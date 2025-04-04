@@ -16,6 +16,7 @@ trait PrunesVendorDirectory
     protected function pruneVendorDirectory()
     {
         Process::path($this->buildPath())
+            ->timeout(300)
             ->run('composer install --no-dev', function (string $type, string $output) {
                 echo $output;
             });
@@ -25,5 +26,11 @@ trait PrunesVendorDirectory
             $this->buildPath('/vendor/bin'),
             $this->buildPath('/vendor/nativephp/php-bin'),
         ]);
+
+        // Remove custom php binary package directory
+        $binaryPackageDirectory = $this->binaryPackageDirectory();
+        if (! empty($binaryPackageDirectory) && $filesystem->exists($this->buildPath($binaryPackageDirectory))) {
+            $filesystem->remove($this->buildPath($binaryPackageDirectory));
+        }
     }
 }

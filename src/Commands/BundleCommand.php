@@ -14,6 +14,7 @@ use Native\Electron\Traits\CopiesToBuildDirectory;
 use Native\Electron\Traits\HandlesZephpyr;
 use Native\Electron\Traits\HasPreAndPostProcessing;
 use Native\Electron\Traits\InstallsAppIcon;
+use Native\Electron\Traits\LocatesPhpBinary;
 use Native\Electron\Traits\PrunesVendorDirectory;
 use Native\Electron\Traits\SetsAppName;
 use Symfony\Component\Finder\Finder;
@@ -28,6 +29,7 @@ class BundleCommand extends Command
     use HandlesZephpyr;
     use HasPreAndPostProcessing;
     use InstallsAppIcon;
+    use LocatesPhpBinary;
     use PrunesVendorDirectory;
     use SetsAppName;
 
