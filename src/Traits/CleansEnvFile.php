@@ -17,6 +17,7 @@ trait CleansEnvFile
         'LOG_CHANNEL',
         'LOG_STACK',
         'LOG_DAILY_DAYS',
+        'LOG_LEVEL',
     ];
 
     public function cleanEnvFile(): void
@@ -38,6 +39,7 @@ trait CleansEnvFile
             ->push('LOG_CHANNEL=stack')
             ->push('LOG_STACK=daily')
             ->push('LOG_DAILY_DAYS=3')
+            ->push('LOG_LEVEL=warning')
             ->join("\n");
 
         file_put_contents($envFile, $contents);
