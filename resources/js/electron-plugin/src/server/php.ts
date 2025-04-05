@@ -21,6 +21,11 @@ const argumentEnv = getArgumentEnv();
 const appPath = getAppPath();
 
 mkdirpSync(bootstrapCache);
+mkdirpSync(join(storagePath, 'logs'));
+mkdirpSync(join(storagePath, 'framework', 'cache'));
+mkdirpSync(join(storagePath, 'framework', 'sessions'));
+mkdirpSync(join(storagePath, 'framework', 'views'));
+mkdirpSync(join(storagePath, 'framework', 'testing'));
 
 function runningSecureBuild() {
     return existsSync(join(appPath, 'build', '__nativephp_app_bundle'))
