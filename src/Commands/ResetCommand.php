@@ -3,14 +3,14 @@
 namespace Native\Electron\Commands;
 
 use Illuminate\Console\Command;
-use Native\Electron\Traits\SetsAppName;
+use Native\Electron\Traits\PatchesPackagesJson;
 use Symfony\Component\Filesystem\Filesystem;
 
 use function Laravel\Prompts\intro;
 
 class ResetCommand extends Command
 {
-    use SetsAppName;
+    use PatchesPackagesJson;
 
     protected $signature = 'native:reset {--with-app-data : Clear the app data as well}';
 
@@ -49,7 +49,7 @@ class ResetCommand extends Command
         if ($this->option('with-app-data')) {
 
             foreach ([true, false] as $developmentMode) {
-                $appName = $this->setAppName($developmentMode);
+                $appName = $this->setAppNameAndVersion($developmentMode);
 
                 // Eh, just in case, I don't want to delete all user data by accident.
                 if (! empty($appName)) {

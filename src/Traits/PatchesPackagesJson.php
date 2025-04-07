@@ -2,9 +2,9 @@
 
 namespace Native\Electron\Traits;
 
-trait SetsAppName
+trait PatchesPackagesJson
 {
-    protected function setAppName($developmentMode = false): string
+    protected function setAppNameAndVersion($developmentMode = false): string
     {
         $packageJsonPath = __DIR__.'/../../resources/js/package.json';
         $packageJson = json_decode(file_get_contents($packageJsonPath), true);
@@ -21,6 +21,7 @@ trait SetsAppName
         }
 
         $packageJson['name'] = $name;
+        $packageJson['version'] = config('nativephp.version');
 
         file_put_contents($packageJsonPath, json_encode($packageJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 

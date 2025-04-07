@@ -13,8 +13,8 @@ use Native\Electron\Traits\HasPreAndPostProcessing;
 use Native\Electron\Traits\InstallsAppIcon;
 use Native\Electron\Traits\LocatesPhpBinary;
 use Native\Electron\Traits\OsAndArch;
+use Native\Electron\Traits\PatchesPackagesJson;
 use Native\Electron\Traits\PrunesVendorDirectory;
-use Native\Electron\Traits\SetsAppName;
 use Symfony\Component\Process\Process as SymfonyProcess;
 
 use function Laravel\Prompts\intro;
@@ -28,8 +28,8 @@ class BuildCommand extends Command
     use InstallsAppIcon;
     use LocatesPhpBinary;
     use OsAndArch;
+    use PatchesPackagesJson;
     use PrunesVendorDirectory;
-    use SetsAppName;
 
     protected $signature = 'native:build
         {os? : The operating system to build for (all, linux, mac, win)}
@@ -78,7 +78,7 @@ class BuildCommand extends Command
 
     private function buildBundle(): void
     {
-        $this->setAppName();
+        $this->setAppNameAndVersion();
 
         $this->updateElectronDependencies();
 
@@ -101,7 +101,7 @@ class BuildCommand extends Command
     {
         $this->preProcess();
 
-        $this->setAppName();
+        $this->setAppNameAndVersion();
 
         $this->updateElectronDependencies();
 

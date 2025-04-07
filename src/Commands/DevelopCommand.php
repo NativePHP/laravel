@@ -7,7 +7,7 @@ use Native\Electron\Traits\CopiesCertificateAuthority;
 use Native\Electron\Traits\Developer;
 use Native\Electron\Traits\Installer;
 use Native\Electron\Traits\InstallsAppIcon;
-use Native\Electron\Traits\SetsAppName;
+use Native\Electron\Traits\PatchesPackagesJson;
 
 use function Laravel\Prompts\intro;
 use function Laravel\Prompts\note;
@@ -18,7 +18,7 @@ class DevelopCommand extends Command
     use Developer;
     use Installer;
     use InstallsAppIcon;
-    use SetsAppName;
+    use PatchesPackagesJson;
 
     protected $signature = 'native:serve {--no-queue} {--D|no-dependencies} {--installer=npm}';
 
@@ -42,7 +42,7 @@ class DevelopCommand extends Command
             $this->patchPlist();
         }
 
-        $this->setAppName(developmentMode: true);
+        $this->setAppNameAndVersion(developmentMode: true);
 
         $this->installIcon();
 

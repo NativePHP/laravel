@@ -15,8 +15,8 @@ use Native\Electron\Traits\HandlesZephpyr;
 use Native\Electron\Traits\HasPreAndPostProcessing;
 use Native\Electron\Traits\InstallsAppIcon;
 use Native\Electron\Traits\LocatesPhpBinary;
+use Native\Electron\Traits\PatchesPackagesJson;
 use Native\Electron\Traits\PrunesVendorDirectory;
-use Native\Electron\Traits\SetsAppName;
 use Symfony\Component\Finder\Finder;
 use ZipArchive;
 
@@ -30,8 +30,8 @@ class BundleCommand extends Command
     use HasPreAndPostProcessing;
     use InstallsAppIcon;
     use LocatesPhpBinary;
+    use PatchesPackagesJson;
     use PrunesVendorDirectory;
-    use SetsAppName;
 
     protected $signature = 'native:bundle {--fetch} {--clear} {--without-cleanup}';
 
@@ -87,7 +87,7 @@ class BundleCommand extends Command
 
         $this->preProcess();
 
-        $this->setAppName();
+        $this->setAppNameAndVersion();
         intro('Copying App to build directory...');
 
         // We update composer.json later,
