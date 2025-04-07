@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { app, session } from "electron";
+import { app, session, powerMonitor } from "electron";
 import { initialize } from "@electron/remote/main/index.js";
 import state from "./server/state.js";
 import { electronApp, optimizer } from "@electron-toolkit/utils";
@@ -80,6 +80,13 @@ class NativePHP {
             state.phpIni = yield this.loadPhpIni();
             yield this.startPhpApp();
             this.startScheduler();
+            powerMonitor.on("suspend", () => {
+                this.stopScheduler();
+            });
+            powerMonitor.on("resume", () => {
+                this.stopScheduler();
+                this.startScheduler();
+            });
             const filter = {
                 urls: [`http://127.0.0.1:${state.phpPort}/*`]
             };
@@ -180,6 +187,12 @@ class NativePHP {
         return __awaiter(this, void 0, void 0, function* () {
             this.processes.push(yield startPhpApp());
         });
+    }
+    stopScheduler() {
+        if (this.schedulerInterval) {
+            clearInterval(this.schedulerInterval);
+            this.schedulerInterval = null;
+        }
     }
     startScheduler() {
         const now = new Date();

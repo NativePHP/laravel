@@ -1,5 +1,5 @@
-import type CrossProcessExports from "electron";
-import { app, session } from "electron";
+import CrossProcessExports from "electron";
+import { app, session, powerMonitor } from "electron";
 import { initialize } from "@electron/remote/main/index.js";
 import state from "./server/state.js";
 import { electronApp, optimizer } from "@electron-toolkit/utils";
@@ -108,6 +108,15 @@ class NativePHP {
 
     await this.startPhpApp();
     this.startScheduler();
+
+    powerMonitor.on("suspend", () => {
+      this.stopScheduler();
+    });
+
+    powerMonitor.on("resume", () => {
+      this.stopScheduler();
+      this.startScheduler();
+    });
 
     const filter = {
         urls: [`http://127.0.0.1:${state.phpPort}/*`]
@@ -234,6 +243,14 @@ class NativePHP {
   private async startPhpApp() {
     this.processes.push(await startPhpApp());
   }
+
+
+    private stopScheduler() {
+        if (this.schedulerInterval) {
+            clearInterval(this.schedulerInterval);
+            this.schedulerInterval = null;
+        }
+    }
 
   private startScheduler() {
     const now = new Date();
