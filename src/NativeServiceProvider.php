@@ -51,7 +51,6 @@ class NativeServiceProvider extends PackageServiceProvider
         $this->mergeConfigFrom($this->package->basePath('/../config/nativephp-internal.php'), 'nativephp-internal');
 
         $this->app->singleton(FreshCommand::class, function ($app) {
-            /* @phpstan-ignore-next-line (beacause we support Laravel 10 & 11) */
             return new FreshCommand($app['migrator']);
         });
 
