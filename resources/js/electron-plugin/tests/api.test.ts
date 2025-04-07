@@ -1,19 +1,20 @@
-jest.mock('electron');
-
-import startAPIServer, {APIProcess} from "../src/server/api";
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import startAPIServer, { APIProcess } from "../src/server/api";
 import axios from "axios";
 
 let apiServer: APIProcess;
 
 describe('API test', () => {
     beforeEach(async () => {
-        jest.resetModules();
+        vi.resetModules();
         apiServer = await startAPIServer('randomSecret');
         axios.defaults.baseURL = `http://localhost:${apiServer.port}`;
-    })
+    });
 
-    afterEach(done => {
-        apiServer.server.close(done);
+    afterEach(async () => {
+        await new Promise<void>((resolve) => {
+            apiServer.server.close(() => resolve());
+        });
     });
 
     it('starts API server on port 4000', async () => {
@@ -29,17 +30,20 @@ describe('API test', () => {
 
     it('protects API endpoints with a secret', async () => {
         try {
-            await axios.get('/api/process')
+            await axios.get('/api/process');
         } catch (error) {
             expect(error.response.status).toBe(403);
         }
 
-        const response = await axios.get('/api/process', {
-            headers: {
-                'x-nativephp-secret': 'randomSecret',
-            }
-        })
-
-        expect(response.status).toBe(200);
+        let response;
+        try {
+            response = await axios.get('/api/process', {
+                headers: {
+                    'x-nativephp-secret': 'randomSecret',
+                }
+            });
+        } finally {
+            expect(response.status).toBe(200);
+        }
     });
-})
+});

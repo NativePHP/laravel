@@ -15,7 +15,6 @@ export default [
                 ...globals.builtin,
                 ...globals.browser,
                 ...globals.node,
-                ...globals.jest,
             },
         },
     },
