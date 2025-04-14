@@ -9,7 +9,7 @@ class PreventRegularBrowserAccess
 {
     public function handle(Request $request, Closure $next)
     {
-        if (app()->runningUnitTests()) {
+        if (! config('nativephp-internal.running')) {
             return $next($request);
         }
 
