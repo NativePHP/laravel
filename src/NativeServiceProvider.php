@@ -4,6 +4,7 @@ namespace Native\Laravel;
 
 use Illuminate\Console\Application;
 use Illuminate\Foundation\Application as Foundation;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
@@ -23,6 +24,7 @@ use Native\Laravel\DTOs\QueueConfig;
 use Native\Laravel\Events\EventWatcher;
 use Native\Laravel\Exceptions\Handler;
 use Native\Laravel\GlobalShortcut as GlobalShortcutImplementation;
+use Native\Laravel\Http\Middleware\PreventRegularBrowserAccess;
 use Native\Laravel\Logging\LogWatcher;
 use Native\Laravel\PowerMonitor as PowerMonitorImplementation;
 use Native\Laravel\Windows\WindowManager as WindowManagerImplementation;
@@ -83,6 +85,11 @@ class NativeServiceProvider extends PackageServiceProvider
                 \Illuminate\Contracts\Debug\ExceptionHandler::class,
                 Handler::class
             );
+
+            // Automatically prevent browser access
+            $this->app->make(Router::class)->pushMiddlewareToGroup('web', [
+                PreventRegularBrowserAccess::class,
+            ]);
 
             Application::starting(function ($app) {
                 $app->resolveCommands([
