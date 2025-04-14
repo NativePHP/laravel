@@ -66,7 +66,8 @@ class DebugCommand extends Command implements PromptsForMissingInput
             ],
             'Laravel' => [
                 'Version' => app()->version(),
-                'ConfigCached' => file_exists($this->laravel->getCachedConfigPath()),
+                'ConfigCached' => $this->laravel->configurationIsCached(),
+                'RoutesCached' => $this->laravel->routesAreCached(),
                 'DebugEnabled' => $this->laravel->hasDebugModeEnabled(),
             ],
             'Node' => [
