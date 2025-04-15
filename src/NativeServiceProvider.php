@@ -4,7 +4,7 @@ namespace Native\Laravel;
 
 use Illuminate\Console\Application;
 use Illuminate\Foundation\Application as Foundation;
-use Illuminate\Routing\Router;
+use Illuminate\Foundation\Http\Kernel;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
@@ -87,9 +87,9 @@ class NativeServiceProvider extends PackageServiceProvider
             );
 
             // Automatically prevent browser access
-            $this->app->make(Router::class)->pushMiddlewareToGroup('web', [
+            $this->app->make(Kernel::class)->pushMiddleware(
                 PreventRegularBrowserAccess::class,
-            ]);
+            );
 
             Application::starting(function ($app) {
                 $app->resolveCommands([
