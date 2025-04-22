@@ -20,6 +20,11 @@ class Settings
         return $this->client->get('settings/'.$key)->json('value') ?? $default;
     }
 
+    public function has(string $key): bool
+    {
+        return $this->client->get('settings/'.$key)->json('value') !== null;
+    }
+
     public function forget(string $key): void
     {
         $this->client->delete('settings/'.$key);
