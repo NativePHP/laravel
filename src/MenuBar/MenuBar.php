@@ -32,6 +32,8 @@ class MenuBar
 
     protected bool $showDockIcon = false;
 
+    protected bool $showOnAllWorkspaces = false;
+
     protected Client $client;
 
     public function __construct()
@@ -95,6 +97,13 @@ class MenuBar
         return $this;
     }
 
+    public function showOnAllWorkspaces($showOnAllWorkspaces = true): self
+    {
+        $this->showOnAllWorkspaces = $showOnAllWorkspaces;
+
+        return $this;
+    }
+
     public function withContextMenu(Menu $menu): self
     {
         $this->contextMenu = $menu;
@@ -122,6 +131,7 @@ class MenuBar
             'onlyShowContextMenu' => $this->onlyShowContextMenu,
             'contextMenu' => ! is_null($this->contextMenu) ? $this->contextMenu->toArray()['submenu'] : null,
             'alwaysOnTop' => $this->alwaysOnTop,
+            'showOnAllWorkspaces' => $this->showOnAllWorkspaces,
         ];
     }
 }
