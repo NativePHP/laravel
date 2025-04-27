@@ -37,6 +37,16 @@ return [
     'copyright' => env('NATIVEPHP_APP_COPYRIGHT'),
 
     /**
+     * The description of your application.
+     */
+    'description' => env('NATIVEPHP_APP_DESCRIPTION'),
+
+    /**
+     * The Website of your application.
+     */
+    'website' => env('NATIVEPHP_APP_WEBSITE'),
+
+    /**
      * The default service provider for your application. This provider
      * takes care of bootstrapping your application and configuring
      * any global hotkeys, menus, windows, etc.
