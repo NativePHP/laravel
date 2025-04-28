@@ -22,6 +22,9 @@ trait PatchesPackagesJson
 
         $packageJson['name'] = $name;
         $packageJson['version'] = config('nativephp.version');
+        $packageJson['description'] = config('nativephp.description');
+        $packageJson['author'] = config('nativephp.author');
+        $packageJson['homepage'] = config('nativephp.website');
 
         file_put_contents($packageJsonPath, json_encode($packageJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 
