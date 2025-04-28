@@ -5,6 +5,10 @@ router.post('/quit', (req, res) => {
     app.quit();
     res.sendStatus(200);
 });
+router.post('/relaunch', (req, res) => {
+    app.relaunch();
+    app.quit();
+});
 router.post('/show', (req, res) => {
     app.show();
     res.sendStatus(200);
