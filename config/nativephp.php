@@ -39,7 +39,7 @@ return [
     /**
      * The description of your application.
      */
-    'description' => env('NATIVEPHP_APP_DESCRIPTION'),
+    'description' => env('NATIVEPHP_APP_DESCRIPTION', 'An awesome app built with NativePHP'),
 
     /**
      * The Website of your application.
