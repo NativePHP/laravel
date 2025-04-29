@@ -12,7 +12,7 @@ class DownloadProgress implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public function __construct(public float $total, public float $delta, public float $transferred, public float $percent, public float $bytesPerSecond) {}
+    public function __construct(public int $total, public int $delta, public int $transferred, public float $percent, public int $bytesPerSecond) {}
 
     public function broadcastOn()
     {
