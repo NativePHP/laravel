@@ -14,6 +14,11 @@ class App
         $this->client->post('app/quit');
     }
 
+    public function relaunch(): void
+    {
+        $this->client->post('app/relaunch');
+    }
+
     public function focus(): void
     {
         $this->client->post('app/focus');

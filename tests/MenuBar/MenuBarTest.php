@@ -9,6 +9,7 @@ it('menubar with create', function () {
     $menuBar = MenuBar::create()
         ->showDockIcon()
         ->alwaysOnTop()
+        ->showOnAllWorkspaces()
         ->label('milwad')
         ->icon('nativephp.png')
         ->url('https://github.com/milwad-dev')
@@ -22,6 +23,7 @@ it('menubar with create', function () {
 
     $this->assertTrue($menuBarArray['showDockIcon']);
     $this->assertTrue($menuBarArray['alwaysOnTop']);
+    $this->assertTrue($menuBarArray['showOnAllWorkspaces']);
     $this->assertEquals('milwad', $menuBarArray['label']);
     $this->assertEquals('https://github.com/milwad-dev', $menuBarArray['url']);
     $this->assertEquals('nativephp.png', $menuBarArray['icon']);

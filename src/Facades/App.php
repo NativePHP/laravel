@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static void quit()
+ * @method static void relaunch()
  * @method static void focus()
  * @method static void hide()
  * @method static bool isHidden()
