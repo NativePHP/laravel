@@ -84,6 +84,7 @@ router.post("/create", (req, res) => {
         showDockIcon,
         onlyShowContextMenu,
         windowPosition,
+        showOnAllWorkspaces,
         contextMenu,
         tooltip,
         resizable,
@@ -117,7 +118,7 @@ router.post("/create", (req, res) => {
             tooltip,
             index: url,
             showDockIcon,
-            showOnAllWorkspaces: false,
+            showOnAllWorkspaces: showOnAllWorkspaces ?? false,
             windowPosition: windowPosition ?? "trayCenter",
             activateWithApp: false,
             browserWindow: {
