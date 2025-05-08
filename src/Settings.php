@@ -17,7 +17,13 @@ class Settings
 
     public function get(string $key, $default = null): mixed
     {
-        return $this->client->get('settings/'.$key)->json('value') ?? $default;
+        $response = $this->client->get('settings/'.$key)->json('value');
+
+        if ($response === null) {
+            return $default instanceof \Closure ? $default() : $default;
+        }
+
+        return $response;
     }
 
     public function forget(string $key): void
