@@ -9,6 +9,10 @@ class PreventRegularBrowserAccess
 {
     public function handle(Request $request, Closure $next)
     {
+        if (! config('nativephp-internal.running')) {
+            return $next($request);
+        }
+
         // Explicitly skip for the cookie-setting route
         if ($request->path() === '_native/api/cookie') {
             return $next($request);
