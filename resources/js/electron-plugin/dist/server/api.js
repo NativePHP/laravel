@@ -14,6 +14,7 @@ import middleware from "./api/middleware.js";
 import clipboardRoutes from "./api/clipboard.js";
 import alertRoutes from "./api/alert.js";
 import appRoutes from "./api/app.js";
+import autoUpdaterRoutes from "./api/autoUpdater.js";
 import screenRoutes from "./api/screen.js";
 import dialogRoutes from "./api/dialog.js";
 import debugRoutes from "./api/debug.js";
@@ -44,6 +45,7 @@ function startAPIServer(randomSecret) {
             httpServer.use("/api/clipboard", clipboardRoutes);
             httpServer.use("/api/alert", alertRoutes);
             httpServer.use("/api/app", appRoutes);
+            httpServer.use("/api/auto-updater", autoUpdaterRoutes);
             httpServer.use("/api/screen", screenRoutes);
             httpServer.use("/api/dialog", dialogRoutes);
             httpServer.use("/api/system", systemRoutes);

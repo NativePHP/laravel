@@ -2,6 +2,14 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import startAPIServer, { APIProcess } from "../src/server/api";
 import axios from "axios";
 
+vi.mock('electron-updater', () => ({
+    autoUpdater: {
+        checkForUpdates: vi.fn(),
+        quitAndInstall: vi.fn(),
+        addListener: vi.fn(),
+    },
+}));
+
 let apiServer: APIProcess;
 
 describe('API test', () => {
