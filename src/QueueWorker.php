@@ -31,6 +31,7 @@ class QueueWorker implements QueueWorkerContract
                 '--queue='.implode(',', $config->queuesToConsume),
                 "--memory={$config->memoryLimit}",
                 "--timeout={$config->timeout}",
+                "--sleep={$config->sleep}",
             ],
             'queue_'.$config->alias,
             persistent: true,

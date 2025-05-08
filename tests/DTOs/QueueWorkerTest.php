@@ -21,6 +21,8 @@ test('the factory method generates an array of config objects for several format
                 fn (QueueConfig $config) => $config->alias === $worker)))->memoryLimit->toBe(128);
             expect(Arr::first(array_filter($configObject,
                 fn (QueueConfig $config) => $config->alias === $worker)))->timeout->toBe(60);
+            expect(Arr::first(array_filter($configObject,
+                fn (QueueConfig $config) => $config->alias === $worker)))->sleep->toBe(3);
 
             continue;
         }
@@ -35,6 +37,8 @@ test('the factory method generates an array of config objects for several format
             fn (QueueConfig $config) => $config->alias === $alias)))->memoryLimit->toBe($worker['memory_limit'] ?? 128);
         expect(Arr::first(array_filter($configObject,
             fn (QueueConfig $config) => $config->alias === $alias)))->timeout->toBe($worker['timeout'] ?? 60);
+        expect(Arr::first(array_filter($configObject,
+            fn (QueueConfig $config) => $config->alias === $alias)))->sleep->toBe($worker['sleep'] ?? 3);
     }
 })->with([
     [
@@ -44,6 +48,7 @@ test('the factory method generates an array of config objects for several format
                     'queues' => ['default'],
                     'memory_limit' => 64,
                     'timeout' => 60,
+                    'sleep' => 3,
                 ],
             ],
         ],

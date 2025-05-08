@@ -9,7 +9,7 @@ it('hits the child process with relevant queue config to spin up a new queue wor
 
     $workerName = 'some_worker';
 
-    $config = new QueueConfig($workerName, ['default'], 128, 61);
+    $config = new QueueConfig($workerName, ['default'], 128, 61, 5);
 
     QueueWorker::up($config);
 
@@ -20,6 +20,7 @@ it('hits the child process with relevant queue config to spin up a new queue wor
             '--queue=default',
             '--memory=128',
             '--timeout=61',
+            '--sleep=5',
         ]);
 
         expect($iniSettings)->toBe([

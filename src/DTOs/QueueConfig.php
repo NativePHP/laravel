@@ -12,6 +12,7 @@ class QueueConfig
         public readonly array $queuesToConsume,
         public readonly int $memoryLimit,
         public readonly int $timeout,
+        public readonly int $sleep,
     ) {}
 
     /**
@@ -26,6 +27,7 @@ class QueueConfig
                     $worker['queues'] ?? ['default'],
                     $worker['memory_limit'] ?? 128,
                     $worker['timeout'] ?? 60,
+                    $worker['sleep'] ?? 3,
                 );
             },
             $config,

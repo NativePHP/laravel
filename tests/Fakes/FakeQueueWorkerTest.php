@@ -17,8 +17,8 @@ it('swaps implementations using facade', function () {
 it('asserts up using callable', function () {
     swap(QueueWorkerContract::class, $fake = app(QueueWorkerFake::class));
 
-    $fake->up(new QueueConfig('testA', ['default'], 123, 123));
-    $fake->up(new QueueConfig('testB', ['default'], 123, 123));
+    $fake->up(new QueueConfig('testA', ['default'], 123, 123, 0));
+    $fake->up(new QueueConfig('testB', ['default'], 123, 123, 0));
 
     $fake->assertUp(fn (QueueConfig $up) => $up->alias === 'testA');
     $fake->assertUp(fn (QueueConfig $up) => $up->alias === 'testB');
