@@ -12,7 +12,7 @@ class QueueConfig
         public readonly array $queuesToConsume,
         public readonly int $memoryLimit,
         public readonly int $timeout,
-        public readonly int $sleep,
+        public readonly int|float $sleep,
     ) {}
 
     /**
