@@ -145,6 +145,10 @@ return [
         ],
     ],
 
+    'on_php_file_change' => [
+        \Native\Laravel\Pipelines\ProjectFileChanged\RestartQueueWorkers::class,
+    ],
+
     /**
      * Define your own scripts to run before and after the build process.
      */
