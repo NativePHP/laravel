@@ -30,7 +30,6 @@ if (isDarwin) {
     targetOs = 'mac';
 }
 
-
 let updaterConfig = {};
 
 try {

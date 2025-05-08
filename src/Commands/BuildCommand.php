@@ -61,11 +61,10 @@ class BuildCommand extends Command
             $arch = $this->selectArchitectureForOs($this->buildOS, $this->argument('arch'));
 
             $this->buildOS .= $arch != 'all' ? "-{$arch}" : '';
+        }
 
-            // Should we publish?
-            if ($this->option('publish')) {
-                $this->buildCommand = 'publish';
-            }
+        if ($this->option('publish')) {
+            $this->buildCommand = 'publish';
         }
 
         if ($this->hasBundled()) {
