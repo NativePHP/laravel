@@ -34,6 +34,7 @@ trait CopiesToBuildDirectory
         '**/.github',
 
         // Potentially containing sensitive info
+        'auth.json', // Composer auth file
         'database/*.sqlite',
         'database/*.sqlite-shm',
         'database/*.sqlite-wal',

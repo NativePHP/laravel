@@ -236,6 +236,7 @@ class BundleCommand extends Command
                 'build', // Compiled box assets
                 'temp', // Temp files
                 'tests', // Tests
+                'auth.json', // Composer auth file
             ])
             ->exclude(config('nativephp.cleanup_exclude_files', []));
 
