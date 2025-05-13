@@ -12,7 +12,11 @@ class Error implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public function __construct(public string $error) {}
+    public function __construct(
+        public string $name,
+        public string $message,
+        public ?string $stack,
+    ) {}
 
     public function broadcastOn()
     {

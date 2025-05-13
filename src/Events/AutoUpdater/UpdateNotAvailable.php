@@ -12,6 +12,16 @@ class UpdateNotAvailable implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    public function __construct(
+        public string $version,
+        public array $files,
+        public string $releaseDate,
+        public ?string $releaseName,
+        public string|array|null $releaseNotes,
+        public ?int $stagingPercentage,
+        public ?string $minimumSystemVersion,
+    ) {}
+
     public function broadcastOn()
     {
         return [
