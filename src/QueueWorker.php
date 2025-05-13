@@ -24,9 +24,13 @@ class QueueWorker implements QueueWorkerContract
             throw new \InvalidArgumentException("Invalid queue configuration alias [$config]");
         }
 
+        $command = app()->isLocal()
+            ? 'queue:listen'
+            : 'queue:work';
+
         $this->childProcess->artisan(
             [
-                'queue:work',
+                $command,
                 "--name={$config->alias}",
                 '--queue='.implode(',', $config->queuesToConsume),
                 "--memory={$config->memoryLimit}",
