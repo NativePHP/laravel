@@ -85,7 +85,6 @@
               "Native\\Laravel\\NativeServiceProvider"
             ],
             "aliases": {
-                "App": "Native\\Laravel\\Facades\\App",
                 "ChildProcess": "Native\\Laravel\\Facades\\ChildProcess",
                 "Clipboard": "Native\\Laravel\\Facades\\Clipboard",
                 "ContextMenu": "Native\\Laravel\\Facades\\ContextMenu",
