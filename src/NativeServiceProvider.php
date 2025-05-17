@@ -15,6 +15,7 @@ use Native\Laravel\Commands\LoadPHPConfigurationCommand;
 use Native\Laravel\Commands\LoadStartupConfigurationCommand;
 use Native\Laravel\Commands\MigrateCommand;
 use Native\Laravel\Commands\SeedDatabaseCommand;
+use Native\Laravel\Commands\WipeDatabaseCommand;
 use Native\Laravel\Contracts\ChildProcess as ChildProcessContract;
 use Native\Laravel\Contracts\GlobalShortcut as GlobalShortcutContract;
 use Native\Laravel\Contracts\PowerMonitor as PowerMonitorContract;
@@ -42,6 +43,7 @@ class NativeServiceProvider extends PackageServiceProvider
                 FreshCommand::class,
                 MigrateCommand::class,
                 SeedDatabaseCommand::class,
+                WipeDatabaseCommand::class,
             ])
             ->hasConfigFile()
             ->hasRoute('api')
