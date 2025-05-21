@@ -163,7 +163,11 @@ router.post('/open', (req, res) => {
             defaultWidth: parseInt(width),
         });
     }
-    const window = new BrowserWindow(Object.assign(Object.assign({ width: (windowState === null || windowState === void 0 ? void 0 : windowState.width) || parseInt(width), height: (windowState === null || windowState === void 0 ? void 0 : windowState.height) || parseInt(height), frame: frame !== undefined ? frame : true, x: (windowState === null || windowState === void 0 ? void 0 : windowState.x) || x, y: (windowState === null || windowState === void 0 ? void 0 : windowState.y) || y, minWidth: minWidth, minHeight: minHeight, maxWidth: maxWidth, maxHeight: maxHeight, show: false, title,
+    const window = new BrowserWindow(Object.assign(Object.assign({ width: resizable
+            ? (windowState === null || windowState === void 0 ? void 0 : windowState.width) || parseInt(width)
+            : parseInt(width), height: resizable
+            ? (windowState === null || windowState === void 0 ? void 0 : windowState.height) || parseInt(height)
+            : parseInt(height), frame: frame !== undefined ? frame : true, x: (windowState === null || windowState === void 0 ? void 0 : windowState.x) || x, y: (windowState === null || windowState === void 0 ? void 0 : windowState.y) || y, minWidth: minWidth, minHeight: minHeight, maxWidth: maxWidth, maxHeight: maxHeight, show: false, title,
         backgroundColor, transparent: transparency, alwaysOnTop,
         resizable,
         movable,

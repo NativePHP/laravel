@@ -255,8 +255,12 @@ router.post('/open', (req, res) => {
     }
 
     const window = new BrowserWindow({
-        width: windowState?.width || parseInt(width),
-        height: windowState?.height || parseInt(height),
+        width: resizable
+            ? windowState?.width || parseInt(width)
+            : parseInt(width),
+        height: resizable
+            ? windowState?.height || parseInt(height)
+            : parseInt(height),
         frame: frame !== undefined ? frame : true,
         x: windowState?.x || x,
         y: windowState?.y || y,
