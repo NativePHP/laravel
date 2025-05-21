@@ -1,5 +1,6 @@
 import express from "express";
-import { autoUpdater } from "electron-updater";
+import electronUpdater from 'electron-updater';
+const { autoUpdater } = electronUpdater;
 import type { ProgressInfo, UpdateDownloadedEvent } from "electron-updater";
 import { notifyLaravel } from "../utils.js";
 
