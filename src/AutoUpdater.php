@@ -17,4 +17,9 @@ class AutoUpdater
     {
         $this->client->post('auto-updater/quit-and-install');
     }
+
+    public function downloadUpdate(): void
+    {
+        $this->client->post('auto-updater/download-update');
+    }
 }

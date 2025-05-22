@@ -12,7 +12,16 @@ class UpdateDownloaded implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public function __construct(public string $version, public string $downloadedFile, public string $releaseDate, public ?string $releaseNotes, public ?string $releaseName) {}
+    public function __construct(
+        public string $downloadedFile,
+        public string $version,
+        public array $files,
+        public string $releaseDate,
+        public ?string $releaseName,
+        public string|array|null $releaseNotes,
+        public ?int $stagingPercentage,
+        public ?string $minimumSystemVersion
+    ) {}
 
     public function broadcastOn()
     {
