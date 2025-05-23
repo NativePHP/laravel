@@ -17,10 +17,10 @@ class UpdateDownloaded implements ShouldBroadcastNow
         public string $version,
         public array $files,
         public string $releaseDate,
-        public ?string $releaseName,
-        public string|array|null $releaseNotes,
-        public ?int $stagingPercentage,
-        public ?string $minimumSystemVersion
+        public ?string $releaseName = null,
+        public string|array|null $releaseNotes = null,
+        public ?int $stagingPercentage = null,
+        public ?string $minimumSystemVersion = null,
     ) {}
 
     public function broadcastOn()
