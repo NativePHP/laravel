@@ -87,4 +87,14 @@ class App
 
         return $open;
     }
+
+    public function isEmojiPanelSupported(): bool
+    {
+        return (bool) $this->client->get('app/is-emoji-panel-supported')->json('supported');
+    }
+
+    public function showEmojiPanel(): void
+    {
+        $this->client->post('app/show-emoji-panel');
+    }
 }
