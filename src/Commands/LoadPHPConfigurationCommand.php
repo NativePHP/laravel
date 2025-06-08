@@ -4,7 +4,12 @@ namespace Native\Laravel\Commands;
 
 use Illuminate\Console\Command;
 use Native\Laravel\Contracts\ProvidesPhpIni;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(
+    name: 'native:php-ini',
+    description: 'Load the PHP configuration for the NativePHP development environment',
+)]
 class LoadPHPConfigurationCommand extends Command
 {
     protected $signature = 'native:php-ini';

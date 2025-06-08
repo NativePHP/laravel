@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Process;
 use Native\Laravel\Support\Environment;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use function Laravel\Prompts\error;
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\intro;
@@ -17,11 +18,13 @@ use function Laravel\Prompts\note;
 use function Laravel\Prompts\outro;
 use function Laravel\Prompts\select;
 
+#[AsCommand(
+    name: 'native:debug',
+    description: 'Generate debug information required for opening an issue.',
+)]
 class DebugCommand extends Command implements PromptsForMissingInput
 {
     protected $signature = 'native:debug {output}';
-
-    protected $description = 'Generate debug information required for opening an issue.';
 
     private Collection $debugInfo;
 
