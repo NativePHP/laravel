@@ -19,7 +19,11 @@ class LogWatcher
                 'context' => $message->context,
             ];
 
-            $this->client->post('debug/log', $payload);
+            try {
+                $this->client->post('debug/log', $payload);
+            } catch (\Throwable $e) {
+                // The server might not be running, or the connection could fail, hiding the error.
+            }
         });
     }
 }
