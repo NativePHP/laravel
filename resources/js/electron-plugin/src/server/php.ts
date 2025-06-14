@@ -320,7 +320,7 @@ function serveApp(secret, apiPort, phpIniSettings): Promise<ProcessResult> {
               * (whether it's a secured bundle or not), so symlinking feels redundant
              */
             console.log('Linking storage path...');
-            callPhpSync(['artisan', 'storage:link', '--force'], phpOptions, phpIniSettings)
+            callPhp(['artisan', 'storage:link', '--force'], phpOptions, phpIniSettings)
         }
 
         // Cache the project

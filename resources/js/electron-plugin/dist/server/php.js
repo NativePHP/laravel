@@ -210,7 +210,7 @@ function serveApp(secret, apiPort, phpIniSettings) {
         });
         if (!runningSecureBuild()) {
             console.log('Linking storage path...');
-            callPhpSync(['artisan', 'storage:link', '--force'], phpOptions, phpIniSettings);
+            callPhp(['artisan', 'storage:link', '--force'], phpOptions, phpIniSettings);
         }
         if (shouldOptimize(store)) {
             console.log('Caching view and routes...');
