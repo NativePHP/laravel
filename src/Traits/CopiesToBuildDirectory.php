@@ -117,7 +117,7 @@ trait CopiesToBuildDirectory
                     }
                 }
             } catch (Throwable $e) {
-                warning('[WARNING] '.$e->getMessage());
+                warning('[WARNING] '.$e->getMessage().', file: '.$item->getPathname());
             }
         }
 
