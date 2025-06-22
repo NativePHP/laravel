@@ -12,7 +12,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 )]
 class SeedDatabaseCommand extends BaseSeedCommand
 {
-    protected $name = 'native:seed';
+    protected $signature = 'native:seed';
     
     public function handle()
     {
