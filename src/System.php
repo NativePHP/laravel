@@ -63,7 +63,7 @@ class System
     }
 
     /**
-     * For settings options, see https://www.electronjs.org/docs/latest/api/web-contents#contentsprintoptions-callback
+     * For $settings options, see https://www.electronjs.org/docs/latest/api/web-contents#contentsprintoptions-callback
      */
     public function print(string $html, ?Printer $printer = null, ?array $settings = []): void
     {
@@ -74,6 +74,9 @@ class System
         ]);
     }
 
+    /**
+     * For $settings options, see https://www.electronjs.org/docs/latest/api/web-contents#contentsprinttopdfoptions
+     */
     public function printToPDF(string $html, ?array $settings = []): string
     {
         return $this->client->post('system/print-to-pdf', [
