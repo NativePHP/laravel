@@ -37,7 +37,7 @@ jobs:
 
       - name: Commit changes
         if: github.event_name == 'pull_request'
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v6
         with:
           commit_message: Fix styling
 
