@@ -62,11 +62,15 @@ class System
         })->toArray();
     }
 
-    public function print(string $html, ?Printer $printer = null): void
+    /**
+     * For settings options, see https://www.electronjs.org/docs/latest/api/web-contents#contentsprintoptions-callback
+     */
+    public function print(string $html, ?Printer $printer = null, array $settings = []): void
     {
         $this->client->post('system/print', [
             'html' => $html,
             'printer' => $printer->name ?? '',
+            'settings' => $settings,
         ]);
     }
 
