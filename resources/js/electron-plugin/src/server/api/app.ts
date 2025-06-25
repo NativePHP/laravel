@@ -81,4 +81,15 @@ router.get('/open-at-login', (req, res) => {
     });
 });
 
+router.get('/is-emoji-panel-supported', (req, res) => {
+    res.json({
+        supported: app.isEmojiPanelSupported(),
+    });
+});
+
+router.post('/show-emoji-panel', (req, res) => {
+    app.showEmojiPanel();
+    res.sendStatus(200);
+});
+
 export default router;
