@@ -5,6 +5,7 @@ namespace Native\Electron\Commands;
 use Illuminate\Console\Command;
 use Native\Electron\Traits\Installer;
 use RuntimeException;
+use Symfony\Component\Console\Attribute\AsCommand;
 
 use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\info;
@@ -12,6 +13,10 @@ use function Laravel\Prompts\intro;
 use function Laravel\Prompts\note;
 use function Laravel\Prompts\outro;
 
+#[AsCommand(
+    name: 'native:install',
+    description: 'Install all of the NativePHP resources',
+)]
 class InstallCommand extends Command
 {
     use Installer;
@@ -19,8 +24,6 @@ class InstallCommand extends Command
     protected $signature = 'native:install
         {--force : Overwrite existing files by default}
         {--installer=npm : The package installer to use: npm, yarn or pnpm}';
-
-    protected $description = 'Install all of the NativePHP resources';
 
     public function handle(): void
     {

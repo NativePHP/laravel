@@ -17,11 +17,16 @@ use Native\Electron\Traits\InstallsAppIcon;
 use Native\Electron\Traits\LocatesPhpBinary;
 use Native\Electron\Traits\PatchesPackagesJson;
 use Native\Electron\Traits\PrunesVendorDirectory;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Finder\Finder;
 use ZipArchive;
 
 use function Laravel\Prompts\intro;
 
+#[AsCommand(
+    name: 'native:bundle',
+    description: 'Bundle your application for distribution.',
+)]
 class BundleCommand extends Command
 {
     use CleansEnvFile;
@@ -34,8 +39,6 @@ class BundleCommand extends Command
     use PrunesVendorDirectory;
 
     protected $signature = 'native:bundle {--fetch} {--clear} {--without-cleanup}';
-
-    protected $description = 'Bundle your application for distribution.';
 
     private ?string $key;
 

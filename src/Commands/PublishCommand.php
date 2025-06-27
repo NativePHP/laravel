@@ -6,7 +6,12 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Native\Electron\Traits\LocatesPhpBinary;
 use Native\Electron\Traits\OsAndArch;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(
+    name: 'native:publish',
+    description: 'Build and publish the NativePHP app for the specified operating system and architecture',
+)]
 class PublishCommand extends Command
 {
     use LocatesPhpBinary;

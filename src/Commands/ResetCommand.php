@@ -4,17 +4,20 @@ namespace Native\Electron\Commands;
 
 use Illuminate\Console\Command;
 use Native\Electron\Traits\PatchesPackagesJson;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Filesystem\Filesystem;
 
 use function Laravel\Prompts\intro;
 
+#[AsCommand(
+    name: 'native:reset',
+    description: 'Clear all build and dist files',
+)]
 class ResetCommand extends Command
 {
     use PatchesPackagesJson;
 
     protected $signature = 'native:reset {--with-app-data : Clear the app data as well}';
-
-    protected $description = 'Clear all build and dist files';
 
     public function handle(): int
     {

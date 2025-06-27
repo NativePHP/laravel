@@ -15,10 +15,15 @@ use Native\Electron\Traits\LocatesPhpBinary;
 use Native\Electron\Traits\OsAndArch;
 use Native\Electron\Traits\PatchesPackagesJson;
 use Native\Electron\Traits\PrunesVendorDirectory;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Process\Process as SymfonyProcess;
 
 use function Laravel\Prompts\intro;
 
+#[AsCommand(
+    name: 'native:build',
+    description: 'Build the NativePHP application for the specified operating system and architecture.',
+)]
 class BuildCommand extends Command
 {
     use CleansEnvFile;
