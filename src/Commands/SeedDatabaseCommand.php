@@ -13,7 +13,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 class SeedDatabaseCommand extends BaseSeedCommand
 {
     protected $signature = 'native:seed';
-    
+
     public function handle()
     {
         (new NativeServiceProvider($this->laravel))->rewriteDatabase();
