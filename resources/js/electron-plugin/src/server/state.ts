@@ -5,19 +5,17 @@ import { notifyLaravel } from "./utils.js";
 const settingsStore = new Store();
 settingsStore.onDidAnyChange((newValue, oldValue) => {
   // Only notify of the changed key/value pair
-  const changedKey = Object.keys(newValue).find(
-    (key) => newValue[key] !== oldValue[key]
-  );
+  const changedKeys = Object.keys(newValue).filter((key) => newValue[key] !== oldValue[key]);
 
-  if (changedKey) {
+  changedKeys.forEach((key) => {
     notifyLaravel("events", {
       event: "Native\\Laravel\\Events\\Settings\\SettingChanged",
       payload: {
-        key: changedKey,
-        value: newValue[changedKey] || null,
+        key,
+          value: newValue[key] || null,
       },
     });
-  }
+  });
 });
 
 interface State {

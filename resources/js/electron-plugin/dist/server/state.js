@@ -2,16 +2,16 @@ import Store from "electron-store";
 import { notifyLaravel } from "./utils.js";
 const settingsStore = new Store();
 settingsStore.onDidAnyChange((newValue, oldValue) => {
-    const changedKey = Object.keys(newValue).find((key) => newValue[key] !== oldValue[key]);
-    if (changedKey) {
+    const changedKeys = Object.keys(newValue).filter((key) => newValue[key] !== oldValue[key]);
+    changedKeys.forEach((key) => {
         notifyLaravel("events", {
             event: "Native\\Laravel\\Events\\Settings\\SettingChanged",
             payload: {
-                key: changedKey,
-                value: newValue[changedKey] || null,
+                key,
+                value: newValue[key] || null,
             },
         });
-    }
+    });
 });
 function generateRandomString(length) {
     let result = "";
