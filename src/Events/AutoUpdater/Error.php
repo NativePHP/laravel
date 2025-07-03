@@ -15,7 +15,7 @@ class Error implements ShouldBroadcastNow
     public function __construct(
         public string $name,
         public string $message,
-        public ?string $stack,
+        public ?string $stack = null,
     ) {}
 
     public function broadcastOn()
