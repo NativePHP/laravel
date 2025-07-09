@@ -62,15 +62,17 @@ router.get('/printers', (req, res) => __awaiter(void 0, void 0, void 0, function
     });
 }));
 router.post('/print', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { printer, html } = req.body;
+    const { printer, html, settings } = req.body;
     let printWindow = new BrowserWindow({
         show: false,
     });
+    const defaultSettings = {
+        silent: true,
+        deviceName: printer,
+    };
+    const mergedSettings = Object.assign(Object.assign({}, defaultSettings), (settings && typeof settings === 'object' ? settings : {}));
     printWindow.webContents.on('did-finish-load', () => {
-        printWindow.webContents.print({
-            silent: true,
-            deviceName: printer,
-        }, (success, errorType) => {
+        printWindow.webContents.print(mergedSettings, (success, errorType) => {
             if (success) {
                 console.log('Print job completed successfully.');
                 res.sendStatus(200);
@@ -88,12 +90,12 @@ router.post('/print', (req, res) => __awaiter(void 0, void 0, void 0, function* 
     yield printWindow.loadURL(`data:text/html;charset=UTF-8,${html}`);
 }));
 router.post('/print-to-pdf', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { html } = req.body;
+    const { html, settings } = req.body;
     let printWindow = new BrowserWindow({
         show: false,
     });
     printWindow.webContents.on('did-finish-load', () => {
-        printWindow.webContents.printToPDF({}).then(data => {
+        printWindow.webContents.printToPDF(settings !== null && settings !== void 0 ? settings : {}).then(data => {
             printWindow.close();
             res.json({
                 result: data.toString('base64'),

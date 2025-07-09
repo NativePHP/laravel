@@ -60,17 +60,24 @@ router.get('/printers', async (req, res) => {
 });
 
 router.post('/print', async (req, res) => {
-    const {printer, html} = req.body;
+    const {printer, html, settings} = req.body;
 
     let printWindow = new BrowserWindow({
         show: false,
     });
 
+    const defaultSettings = {
+        silent: true,
+        deviceName: printer,
+    };
+
+    const mergedSettings = {
+        ...defaultSettings,
+        ...(settings && typeof settings === 'object' ? settings : {}),
+    };
+
     printWindow.webContents.on('did-finish-load', () => {
-        printWindow.webContents.print({
-            silent: true,
-            deviceName: printer,
-        }, (success, errorType) => {
+        printWindow.webContents.print(mergedSettings, (success, errorType) => {
             if (success) {
                 console.log('Print job completed successfully.');
                 res.sendStatus(200);
@@ -89,14 +96,14 @@ router.post('/print', async (req, res) => {
 });
 
 router.post('/print-to-pdf', async (req, res) => {
-    const {html} = req.body;
+    const {html, settings} = req.body;
 
     let printWindow = new BrowserWindow({
         show: false,
     });
 
     printWindow.webContents.on('did-finish-load', () => {
-        printWindow.webContents.printToPDF({}).then(data => {
+        printWindow.webContents.printToPDF(settings ?? {}).then(data => {
             printWindow.close();
                 res.json({
                     result: data.toString('base64'),
