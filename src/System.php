@@ -62,18 +62,26 @@ class System
         })->toArray();
     }
 
-    public function print(string $html, ?Printer $printer = null): void
+    /**
+     * For $settings options, see https://www.electronjs.org/docs/latest/api/web-contents#contentsprintoptions-callback
+     */
+    public function print(string $html, ?Printer $printer = null, ?array $settings = []): void
     {
         $this->client->post('system/print', [
             'html' => $html,
             'printer' => $printer->name ?? '',
+            'settings' => $settings,
         ]);
     }
 
-    public function printToPDF(string $html): string
+    /**
+     * For $settings options, see https://www.electronjs.org/docs/latest/api/web-contents#contentsprinttopdfoptions
+     */
+    public function printToPDF(string $html, ?array $settings = []): string
     {
         return $this->client->post('system/print-to-pdf', [
             'html' => $html,
+            'settings' => $settings,
         ])->json('result');
     }
 
