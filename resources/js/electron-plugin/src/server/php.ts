@@ -311,18 +311,6 @@ function serveApp(secret, apiPort, phpIniSettings): Promise<ProcessResult> {
             name: 'nativephp', // So it doesn't conflict with settings of the app
         });
 
-        // Make sure the storage path is linked - as people can move the app around, we
-        // need to run this every time the app starts
-        if (!runningSecureBuild()) {
-            /*
-              * Simon: Note for later that we should strip out using storage:link
-              * all of the necessary files for the app to function should be a part of the bundle
-              * (whether it's a secured bundle or not), so symlinking feels redundant
-             */
-            console.log('Linking storage path...');
-            callPhp(['artisan', 'storage:link', '--force'], phpOptions, phpIniSettings)
-        }
-
         // Cache the project
         if (shouldOptimize(store)) {
             console.log('Caching view and routes...');

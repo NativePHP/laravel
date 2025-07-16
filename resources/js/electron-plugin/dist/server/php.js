@@ -208,10 +208,6 @@ function serveApp(secret, apiPort, phpIniSettings) {
         const store = new Store({
             name: 'nativephp',
         });
-        if (!runningSecureBuild()) {
-            console.log('Linking storage path...');
-            callPhp(['artisan', 'storage:link', '--force'], phpOptions, phpIniSettings);
-        }
         if (shouldOptimize(store)) {
             console.log('Caching view and routes...');
             let result = callPhpSync(['artisan', 'optimize'], phpOptions, phpIniSettings);
