@@ -60,6 +60,7 @@ return [
      */
     'cleanup_env_keys' => [
         'AWS_*',
+        'AZURE_*',
         'GITHUB_*',
         'DO_SPACES_*',
         '*_SECRET',
@@ -68,6 +69,10 @@ return [
         'NATIVEPHP_APPLE_ID',
         'NATIVEPHP_APPLE_ID_PASS',
         'NATIVEPHP_APPLE_TEAM_ID',
+        'NATIVEPHP_AZURE_PUBLISHER_NAME',
+        'NATIVEPHP_AZURE_ENDPOINT',
+        'NATIVEPHP_AZURE_CERTIFICATE_PROFILE_NAME',
+        'NATIVEPHP_AZURE_CODE_SIGNING_ACCOUNT_NAME',
     ],
 
     /**

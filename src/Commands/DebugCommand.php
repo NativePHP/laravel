@@ -4,19 +4,19 @@ namespace Native\Laravel\Commands;
 
 use Composer\InstalledVersions;
 use Illuminate\Console\Command;
-use Illuminate\Contracts\Console\PromptsForMissingInput;
+use function Laravel\Prompts\info;
+use function Laravel\Prompts\note;
 use Illuminate\Support\Collection;
+use function Laravel\Prompts\error;
+use function Laravel\Prompts\intro;
+use function Laravel\Prompts\outro;
+
+use function Laravel\Prompts\select;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Process;
 use Native\Laravel\Support\Environment;
 use Symfony\Component\Console\Attribute\AsCommand;
-
-use function Laravel\Prompts\error;
-use function Laravel\Prompts\info;
-use function Laravel\Prompts\intro;
-use function Laravel\Prompts\note;
-use function Laravel\Prompts\outro;
-use function Laravel\Prompts\select;
+use Illuminate\Contracts\Console\PromptsForMissingInput;
 
 #[AsCommand(
     name: 'native:debug',
@@ -111,6 +111,14 @@ class DebugCommand extends Command implements PromptsForMissingInput
             && config('nativephp-internal.notarization.apple_id_pass')
             && config('nativephp-internal.notarization.apple_team_id');
 
+        $isAzureTrustedSigningConfigured = config('nativephp-internal.azure_trusted_signing.tenant_id')
+            && config('nativephp-internal.azure_trusted_signing.client_id')
+            && config('nativephp-internal.azure_trusted_signing.client_secret')
+            && config('nativephp-internal.azure_trusted_signing.publisher_name')
+            && config('nativephp-internal.azure_trusted_signing.endpoint')
+            && config('nativephp-internal.azure_trusted_signing.certificate_profile_name')
+            && config('nativephp-internal.azure_trusted_signing.code_signing_account_name');
+
         $this->debugInfo->put(
             'NativePHP',
             [
@@ -122,6 +130,7 @@ class DebugCommand extends Command implements PromptsForMissingInput
                         'Post' => config('nativephp.postbuild'),
                     ],
                     'NotarizationEnabled' => $isNotarizationConfigured,
+                    'AzureTrustedSigningEnabled' => $isAzureTrustedSigningConfigured,
                     'CustomPHPBinary' => config('nativephp-internal.php_binary_path') ?? false,
                 ],
             ]
