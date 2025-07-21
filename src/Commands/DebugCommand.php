@@ -4,19 +4,19 @@ namespace Native\Laravel\Commands;
 
 use Composer\InstalledVersions;
 use Illuminate\Console\Command;
-use function Laravel\Prompts\info;
-use function Laravel\Prompts\note;
+use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Illuminate\Support\Collection;
-use function Laravel\Prompts\error;
-use function Laravel\Prompts\intro;
-use function Laravel\Prompts\outro;
-
-use function Laravel\Prompts\select;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Process;
 use Native\Laravel\Support\Environment;
 use Symfony\Component\Console\Attribute\AsCommand;
-use Illuminate\Contracts\Console\PromptsForMissingInput;
+
+use function Laravel\Prompts\error;
+use function Laravel\Prompts\info;
+use function Laravel\Prompts\intro;
+use function Laravel\Prompts\note;
+use function Laravel\Prompts\outro;
+use function Laravel\Prompts\select;
 
 #[AsCommand(
     name: 'native:debug',
