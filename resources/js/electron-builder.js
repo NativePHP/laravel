@@ -1,5 +1,5 @@
-import { join } from 'path';
 import { exec } from 'child_process';
+import { join } from 'path';
 
 const appUrl = process.env.APP_URL;
 const appId = process.env.NATIVEPHP_APP_ID;
@@ -10,6 +10,12 @@ const fileName = process.env.NATIVEPHP_APP_FILENAME;
 const appVersion = process.env.NATIVEPHP_APP_VERSION;
 const appCopyright = process.env.NATIVEPHP_APP_COPYRIGHT;
 const deepLinkProtocol = process.env.NATIVEPHP_DEEPLINK_SCHEME;
+
+// Azure signing configuration
+const azurePublisherName = process.env.NATIVEPHP_AZURE_PUBLISHER_NAME;
+const azureEndpoint = process.env.NATIVEPHP_AZURE_ENDPOINT;
+const azureCertificateProfileName = process.env.NATIVEPHP_AZURE_CERTIFICATE_PROFILE_NAME;
+const azureCodeSigningAccountName = process.env.NATIVEPHP_AZURE_CODE_SIGNING_ACCOUNT_NAME;
 
 // Since we do not copy the php executable here, we only need these for building
 const isWindows = process.argv.includes('--win');
@@ -78,6 +84,14 @@ export default {
     afterSign: 'build/notarize.js',
     win: {
         executableName: fileName,
+        ...(azurePublisherName && azureEndpoint && azureCertificateProfileName && azureCodeSigningAccountName ? {
+            azureSignOptions: {
+                publisherName: azurePublisherName,
+                endpoint: azureEndpoint,
+                certificateProfileName: azureCertificateProfileName,
+                codeSigningAccountName: azureCodeSigningAccountName
+            }
+        } : {}),
     },
     nsis: {
         artifactName: appName + '-${version}-setup.${ext}',

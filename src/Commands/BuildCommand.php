@@ -154,6 +154,14 @@ class BuildCommand extends Command
                 'NATIVEPHP_APPLE_ID' => config('nativephp-internal.notarization.apple_id'),
                 'NATIVEPHP_APPLE_ID_PASS' => config('nativephp-internal.notarization.apple_id_pass'),
                 'NATIVEPHP_APPLE_TEAM_ID' => config('nativephp-internal.notarization.apple_team_id'),
+                // Azure Trusted Signing
+                'AZURE_TENANT_ID' => config('nativephp-internal.azure_trusted_signing.tenant_id'),
+                'AZURE_CLIENT_ID' => config('nativephp-internal.azure_trusted_signing.client_id'),
+                'AZURE_CLIENT_SECRET' => config('nativephp-internal.azure_trusted_signing.client_secret'),
+                'NATIVEPHP_AZURE_PUBLISHER_NAME' => config('nativephp-internal.azure_trusted_signing.publisher_name'),
+                'NATIVEPHP_AZURE_ENDPOINT' => config('nativephp-internal.azure_trusted_signing.endpoint'),
+                'NATIVEPHP_AZURE_CERTIFICATE_PROFILE_NAME' => config('nativephp-internal.azure_trusted_signing.certificate_profile_name'),
+                'NATIVEPHP_AZURE_CODE_SIGNING_ACCOUNT_NAME' => config('nativephp-internal.azure_trusted_signing.code_signing_account_name'),
             ],
             Updater::environmentVariables(),
         );
