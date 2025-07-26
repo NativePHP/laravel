@@ -49,6 +49,19 @@ return [
     ],
 
     /**
+     * The credentials to use Azure Trusted Signing service.
+     */
+    'azure_trusted_signing' => [
+        'tenant_id' => env('AZURE_TENANT_ID'),
+        'client_id' => env('AZURE_CLIENT_ID'),
+        'client_secret' => env('AZURE_CLIENT_SECRET'),
+        'publisher_name' => env('NATIVEPHP_AZURE_PUBLISHER_NAME'),
+        'endpoint' => env('NATIVEPHP_AZURE_ENDPOINT'),
+        'certificate_profile_name' => env('NATIVEPHP_AZURE_CERTIFICATE_PROFILE_NAME'),
+        'code_signing_account_name' => env('NATIVEPHP_AZURE_CODE_SIGNING_ACCOUNT_NAME'),
+    ],
+
+    /**
      * The binary path of PHP for NativePHP to use at build.
      */
     'php_binary_path' => env('NATIVEPHP_PHP_BINARY_PATH'),
