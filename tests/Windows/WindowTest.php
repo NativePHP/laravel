@@ -16,6 +16,8 @@ it('test window', function () {
         ->titleBarStyle('milwad')
         ->rememberState()
         ->frameless()
+        ->skipTaskbar()
+        ->hiddenInMissionControl()
         ->focusable()
         ->hasShadow()
         ->alwaysOnTop()
@@ -36,6 +38,8 @@ it('test window', function () {
     expect($windowArray['titleBarStyle'])->toBe('milwad');
     expect($windowArray['rememberState'])->toBeTrue();
     expect($windowArray['frame'])->toBeFalse();
+    expect($windowArray['skipTaskbar'])->toBeTrue();
+    expect($windowArray['hiddenInMissionControl'])->toBeTrue();
     expect($windowArray['focusable'])->toBeTrue();
     expect($windowArray['hasShadow'])->toBeTrue();
     expect($windowArray['alwaysOnTop'])->toBeTrue();
