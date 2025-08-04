@@ -139,7 +139,7 @@ function getWindowData(id) {
     };
 }
 router.post('/open', (req, res) => {
-    let { id, x, y, frame, width, height, minWidth, minHeight, maxWidth, maxHeight, focusable, hasShadow, url, resizable, movable, minimizable, maximizable, closable, title, alwaysOnTop, titleBarStyle, trafficLightPosition, vibrancy, backgroundColor, transparency, showDevTools, fullscreen, fullscreenable, kiosk, autoHideMenuBar, webPreferences, } = req.body;
+    let { id, x, y, frame, width, height, minWidth, minHeight, maxWidth, maxHeight, focusable, skipTaskbar, hiddenInMissionControl, hasShadow, url, resizable, movable, minimizable, maximizable, closable, title, alwaysOnTop, titleBarStyle, trafficLightPosition, vibrancy, backgroundColor, transparency, showDevTools, fullscreen, fullscreenable, kiosk, autoHideMenuBar, webPreferences, } = req.body;
     if (state.windows[id]) {
         state.windows[id].show();
         state.windows[id].focus();
@@ -179,6 +179,8 @@ router.post('/open', (req, res) => {
         trafficLightPosition,
         vibrancy,
         focusable,
+        skipTaskbar,
+        hiddenInMissionControl,
         autoHideMenuBar }, (process.platform === 'linux' ? { icon: state.icon } : {})), { webPreferences: Object.assign(Object.assign({}, webPreferences), defaultWebPreferences), fullscreen,
         fullscreenable,
         kiosk }));

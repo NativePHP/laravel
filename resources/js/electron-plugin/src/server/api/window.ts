@@ -203,6 +203,8 @@ router.post('/open', (req, res) => {
         maxWidth,
         maxHeight,
         focusable,
+        skipTaskbar,
+        hiddenInMissionControl,
         hasShadow,
         url,
         resizable,
@@ -283,6 +285,8 @@ router.post('/open', (req, res) => {
         trafficLightPosition,
         vibrancy,
         focusable,
+        skipTaskbar,
+        hiddenInMissionControl,
         autoHideMenuBar,
         ...(process.platform === 'linux' ? {icon: state.icon} : {}),
         webPreferences: {
