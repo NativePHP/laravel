@@ -201,7 +201,6 @@ class NativePHP {
                                 event: "\\Native\\Laravel\\Events\\App\\OpenedFromURL",
                                 payload: {
                                     url: commandLine[commandLine.length - 1],
-                                    workingDirectory: workingDirectory,
                                 },
                             });
                         },
