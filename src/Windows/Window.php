@@ -44,6 +44,10 @@ class Window
 
     protected bool $focusable = true;
 
+    protected bool $skipTaskbar = false;
+
+    protected bool $hiddenInMissionControl = false;
+
     protected bool $focused = false;
 
     protected bool $hasShadow = true;
@@ -153,6 +157,20 @@ class Window
     public function focusable($value = true): self
     {
         $this->focusable = $value;
+
+        return $this;
+    }
+
+    public function skipTaskbar($value = true): self
+    {
+        $this->skipTaskbar = $value;
+
+        return $this;
+    }
+
+    public function hiddenInMissionControl($value = true): self
+    {
+        $this->hiddenInMissionControl = $value;
 
         return $this;
     }
@@ -323,6 +341,8 @@ class Window
             'maxWidth' => $this->maxWidth,
             'maxHeight' => $this->maxHeight,
             'focusable' => $this->focusable,
+            'skipTaskbar' => $this->skipTaskbar,
+            'hiddenInMissionControl' => $this->hiddenInMissionControl,
             'hasShadow' => $this->hasShadow,
             'frame' => $this->frame,
             'titleBarStyle' => $this->titleBarStyle,
