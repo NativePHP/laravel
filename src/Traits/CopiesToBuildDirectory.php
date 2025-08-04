@@ -44,6 +44,7 @@ trait CopiesToBuildDirectory
         'storage/framework/cache/*',
         'storage/framework/views/*',
         'storage/logs/*',
+        'storage/hot',
 
         // Only needed for local testing
         'vendor/nativephp/electron/resources',
