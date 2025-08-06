@@ -46,6 +46,11 @@ Please review [our security policy](../../security/policy) on how to report secu
 - [Simon Hamp](https://github.com/simonhamp)
 - [All Contributors](../../contributors)
 
+### Powered by
+<a href="https://jb.gg/OpenSource" target="_blank">
+<img src="https://resources.jetbrains.com/storage/products/company/brand/logos/jetbrains.svg" alt="JetBrains logo" width="150">
+</a>
+
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
