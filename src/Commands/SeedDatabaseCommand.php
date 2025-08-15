@@ -16,6 +16,9 @@ class SeedDatabaseCommand extends BaseSeedCommand
 
     public function handle()
     {
+        $this->addOption('database', default: null);
+        $this->addArgument('class', default: 'DatabaseSeeder');
+
         (new NativeServiceProvider($this->laravel))->rewriteDatabase();
 
         return parent::handle();
