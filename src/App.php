@@ -34,6 +34,21 @@ class App
         return $this->client->get('app/is-hidden')->json('is_hidden');
     }
 
+    public function getLocale(): string
+    {
+        return $this->client->get('app/locale')->json('locale');
+    }
+
+    public function getLocaleCountryCode(): string
+    {
+        return $this->client->get('app/locale-country-code')->json('locale_country_code');
+    }
+
+    public function getSystemLocale(): string
+    {
+        return $this->client->get('app/system-locale')->json('system_locale');
+    }
+
     public function version(): string
     {
         return $this->client->get('app/version')->json('version');
