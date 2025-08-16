@@ -17,6 +17,7 @@ use Native\Laravel\Fakes\WindowManagerFake;
  * @method static void reload($id = null)
  * @method static void maximize($id = null)
  * @method static void minimize($id = null)
+ * @method static void zoomFactor(float $zoomFactor = 1.0)
  */
 class Window extends Facade
 {
