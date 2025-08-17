@@ -1,5 +1,5 @@
 import express from 'express';
-import {utilityProcess} from 'electron';
+import {utilityProcess, UtilityProcess} from 'electron';
 import state from '../state.js';
 import {notifyLaravel} from "../utils.js";
 import {getAppPath, getDefaultEnvironmentVariables, getDefaultPhpIniSettings, runningSecureBuild} from "../php.js";
@@ -207,7 +207,7 @@ export function stopAllProcesses() {
     }
 }
 
-function getProcess(alias) {
+function getProcess(alias: string): UtilityProcess | undefined {
     return state.processes[alias]?.proc;
 }
 

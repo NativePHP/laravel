@@ -1,5 +1,6 @@
 import CrossProcessExports from "electron";
 import { app, session, powerMonitor } from "electron";
+import { ChildProcessWithoutNullStreams } from "child_process";
 import { initialize } from "@electron/remote/main/index.js";
 import state from "./server/state.js";
 import { electronApp, optimizer } from "@electron-toolkit/utils";
@@ -7,6 +8,7 @@ import {
   retrieveNativePHPConfig,
   retrievePhpIniSettings,
   runScheduler,
+  killScheduler,
   startAPI,
   startPhpApp,
 } from "./server/index.js";
@@ -21,9 +23,9 @@ import electronUpdater from 'electron-updater';
 const { autoUpdater } = electronUpdater;
 
 class NativePHP {
-  processes = [];
-  schedulerInterval = undefined;
+  processes: ChildProcessWithoutNullStreams[] = [];
   mainWindow = null;
+  schedulerInterval = undefined;
 
   public bootstrap(
     app: CrossProcessExports.App,
@@ -244,12 +246,13 @@ class NativePHP {
   }
 
 
-    private stopScheduler() {
-        if (this.schedulerInterval) {
-            clearInterval(this.schedulerInterval);
-            this.schedulerInterval = null;
-        }
-    }
+  private stopScheduler() {
+      if (this.schedulerInterval) {
+          clearInterval(this.schedulerInterval);
+          this.schedulerInterval = null;
+      }
+      killScheduler();
+  }
 
   private startScheduler() {
     const now = new Date();
@@ -270,16 +273,23 @@ class NativePHP {
   }
 
   private killChildProcesses() {
+    this.stopScheduler();
+
     this.processes
       .filter((p) => p !== undefined)
       .forEach((process) => {
+        if (!process || !process.pid) return;
+        if (process.killed && process.exitCode !== null) return;
+
         try {
           // @ts-ignore
           killSync(process.pid, 'SIGTERM', true); // Kill tree
           ps.kill(process.pid); // Sometimes does not kill the subprocess of php server
+
         } catch (err) {
           console.error(err);
         }
+
       });
   }
 }

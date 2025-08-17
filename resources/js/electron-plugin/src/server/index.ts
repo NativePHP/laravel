@@ -7,6 +7,9 @@ import {
 } from "./php.js";
 import { appendCookie } from "./utils.js";
 import state from "./state.js";
+import { ChildProcess } from "child_process";
+
+let schedulerProcess: ChildProcess | null = null;
 
 export async function startPhpApp() {
   const result = await serveApp(
@@ -23,7 +26,15 @@ export async function startPhpApp() {
 }
 
 export function runScheduler() {
-  startScheduler(state.randomSecret, state.electronApiPort, state.phpIni);
+  killScheduler();
+  schedulerProcess = startScheduler(state.randomSecret, state.electronApiPort, state.phpIni);
+}
+
+export function killScheduler() {
+  if (schedulerProcess && !schedulerProcess.killed) {
+    schedulerProcess.kill();
+    schedulerProcess = null;
+  }
 }
 
 export function startAPI(): Promise<APIProcess> {

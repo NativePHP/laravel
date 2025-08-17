@@ -11,6 +11,7 @@ import startAPIServer from "./api.js";
 import { retrieveNativePHPConfig, retrievePhpIniSettings, serveApp, startScheduler, } from "./php.js";
 import { appendCookie } from "./utils.js";
 import state from "./state.js";
+let schedulerProcess = null;
 export function startPhpApp() {
     return __awaiter(this, void 0, void 0, function* () {
         const result = yield serveApp(state.randomSecret, state.electronApiPort, state.phpIni);
@@ -20,7 +21,14 @@ export function startPhpApp() {
     });
 }
 export function runScheduler() {
-    startScheduler(state.randomSecret, state.electronApiPort, state.phpIni);
+    killScheduler();
+    schedulerProcess = startScheduler(state.randomSecret, state.electronApiPort, state.phpIni);
+}
+export function killScheduler() {
+    if (schedulerProcess && !schedulerProcess.killed) {
+        schedulerProcess.kill();
+        schedulerProcess = null;
+    }
 }
 export function startAPI() {
     return startAPIServer(state.randomSecret);

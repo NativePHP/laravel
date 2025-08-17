@@ -11,7 +11,7 @@ import { app, session, powerMonitor } from "electron";
 import { initialize } from "@electron/remote/main/index.js";
 import state from "./server/state.js";
 import { electronApp, optimizer } from "@electron-toolkit/utils";
-import { retrieveNativePHPConfig, retrievePhpIniSettings, runScheduler, startAPI, startPhpApp, } from "./server/index.js";
+import { retrieveNativePHPConfig, retrievePhpIniSettings, runScheduler, killScheduler, startAPI, startPhpApp, } from "./server/index.js";
 import { notifyLaravel } from "./server/utils.js";
 import { resolve } from "path";
 import { stopAllProcesses } from "./server/api/childProcess.js";
@@ -22,8 +22,8 @@ const { autoUpdater } = electronUpdater;
 class NativePHP {
     constructor() {
         this.processes = [];
-        this.schedulerInterval = undefined;
         this.mainWindow = null;
+        this.schedulerInterval = undefined;
     }
     bootstrap(app, icon, phpBinary, cert) {
         initialize();
@@ -192,6 +192,7 @@ class NativePHP {
             clearInterval(this.schedulerInterval);
             this.schedulerInterval = null;
         }
+        killScheduler();
     }
     startScheduler() {
         const now = new Date();
@@ -206,9 +207,14 @@ class NativePHP {
         }, delay);
     }
     killChildProcesses() {
+        this.stopScheduler();
         this.processes
             .filter((p) => p !== undefined)
             .forEach((process) => {
+            if (!process || !process.pid)
+                return;
+            if (process.killed && process.exitCode !== null)
+                return;
             try {
                 killSync(process.pid, 'SIGTERM', true);
                 ps.kill(process.pid);
