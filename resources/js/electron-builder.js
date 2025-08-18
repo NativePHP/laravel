@@ -10,6 +10,7 @@ const fileName = process.env.NATIVEPHP_APP_FILENAME;
 const appVersion = process.env.NATIVEPHP_APP_VERSION;
 const appCopyright = process.env.NATIVEPHP_APP_COPYRIGHT;
 const deepLinkProtocol = process.env.NATIVEPHP_DEEPLINK_SCHEME;
+const updaterEnabled = process.env.NATIVEPHP_UPDATER_ENABLED === 'true';
 
 // Azure signing configuration
 const azurePublisherName = process.env.NATIVEPHP_AZURE_PUBLISHER_NAME;
@@ -129,11 +130,13 @@ export default {
         artifactName: appName + '-${version}.${ext}',
     },
     npmRebuild: false,
-    publish: updaterConfig,
     extraMetadata: {
         name: fileName,
         homepage: appUrl,
         version: appVersion,
         author: appAuthor,
-    }
+    },
+    ...updaterEnabled 
+        ? { publish: updaterConfig } 
+        : {}
 };
