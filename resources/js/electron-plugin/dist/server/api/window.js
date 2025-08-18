@@ -53,6 +53,12 @@ router.post('/hide-dev-tools', (req, res) => {
     (_a = state.windows[id]) === null || _a === void 0 ? void 0 : _a.webContents.closeDevTools();
     res.sendStatus(200);
 });
+router.post('/set-zoom-factor', (req, res) => {
+    var _a;
+    const { id, zoomFactor } = req.body;
+    (_a = state.windows[id]) === null || _a === void 0 ? void 0 : _a.webContents.setZoomFactor(parseFloat(zoomFactor));
+    res.sendStatus(200);
+});
 router.post('/position', (req, res) => {
     var _a;
     const { id, x, y, animate } = req.body;
@@ -139,7 +145,7 @@ function getWindowData(id) {
     };
 }
 router.post('/open', (req, res) => {
-    let { id, x, y, frame, width, height, minWidth, minHeight, maxWidth, maxHeight, focusable, skipTaskbar, hiddenInMissionControl, hasShadow, url, resizable, movable, minimizable, maximizable, closable, title, alwaysOnTop, titleBarStyle, trafficLightPosition, vibrancy, backgroundColor, transparency, showDevTools, fullscreen, fullscreenable, kiosk, autoHideMenuBar, webPreferences, } = req.body;
+    let { id, x, y, frame, width, height, minWidth, minHeight, maxWidth, maxHeight, focusable, skipTaskbar, hiddenInMissionControl, hasShadow, url, resizable, movable, minimizable, maximizable, closable, title, alwaysOnTop, titleBarStyle, trafficLightPosition, vibrancy, backgroundColor, transparency, showDevTools, fullscreen, fullscreenable, kiosk, autoHideMenuBar, webPreferences, zoomFactor, } = req.body;
     if (state.windows[id]) {
         state.windows[id].show();
         state.windows[id].focus();
@@ -247,6 +253,9 @@ router.post('/open', (req, res) => {
     });
     url = appendWindowIdToUrl(url, id);
     window.loadURL(url);
+    window.webContents.on('dom-ready', () => {
+        window.webContents.setZoomFactor(parseFloat(zoomFactor));
+    });
     window.webContents.on('did-finish-load', () => {
         window.show();
     });

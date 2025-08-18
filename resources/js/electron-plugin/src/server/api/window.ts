@@ -73,6 +73,14 @@ router.post('/hide-dev-tools', (req, res) => {
     res.sendStatus(200);
 });
 
+router.post('/set-zoom-factor', (req, res) => {
+    const {id, zoomFactor} = req.body;
+
+    state.windows[id]?.webContents.setZoomFactor(parseFloat(zoomFactor));
+
+    res.sendStatus(200);
+});
+
 router.post('/position', (req, res) => {
     const {id, x, y, animate} = req.body;
 
@@ -225,6 +233,7 @@ router.post('/open', (req, res) => {
         kiosk,
         autoHideMenuBar,
         webPreferences,
+        zoomFactor,
     } = req.body;
 
     if (state.windows[id]) {
@@ -376,6 +385,10 @@ router.post('/open', (req, res) => {
     url = appendWindowIdToUrl(url, id);
 
     window.loadURL(url);
+
+    window.webContents.on('dom-ready', () => {
+        window.webContents.setZoomFactor(parseFloat(zoomFactor));
+    });
 
     window.webContents.on('did-finish-load', () => {
         window.show();
