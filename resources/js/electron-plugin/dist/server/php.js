@@ -15,6 +15,7 @@ import { promisify } from 'util';
 import { join } from 'path';
 import { app } from 'electron';
 import { execFile, spawn, spawnSync } from 'child_process';
+import { createServer } from 'net';
 import state from "./state.js";
 import getPort, { portNumbers } from 'get-port';
 const storagePath = join(app.getPath('userData'), 'storage');
@@ -42,9 +43,30 @@ function shouldOptimize(store) {
 }
 function getPhpPort() {
     return __awaiter(this, void 0, void 0, function* () {
-        return yield getPort({
+        const suggestedPort = yield getPort({
             host: '127.0.0.1',
             port: portNumbers(8100, 9000)
+        });
+        if (yield canBindToPort(suggestedPort)) {
+            return suggestedPort;
+        }
+        console.warn(`Port ${suggestedPort} is not bindable, manually searching...`);
+        for (let port = suggestedPort + 1; port < 9000; port++) {
+            if (yield canBindToPort(port)) {
+                return port;
+            }
+        }
+        throw new Error('Could not find an available port in range 8100-9000');
+    });
+}
+function canBindToPort(port) {
+    return new Promise((resolve) => {
+        const server = createServer();
+        server.listen(port, '127.0.0.1', () => {
+            server.close(() => resolve(true));
+        });
+        server.on('error', () => {
+            resolve(false);
         });
     });
 }
@@ -235,8 +257,6 @@ function serveApp(secret, apiPort, phpIniSettings) {
             console.log('Skipping Database migration while in development.');
             console.log('You may migrate manually by running: php artisan native:migrate');
         }
-        console.log('Starting PHP server...');
-        const phpPort = yield getPhpPort();
         let serverPath;
         let cwd;
         if (runningSecureBuild()) {
@@ -247,6 +267,8 @@ function serveApp(secret, apiPort, phpIniSettings) {
             serverPath = join(appPath, 'vendor', 'laravel', 'framework', 'src', 'Illuminate', 'Foundation', 'resources', 'server.php');
             cwd = join(appPath, 'public');
         }
+        console.log('Starting PHP server...');
+        const phpPort = yield getPhpPort();
         const phpServer = callPhp(['-S', `127.0.0.1:${phpPort}`, serverPath], {
             cwd: cwd,
             env

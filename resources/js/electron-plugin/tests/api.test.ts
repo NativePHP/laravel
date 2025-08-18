@@ -31,6 +31,9 @@ describe('API test', () => {
     });
 
     it('starts API server on port 4000', async () => {
+        // NOTE: If this fails it may be you have a NativePHP app running locally
+        // and the port negotiation actually woks as expected (might be 4001).
+        // Quit any running NativePHP apps to verify.
         expect(apiServer.port).toBe(4000);
     });
 
