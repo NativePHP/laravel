@@ -68,6 +68,8 @@ class Window
 
     protected array $webPreferences = [];
 
+    protected float $zoomFactor = 1.0;
+
     public function __construct(string $id)
     {
         $this->id = $id;
@@ -326,6 +328,20 @@ class Window
         return $this;
     }
 
+    public function zoomFactor(float $zoomFactor = 1.0): self
+    {
+        $this->zoomFactor = $zoomFactor;
+
+        if (! $this instanceof PendingOpenWindow) {
+            $this->client->post('window/set-zoom-factor', [
+                'id' => $this->id,
+                'zoomFactor' => $zoomFactor,
+            ]);
+        }
+
+        return $this;
+    }
+
     public function toArray()
     {
         return [
@@ -364,6 +380,7 @@ class Window
             'autoHideMenuBar' => $this->autoHideMenuBar,
             'transparent' => $this->transparent,
             'webPreferences' => $this->webPreferences,
+            'zoomFactor' => $this->zoomFactor,
         ];
     }
 
