@@ -22,6 +22,21 @@ router.get('/is-hidden', (req, res) => {
         is_hidden: app.isHidden(),
     });
 });
+router.get('/locale', (req, res) => {
+    res.json({
+        locale: app.getLocale(),
+    });
+});
+router.get('/locale-country-code', (req, res) => {
+    res.json({
+        locale_country_code: app.getLocaleCountryCode(),
+    });
+});
+router.get('/system-locale', (req, res) => {
+    res.json({
+        system_locale: app.getSystemLocale(),
+    });
+});
 router.get('/app-path', (req, res) => {
     res.json({
         path: app.getAppPath(),
