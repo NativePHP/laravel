@@ -70,6 +70,10 @@ class Window
 
     protected float $zoomFactor = 1.0;
 
+    protected bool $preventLeaveDomain = false;
+
+    protected bool $preventLeavePage = false;
+
     public function __construct(string $id)
     {
         $this->id = $id;
@@ -342,6 +346,20 @@ class Window
         return $this;
     }
 
+    public function preventLeaveDomain(bool $preventLeaveDomain = true): self
+    {
+        $this->preventLeaveDomain = $preventLeaveDomain;
+
+        return $this;
+    }
+
+    public function preventLeavePage(bool $preventLeavePage = true): self
+    {
+        $this->preventLeavePage = $preventLeavePage;
+
+        return $this;
+    }
+
     public function toArray()
     {
         return [
@@ -381,6 +399,8 @@ class Window
             'transparent' => $this->transparent,
             'webPreferences' => $this->webPreferences,
             'zoomFactor' => $this->zoomFactor,
+            'preventLeaveDomain' => $this->preventLeaveDomain,
+            'preventLeavePage' => $this->preventLeavePage,
         ];
     }
 
