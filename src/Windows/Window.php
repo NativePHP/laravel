@@ -70,6 +70,8 @@ class Window
 
     protected float $zoomFactor = 1.0;
 
+    protected bool $suppressNewWindows = false;
+
     public function __construct(string $id)
     {
         $this->id = $id;
@@ -342,6 +344,13 @@ class Window
         return $this;
     }
 
+    public function suppressNewWindows(): self
+    {
+        $this->suppressNewWindows = true;
+
+        return $this;
+    }
+
     public function toArray()
     {
         return [
@@ -381,6 +390,7 @@ class Window
             'transparent' => $this->transparent,
             'webPreferences' => $this->webPreferences,
             'zoomFactor' => $this->zoomFactor,
+            'suppressNewWindows' => $this->suppressNewWindows,
         ];
     }
 
