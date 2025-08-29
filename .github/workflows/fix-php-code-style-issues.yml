@@ -26,14 +26,14 @@ jobs:
 
       - name: Check PHP code style issues
         if: github.event_name == 'push'
-        uses: aglipanci/laravel-pint-action@2.5
+        uses: aglipanci/laravel-pint-action@2.6
         with:
           verboseMode: true
           testMode: true
 
       - name: Fix PHP code style issues
         if: github.event_name == 'pull_request'
-        uses: aglipanci/laravel-pint-action@2.5
+        uses: aglipanci/laravel-pint-action@2.6
 
       - name: Commit changes
         if: github.event_name == 'pull_request'
