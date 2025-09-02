@@ -145,7 +145,7 @@ function getWindowData(id) {
     };
 }
 router.post('/open', (req, res) => {
-    let { id, x, y, frame, width, height, minWidth, minHeight, maxWidth, maxHeight, focusable, skipTaskbar, hiddenInMissionControl, hasShadow, url, resizable, movable, minimizable, maximizable, closable, title, alwaysOnTop, titleBarStyle, trafficLightPosition, vibrancy, backgroundColor, transparency, showDevTools, fullscreen, fullscreenable, kiosk, autoHideMenuBar, webPreferences, zoomFactor, } = req.body;
+    let { id, x, y, frame, width, height, minWidth, minHeight, maxWidth, maxHeight, focusable, skipTaskbar, hiddenInMissionControl, hasShadow, url, resizable, movable, minimizable, maximizable, closable, title, alwaysOnTop, titleBarStyle, trafficLightPosition, vibrancy, backgroundColor, transparency, showDevTools, fullscreen, fullscreenable, kiosk, autoHideMenuBar, webPreferences, zoomFactor, suppressNewWindows, } = req.body;
     if (state.windows[id]) {
         state.windows[id].show();
         state.windows[id].focus();
@@ -196,6 +196,11 @@ router.post('/open', (req, res) => {
     enable(window.webContents);
     if (req.body.rememberState === true) {
         windowState === null || windowState === void 0 ? void 0 : windowState.manage(window);
+    }
+    if (suppressNewWindows) {
+        window.webContents.setWindowOpenHandler(() => {
+            return { action: "deny" };
+        });
     }
     window.on('blur', () => {
         notifyLaravel('events', {

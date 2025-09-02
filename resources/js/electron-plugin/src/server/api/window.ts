@@ -234,6 +234,7 @@ router.post('/open', (req, res) => {
         autoHideMenuBar,
         webPreferences,
         zoomFactor,
+        suppressNewWindows,
     } = req.body;
 
     if (state.windows[id]) {
@@ -315,6 +316,12 @@ router.post('/open', (req, res) => {
 
     if (req.body.rememberState === true) {
         windowState?.manage(window);
+    }
+
+    if (suppressNewWindows) {
+        window.webContents.setWindowOpenHandler(() => {
+            return { action: "deny" };
+        });
     }
 
     window.on('blur', () => {
