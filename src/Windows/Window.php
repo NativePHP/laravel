@@ -74,6 +74,8 @@ class Window
 
     protected bool $preventLeavePage = false;
 
+    protected bool $suppressNewWindows = false;
+
     public function __construct(string $id)
     {
         $this->id = $id;
@@ -357,6 +359,12 @@ class Window
     {
         $this->preventLeavePage = $preventLeavePage;
 
+    }
+
+    public function suppressNewWindows(): self
+    {
+        $this->suppressNewWindows = true;
+
         return $this;
     }
 
@@ -401,6 +409,7 @@ class Window
             'zoomFactor' => $this->zoomFactor,
             'preventLeaveDomain' => $this->preventLeaveDomain,
             'preventLeavePage' => $this->preventLeavePage,
+            'suppressNewWindows' => $this->suppressNewWindows,
         ];
     }
 
