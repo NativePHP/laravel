@@ -359,6 +359,7 @@ class Window
     {
         $this->preventLeavePage = $preventLeavePage;
 
+        return $this;
     }
 
     public function suppressNewWindows(): self
