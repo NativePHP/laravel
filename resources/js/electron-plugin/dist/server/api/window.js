@@ -145,7 +145,7 @@ function getWindowData(id) {
     };
 }
 router.post('/open', (req, res) => {
-    let { id, x, y, frame, width, height, minWidth, minHeight, maxWidth, maxHeight, focusable, skipTaskbar, hiddenInMissionControl, hasShadow, url, resizable, movable, minimizable, maximizable, closable, title, alwaysOnTop, titleBarStyle, trafficLightPosition, vibrancy, backgroundColor, transparency, showDevTools, fullscreen, fullscreenable, kiosk, autoHideMenuBar, webPreferences, zoomFactor, suppressNewWindows, } = req.body;
+    let { id, x, y, frame, width, height, minWidth, minHeight, maxWidth, maxHeight, focusable, skipTaskbar, hiddenInMissionControl, hasShadow, url, resizable, movable, minimizable, maximizable, closable, title, alwaysOnTop, titleBarStyle, trafficLightPosition, vibrancy, backgroundColor, transparency, showDevTools, fullscreen, fullscreenable, kiosk, autoHideMenuBar, webPreferences, zoomFactor, preventLeaveDomain, preventLeavePage, suppressNewWindows, } = req.body;
     if (state.windows[id]) {
         state.windows[id].show();
         state.windows[id].focus();
@@ -261,6 +261,18 @@ router.post('/open', (req, res) => {
     window.webContents.on('dom-ready', () => {
         window.webContents.setZoomFactor(parseFloat(zoomFactor));
     });
+    if (preventLeaveDomain || preventLeavePage) {
+        window.webContents.on('will-navigate', (event, target) => {
+            const origUrl = new URL(url);
+            const targetUrl = new URL(target);
+            if (preventLeaveDomain && targetUrl.hostname !== origUrl.hostname) {
+                event.preventDefault();
+            }
+            if (preventLeavePage && (targetUrl.origin !== origUrl.origin || targetUrl.pathname !== origUrl.pathname)) {
+                event.preventDefault();
+            }
+        });
+    }
     window.webContents.on('did-finish-load', () => {
         window.show();
     });
