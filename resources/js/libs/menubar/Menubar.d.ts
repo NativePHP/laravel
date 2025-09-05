@@ -1,7 +1,7 @@
 /// <reference types="node" />
 import { EventEmitter } from 'events';
 import { BrowserWindow, Tray } from 'electron';
-import Positioner from 'electron-positioner';
+import Positioner from '../positioner/index.js';
 import type { Options } from './types.js';
 /**
  * The main Menubar class.
