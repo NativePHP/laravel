@@ -1,7 +1,10 @@
 "use strict";
 
-module.exports = class Positioner {
-    constructor(browserWindow) {
+class Positioner {
+    browserWindow: any;
+    electronScreen: any;
+
+    constructor(browserWindow: any) {
         this.browserWindow = browserWindow;
         this.electronScreen = require("electron").screen;
     }
@@ -165,4 +168,6 @@ module.exports = class Positioner {
             y: coords.y,
         };
     }
-};
+}
+
+export default Positioner;
