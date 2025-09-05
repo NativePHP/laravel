@@ -51,7 +51,6 @@
         "fs-extra": "^11.2.0",
         "get-port": "^7.1.0",
         "kill-sync": "^1.0.3",
-        "menubar": "^9.5.1",
         "nodemon": "^3.1.9",
         "ps-node": "^0.1.6",
         "tree-kill": "^1.2.2",
