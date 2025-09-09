@@ -158,8 +158,8 @@ router.post('/open', (req, res) => {
         spellcheck: false,
         preload: preloadPath,
         sandbox: false,
-        contextIsolation: false,
-        nodeIntegration: true,
+        contextIsolation: true,
+        nodeIntegration: false,
     };
     let windowState = undefined;
     if (req.body.rememberState === true) {
