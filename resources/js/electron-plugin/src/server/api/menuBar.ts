@@ -131,9 +131,9 @@ router.post("/create", (req, res) => {
                 transparent: transparency,
                 webPreferences: {
                     preload: fileURLToPath(new URL('../../electron-plugin/dist/preload/index.mjs', import.meta.url)),
-                    nodeIntegration: true,
                     sandbox: false,
-                    contextIsolation: false,
+                    nodeIntegration: false,
+                    contextIsolation: true,
                 }
             }
         });
