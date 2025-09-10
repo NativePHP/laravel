@@ -6,6 +6,7 @@ import { menubar } from "menubar";
 import { notifyLaravel } from "../utils.js";
 import { fileURLToPath } from 'url'
 import { enable } from "@electron/remote/main/index.js";
+import mergePreferences from "../webPreferences.js";
 
 const router = express.Router();
 
@@ -129,12 +130,7 @@ router.post("/create", (req, res) => {
                 vibrancy,
                 backgroundColor,
                 transparent: transparency,
-                webPreferences: {
-                    preload: fileURLToPath(new URL('../../electron-plugin/dist/preload/index.mjs', import.meta.url)),
-                    sandbox: false,
-                    nodeIntegration: false,
-                    contextIsolation: true,
-                }
+                webPreferences: mergePreferences()
             }
         });
 
