@@ -89,6 +89,7 @@ router.post("/create", (req, res) => {
         contextMenu,
         tooltip,
         resizable,
+        webPreferences,
         event,
     } = req.body;
 
@@ -130,7 +131,7 @@ router.post("/create", (req, res) => {
                 vibrancy,
                 backgroundColor,
                 transparent: transparency,
-                webPreferences: mergePreferences()
+                webPreferences: mergePreferences(webPreferences)
             }
         });
 
