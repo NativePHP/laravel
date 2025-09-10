@@ -91,7 +91,7 @@ ipcRenderer.on('native-event', (event, data) => {
 // -------------------------------------------------------------------
 // Let the client know preload is fully evaluated
 // -------------------------------------------------------------------
-contextBridge.exposeInMainWorld('_native_init', (function() {
+contextBridge.exposeInMainWorld('native:initialized', (function() {
     // This is admittedly a bit hacky. Due to context isolation
     // we don't have direct access to the renderer window object,
     // but by assigning a bridge function that executes itself inside
@@ -105,6 +105,5 @@ contextBridge.exposeInMainWorld('_native_init', (function() {
 
     window.dispatchEvent(new CustomEvent('native:init'));
 
-    // Cleanup the window property we abused
-    delete window['_native_init'];
+    return true;
 })())
