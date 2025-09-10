@@ -51,7 +51,7 @@ ipcRenderer.on('native-event', (event, data) => {
         });
     }
 });
-contextBridge.exposeInMainWorld('_native_init', (function () {
+contextBridge.exposeInMainWorld('native:initialized', (function () {
     window.dispatchEvent(new CustomEvent('native:init'));
-    delete window['_native_init'];
+    return true;
 })());
