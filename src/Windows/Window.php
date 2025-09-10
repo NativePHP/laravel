@@ -44,6 +44,10 @@ class Window
 
     protected bool $focusable = true;
 
+    protected bool $skipTaskbar = false;
+
+    protected bool $hiddenInMissionControl = false;
+
     protected bool $focused = false;
 
     protected bool $hasShadow = true;
@@ -63,6 +67,14 @@ class Window
     protected array $afterOpenCallbacks = [];
 
     protected array $webPreferences = [];
+
+    protected float $zoomFactor = 1.0;
+
+    protected bool $preventLeaveDomain = false;
+
+    protected bool $preventLeavePage = false;
+
+    protected bool $suppressNewWindows = false;
 
     public function __construct(string $id)
     {
@@ -153,6 +165,20 @@ class Window
     public function focusable($value = true): self
     {
         $this->focusable = $value;
+
+        return $this;
+    }
+
+    public function skipTaskbar($value = true): self
+    {
+        $this->skipTaskbar = $value;
+
+        return $this;
+    }
+
+    public function hiddenInMissionControl($value = true): self
+    {
+        $this->hiddenInMissionControl = $value;
 
         return $this;
     }
@@ -308,6 +334,41 @@ class Window
         return $this;
     }
 
+    public function zoomFactor(float $zoomFactor = 1.0): self
+    {
+        $this->zoomFactor = $zoomFactor;
+
+        if (! $this instanceof PendingOpenWindow) {
+            $this->client->post('window/set-zoom-factor', [
+                'id' => $this->id,
+                'zoomFactor' => $zoomFactor,
+            ]);
+        }
+
+        return $this;
+    }
+
+    public function preventLeaveDomain(bool $preventLeaveDomain = true): self
+    {
+        $this->preventLeaveDomain = $preventLeaveDomain;
+
+        return $this;
+    }
+
+    public function preventLeavePage(bool $preventLeavePage = true): self
+    {
+        $this->preventLeavePage = $preventLeavePage;
+
+        return $this;
+    }
+
+    public function suppressNewWindows(): self
+    {
+        $this->suppressNewWindows = true;
+
+        return $this;
+    }
+
     public function toArray()
     {
         return [
@@ -323,6 +384,8 @@ class Window
             'maxWidth' => $this->maxWidth,
             'maxHeight' => $this->maxHeight,
             'focusable' => $this->focusable,
+            'skipTaskbar' => $this->skipTaskbar,
+            'hiddenInMissionControl' => $this->hiddenInMissionControl,
             'hasShadow' => $this->hasShadow,
             'frame' => $this->frame,
             'titleBarStyle' => $this->titleBarStyle,
@@ -344,6 +407,10 @@ class Window
             'autoHideMenuBar' => $this->autoHideMenuBar,
             'transparent' => $this->transparent,
             'webPreferences' => $this->webPreferences,
+            'zoomFactor' => $this->zoomFactor,
+            'preventLeaveDomain' => $this->preventLeaveDomain,
+            'preventLeavePage' => $this->preventLeavePage,
+            'suppressNewWindows' => $this->suppressNewWindows,
         ];
     }
 

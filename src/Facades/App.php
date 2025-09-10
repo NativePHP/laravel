@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Facade;
  * @method static void focus()
  * @method static void hide()
  * @method static bool isHidden()
+ * @method static string getLocale()
+ * @method static string getLocaleCountryCode()
+ * @method static string getSystemLocale()
  * @method static string version()
  * @method static int badgeCount($count = null)
  * @method static void addRecentDocument(string $path)
@@ -17,6 +20,8 @@ use Illuminate\Support\Facades\Facade;
  * @method static void clearRecentDocuments()
  * @method static bool isRunningBundled()
  * @method static bool openAtLogin(?bool $open = null)
+ * @method static bool isEmojiPanelSupported()
+ * @method static void showEmojiPanel()
  */
 class App extends Facade
 {

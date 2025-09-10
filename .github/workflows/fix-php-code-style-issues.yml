@@ -20,24 +20,24 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: ${{ github.head_ref || github.sha }}
 
       - name: Check PHP code style issues
         if: github.event_name == 'push'
-        uses: aglipanci/laravel-pint-action@2.5
+        uses: aglipanci/laravel-pint-action@2.6
         with:
           verboseMode: true
           testMode: true
 
       - name: Fix PHP code style issues
         if: github.event_name == 'pull_request'
-        uses: aglipanci/laravel-pint-action@2.5
+        uses: aglipanci/laravel-pint-action@2.6
 
       - name: Commit changes
         if: github.event_name == 'pull_request'
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v6
         with:
           commit_message: Fix styling
 
