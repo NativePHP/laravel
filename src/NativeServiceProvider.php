@@ -216,6 +216,7 @@ class NativeServiceProvider extends PackageServiceProvider
             'NATIVEPHP_PICTURES_PATH' => 'pictures',
             'NATIVEPHP_VIDEOS_PATH' => 'videos',
             'NATIVEPHP_RECENT_PATH' => 'recent',
+            'NATIVEPHP_EXTRAS_PATH' => 'extras',
         ];
 
         foreach ($disks as $env => $disk) {
