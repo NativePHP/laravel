@@ -36,7 +36,6 @@ jobs:
         working-directory: ./resources/js/
         run: npm run plugin:build
 
-
       - name: Commit changes
         if: github.event_name == 'pull_request'
         uses: stefanzweifel/git-auto-commit-action@v6

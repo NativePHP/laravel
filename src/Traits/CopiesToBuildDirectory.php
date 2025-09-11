@@ -29,6 +29,7 @@ trait CopiesToBuildDirectory
         'dist',
         'build',
         'temp',
+        'extras',
         'docker',
         'packages',
         '**/.github',

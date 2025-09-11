@@ -74,7 +74,7 @@ export default {
             3: 'arm64'
         }[context.arch];
 
-        if(arch === undefined) {
+        if (arch === undefined) {
             console.error('Cannot build PHP for unsupported architecture');
             process.exit(1);
         }
@@ -136,6 +136,15 @@ export default {
         version: appVersion,
         author: appAuthor,
     },
+    extraFiles: [
+        {
+            from: join(process.env.APP_PATH, 'extras'),
+            to: 'extras',
+            filter: [
+                '**/*'
+            ]
+        }
+    ],
     ...updaterEnabled 
         ? { publish: updaterConfig } 
         : {}
