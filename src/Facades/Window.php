@@ -21,6 +21,7 @@ use Native\Laravel\Fakes\WindowManagerFake;
  * @method static void preventLeaveDomain(bool $preventLeaveDomain = true)
  * @method static void preventLeavePage(bool $preventLeavePage = true): self
  * @method static void suppressNewWindows()
+ * @method static void webPreferences(array $preferences)
  */
 class Window extends Facade
 {

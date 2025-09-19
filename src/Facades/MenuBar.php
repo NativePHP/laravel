@@ -14,6 +14,7 @@ use Native\Laravel\Menu\Menu;
  * @method static void icon(string $icon)
  * @method static void resize(int $width, int $height)
  * @method static void contextMenu(Menu $contextMenu)
+ * @method static void webPreferences(array $preferences)
  */
 class MenuBar extends Facade
 {
