@@ -1,6 +1,7 @@
 The MIT License (MIT)
 
 Copyright (c) NativePHP <marcel@beyondco.de>
+
 Copyright (c) NativePHP <simon@nativephp.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
