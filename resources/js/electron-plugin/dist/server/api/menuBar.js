@@ -2,7 +2,7 @@ import express from "express";
 import { app, Menu, Tray } from "electron";
 import { compileMenu } from "./helper/index.js";
 import state from "../state.js";
-import { menubar } from "menubar";
+import { menubar } from "../../libs/menubar/index.js";
 import { notifyLaravel } from "../utils.js";
 import { fileURLToPath } from 'url';
 import { enable } from "@electron/remote/main/index.js";

@@ -1100,7 +1100,12 @@
     minimatch "^3.1.2"
     strip-json-comments "^3.1.1"
 
-"@eslint/js@^9.17.0", "@eslint/js@9.34.0":
+"@eslint/js@^9.17.0":
+  version "9.35.0"
+  resolved "https://registry.npmjs.org/@eslint/js/-/js-9.35.0.tgz"
+  integrity sha512-30iXE9whjlILfWobBkNerJo+TXYsgVM5ERQwMcMKCHckHflCmf7wXDAHlARoWnh0s1U72WqlbeyE7iAcCzuCPw==
+
+"@eslint/js@9.34.0":
   version "9.34.0"
   resolved "https://registry.npmjs.org/@eslint/js/-/js-9.34.0.tgz"
   integrity sha512-EoyvqQnBNsV1CWaEJ559rxXL4c8V92gxirbawSmVUOWXlsRxxQXl6LmCpdUblgxgSkDIqKnhzba2SjRTI/A5Rw==
@@ -1446,17 +1451,10 @@
   resolved "https://registry.npmjs.org/@types/ms/-/ms-2.1.0.tgz"
   integrity sha512-GsCCIZDE/p3i96vtEqx+7dBUGXrc7zeSK3wwPHIaRThS+9OhWIXRqzs4d6k1SVU8g91DrNRWxWUGhp5KXQb2VA==
 
-"@types/node@*", "@types/node@^18.0.0 || ^20.0.0 || >=22.0.0", "@types/node@^20.19.0 || >=22.12.0", "@types/node@^22.10.2":
+"@types/node@*", "@types/node@^18.0.0 || ^20.0.0 || >=22.0.0", "@types/node@^20.19.0 || >=22.12.0", "@types/node@^22.10.2", "@types/node@^22.7.7":
   version "22.18.1"
   resolved "https://registry.npmjs.org/@types/node/-/node-22.18.1.tgz"
   integrity sha512-rzSDyhn4cYznVG+PCzGe1lwuMYJrcBS1fc3JqSa2PvtABwWo+dZ1ij5OVok3tqfpEBCBoaR4d7upFJk73HRJDw==
-  dependencies:
-    undici-types "~6.21.0"
-
-"@types/node@^20.9.0":
-  version "20.19.13"
-  resolved "https://registry.npmjs.org/@types/node/-/node-20.19.13.tgz"
-  integrity sha512-yCAeZl7a0DxgNVteXFHt9+uyFbqXGy/ShC4BlcHkoE0AfGXYv/BUiplV72DjMYXHDBXFjhvr6DD1NiRVfB4j8g==
   dependencies:
     undici-types "~6.21.0"
 
@@ -2262,9 +2260,9 @@ callsites@^3.0.0:
   integrity sha512-P8BjAsXvZS+VIDUI11hHCQEv74YT67YUi5JJFNWIqL235sBmjX4+qx9Muvls5ivyNENctx46xQLQ3aTuE7ssaQ==
 
 caniuse-lite@^1.0.30001737:
-  version "1.0.30001739"
-  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001739.tgz"
-  integrity sha512-y+j60d6ulelrNSwpPyrHdl+9mJnQzHBr08xm48Qno0nSk4h3Qojh+ziv2qE6rXf4k3tadF4o1J/1tAbVm1NtnA==
+  version "1.0.30001741"
+  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001741.tgz"
+  integrity sha512-QGUGitqsc8ARjLdgAfxETDhRbJ0REsP6O3I96TAth/mVjh2cYzN2u+3AzPP3aVSm2FehEItaJw1xd+IGBXWeSw==
 
 chai@^5.2.0:
   version "5.3.3"
@@ -2765,10 +2763,10 @@ electron-builder@^25.1.8:
     simple-update-notifier "2.0.0"
     yargs "^17.6.2"
 
-electron-chromedriver@^32.2.6:
-  version "32.3.3"
-  resolved "https://registry.npmjs.org/electron-chromedriver/-/electron-chromedriver-32.3.3.tgz"
-  integrity sha512-HVyd2Fa4kRuw1GIlJFr9Uw5ut5sfsgk0NgQ05KXdpVZs95LwJch96acE4BecHO1v8ruWzHZT0QIMcQxDNCHUiw==
+electron-chromedriver@^38.0.0:
+  version "38.0.0"
+  resolved "https://registry.npmjs.org/electron-chromedriver/-/electron-chromedriver-38.0.0.tgz"
+  integrity sha512-8GEBO0dighodFqRrpyWon28y861jmy/wxXukU3SBQ4ohOmud2gxGvmhSxKynCENz25JgxGgj18l8lDRwsg9GSQ==
   dependencies:
     "@electron/get" "^2.0.1"
     extract-zip "^2.0.0"
@@ -2795,11 +2793,6 @@ electron-is-dev@^3.0.1:
   version "3.0.1"
   resolved "https://registry.npmjs.org/electron-is-dev/-/electron-is-dev-3.0.1.tgz"
   integrity sha512-8TjjAh8Ec51hUi3o4TaU0mD3GMTOESi866oRNavj9A3IQJ7pmv+MJVmdZBFGw4GFT36X7bkqnuDNYvkQgvyI8Q==
-
-electron-positioner@^4.1.0:
-  version "4.1.0"
-  resolved "https://registry.npmjs.org/electron-positioner/-/electron-positioner-4.1.0.tgz"
-  integrity sha512-726DfbI9ZNoCg+Fcu6XLuTKTnzf+6nFqv7h+K/V6Ug7IbaPMI7s9S8URnGtWFCy5N5PL4HSzRFF2mXuinftDdg==
 
 electron-publish@25.1.7:
   version "25.1.7"
@@ -2861,13 +2854,13 @@ electron-window-state@^5.0.3:
     jsonfile "^4.0.0"
     mkdirp "^0.5.1"
 
-electron@^32.2.7, "electron@>= 13.0.0", electron@>=13.0.0, "electron@>=9.0.0 <33.0.0":
-  version "32.3.3"
-  resolved "https://registry.npmjs.org/electron/-/electron-32.3.3.tgz"
-  integrity sha512-7FT8tDg+MueAw8dBn5LJqDvlM4cZkKJhXfgB3w7P5gvSoUQVAY6LIQcXJxgL+vw2rIRY/b9ak7ZBFbCMF2Bk4w==
+electron@^38.0.0, "electron@>= 13.0.0", electron@>=13.0.0:
+  version "38.0.0"
+  resolved "https://registry.npmjs.org/electron/-/electron-38.0.0.tgz"
+  integrity sha512-egljptiPJqbL/oamFCEY+g3RNeONWTVxZSGeyLqzK8xq106JhzuxnhJZ3sxt4DzJFaofbGyGJA37Oe9d+gVzYw==
   dependencies:
     "@electron/get" "^2.0.0"
-    "@types/node" "^20.9.0"
+    "@types/node" "^22.7.7"
     extract-zip "^2.0.1"
 
 emoji-regex@^10.3.0:
@@ -4440,13 +4433,6 @@ media-typer@^1.1.0:
   version "1.1.0"
   resolved "https://registry.npmjs.org/media-typer/-/media-typer-1.1.0.tgz"
   integrity sha512-aisnrDP4GNe06UcKFnV5bfMNPBUw4jsLGaWwWfnH3v02GnBuXX2MCVn5RbrWo0j3pczUilYblq7fQ7Nw2t5XKw==
-
-menubar@^9.5.1:
-  version "9.5.1"
-  resolved "https://registry.npmjs.org/menubar/-/menubar-9.5.1.tgz"
-  integrity sha512-swfgKal+DTgJINay36X+LGBSqyFKS4d9FyJ2w0s/4MtO7/UGplEZqluLTnq4xgLNxNjMWhXycOELP+rRYpTagA==
-  dependencies:
-    electron-positioner "^4.1.0"
 
 meow@^13.2.0:
   version "13.2.0"
