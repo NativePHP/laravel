@@ -34,8 +34,14 @@ use Spatie\LaravelPackageTools\PackageServiceProvider;
 
 class NativeServiceProvider extends PackageServiceProvider
 {
+    protected function getPackageBaseDir(): string
+    {
+        return dirname(parent::getPackageBaseDir());
+    }
+
     public function configurePackage(Package $package): void
     {
+
         $package
             ->name('nativephp')
             ->hasCommands([
@@ -52,7 +58,7 @@ class NativeServiceProvider extends PackageServiceProvider
 
     public function packageRegistered()
     {
-        $this->mergeConfigFrom($this->package->basePath('/../config/nativephp-internal.php'), 'nativephp-internal');
+        $this->mergeConfigFrom($this->package->basePath('../config/nativephp-internal.php'), 'nativephp-internal');
 
         $this->app->singleton(FreshCommand::class, function ($app) {
             return new FreshCommand($app['migrator']);
