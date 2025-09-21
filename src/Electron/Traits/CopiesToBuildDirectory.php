@@ -48,9 +48,7 @@ trait CopiesToBuildDirectory
         'storage/hot',
 
         // Only needed for local testing
-        'vendor/nativephp/electron/resources',
-        'vendor/nativephp/electron/vendor',
-        'vendor/nativephp/electron/bin',
+        'vendor/nativephp/laravel/resources',
         'vendor/nativephp/laravel/vendor',
         'vendor/nativephp/php-bin',
 
