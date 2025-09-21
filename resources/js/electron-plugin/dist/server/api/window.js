@@ -1,9 +1,9 @@
 import express from 'express';
 import { BrowserWindow } from 'electron';
 import state from '../state.js';
-import { fileURLToPath } from 'url';
 import { notifyLaravel, goToUrl, appendWindowIdToUrl } from '../utils.js';
 import windowStateKeeper from 'electron-window-state';
+import mergePreferences from '../webPreferences.js';
 import { enable } from "@electron/remote/main/index.js";
 const router = express.Router();
 router.post('/maximize', (req, res) => {
@@ -152,15 +152,6 @@ router.post('/open', (req, res) => {
         res.sendStatus(200);
         return;
     }
-    let preloadPath = fileURLToPath(new URL('../../electron-plugin/dist/preload/index.mjs', import.meta.url));
-    const defaultWebPreferences = {
-        backgroundThrottling: false,
-        spellcheck: false,
-        preload: preloadPath,
-        sandbox: false,
-        contextIsolation: false,
-        nodeIntegration: true,
-    };
     let windowState = undefined;
     if (req.body.rememberState === true) {
         windowState = windowStateKeeper({
@@ -187,7 +178,7 @@ router.post('/open', (req, res) => {
         focusable,
         skipTaskbar,
         hiddenInMissionControl,
-        autoHideMenuBar }, (process.platform === 'linux' ? { icon: state.icon } : {})), { webPreferences: Object.assign(Object.assign({}, webPreferences), defaultWebPreferences), fullscreen,
+        autoHideMenuBar }, (process.platform === 'linux' ? { icon: state.icon } : {})), { webPreferences: mergePreferences(webPreferences), fullscreen,
         fullscreenable,
         kiosk }));
     if ((process.env.NODE_ENV === 'development' || showDevTools === true) && showDevTools !== false) {

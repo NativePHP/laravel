@@ -1,6 +1,9 @@
 import remote from "@electron/remote";
-import {ipcRenderer} from "electron";
+import {ipcRenderer, contextBridge} from "electron";
 
+// -------------------------------------------------------------------
+// The Native helper
+// -------------------------------------------------------------------
 const Native = {
     on: (event, callback) => {
         ipcRenderer.on('native-event', (_, data) => {
@@ -19,12 +22,11 @@ const Native = {
     }
 };
 
-// @ts-ignore
-window.Native = Native;
+contextBridge.exposeInMainWorld('Native', Native);
 
-// @ts-ignore
-window.remote = remote;
-
+// -------------------------------------------------------------------
+// Log events
+// -------------------------------------------------------------------
 ipcRenderer.on('log', (event, {level, message, context}) => {
     if (level === 'error') {
       console.error(`[${level}] ${message}`, context)
@@ -35,7 +37,10 @@ ipcRenderer.on('log', (event, {level, message, context}) => {
     }
 });
 
-// Add Livewire event listeners
+
+// -------------------------------------------------------------------
+// Livewire event listeners
+// -------------------------------------------------------------------
 ipcRenderer.on('native-event', (event, data) => {
 
   // Strip leading slashes
@@ -82,3 +87,23 @@ ipcRenderer.on('native-event', (event, data) => {
     })
   }
 })
+
+// -------------------------------------------------------------------
+// Let the client know preload is fully evaluated
+// -------------------------------------------------------------------
+contextBridge.exposeInMainWorld('native:initialized', (function() {
+    // This is admittedly a bit hacky. Due to context isolation
+    // we don't have direct access to the renderer window object,
+    // but by assigning a bridge function that executes itself inside
+    // the renderer context we can hack around it.
+
+    // It's recommended to use window.postMessage & dispatch an
+    // event from the renderer itself, but we're loading webcontent
+    // from localhost. We don't have a renderer process we can access.
+    // Though this is hacky it works well and is the quickest way to do this
+    // without sprinkling additional logic all over the place.
+
+    window.dispatchEvent(new CustomEvent('native:init'));
+
+    return true;
+})())

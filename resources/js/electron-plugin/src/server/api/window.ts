@@ -4,6 +4,7 @@ import state from '../state.js';
 import { fileURLToPath } from 'url'
 import { notifyLaravel, goToUrl, appendWindowIdToUrl } from '../utils.js';
 import windowStateKeeper from 'electron-window-state';
+import mergePreferences from '../webPreferences.js'
 
 import {enable} from "@electron/remote/main/index.js";
 
@@ -247,17 +248,6 @@ router.post('/open', (req, res) => {
         return;
     }
 
-    let preloadPath = fileURLToPath(new URL('../../electron-plugin/dist/preload/index.mjs', import.meta.url));
-
-    const defaultWebPreferences = {
-        backgroundThrottling: false,
-        spellcheck: false,
-        preload: preloadPath,
-        sandbox: false,
-        contextIsolation: false,
-        nodeIntegration: true,
-    };
-
     let windowState: windowStateKeeper.State | undefined = undefined;
 
     if (req.body.rememberState === true) {
@@ -301,10 +291,7 @@ router.post('/open', (req, res) => {
         hiddenInMissionControl,
         autoHideMenuBar,
         ...(process.platform === 'linux' ? {icon: state.icon} : {}),
-        webPreferences: {
-            ...webPreferences,
-            ...defaultWebPreferences
-        },
+        webPreferences: mergePreferences(webPreferences),
         fullscreen,
         fullscreenable,
         kiosk,

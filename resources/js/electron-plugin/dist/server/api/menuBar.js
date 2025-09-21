@@ -4,8 +4,8 @@ import { compileMenu } from "./helper/index.js";
 import state from "../state.js";
 import { menubar } from "../../libs/menubar/index.js";
 import { notifyLaravel } from "../utils.js";
-import { fileURLToPath } from 'url';
 import { enable } from "@electron/remote/main/index.js";
+import mergePreferences from "../webPreferences.js";
 const router = express.Router();
 router.post("/label", (req, res) => {
     var _a;
@@ -51,7 +51,7 @@ router.post("/create", (req, res) => {
         state.activeMenuBar.tray.destroy();
         shouldSendCreatedEvent = false;
     }
-    const { width, height, url, label, alwaysOnTop, vibrancy, backgroundColor, transparency, icon, showDockIcon, onlyShowContextMenu, windowPosition, showOnAllWorkspaces, contextMenu, tooltip, resizable, event, } = req.body;
+    const { width, height, url, label, alwaysOnTop, vibrancy, backgroundColor, transparency, icon, showDockIcon, onlyShowContextMenu, windowPosition, showOnAllWorkspaces, contextMenu, tooltip, resizable, webPreferences, event, } = req.body;
     if (onlyShowContextMenu) {
         const tray = new Tray(icon || state.icon.replace("icon.png", "IconTemplate.png"));
         tray.setContextMenu(buildMenu(contextMenu));
@@ -81,12 +81,7 @@ router.post("/create", (req, res) => {
                 vibrancy,
                 backgroundColor,
                 transparent: transparency,
-                webPreferences: {
-                    preload: fileURLToPath(new URL('../../electron-plugin/dist/preload/index.mjs', import.meta.url)),
-                    nodeIntegration: true,
-                    sandbox: false,
-                    contextIsolation: false,
-                }
+                webPreferences: mergePreferences(webPreferences)
             }
         });
         state.activeMenuBar.on("after-create-window", () => {
