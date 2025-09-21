@@ -1,7 +1,5 @@
 <?php
 
-namespace Native\Electron\Tests\Unit\Traits;
-
 use Illuminate\Support\Facades\Config;
 use Native\Electron\Traits\HasPreAndPostProcessing;
 

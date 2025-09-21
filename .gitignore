@@ -1,6 +1,6 @@
 .idea
 .phpunit.cache
-./build
+build
 composer.lock
 coverage
 docs
