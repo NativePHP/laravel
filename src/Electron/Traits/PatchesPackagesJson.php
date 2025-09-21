@@ -2,11 +2,13 @@
 
 namespace Native\Electron\Traits;
 
+use Native\Electron\ElectronServiceProvider;
+
 trait PatchesPackagesJson
 {
     protected function setAppNameAndVersion($developmentMode = false): string
     {
-        $packageJsonPath = __DIR__.'/../../resources/js/package.json';
+        $packageJsonPath = ElectronServiceProvider::ELECTRON_PATH.'/package.json';
         $packageJson = json_decode(file_get_contents($packageJsonPath), true);
 
         $name = str(config('app.name'))->slug();

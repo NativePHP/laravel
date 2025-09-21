@@ -3,6 +3,7 @@
 namespace Native\Electron\Commands;
 
 use Illuminate\Console\Command;
+use Native\Electron\ElectronServiceProvider;
 use Native\Electron\Traits\PatchesPackagesJson;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Filesystem\Filesystem;
@@ -26,7 +27,7 @@ class ResetCommand extends Command
         $filesystem = new Filesystem;
 
         // Removing and recreating the native serve resource path
-        $nativeServeResourcePath = realpath(__DIR__.'/../../resources/js/resources/app/');
+        $nativeServeResourcePath = realpath(ElectronServiceProvider::ELECTRON_PATH.'/resources/app/');
         if ($filesystem->exists($nativeServeResourcePath)) {
             $this->line('Clearing: '.$nativeServeResourcePath);
             $filesystem->remove($nativeServeResourcePath);

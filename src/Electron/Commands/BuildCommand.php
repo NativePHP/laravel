@@ -5,6 +5,7 @@ namespace Native\Electron\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Str;
+use Native\Electron\ElectronServiceProvider;
 use Native\Electron\Facades\Updater;
 use Native\Electron\Traits\CleansEnvFile;
 use Native\Electron\Traits\CopiesBundleToBuildDirectory;
@@ -49,7 +50,7 @@ class BuildCommand extends Command
 
     protected function buildPath(string $path = ''): string
     {
-        return __DIR__.'/../../resources/js/resources/app/'.$path;
+        return ElectronServiceProvider::ELECTRON_PATH.'/resources/app/'.$path;
     }
 
     protected function sourcePath(string $path = ''): string
@@ -171,7 +172,7 @@ class BuildCommand extends Command
     {
         $this->newLine();
         intro('Updating Electron dependencies...');
-        Process::path(__DIR__.'/../../resources/js/')
+        Process::path(ElectronServiceProvider::ELECTRON_PATH)
             ->env($this->getEnvironmentVariables())
             ->forever()
             ->run('npm ci', function (string $type, string $output) {
@@ -183,7 +184,7 @@ class BuildCommand extends Command
     {
         $this->newLine();
         intro((($this->buildCommand == 'publish') ? 'Publishing' : 'Building')." for {$this->buildOS}");
-        Process::path(__DIR__.'/../../resources/js/')
+        Process::path(ElectronServiceProvider::ELECTRON_PATH)
             ->env($this->getEnvironmentVariables())
             ->forever()
             ->tty(SymfonyProcess::isTtySupported() && ! $this->option('no-interaction'))

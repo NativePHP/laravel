@@ -2,17 +2,19 @@
 
 namespace Native\Electron\Traits;
 
+use Native\Electron\ElectronServiceProvider;
+
 trait InstallsAppIcon
 {
     public function installIcon()
     {
-        @copy(public_path('icon.png'), __DIR__.'/../../resources/js/build/icon.png');
-        @copy(public_path('icon.png'), __DIR__.'/../../resources/js/resources/icon.png');
-        @copy(public_path('icon.ico'), __DIR__.'/../../resources/js/build/icon.ico');
-        @copy(public_path('icon.ico'), __DIR__.'/../../resources/js/resources/icon.ico');
-        @copy(public_path('icon.icns'), __DIR__.'/../../resources/js/build/icon.icns');
-        @copy(public_path('icon.icns'), __DIR__.'/../../resources/js/resources/icon.icns');
-        @copy(public_path('IconTemplate.png'), __DIR__.'/../../resources/js/resources/IconTemplate.png');
-        @copy(public_path('IconTemplate@2x.png'), __DIR__.'/../../resources/js/resources/IconTemplate@2x.png');
+        @copy(public_path('icon.png'), ElectronServiceProvider::ELECTRON_PATH.'/build/icon.png');
+        @copy(public_path('icon.png'), ElectronServiceProvider::ELECTRON_PATH.'/resources/icon.png');
+        @copy(public_path('icon.ico'), ElectronServiceProvider::ELECTRON_PATH.'/build/icon.ico');
+        @copy(public_path('icon.ico'), ElectronServiceProvider::ELECTRON_PATH.'/resources/icon.ico');
+        @copy(public_path('icon.icns'), ElectronServiceProvider::ELECTRON_PATH.'/build/icon.icns');
+        @copy(public_path('icon.icns'), ElectronServiceProvider::ELECTRON_PATH.'/resources/icon.icns');
+        @copy(public_path('IconTemplate.png'), ElectronServiceProvider::ELECTRON_PATH.'/resources/IconTemplate.png');
+        @copy(public_path('IconTemplate@2x.png'), ElectronServiceProvider::ELECTRON_PATH.'/resources/IconTemplate@2x.png');
     }
 }

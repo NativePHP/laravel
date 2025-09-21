@@ -2,6 +2,7 @@
 
 namespace Native\Electron\Traits;
 
+use Native\Electron\ElectronServiceProvider;
 use Symfony\Component\Filesystem\Path;
 
 use function Laravel\Prompts\error;
@@ -28,7 +29,7 @@ trait CopiesCertificateAuthority
 
             $copied = copy(
                 $certFilePath,
-                Path::join(base_path('vendor/nativephp/electron/resources/js/resources'), $certificateFileName)
+                Path::join(ElectronServiceProvider::ELECTRON_PATH, 'resources', $certificateFileName)
             );
 
             if (! $copied) {

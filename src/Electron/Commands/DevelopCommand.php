@@ -3,6 +3,7 @@
 namespace Native\Electron\Commands;
 
 use Illuminate\Console\Command;
+use Native\Electron\ElectronServiceProvider;
 use Native\Electron\Traits\CopiesCertificateAuthority;
 use Native\Electron\Traits\Developer;
 use Native\Electron\Traits\Installer;
@@ -66,7 +67,7 @@ class DevelopCommand extends Command
      */
     protected function patchPlist(): void
     {
-        $pList = file_get_contents(__DIR__.'/../../resources/js/node_modules/electron/dist/Electron.app/Contents/Info.plist');
+        $pList = file_get_contents(ElectronServiceProvider::ELECTRON_PATH.'/node_modules/electron/dist/Electron.app/Contents/Info.plist');
 
         // Change the CFBundleName to the correct app name
         $pattern = '/(<key>CFBundleName<\/key>\s+<string>)(.*?)(<\/string>)/m';
@@ -75,6 +76,6 @@ class DevelopCommand extends Command
         $pattern = '/(<key>CFBundleDisplayName<\/key>\s+<string>)(.*?)(<\/string>)/m';
         $pList = preg_replace($pattern, '$1'.config('app.name').'$3', $pList);
 
-        file_put_contents(__DIR__.'/../../resources/js/node_modules/electron/dist/Electron.app/Contents/Info.plist', $pList);
+        file_put_contents(ElectronServiceProvider::ELECTRON_PATH.'/node_modules/electron/dist/Electron.app/Contents/Info.plist', $pList);
     }
 }
