@@ -1,9 +1,10 @@
 {
-    "name": "nativephp/laravel",
-    "description": "Laravel wrapper for the NativePHP framework.",
+    "name": "nativephp/desktop",
+    "description": "NativePHP for Desktop",
     "keywords": [
         "nativephp",
         "laravel",
+        "desktop",
         "nativephp-laravel"
     ],
     "homepage": "https://github.com/nativephp/laravel",

@@ -48,8 +48,8 @@ trait CopiesToBuildDirectory
         'storage/hot',
 
         // Only needed for local testing
-        'vendor/nativephp/laravel/resources',
-        'vendor/nativephp/laravel/vendor',
+        'vendor/nativephp/desktop/resources',
+        'vendor/nativephp/desktop/vendor',
         'vendor/nativephp/php-bin',
 
         // Also deleted in PrunesVendorDirectory after fresh composer install
