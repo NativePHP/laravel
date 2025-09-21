@@ -34,6 +34,8 @@ class MenuBar
 
     protected bool $showOnAllWorkspaces = false;
 
+    protected array $webPreferences = [];
+
     protected Client $client;
 
     public function __construct()
@@ -111,6 +113,13 @@ class MenuBar
         return $this;
     }
 
+    public function webPreferences(array $preferences): static
+    {
+        $this->webPreferences = $preferences;
+
+        return $this;
+    }
+
     public function toArray(): array
     {
         return [
@@ -132,6 +141,7 @@ class MenuBar
             'contextMenu' => ! is_null($this->contextMenu) ? $this->contextMenu->toArray()['submenu'] : null,
             'alwaysOnTop' => $this->alwaysOnTop,
             'showOnAllWorkspaces' => $this->showOnAllWorkspaces,
+            'webPreferences' => $this->webPreferences,
         ];
     }
 }
