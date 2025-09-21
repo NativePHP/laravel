@@ -52,7 +52,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Native\\Laravel\\": "src/"
+            "Native\\Laravel\\": "src/Laravel"
         }
     },
     "autoload-dev": {
