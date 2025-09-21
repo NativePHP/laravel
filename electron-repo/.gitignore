@@ -1,0 +1,10 @@
+.idea
+.phpunit.cache
+build
+composer.lock
+coverage
+docs
+phpunit.xml
+vendor
+node_modules
+resources/js/*.log

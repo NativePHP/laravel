@@ -1,0 +1,28 @@
+{
+    "compilerOptions": {
+        "allowSyntheticDefaultImports": true,
+        "module": "node16",
+        "moduleResolution": "node16",
+        "esModuleInterop": true,
+        "outDir": "./dist",
+        "sourceMap": false,
+        "target": "ES6",
+        "noImplicitAny": false,
+        "preserveConstEnums": true,
+        "removeComments": true,
+        "typeRoots": [
+            "../node_modules/@types"
+        ],
+        "lib": [
+            "es2019",
+            "dom"
+        ],
+        "types": [
+            "node",
+        ]
+    },
+    "include": [
+        "./src/**/*.ts",
+        "./src/**/*.mts"
+    ]
+}

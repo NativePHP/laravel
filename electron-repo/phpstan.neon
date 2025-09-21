@@ -1,0 +1,9 @@
+parameters:
+    level: 4
+    paths:
+        - src
+        - config
+        - database
+    checkOctaneCompatibility: true
+    checkModelProperties: true
+    noEnvCallsOutsideOfConfig: false

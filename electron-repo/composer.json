@@ -1,0 +1,97 @@
+{
+    "name": "nativephp/electron",
+    "description": "Electron wrapper for the NativePHP framework.",
+    "keywords": [
+        "nativephp",
+        "laravel",
+        "electron"
+    ],
+    "funding": [
+        {
+            "type": "github",
+            "url": "https://github.com/sponsors/simonhamp"
+        },
+        {
+            "type": "opencollective",
+            "url": "https://opencollective.com/nativephp"
+        }
+    ],
+    "homepage": "https://github.com/nativephp/electron",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Marcel Pociot",
+            "email": "marcel@beyondco.de",
+            "role": "Developer"
+        },
+        {
+            "name": "Simon Hamp",
+            "email": "simon.hamp@me.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.3",
+        "illuminate/contracts": "^10.0|^11.0|^12.0",
+        "laravel/prompts": "^0.1.1|^0.2|^0.3",
+        "nativephp/laravel": "^1.0",
+        "nativephp/php-bin": "^1.0",
+        "spatie/laravel-package-tools": "^1.16.4",
+        "symfony/filesystem": "^6.4|^7.2",
+        "ext-zip": "*"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.0",
+        "nunomaduro/collision": "^7.9|^8.1.1",
+        "larastan/larastan": "^2.0.1|^3.0",
+        "orchestra/testbench": "^8.18|^9.0|^10.0",
+        "pestphp/pest": "^2.7|^3.7",
+        "pestphp/pest-plugin-arch": "^2.0|^3.0",
+        "pestphp/pest-plugin-laravel": "^2.0|^3.1",
+        "phpstan/extension-installer": "^1.1",
+        "phpstan/phpstan-deprecation-rules": "^1.0|^2.0",
+        "phpstan/phpstan-phpunit": "^1.0|^2.0",
+        "spatie/laravel-ray": "^1.26"
+    },
+    "autoload": {
+        "psr-4": {
+            "Native\\Electron\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Native\\Electron\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "qa": [
+            "@composer format",
+            "@composer analyse",
+            "@composer test"
+        ],
+        "post-autoload-dump": "@php ./vendor/bin/testbench package:discover --ansi",
+        "analyse": "vendor/bin/phpstan analyse",
+        "test": "vendor/bin/pest",
+        "test-coverage": "vendor/bin/pest --coverage",
+        "format": "vendor/bin/pint"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Native\\Electron\\ElectronServiceProvider"
+            ],
+            "aliases": {
+                "Updater": "Native\\Electron\\Facades\\Updater"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
