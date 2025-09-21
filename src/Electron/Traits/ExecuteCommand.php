@@ -32,7 +32,7 @@ trait ExecuteCommand
 
         note('Fetching latest dependencies…');
 
-        Process::path(__DIR__.'/../../resources/js/')
+        Process::path(__DIR__.'/../../../resources/js/')
             ->env($envs[$type])
             ->forever()
             ->tty(! $withoutInteraction && PHP_OS_FAMILY != 'Windows')

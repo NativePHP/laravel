@@ -1,6 +1,6 @@
 .idea
 .phpunit.cache
-build
+./build
 composer.lock
 coverage
 docs
@@ -9,3 +9,4 @@ testbench.yaml
 vendor
 node_modules
 .DS_Store
+resources/js/*.log

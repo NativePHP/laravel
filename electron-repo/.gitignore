@@ -7,4 +7,4 @@ docs
 phpunit.xml
 vendor
 node_modules
-resources/js/*.log
+# resources/js/*.log
