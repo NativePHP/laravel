@@ -94,8 +94,7 @@ class DebugCommand extends Command implements PromptsForMissingInput
         info('Processing NativePHP Data...');
         // Get composer versions
         $versions = collect([
-            'nativephp/electron' => null,
-            'nativephp/laravel' => null,
+            'nativephp/desktop' => null,
             'nativephp/php-bin' => null,
         ])->mapWithKeys(function ($version, $key) {
             try {
