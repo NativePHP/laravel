@@ -119,4 +119,4 @@ it('cleans default cleanup keys', function () use ($buildPath, $command) {
         ->not->toContain('NATIVEPHP_APPLE_ID')
         ->not->toContain('NATIVEPHP_APPLE_ID_PASS')
         ->not->toContain('NATIVEPHP_APPLE_TEAM_ID');
-})->skip('This test fails in CI when with composer --prefer-lowest. The config that is loaded via the NativeServiceProvider on the Laravel repo does not exist in lower versions. TODO: Consider moving the logic & tests to the laravel repo instead?');
+});
