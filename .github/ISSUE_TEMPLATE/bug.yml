@@ -1,72 +1,72 @@
 name: Bug Report
 description: |
-    Found a bug in NativePHP? You're in the right place!
+  Found a bug in NativePHP for Desktop? You're in the right place!
 labels: ["bug"]
 body:
-    - type: markdown
-      attributes:
-          value: |
-              We're sorry to hear you have a problem.
+  - type: markdown
+    attributes:
+      value: |
+        We're sorry to hear you have a problem.
 
-              Before submitting your report, please make sure you've been through the section "[Debugging](https://nativephp.com/docs/getting-started/debugging)" in the docs.
+        Before submitting your report, please make sure you've been through the section "[Debugging](https://nativephp.com/docs/getting-started/debugging)" in the docs.
 
-              Please also ensure that you have the latest version of NativePHP packages installed, and are using [supported versions](https://nativephp.com/docs/desktop/1/getting-started/support-policy) of PHP and Laravel.
+        Please also ensure that you have the latest version of NativePHP packages installed, and are using [supported versions](https://nativephp.com/docs/desktop/1/getting-started/support-policy) of PHP and Laravel.
 
-              If nothing here has helped you, please provide as much useful context as you can here to help us solve help you.
+        If nothing here has helped you, please provide as much useful context as you can here to help us solve help you.
 
-              Note that reams and reams of logs isn't helpful - please share only relevant errors.
+        Note that reams and reams of logs isn't helpful - please share only relevant errors.
 
-              If possible, please prepare a reproduction repo and link to it in the Notes field.
-    - type: textarea
-      id: what-doing
-      attributes:
-          label: What were you trying to do?
-          description: Some context about what you were trying to achieve
-          placeholder: Trying to build my app for production
-      validations:
-          required: true
+        If possible, please prepare a reproduction repo and link to it in the Notes field.
+  - type: textarea
+    id: what-doing
+    attributes:
+      label: What were you trying to do?
+      description: Some context about what you were trying to achieve
+      placeholder: Trying to build my app for production
+    validations:
+      required: true
 
-    - type: textarea
-      id: what-happened
-      attributes:
-          label: What happened?
-          description: What did you expect to happen?
-          placeholder: I cannot currently do X thing because when I do, it breaks X thing.
-      validations:
-          required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What did you expect to happen?
+      placeholder: I cannot currently do X thing because when I do, it breaks X thing.
+    validations:
+      required: true
 
-    - type: textarea
-      id: how-to-reproduce
-      attributes:
-          label: How to reproduce the bug
-          description: How did this occur, please add any config values used and provide a set of reliable steps if possible.
-          placeholder: When I do X I see Y.
-      validations:
-          required: true
+  - type: textarea
+    id: how-to-reproduce
+    attributes:
+      label: How to reproduce the bug
+      description: How did this occur, please add any config values used and provide a set of reliable steps if possible.
+      placeholder: When I do X I see Y.
+    validations:
+      required: true
 
-    - type: textarea
-      id: debug
-      attributes:
-          label: Debug Output
-          description: Please provide output from the NativePHP Debug command. This will help us understand your environment and the issue you're facing. (`php artisan native:debug`)
-      validations:
-          required: true
+  - type: textarea
+    id: debug
+    attributes:
+      label: Debug Output
+      description: Please provide output from the NativePHP Debug command. This will help us understand your environment and the issue you're facing. (`php artisan native:debug`)
+    validations:
+      required: true
 
-    - type: dropdown
-      id: operating-systems
-      attributes:
-        label: Which operating systems have you seen this occur on?
-        description: You may select more than one.
-        multiple: true
-        options:
+  - type: dropdown
+    id: operating-systems
+    attributes:
+      label: Which operating systems have you seen this occur on?
+      description: You may select more than one.
+      multiple: true
+      options:
         - macOS
         - Windows
         - Linux
 
-    - type: textarea
-      id: notes
-      attributes:
-          label: Notes
-          description: Use this field to provide any other notes that you feel might be relevant to the issue. Include links to any reproduction repos you've created here.
-      validations:
-          required: false
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      description: Use this field to provide any other notes that you feel might be relevant to the issue. Include links to any reproduction repos you've created here.
+    validations:
+      required: false
