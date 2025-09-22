@@ -2,6 +2,7 @@
 
 namespace Native\Electron\Traits;
 
+use Composer\InstalledVersions;
 use Native\Electron\ElectronServiceProvider;
 use Symfony\Component\Filesystem\Path;
 
@@ -16,7 +17,8 @@ trait CopiesCertificateAuthority
         try {
             intro('Copying latest CA Certificate...');
 
-            $phpBinaryDirectory = base_path('vendor/nativephp/php-bin/');
+            $vendorDirectory = realpath(InstalledVersions::getRootPackage()['install_path'].'/vendor');
+            $phpBinaryDirectory = $vendorDirectory.'/nativephp/php-bin/';
 
             $certificateFileName = 'cacert.pem';
             $certFilePath = Path::join($phpBinaryDirectory, $certificateFileName);
