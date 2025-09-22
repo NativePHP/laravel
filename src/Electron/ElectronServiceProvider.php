@@ -3,8 +3,12 @@
 namespace Native\Electron;
 
 use Illuminate\Foundation\Application;
+use Native\Electron\Commands\Bifrost\ClearBundleCommand;
+use Native\Electron\Commands\Bifrost\DownloadBundleCommand;
+use Native\Electron\Commands\Bifrost\InitCommand;
+use Native\Electron\Commands\Bifrost\LoginCommand;
+use Native\Electron\Commands\Bifrost\LogoutCommand;
 use Native\Electron\Commands\BuildCommand;
-use Native\Electron\Commands\BundleCommand;
 use Native\Electron\Commands\DevelopCommand;
 use Native\Electron\Commands\InstallCommand;
 use Native\Electron\Commands\PublishCommand;
@@ -26,8 +30,12 @@ class ElectronServiceProvider extends PackageServiceProvider
                 DevelopCommand::class,
                 BuildCommand::class,
                 PublishCommand::class,
-                BundleCommand::class,
                 ResetCommand::class,
+                LoginCommand::class,
+                LogoutCommand::class,
+                InitCommand::class,
+                DownloadBundleCommand::class,
+                ClearBundleCommand::class,
             ]);
     }
 

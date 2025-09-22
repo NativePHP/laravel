@@ -31,12 +31,12 @@ return [
     'api_url' => env('NATIVEPHP_API_URL', 'http://localhost:4000/api/'),
 
     /**
-     * Configuration for the Zephpyr API.
+     * Configuration for the Bifrost API.
      */
-    'zephpyr' => [
-        'host' => env('ZEPHPYR_HOST', 'https://zephpyr.com'),
-        'token' => env('ZEPHPYR_TOKEN'),
-        'key' => env('ZEPHPYR_KEY'),
+    'bifrost' => [
+        'host' => env('BIFROST_HOST', 'https://bifrost.nativephp.com'),
+        'token' => env('BIFROST_TOKEN'),
+        'project' => env('BIFROST_PROJECT'),
     ],
 
     /**
