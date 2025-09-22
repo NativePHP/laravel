@@ -34,11 +34,6 @@ use Spatie\LaravelPackageTools\PackageServiceProvider;
 
 class NativeServiceProvider extends PackageServiceProvider
 {
-    protected function getPackageBaseDir(): string
-    {
-        return dirname(parent::getPackageBaseDir());
-    }
-
     public function configurePackage(Package $package): void
     {
 
@@ -248,5 +243,10 @@ class NativeServiceProvider extends PackageServiceProvider
         foreach ($queueConfigs as $queueConfig) {
             $this->app->make(QueueWorkerContract::class)->up($queueConfig);
         }
+    }
+
+    protected function getPackageBaseDir(): string
+    {
+        return dirname(parent::getPackageBaseDir());
     }
 }

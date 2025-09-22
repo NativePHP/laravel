@@ -21,7 +21,6 @@ class ElectronServiceProvider extends PackageServiceProvider
     {
         $package
             ->name('nativephp-electron')
-            ->hasConfigFile('nativephp')
             ->hasCommands([
                 InstallCommand::class,
                 DevelopCommand::class,
@@ -37,5 +36,10 @@ class ElectronServiceProvider extends PackageServiceProvider
         $this->app->bind('nativephp.updater', function (Application $app) {
             return new UpdaterManager($app);
         });
+    }
+
+    protected function getPackageBaseDir(): string
+    {
+        return dirname(parent::getPackageBaseDir());
     }
 }
