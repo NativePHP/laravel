@@ -2,6 +2,7 @@
 
 namespace Native\Laravel\Tests;
 
+use Native\Electron\ElectronServiceProvider;
 use Native\Laravel\NativeServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
@@ -16,6 +17,7 @@ class TestCase extends Orchestra
     {
         return [
             NativeServiceProvider::class,
+            ElectronServiceProvider::class,
         ];
     }
 
