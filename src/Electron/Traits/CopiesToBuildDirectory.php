@@ -23,39 +23,6 @@ trait CopiesToBuildDirectory
 
     abstract protected function sourcePath(string $path = ''): string;
 
-    public array $cleanupExcludeFiles = [
-        // .git and dev directories
-        '.git',
-        'dist',
-        'build',
-        'temp',
-        'extras',
-        'docker',
-        'packages',
-        '**/.github',
-
-        // Potentially containing sensitive info
-        'auth.json', // Composer auth file
-        'database/*.sqlite',
-        'database/*.sqlite-shm',
-        'database/*.sqlite-wal',
-
-        'storage/framework/sessions/*',
-        'storage/framework/testing/*',
-        'storage/framework/cache/*',
-        'storage/framework/views/*',
-        'storage/logs/*',
-        'storage/hot',
-
-        // Only needed for local testing
-        'vendor/nativephp/desktop/resources',
-        'vendor/nativephp/desktop/vendor',
-        'vendor/nativephp/php-bin',
-
-        // Also deleted in PrunesVendorDirectory after fresh composer install
-        'vendor/bin',
-    ];
-
     public function copyToBuildDirectory(): bool
     {
         $sourcePath = $this->sourcePath();
@@ -63,7 +30,7 @@ trait CopiesToBuildDirectory
         $filesystem = new Filesystem;
 
         $patterns = array_merge(
-            $this->cleanupExcludeFiles,
+            config('nativephp-internal.cleanup_exclude_files', []),
             config('nativephp.cleanup_exclude_files', []),
         );
 

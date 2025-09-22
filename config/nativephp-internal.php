@@ -62,6 +62,42 @@ return [
     ],
 
     /**
+     * A list of files and folders that should be removed.
+     */
+    'cleanup_exclude_files' => [
+        // .git and dev directories
+        '.git',
+        'dist',
+        'build',
+        'temp',
+        'extras',
+        'docker',
+        'packages',
+        '**/.github',
+
+        // Potentially containing sensitive info
+        'auth.json', // Composer auth file
+        'database/*.sqlite',
+        'database/*.sqlite-shm',
+        'database/*.sqlite-wal',
+
+        'storage/framework/sessions/*',
+        'storage/framework/testing/*',
+        'storage/framework/cache/*',
+        'storage/framework/views/*',
+        'storage/logs/*',
+        'storage/hot',
+
+        // Only needed for local testing
+        'vendor/nativephp/desktop/resources',
+        'vendor/nativephp/desktop/vendor',
+        'vendor/nativephp/php-bin',
+
+        // Also deleted in PrunesVendorDirectory after fresh composer install
+        'vendor/bin',
+    ],
+
+    /**
      * The binary path of PHP for NativePHP to use at build.
      */
     'php_binary_path' => env('NATIVEPHP_PHP_BINARY_PATH'),
