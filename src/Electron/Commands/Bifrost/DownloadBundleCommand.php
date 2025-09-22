@@ -3,13 +3,13 @@
 namespace Native\Electron\Commands\Bifrost;
 
 use Carbon\CarbonInterface;
+use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 use Native\Electron\Traits\HandlesBifrost;
 use Symfony\Component\Console\Attribute\AsCommand;
 
 use function Laravel\Prompts\intro;
-use function Laravel\Prompts\progress;
 
 #[AsCommand(
     name: 'bifrost:download-bundle',
@@ -23,7 +23,12 @@ class DownloadBundleCommand extends Command
 
     public function handle(): int
     {
-        if (! $this->checkForBifrostToken()) {
+        try {
+            $this->validateAuthAndGetUser();
+        } catch (Exception $e) {
+            $this->error($e->getMessage());
+            $this->line('Run: php artisan bifrost:login');
+
             return static::FAILURE;
         }
 
@@ -31,76 +36,123 @@ class DownloadBundleCommand extends Command
             return static::FAILURE;
         }
 
-        if (! $this->checkAuthenticated()) {
-            $this->error('Invalid API token. Please login again.');
-            $this->line('Run: php artisan bifrost:login');
-
-            return static::FAILURE;
-        }
-
         intro('Fetching latest desktop bundle...');
 
-        $projectId = config('nativephp-internal.bifrost.project');
-        $response = Http::acceptJson()
-            ->withToken(config('nativephp-internal.bifrost.token'))
-            ->get($this->baseUrl()."api/v1/projects/{$projectId}/builds/latest-desktop-bundle");
+        try {
+            $projectId = config('nativephp-internal.bifrost.project');
+            $response = $this->makeApiRequest('GET', "api/v1/projects/{$projectId}/builds/latest-desktop-bundle");
 
-        if ($response->failed()) {
-            $this->handleApiError($response);
+            if ($response->failed()) {
+                $this->handleApiError($response);
+
+                return static::FAILURE;
+            }
+
+            $buildData = $response->json();
+
+            if (! isset($buildData['download_url'])) {
+                $this->error('Bundle download URL not found in response.');
+
+                return static::FAILURE;
+            }
+
+            $this->displayBundleInfo($buildData);
+
+            $bundlePath = $this->prepareBundlePath();
+
+            if (! $this->downloadBundle($buildData['download_url'], $bundlePath)) {
+                return static::FAILURE;
+            }
+
+            $this->displaySuccessInfo($bundlePath);
+
+            return static::SUCCESS;
+        } catch (Exception $e) {
+            $this->error('Failed to download bundle: '.$e->getMessage());
 
             return static::FAILURE;
         }
+    }
 
-        $buildData = $response->json();
-        $downloadUrl = $buildData['download_url'];
-
+    private function displayBundleInfo(array $buildData): void
+    {
         $this->line('');
         $this->info('Bundle Details:');
-        $this->line('Version: '.$buildData['version']);
-        $this->line('Git Commit: '.substr($buildData['git_commit'], 0, 8));
-        $this->line('Git Branch: '.$buildData['git_branch']);
-        $this->line('Created: '.$buildData['created_at']);
+        $this->line('Version: '.($buildData['version'] ?? 'Unknown'));
+        $this->line('Git Commit: '.substr($buildData['git_commit'] ?? '', 0, 8));
+        $this->line('Git Branch: '.($buildData['git_branch'] ?? 'Unknown'));
+        $this->line('Created: '.($buildData['created_at'] ?? 'Unknown'));
+    }
 
-        // Create build directory if it doesn't exist
+    private function prepareBundlePath(): string
+    {
         $buildDir = base_path('build');
         if (! is_dir($buildDir)) {
             mkdir($buildDir, 0755, true);
         }
 
-        $bundlePath = base_path('build/__nativephp_app_bundle');
+        return base_path('build/__nativephp_app_bundle');
+    }
 
-        // Download the bundle with progress bar
+    private function downloadBundle(string $downloadUrl, string $bundlePath): bool
+    {
         $this->line('');
         $this->info('Downloading bundle...');
 
-        $downloadResponse = Http::withOptions([
-            'sink' => $bundlePath,
-            'progress' => function ($downloadTotal, $downloadedBytes) {
-                if ($downloadTotal > 0) {
-                    $progress = ($downloadedBytes / $downloadTotal) * 100;
-                    $this->output->write("\r".sprintf('Progress: %.1f%%', $progress));
-                }
-            },
-        ])->get($downloadUrl);
+        $progressBar = $this->output->createProgressBar();
+        $progressBar->setFormat(' %current%/%max% [%bar%] %percent:3s%% %message%');
 
-        if ($downloadResponse->failed()) {
+        try {
+            $downloadResponse = Http::withOptions([
+                'sink' => $bundlePath,
+                'progress' => function ($downloadTotal, $downloadedBytes) use ($progressBar) {
+                    if ($downloadTotal > 0) {
+                        $progressBar->setMaxSteps($downloadTotal);
+                        $progressBar->setProgress($downloadedBytes);
+                        $progressBar->setMessage(sprintf('%.1f MB', $downloadedBytes / 1024 / 1024));
+                    }
+                },
+            ])->get($downloadUrl);
+
+            $progressBar->finish();
             $this->line('');
-            $this->error('Failed to download bundle.');
 
-            if (file_exists($bundlePath)) {
-                unlink($bundlePath);
+            if ($downloadResponse->failed()) {
+                $this->error('Failed to download bundle.');
+                $this->cleanupFailedDownload($bundlePath);
+
+                return false;
             }
 
-            return static::FAILURE;
-        }
+            return true;
+        } catch (Exception $e) {
+            $progressBar->finish();
+            $this->line('');
+            $this->error('Download failed: '.$e->getMessage());
+            $this->cleanupFailedDownload($bundlePath);
 
-        $this->line('');
+            return false;
+        }
+    }
+
+    private function cleanupFailedDownload(string $bundlePath): void
+    {
+        if (file_exists($bundlePath)) {
+            unlink($bundlePath);
+            $this->line('Cleaned up partial download.');
+        }
+    }
+
+    private function displaySuccessInfo(string $bundlePath): void
+    {
         $this->line('');
         $this->info('Bundle downloaded successfully!');
         $this->line('Location: '.$bundlePath);
-        $this->line('Size: '.number_format(filesize($bundlePath) / 1024 / 1024, 2).' MB');
 
-        return static::SUCCESS;
+        if (file_exists($bundlePath)) {
+            $sizeInMB = number_format(filesize($bundlePath) / 1024 / 1024, 2);
+            $this->line("Size: {$sizeInMB} MB");
+        }
     }
 
     private function handleApiError($response): void
@@ -113,7 +165,15 @@ class DownloadBundleCommand extends Command
                 $this->line('');
                 $this->error('No desktop builds found for this project.');
                 $this->line('');
-                $this->info('Create a build at: '.$this->baseUrl().'{team}/desktop/projects/{project}');
+                $teamSlug = $this->getCurrentTeamSlug();
+                $projectId = config('nativephp-internal.bifrost.project');
+                $baseUrl = rtrim($this->baseUrl(), '/');
+
+                if ($teamSlug && $projectId) {
+                    $this->info("Create a build at: {$baseUrl}/{$teamSlug}/desktop/projects/{$projectId}");
+                } else {
+                    $this->info("Visit the dashboard: {$baseUrl}/dashboard");
+                }
                 break;
 
             case 503:
@@ -122,7 +182,7 @@ class DownloadBundleCommand extends Command
                 $diffMessage = $retryAfter <= 60 ? 'a minute' : $diff->diffForHumans(syntax: CarbonInterface::DIFF_ABSOLUTE);
                 $this->line('');
                 $this->warn('Build is still in progress.');
-                $this->line('Please try again in '.$diffMessage.'.');
+                $this->line("Please try again in {$diffMessage}.");
                 break;
 
             case 500:
@@ -130,6 +190,8 @@ class DownloadBundleCommand extends Command
                 $this->error('Latest build has failed or was cancelled.');
                 if (isset($data['build_id'])) {
                     $this->line('Build ID: '.$data['build_id']);
+                }
+                if (isset($data['status'])) {
                     $this->line('Status: '.$data['status']);
                 }
                 break;

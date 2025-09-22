@@ -2,9 +2,11 @@
 
 namespace Native\Electron\Commands\Bifrost;
 
+use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 use Native\Electron\Traits\HandlesBifrost;
+use Native\Electron\Traits\ManagesEnvFile;
 use Symfony\Component\Console\Attribute\AsCommand;
 
 use function Laravel\Prompts\intro;
@@ -18,6 +20,7 @@ use function Laravel\Prompts\text;
 class LoginCommand extends Command
 {
     use HandlesBifrost;
+    use ManagesEnvFile;
 
     protected $signature = 'bifrost:login';
 
@@ -42,52 +45,77 @@ class LoginCommand extends Command
         $this->line('');
         $this->info('Logging in...');
 
-        $response = Http::acceptJson()
-            ->post($this->baseUrl().'api/v1/auth/login', [
-                'email' => $email,
-                'password' => $password,
-            ]);
+        try {
+            $response = Http::acceptJson()
+                ->post($this->baseUrl().'api/v1/auth/login', [
+                    'email' => $email,
+                    'password' => $password,
+                ]);
 
-        if ($response->failed()) {
+            if ($response->failed()) {
+                $this->line('');
+                $this->error('Login failed: '.$response->json('message', 'Invalid credentials'));
+
+                return static::FAILURE;
+            }
+
+            $responseData = $response->json();
+
+            if (! isset($responseData['data']['token'])) {
+                $this->line('');
+                $this->error('Login response missing token. Please try again.');
+
+                return static::FAILURE;
+            }
+
+            $token = $responseData['data']['token'];
+
+            // Store token in .env file
+            $this->updateEnvFile('BIFROST_TOKEN', $token);
+
+            // Fetch and display user info
+            $this->displayUserInfo($token);
+
             $this->line('');
-            $this->error('Login failed: '.$response->json('message', 'Invalid credentials'));
+            $this->line('Next step: Run "php artisan bifrost:init" to select a project.');
+
+            return static::SUCCESS;
+        } catch (Exception $e) {
+            $this->line('');
+            $this->error('Network error: '.$e->getMessage());
 
             return static::FAILURE;
         }
+    }
 
-        $data = $response->json('data');
-        $token = $data['token'];
+    private function displayUserInfo(string $token): void
+    {
+        try {
+            $userResponse = Http::acceptJson()
+                ->withToken($token)
+                ->get($this->baseUrl().'api/v1/auth/user');
 
-        // Store token in .env file
-        $envPath = base_path('.env');
-        $envContent = file_get_contents($envPath);
+            if ($userResponse->successful()) {
+                $userData = $userResponse->json();
 
-        if (str_contains($envContent, 'BIFROST_TOKEN=')) {
-            $envContent = preg_replace('/BIFROST_TOKEN=.*/', "BIFROST_TOKEN={$token}", $envContent);
-        } else {
-            $envContent .= "\nBIFROST_TOKEN={$token}";
-        }
+                if (isset($userData['data'])) {
+                    $user = $userData['data'];
+                    $this->line('');
+                    $this->info('Successfully logged in!');
+                    $this->line('User: '.($user['name'] ?? 'Unknown').' ('.($user['email'] ?? 'Unknown').')');
 
-        file_put_contents($envPath, $envContent);
+                    if (isset($user['current_team']['name'])) {
+                        $this->line('Team: '.$user['current_team']['name']);
+                    }
 
-        // Fetch user info
-        $userResponse = Http::acceptJson()
-            ->withToken($token)
-            ->get($this->baseUrl().'api/v1/auth/user');
-
-        if ($userResponse->successful()) {
-            $user = $userResponse->json('data');
-            $this->line('');
-            $this->info('Successfully logged in!');
-            $this->line('User: '.$user['name'].' ('.$user['email'].')');
-        } else {
-            $this->line('');
-            $this->info('Successfully logged in!');
+                    return;
+                }
+            }
+        } catch (Exception $e) {
+            // Silently fail user info display - login was successful
         }
 
         $this->line('');
-        $this->line('Next step: Run "php artisan bifrost:init" to select a project.');
-
-        return static::SUCCESS;
+        $this->info('Successfully logged in!');
     }
 }
