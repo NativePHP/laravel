@@ -15,7 +15,7 @@ use Spatie\LaravelPackageTools\PackageServiceProvider;
 
 class ElectronServiceProvider extends PackageServiceProvider
 {
-    const ELECTRON_PATH = __DIR__.'/../../resources/js';
+    const ELECTRON_PATH = __DIR__.'/../../resources/electron';
 
     public function configurePackage(Package $package): void
     {

@@ -267,7 +267,7 @@ class BundleCommand extends Command
         $vendor = (new Finder)->files()
             ->exclude(array_filter([
                 'nativephp/php-bin',
-                'nativephp/electron/resources/js',
+                'nativephp/electron/resources/electron',
                 '*/*/vendor', // Exclude sub-vendor directories
                 $binaryPath,
             ]))

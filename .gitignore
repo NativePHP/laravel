@@ -9,4 +9,4 @@ testbench.yaml
 vendor
 node_modules
 .DS_Store
-resources/js/*.log
+resources/electron/*.log

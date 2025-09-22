@@ -29,11 +29,11 @@ jobs:
           node-version: 22.x
 
       - name: Install dependencies
-        working-directory: ./resources/js/
+        working-directory: ./resources/electron/
         run: npm install
 
       - name: Build plugin
-        working-directory: ./resources/js/
+        working-directory: ./resources/electron/
         run: npm run plugin:build
 
       - name: Commit changes

@@ -3,6 +3,7 @@
 namespace Native\Electron\Traits;
 
 use Illuminate\Support\Facades\Process;
+use Native\Electron\ElectronServiceProvider;
 
 use function Laravel\Prompts\note;
 
@@ -32,7 +33,7 @@ trait ExecuteCommand
 
         note('Fetching latest dependencies…');
 
-        Process::path(__DIR__.'/../../../resources/js/')
+        Process::path(ElectronServiceProvider::ELECTRON_PATH)
             ->env($envs[$type])
             ->forever()
             ->tty(! $withoutInteraction && PHP_OS_FAMILY != 'Windows')
