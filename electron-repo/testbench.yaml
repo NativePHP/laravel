@@ -1,7 +1,0 @@
-providers:
-  - Native\Electron\ElectronServiceProvider
-
-migrations: false
-
-workbench:
-  install: false
