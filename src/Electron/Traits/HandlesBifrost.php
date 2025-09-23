@@ -10,7 +10,6 @@ use function Laravel\Prompts\intro;
 
 trait HandlesBifrost
 {
-
     private function baseUrl(): string
     {
         return str(config('nativephp-internal.bifrost.host'))->finish('/');
