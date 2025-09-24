@@ -1,6 +1,7 @@
 name: run-tests
 
 on:
+  workflow_dispatch:
   push:
     branches: [main]
   pull_request:
@@ -12,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest, windows-latest, macos-latest]
         php: [8.4, 8.3]
         laravel: [12.*, 11.*]
         stability: [prefer-lowest, prefer-stable]
@@ -43,8 +44,8 @@ jobs:
       - name: List Installed Dependencies
         run: composer show
 
-#      - name: Debug PhpUnit version
-#        run: composer why phpunit/phpunit -t
+      - name: Show pest version
+        run: vendor/bin/pest --version
 
       - name: Execute tests
         run: vendor/bin/pest

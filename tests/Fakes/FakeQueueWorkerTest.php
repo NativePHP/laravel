@@ -1,9 +1,9 @@
 <?php
 
-use Native\Laravel\Contracts\QueueWorker as QueueWorkerContract;
-use Native\Laravel\DTOs\QueueConfig;
-use Native\Laravel\Facades\QueueWorker;
-use Native\Laravel\Fakes\QueueWorkerFake;
+use Native\Desktop\Contracts\QueueWorker as QueueWorkerContract;
+use Native\Desktop\DTOs\QueueConfig;
+use Native\Desktop\Facades\QueueWorker;
+use Native\Desktop\Fakes\QueueWorkerFake;
 use PHPUnit\Framework\AssertionFailedError;
 
 use function Pest\Laravel\swap;

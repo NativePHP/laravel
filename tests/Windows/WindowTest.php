@@ -1,8 +1,8 @@
 <?php
 
-use Native\Laravel\Client\Client;
-use Native\Laravel\Facades\Window;
-use Native\Laravel\Windows\Window as WindowClass;
+use Native\Desktop\Client\Client;
+use Native\Desktop\Facades\Window;
+use Native\Desktop\Windows\Window as WindowClass;
 
 it('test window', function () {
     Http::fake();

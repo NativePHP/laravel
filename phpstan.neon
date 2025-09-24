@@ -14,8 +14,8 @@ parameters:
 
     ignoreErrors:
        - '#Class App\\Providers\\NativeAppServiceProvider not found#'
-       - '#Class Native\\Laravel\\ChildProcess has an uninitialized readonly property#'
+       - '#Class Native\\Desktop\\ChildProcess has an uninitialized readonly property#'
 
 
     excludePaths:
-        - ./src/NativeServiceProvider.php
+        - ./src/Desktop/NativeServiceProvider.php
