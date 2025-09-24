@@ -4,7 +4,7 @@ import { notifyLaravel } from "../utils.js";
 const router = express.Router();
 router.post('/', (req, res) => {
     const { title, body, subtitle, silent, icon, hasReply, timeoutType, replyPlaceholder, sound, urgency, actions, closeButtonText, toastXml, event: customEvent, reference, } = req.body;
-    const eventName = customEvent !== null && customEvent !== void 0 ? customEvent : '\\Native\\Laravel\\Events\\Notifications\\NotificationClicked';
+    const eventName = customEvent !== null && customEvent !== void 0 ? customEvent : '\\Native\\Desktop\\Events\\Notifications\\NotificationClicked';
     const notificationReference = reference !== null && reference !== void 0 ? reference : (Date.now() + '.' + Math.random().toString(36).slice(2, 9));
     const notification = new Notification({
         title,
@@ -23,7 +23,7 @@ router.post('/', (req, res) => {
     });
     notification.on("click", (event) => {
         notifyLaravel('events', {
-            event: eventName || '\\Native\\Laravel\\Events\\Notifications\\NotificationClicked',
+            event: eventName || '\\Native\\Desktop\\Events\\Notifications\\NotificationClicked',
             payload: {
                 reference: notificationReference,
                 event: JSON.stringify(event),
@@ -32,7 +32,7 @@ router.post('/', (req, res) => {
     });
     notification.on("action", (event, index) => {
         notifyLaravel('events', {
-            event: '\\Native\\Laravel\\Events\\Notifications\\NotificationActionClicked',
+            event: '\\Native\\Desktop\\Events\\Notifications\\NotificationActionClicked',
             payload: {
                 reference: notificationReference,
                 index,
@@ -42,7 +42,7 @@ router.post('/', (req, res) => {
     });
     notification.on("reply", (event, reply) => {
         notifyLaravel('events', {
-            event: '\\Native\\Laravel\\Events\\Notifications\\NotificationReply',
+            event: '\\Native\\Desktop\\Events\\Notifications\\NotificationReply',
             payload: {
                 reference: notificationReference,
                 reply,
@@ -52,7 +52,7 @@ router.post('/', (req, res) => {
     });
     notification.on("close", (event) => {
         notifyLaravel('events', {
-            event: '\\Native\\Laravel\\Events\\Notifications\\NotificationClosed',
+            event: '\\Native\\Desktop\\Events\\Notifications\\NotificationClosed',
             payload: {
                 reference: notificationReference,
                 event: JSON.stringify(event),
