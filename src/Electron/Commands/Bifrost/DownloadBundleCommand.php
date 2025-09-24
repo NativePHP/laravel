@@ -50,21 +50,30 @@ class DownloadBundleCommand extends Command
 
             $buildData = $response->json();
 
-            if (! isset($buildData['download_url'])) {
+            if (! isset($buildData['data']['download_url'])) {
                 $this->error('Bundle download URL not found in response.');
 
                 return static::FAILURE;
             }
 
-            $this->displayBundleInfo($buildData);
+            $this->displayBundleInfo($buildData['data']);
 
             $bundlePath = $this->prepareBundlePath();
 
-            if (! $this->downloadBundle($buildData['download_url'], $bundlePath)) {
+            if (! $this->downloadBundle($buildData['data']['download_url'], $bundlePath)) {
                 return static::FAILURE;
             }
 
-            $this->displaySuccessInfo($bundlePath);
+            // Download GPG signature if available
+            $signaturePath = null;
+            if (isset($buildData['data']['signature_url'])) {
+                $signaturePath = $bundlePath . '.asc';
+                if (! $this->downloadSignature($buildData['data']['signature_url'], $signaturePath)) {
+                    $this->warn('Failed to download GPG signature file.');
+                }
+            }
+
+            $this->displaySuccessInfo($bundlePath, $signaturePath);
 
             return static::SUCCESS;
         } catch (Exception $e) {
@@ -143,7 +152,27 @@ class DownloadBundleCommand extends Command
         }
     }
 
-    private function displaySuccessInfo(string $bundlePath): void
+    private function downloadSignature(string $signatureUrl, string $signaturePath): bool
+    {
+        $this->line('');
+        $this->info('Downloading GPG signature...');
+
+        try {
+            $downloadResponse = Http::get($signatureUrl);
+
+            if ($downloadResponse->failed()) {
+                return false;
+            }
+
+            file_put_contents($signaturePath, $downloadResponse->body());
+
+            return true;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
+    private function displaySuccessInfo(string $bundlePath, ?string $signaturePath = null): void
     {
         $this->line('');
         $this->info('Bundle downloaded successfully!');
@@ -152,6 +181,13 @@ class DownloadBundleCommand extends Command
         if (file_exists($bundlePath)) {
             $sizeInMB = number_format(filesize($bundlePath) / 1024 / 1024, 2);
             $this->line("Size: {$sizeInMB} MB");
+        }
+
+        if ($signaturePath && file_exists($signaturePath)) {
+            $this->line('GPG Signature: '.$signaturePath);
+            $this->line('');
+            $this->info('To verify the bundle integrity:');
+            $this->line('gpg --verify '.basename($signaturePath).' '.basename($bundlePath));
         }
     }
 

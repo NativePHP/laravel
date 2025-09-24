@@ -67,16 +67,16 @@ class InitCommand extends Command
                 $name = $project['name'] ?? 'Unknown';
                 $repo = $project['repo'] ?? 'No repository';
 
-                return [$project['id'] => "{$name} - {$repo}"];
+                return [$project['uuid'] => "{$name} - {$repo}"];
             })->toArray();
 
-            $selectedProjectId = select(
+            $selectedProjectUuid = select(
                 label: 'Select a desktop project',
                 options: $choices,
                 required: true
             );
 
-            $selectedProject = collect($projects)->firstWhere('id', $selectedProjectId);
+            $selectedProject = collect($projects)->firstWhere('uuid', $selectedProjectUuid);
 
             if (! $selectedProject) {
                 $this->error('Selected project not found.');
@@ -84,8 +84,8 @@ class InitCommand extends Command
                 return static::FAILURE;
             }
 
-            // Store project in .env file
-            $this->updateEnvFile('BIFROST_PROJECT', $selectedProjectId);
+            // Store project UUID in .env file
+            $this->updateEnvFile('BIFROST_PROJECT', $selectedProjectUuid);
 
             $this->displaySuccessMessage($selectedProject);
 

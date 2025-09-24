@@ -20,18 +20,45 @@ class ClearBundleCommand extends Command
         intro('Clearing downloaded bundle...');
 
         $bundlePath = base_path('build/__nativephp_app_bundle');
+        $signaturePath = $bundlePath . '.asc';
 
-        if (! file_exists($bundlePath)) {
-            $this->warn('No bundle found to clear.');
+        $bundleExists = file_exists($bundlePath);
+        $signatureExists = file_exists($signaturePath);
+
+        if (! $bundleExists && ! $signatureExists) {
+            $this->warn('No bundle or signature files found to clear.');
 
             return static::SUCCESS;
         }
 
-        if (unlink($bundlePath)) {
-            $this->info('Bundle cleared successfully!');
+        $cleared = [];
+        $failed = [];
+
+        if ($bundleExists) {
+            if (unlink($bundlePath)) {
+                $cleared[] = 'bundle';
+            } else {
+                $failed[] = 'bundle';
+            }
+        }
+
+        if ($signatureExists) {
+            if (unlink($signaturePath)) {
+                $cleared[] = 'GPG signature';
+            } else {
+                $failed[] = 'GPG signature';
+            }
+        }
+
+        if (! empty($cleared)) {
+            $clearedText = implode(' and ', $cleared);
+            $this->info("Cleared {$clearedText} successfully!");
             $this->line('Note: Building in this state would be unsecure without a valid bundle.');
-        } else {
-            $this->error('Failed to remove bundle file.');
+        }
+
+        if (! empty($failed)) {
+            $failedText = implode(' and ', $failed);
+            $this->error("Failed to remove {$failedText}.");
 
             return static::FAILURE;
         }
