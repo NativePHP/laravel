@@ -17,12 +17,12 @@ router.post("/quit-and-install", (req, res) => {
 });
 autoUpdater.addListener("checking-for-update", () => {
     notifyLaravel("events", {
-        event: `\\Native\\Laravel\\Events\\AutoUpdater\\CheckingForUpdate`,
+        event: `\\Native\\Desktop\\Events\\AutoUpdater\\CheckingForUpdate`,
     });
 });
 autoUpdater.addListener("update-available", (event) => {
     notifyLaravel("events", {
-        event: `\\Native\\Laravel\\Events\\AutoUpdater\\UpdateAvailable`,
+        event: `\\Native\\Desktop\\Events\\AutoUpdater\\UpdateAvailable`,
         payload: {
             version: event.version,
             files: event.files,
@@ -36,7 +36,7 @@ autoUpdater.addListener("update-available", (event) => {
 });
 autoUpdater.addListener("update-not-available", (event) => {
     notifyLaravel("events", {
-        event: `\\Native\\Laravel\\Events\\AutoUpdater\\UpdateNotAvailable`,
+        event: `\\Native\\Desktop\\Events\\AutoUpdater\\UpdateNotAvailable`,
         payload: {
             version: event.version,
             files: event.files,
@@ -50,7 +50,7 @@ autoUpdater.addListener("update-not-available", (event) => {
 });
 autoUpdater.addListener("error", (error) => {
     notifyLaravel("events", {
-        event: `\\Native\\Laravel\\Events\\AutoUpdater\\Error`,
+        event: `\\Native\\Desktop\\Events\\AutoUpdater\\Error`,
         payload: {
             name: error.name,
             message: error.message,
@@ -60,7 +60,7 @@ autoUpdater.addListener("error", (error) => {
 });
 autoUpdater.addListener("download-progress", (progressInfo) => {
     notifyLaravel("events", {
-        event: `\\Native\\Laravel\\Events\\AutoUpdater\\DownloadProgress`,
+        event: `\\Native\\Desktop\\Events\\AutoUpdater\\DownloadProgress`,
         payload: {
             total: progressInfo.total,
             delta: progressInfo.delta,
@@ -72,7 +72,7 @@ autoUpdater.addListener("download-progress", (progressInfo) => {
 });
 autoUpdater.addListener("update-downloaded", (event) => {
     notifyLaravel("events", {
-        event: `\\Native\\Laravel\\Events\\AutoUpdater\\UpdateDownloaded`,
+        event: `\\Native\\Desktop\\Events\\AutoUpdater\\UpdateDownloaded`,
         payload: {
             downloadedFile: event.downloadedFile,
             version: event.version,
@@ -87,7 +87,7 @@ autoUpdater.addListener("update-downloaded", (event) => {
 });
 autoUpdater.addListener("update-cancelled", (event) => {
     notifyLaravel("events", {
-        event: `\\Native\\Laravel\\Events\\AutoUpdater\\UpdateCancelled`,
+        event: `\\Native\\Desktop\\Events\\AutoUpdater\\UpdateCancelled`,
         payload: {
             version: event.version,
             files: event.files,

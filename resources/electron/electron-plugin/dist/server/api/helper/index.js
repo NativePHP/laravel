@@ -3,7 +3,7 @@ import { notifyLaravel, goToUrl } from '../../utils.js';
 import state from '../../state.js';
 function triggerMenuItemEvent(menuItem, combo) {
     notifyLaravel('events', {
-        event: menuItem.event || '\\Native\\Laravel\\Events\\Menu\\MenuItemClicked',
+        event: menuItem.event || '\\Native\\Desktop\\Events\\Menu\\MenuItemClicked',
         payload: {
             item: {
                 id: menuItem.id,

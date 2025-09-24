@@ -93,12 +93,12 @@ router.post("/create", (req, res) => {
             state.tray.setTitle(label);
             state.activeMenuBar.on("hide", () => {
                 notifyLaravel("events", {
-                    event: "\\Native\\Laravel\\Events\\MenuBar\\MenuBarHidden"
+                    event: "\\Native\\Desktop\\Events\\MenuBar\\MenuBarHidden"
                 });
             });
             state.activeMenuBar.on("show", () => {
                 notifyLaravel("events", {
-                    event: "\\Native\\Laravel\\Events\\MenuBar\\MenuBarShown"
+                    event: "\\Native\\Desktop\\Events\\MenuBar\\MenuBarShown"
                 });
             });
         });
@@ -107,12 +107,12 @@ router.post("/create", (req, res) => {
 function eventsForTray(tray, onlyShowContextMenu, contextMenu, shouldSendCreatedEvent) {
     if (shouldSendCreatedEvent) {
         notifyLaravel("events", {
-            event: "\\Native\\Laravel\\Events\\MenuBar\\MenuBarCreated"
+            event: "\\Native\\Desktop\\Events\\MenuBar\\MenuBarCreated"
         });
     }
     tray.on("drop-files", (event, files) => {
         notifyLaravel("events", {
-            event: "\\Native\\Laravel\\Events\\MenuBar\\MenuBarDroppedFiles",
+            event: "\\Native\\Desktop\\Events\\MenuBar\\MenuBarDroppedFiles",
             payload: [
                 files
             ]
@@ -120,7 +120,7 @@ function eventsForTray(tray, onlyShowContextMenu, contextMenu, shouldSendCreated
     });
     tray.on('click', (combo, bounds, position) => {
         notifyLaravel('events', {
-            event: "\\Native\\Laravel\\Events\\MenuBar\\MenuBarClicked",
+            event: "\\Native\\Desktop\\Events\\MenuBar\\MenuBarClicked",
             payload: {
                 combo,
                 bounds,
@@ -130,7 +130,7 @@ function eventsForTray(tray, onlyShowContextMenu, contextMenu, shouldSendCreated
     });
     tray.on("right-click", (combo, bounds) => {
         notifyLaravel("events", {
-            event: "\\Native\\Laravel\\Events\\MenuBar\\MenuBarRightClicked",
+            event: "\\Native\\Desktop\\Events\\MenuBar\\MenuBarRightClicked",
             payload: {
                 combo,
                 bounds,
@@ -143,7 +143,7 @@ function eventsForTray(tray, onlyShowContextMenu, contextMenu, shouldSendCreated
     });
     tray.on('double-click', (combo, bounds) => {
         notifyLaravel('events', {
-            event: "\\Native\\Laravel\\Events\\MenuBar\\MenuBarDoubleClicked",
+            event: "\\Native\\Desktop\\Events\\MenuBar\\MenuBarDoubleClicked",
             payload: {
                 combo,
                 bounds,

@@ -37,7 +37,7 @@ function startProcess(settings) {
                 catch (e) {
                 }
                 notifyLaravel('events', {
-                    event: 'Native\\Laravel\\Events\\ChildProcess\\StartupError',
+                    event: 'Native\\Desktop\\Events\\ChildProcess\\StartupError',
                     payload: {
                         alias,
                         error: 'Startup timeout exceeded',
@@ -47,7 +47,7 @@ function startProcess(settings) {
         }, spawnTimeout);
         proc.stdout.on('data', (data) => {
             notifyLaravel('events', {
-                event: 'Native\\Laravel\\Events\\ChildProcess\\MessageReceived',
+                event: 'Native\\Desktop\\Events\\ChildProcess\\MessageReceived',
                 payload: {
                     alias,
                     data: data.toString(),
@@ -57,7 +57,7 @@ function startProcess(settings) {
         proc.stderr.on('data', (data) => {
             console.error('Process [' + alias + '] ERROR:', data.toString().trim());
             notifyLaravel('events', {
-                event: 'Native\\Laravel\\Events\\ChildProcess\\ErrorReceived',
+                event: 'Native\\Desktop\\Events\\ChildProcess\\ErrorReceived',
                 payload: {
                     alias,
                     data: data.toString(),
@@ -73,7 +73,7 @@ function startProcess(settings) {
                 settings
             };
             notifyLaravel('events', {
-                event: 'Native\\Laravel\\Events\\ChildProcess\\ProcessSpawned',
+                event: 'Native\\Desktop\\Events\\ChildProcess\\ProcessSpawned',
                 payload: [alias, proc.pid]
             });
         });
@@ -81,7 +81,7 @@ function startProcess(settings) {
             clearTimeout(startTimeout);
             console.log(`Process [${alias}] exited with code [${code}].`);
             notifyLaravel('events', {
-                event: 'Native\\Laravel\\Events\\ChildProcess\\ProcessExited',
+                event: 'Native\\Desktop\\Events\\ChildProcess\\ProcessExited',
                 payload: {
                     alias,
                     code,
@@ -103,7 +103,7 @@ function startProcess(settings) {
     catch (error) {
         console.error(`Failed to create process [${alias}]: ${error.message}`);
         notifyLaravel('events', {
-            event: 'Native\\Laravel\\Events\\ChildProcess\\StartupError',
+            event: 'Native\\Desktop\\Events\\ChildProcess\\StartupError',
             payload: {
                 alias,
                 error: error.toString(),

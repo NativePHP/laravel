@@ -195,37 +195,37 @@ router.post('/open', (req, res) => {
     }
     window.on('blur', () => {
         notifyLaravel('events', {
-            event: 'Native\\Laravel\\Events\\Windows\\WindowBlurred',
+            event: 'Native\\Desktop\\Events\\Windows\\WindowBlurred',
             payload: [id]
         });
     });
     window.on('focus', () => {
         notifyLaravel('events', {
-            event: 'Native\\Laravel\\Events\\Windows\\WindowFocused',
+            event: 'Native\\Desktop\\Events\\Windows\\WindowFocused',
             payload: [id]
         });
     });
     window.on('minimize', () => {
         notifyLaravel('events', {
-            event: 'Native\\Laravel\\Events\\Windows\\WindowMinimized',
+            event: 'Native\\Desktop\\Events\\Windows\\WindowMinimized',
             payload: [id]
         });
     });
     window.on('maximize', () => {
         notifyLaravel('events', {
-            event: 'Native\\Laravel\\Events\\Windows\\WindowMaximized',
+            event: 'Native\\Desktop\\Events\\Windows\\WindowMaximized',
             payload: [id]
         });
     });
     window.on('show', () => {
         notifyLaravel('events', {
-            event: 'Native\\Laravel\\Events\\Windows\\WindowShown',
+            event: 'Native\\Desktop\\Events\\Windows\\WindowShown',
             payload: [id]
         });
     });
     window.on('resized', () => {
         notifyLaravel('events', {
-            event: 'Native\\Laravel\\Events\\Windows\\WindowResized',
+            event: 'Native\\Desktop\\Events\\Windows\\WindowResized',
             payload: [id, window.getSize()[0], window.getSize()[1]]
         });
     });
@@ -237,13 +237,13 @@ router.post('/open', (req, res) => {
             delete state.windows[id];
         }
         notifyLaravel('events', {
-            event: 'Native\\Laravel\\Events\\Windows\\WindowClosed',
+            event: 'Native\\Desktop\\Events\\Windows\\WindowClosed',
             payload: [id]
         });
     });
     window.on('hide', (evt) => {
         notifyLaravel('events', {
-            event: 'Native\\Laravel\\Events\\Windows\\WindowHidden',
+            event: 'Native\\Desktop\\Events\\Windows\\WindowHidden',
             payload: [id]
         });
     });
