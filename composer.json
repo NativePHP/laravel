@@ -33,7 +33,6 @@
     ],
     "conflict": {
         "nativephp/mobile": "*",
-        "nativephp/laravel": "*",
         "nativephp/electron": "*"
     },
     "require": {
