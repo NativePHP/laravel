@@ -4,28 +4,30 @@ namespace Native\Electron\Traits;
 
 use Illuminate\Support\Facades\Process;
 use Native\Electron\ElectronServiceProvider;
+use Native\Support\Bundler;
 
 use function Laravel\Prompts\note;
 
 trait ExecuteCommand
 {
-    use LocatesPhpBinary;
-
     protected function executeCommand(
         string $command,
         bool $skip_queue = false,
         string $type = 'install',
         bool $withoutInteraction = false
     ): void {
+
+        $bundler = resolve(Bundler::class);
+
         $envs = [
             'install' => [
                 'NATIVEPHP_PHP_BINARY_VERSION' => PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION,
-                'NATIVEPHP_PHP_BINARY_PATH' => base_path($this->phpBinaryPath()),
+                'NATIVEPHP_PHP_BINARY_PATH' => $bundler->phpBinaryPath(),
             ],
             'serve' => [
                 'APP_PATH' => base_path(),
                 'NATIVEPHP_PHP_BINARY_VERSION' => PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION,
-                'NATIVEPHP_PHP_BINARY_PATH' => base_path($this->phpBinaryPath()),
+                'NATIVEPHP_PHP_BINARY_PATH' => $bundler->phpBinaryPath(),
                 'NATIVE_PHP_SKIP_QUEUE' => $skip_queue,
                 'NATIVEPHP_BUILDING' => false,
             ],

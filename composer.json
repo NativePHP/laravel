@@ -63,7 +63,8 @@
     "autoload": {
         "psr-4": {
             "Native\\Desktop\\": "src/Desktop",
-            "Native\\Electron\\": "src/Electron"
+            "Native\\Electron\\": "src/Electron",
+            "Native\\Support\\": "src/Support"
         }
     },
     "autoload-dev": {

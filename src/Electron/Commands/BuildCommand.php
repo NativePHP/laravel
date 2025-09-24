@@ -7,15 +7,10 @@ use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Str;
 use Native\Electron\ElectronServiceProvider;
 use Native\Electron\Facades\Updater;
-use Native\Electron\Traits\CleansEnvFile;
-use Native\Electron\Traits\CopiesBundleToBuildDirectory;
-use Native\Electron\Traits\CopiesCertificateAuthority;
-use Native\Electron\Traits\HasPreAndPostProcessing;
 use Native\Electron\Traits\InstallsAppIcon;
-use Native\Electron\Traits\LocatesPhpBinary;
 use Native\Electron\Traits\OsAndArch;
 use Native\Electron\Traits\PatchesPackagesJson;
-use Native\Electron\Traits\PrunesVendorDirectory;
+use Native\Support\Bundler;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Process\Process as SymfonyProcess;
 
@@ -27,15 +22,9 @@ use function Laravel\Prompts\intro;
 )]
 class BuildCommand extends Command
 {
-    use CleansEnvFile;
-    use CopiesBundleToBuildDirectory;
-    use CopiesCertificateAuthority;
-    use HasPreAndPostProcessing;
     use InstallsAppIcon;
-    use LocatesPhpBinary;
     use OsAndArch;
     use PatchesPackagesJson;
-    use PrunesVendorDirectory;
 
     protected $signature = 'native:build
         {os? : The operating system to build for (all, linux, mac, win)}
@@ -48,14 +37,10 @@ class BuildCommand extends Command
 
     private string $buildOS;
 
-    protected function buildPath(string $path = ''): string
-    {
-        return ElectronServiceProvider::ELECTRON_PATH.'/resources/app/'.$path;
-    }
-
-    protected function sourcePath(string $path = ''): string
-    {
-        return base_path($path);
+    public function __construct(
+        protected Bundler $bundler
+    ) {
+        parent::__construct();
     }
 
     public function handle(): void
@@ -73,38 +58,42 @@ class BuildCommand extends Command
             $this->buildCommand = 'publish';
         }
 
-        if ($this->hasBundled()) {
+        if ($this->bundler->hasBundled()) {
             $this->buildBundle();
         } else {
-            $this->warnUnsecureBuild();
+            $this->bundler->warnUnsecureBuild();
             $this->buildUnsecure();
         }
     }
 
     private function buildBundle(): void
     {
+        $this->bundler->preProcess();
+
         $this->setAppNameAndVersion();
 
         $this->updateElectronDependencies();
 
         $this->newLine();
         intro('Copying Bundle to build directory...');
-        $this->copyBundleToBuildDirectory();
-        $this->keepRequiredDirectories();
+        $this->bundler->copyBundleToBuildDirectory();
 
         $this->newLine();
-        $this->copyCertificateAuthorityCertificate();
+        intro('Copying latest CA Certificate...');
+        $this->bundler->copyCertificateAuthority(path: ElectronServiceProvider::ELECTRON_PATH.'/resources');
 
         $this->newLine();
         intro('Copying app icons...');
         $this->installIcon();
 
         $this->buildOrPublish();
+
+        $this->bundler->postProcess();
     }
 
     private function buildUnsecure(): void
     {
-        $this->preProcess();
+        $this->bundler->preProcess();
 
         $this->setAppNameAndVersion();
 
@@ -112,14 +101,15 @@ class BuildCommand extends Command
 
         $this->newLine();
         intro('Copying App to build directory...');
-        $this->copyToBuildDirectory();
+        $this->bundler->copyToBuildDirectory();
 
         $this->newLine();
-        $this->copyCertificateAuthorityCertificate();
+        intro('Copying latest CA Certificate...');
+        $this->bundler->copyCertificateAuthority(path: ElectronServiceProvider::ELECTRON_PATH.'/resources');
 
         $this->newLine();
         intro('Cleaning .env file...');
-        $this->cleanEnvFile();
+        $this->bundler->cleanEnvFile();
 
         $this->newLine();
         intro('Copying app icons...');
@@ -127,22 +117,22 @@ class BuildCommand extends Command
 
         $this->newLine();
         intro('Pruning vendor directory');
-        $this->pruneVendorDirectory();
+        $this->bundler->pruneVendorDirectory();
 
         $this->buildOrPublish();
 
-        $this->postProcess();
+        $this->bundler->postProcess();
     }
 
     protected function getEnvironmentVariables(): array
     {
         return array_merge(
             [
-                'APP_PATH' => $this->sourcePath(),
+                'APP_PATH' => $this->bundler->sourcePath(),
                 'APP_URL' => config('app.url'),
                 'NATIVEPHP_BUILDING' => true,
                 'NATIVEPHP_PHP_BINARY_VERSION' => PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION,
-                'NATIVEPHP_PHP_BINARY_PATH' => $this->sourcePath($this->phpBinaryPath()),
+                'NATIVEPHP_PHP_BINARY_PATH' => $this->bundler->phpBinaryPath(),
                 'NATIVEPHP_APP_NAME' => config('app.name'),
                 'NATIVEPHP_APP_ID' => config('nativephp.app_id'),
                 'NATIVEPHP_APP_VERSION' => config('nativephp.version'),

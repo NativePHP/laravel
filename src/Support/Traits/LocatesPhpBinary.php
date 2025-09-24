@@ -1,9 +1,11 @@
 <?php
 
-namespace Native\Electron\Traits;
+namespace Native\Support\Traits;
 
 trait LocatesPhpBinary
 {
+    abstract public function sourcePath(string $path = ''): string;
+
     /**
      * @return string The path to the binary package directory
      */
@@ -19,6 +21,6 @@ trait LocatesPhpBinary
      */
     public function phpBinaryPath(): string
     {
-        return $this->binaryPackageDirectory().'bin/';
+        return $this->sourcePath($this->binaryPackageDirectory().'bin/');
     }
 }

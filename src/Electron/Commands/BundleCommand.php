@@ -9,14 +9,10 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Number;
 use Illuminate\Support\Str;
-use Native\Electron\Traits\CleansEnvFile;
-use Native\Electron\Traits\CopiesToBuildDirectory;
 use Native\Electron\Traits\HandlesZephpyr;
-use Native\Electron\Traits\HasPreAndPostProcessing;
 use Native\Electron\Traits\InstallsAppIcon;
-use Native\Electron\Traits\LocatesPhpBinary;
 use Native\Electron\Traits\PatchesPackagesJson;
-use Native\Electron\Traits\PrunesVendorDirectory;
+use Native\Support\Bundler;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Finder\Finder;
 use ZipArchive;
@@ -29,14 +25,9 @@ use function Laravel\Prompts\intro;
 )]
 class BundleCommand extends Command
 {
-    use CleansEnvFile;
-    use CopiesToBuildDirectory;
     use HandlesZephpyr;
-    use HasPreAndPostProcessing;
     use InstallsAppIcon;
-    use LocatesPhpBinary;
     use PatchesPackagesJson;
-    use PrunesVendorDirectory;
 
     protected $signature = 'native:bundle {--fetch} {--clear} {--without-cleanup}';
 
@@ -45,6 +36,17 @@ class BundleCommand extends Command
     private string $zipPath;
 
     private string $zipName;
+
+    private Bundler $bundler;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->bundler = Bundler::make(
+            buildPath: base_path('build/app/')
+        );
+    }
 
     public function handle(): int
     {
@@ -94,11 +96,11 @@ class BundleCommand extends Command
         intro('Copying App to build directory...');
 
         // We update composer.json later,
-        $this->copyToBuildDirectory();
+        $this->bundler->copyToBuildDirectory();
 
         $this->newLine();
         intro('Cleaning .env file...');
-        $this->cleanEnvFile();
+        $this->bundler->cleanEnvFile();
 
         $this->newLine();
         intro('Copying app icons...');
@@ -106,9 +108,7 @@ class BundleCommand extends Command
 
         $this->newLine();
         intro('Pruning vendor directory');
-        $this->pruneVendorDirectory();
-
-        $this->cleanEnvFile();
+        $this->bundler->pruneVendorDirectory();
 
         // Check composer.json for symlinked or private packages
         if (! $this->checkComposerJson()) {
@@ -161,7 +161,7 @@ class BundleCommand extends Command
 
     private function checkComposerJson(): bool
     {
-        $composerJson = json_decode(file_get_contents($this->buildPath('composer.json')), true);
+        $composerJson = json_decode(file_get_contents($this->bundler->buildPath('composer.json')), true);
 
         // // Fail if there is symlinked packages
         // foreach ($composerJson['repositories'] ?? [] as $repository) {
@@ -194,10 +194,10 @@ class BundleCommand extends Command
 
             if (count($filteredRepo) !== count($composerJson['repositories'])) {
                 $composerJson['repositories'] = $filteredRepo;
-                file_put_contents($this->buildPath('composer.json'),
+                file_put_contents($this->bundler->buildPath('composer.json'),
                     json_encode($composerJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 
-                // Process::path($this->buildPath())
+                // Process::path($this->bundler->buildPath())
                 //     ->run('composer install --no-dev', function (string $type, string $output) {
                 //         echo $output;
                 //     });
@@ -228,7 +228,7 @@ class BundleCommand extends Command
         $finder = (new Finder)->files()
             ->followLinks()
             // ->ignoreVCSIgnored(true) // TODO: Make our own list of ignored files
-            ->in($this->buildPath())
+            ->in($this->bundler->buildPath())
             ->exclude([
                 // We add those a few lines below and they are ignored by most .gitignore anyway
                 'vendor',
@@ -246,39 +246,39 @@ class BundleCommand extends Command
         $this->finderToZip($finder, $zip);
 
         // Why do I have to force this? please someone explain.
-        if (file_exists($this->buildPath('public/build'))) {
+        if (file_exists($this->bundler->buildPath('public/build'))) {
             $this->finderToZip(
                 (new Finder)->files()
                     ->followLinks()
-                    ->in($this->buildPath('public/build')), $zip, 'public/build');
+                    ->in($this->bundler->buildPath('public/build')), $zip, 'public/build');
         }
 
         // Add .env file manually because Finder ignores VCS and dot files
-        $zip->addFile($this->buildPath('.env'), '.env');
+        $zip->addFile($this->bundler->buildPath('.env'), '.env');
 
         // Add auth.json file to support private packages
         // WARNING: Only for testing purposes, don't uncomment this
-        // $zip->addFile($this->buildPath('auth.json'), 'auth.json');
+        // $zip->addFile($this->bundler->buildPath('auth.json'), 'auth.json');
 
         // Custom binaries
-        $binaryPath = Str::replaceStart($this->buildPath('vendor'), '', config('nativephp.binary_path'));
+        $binaryPath = Str::replaceStart($this->bundler->buildPath('vendor'), '', config('nativephp.binary_path'));
 
         // Add composer dependencies without unnecessary files
         $vendor = (new Finder)->files()
             ->exclude(array_filter([
                 'nativephp/php-bin',
-                'nativephp/electron/resources/electron',
+                'nativephp/desktop/resources/electron',
                 '*/*/vendor', // Exclude sub-vendor directories
                 $binaryPath,
             ]))
-            ->in($this->buildPath('vendor'));
+            ->in($this->bundler->buildPath('vendor'));
 
         $this->finderToZip($vendor, $zip, 'vendor');
 
         // Add javascript dependencies
-        if (file_exists($this->buildPath('node_modules'))) {
+        if (file_exists($this->bundler->buildPath('node_modules'))) {
             $nodeModules = (new Finder)->files()
-                ->in($this->buildPath('node_modules'));
+                ->in($this->bundler->buildPath('node_modules'));
 
             $this->finderToZip($nodeModules, $zip, 'node_modules');
         }
@@ -395,18 +395,8 @@ class BundleCommand extends Command
         }
     }
 
-    protected function buildPath(string $path = ''): string
-    {
-        return base_path('build/app/'.$path);
-    }
-
     protected function zipPath(string $path = ''): string
     {
         return base_path('build/zip/'.$path);
-    }
-
-    protected function sourcePath(string $path = ''): string
-    {
-        return base_path($path);
     }
 }

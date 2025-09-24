@@ -1,7 +1,7 @@
 <?php
 
 use Native\Desktop\NativeServiceProvider;
-use Native\Electron\Traits\CleansEnvFile;
+use Native\Support\Traits\CleansEnvFile;
 use Symfony\Component\Filesystem\Filesystem;
 
 /*
@@ -33,7 +33,7 @@ $command = new class($buildPath)
         public $buildPath
     ) {}
 
-    protected function buildPath(string $path = ''): string
+    public function buildPath(string $path = ''): string
     {
         return app()->joinPaths($this->buildPath, $path);
     }

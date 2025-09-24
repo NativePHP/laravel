@@ -1,30 +1,19 @@
 <?php
 
 use Native\Electron\ElectronServiceProvider;
-use Native\Electron\Traits\CopiesCertificateAuthority;
+use Native\Support\Bundler;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
 
-it('can copy the default CA certificate from php-bin', function ($mock) {
+it('can copy the default CA certificate from php-bin', function () {
 
     $certificatePath = Path::join(ElectronServiceProvider::ELECTRON_PATH, 'resources', 'cacert.pem');
     (new Filesystem)->remove($certificatePath);
 
     expect($certificatePath)->not->toBeFile();
 
-    $mock->run();
+    resolve(Bundler::class)->copyCertificateAuthority(path: ElectronServiceProvider::ELECTRON_PATH.'/resources');
 
     expect($certificatePath)->toBeFile();
 
-})->with([
-    // Empty class with the CopiesCertificateAuthority trait
-    new class
-    {
-        use CopiesCertificateAuthority;
-
-        public function run()
-        {
-            $this->copyCertificateAuthorityCertificate();
-        }
-    },
-]);
+});

@@ -1,6 +1,6 @@
 <?php
 
-namespace Native\Electron\Traits;
+namespace Native\Support\Traits;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Process;

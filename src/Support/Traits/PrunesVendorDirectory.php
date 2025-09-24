@@ -1,19 +1,15 @@
 <?php
 
-/**
- * TODO: When more drivers/adapters are added, this should be relocated
- */
-
-namespace Native\Electron\Traits;
+namespace Native\Support\Traits;
 
 use Illuminate\Support\Facades\Process;
 use Symfony\Component\Filesystem\Filesystem;
 
 trait PrunesVendorDirectory
 {
-    abstract protected function buildPath(string $path = ''): string;
+    abstract public function buildPath(string $path = ''): string;
 
-    protected function pruneVendorDirectory()
+    public function pruneVendorDirectory()
     {
         Process::path($this->buildPath())
             ->timeout(300)

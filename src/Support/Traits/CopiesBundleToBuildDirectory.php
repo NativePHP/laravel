@@ -1,6 +1,6 @@
 <?php
 
-namespace Native\Electron\Traits;
+namespace Native\Support\Traits;
 
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -12,7 +12,7 @@ trait CopiesBundleToBuildDirectory
 
     protected static string $bundlePath = 'build/__nativephp_app_bundle';
 
-    protected function hasBundled(): bool
+    public function hasBundled(): bool
     {
         return (new Filesystem)->exists($this->sourcePath(self::$bundlePath));
     }
@@ -36,7 +36,7 @@ trait CopiesBundleToBuildDirectory
         foreach ($filesToCopy as $file) {
             $filesystem->copy($this->sourcePath($file), $this->buildPath($file), true);
         }
-        // $this->keepRequiredDirectories();
+        $this->keepRequiredDirectories();
 
         return true;
     }

@@ -3,11 +3,9 @@
 /**
  * This trait is responsible for copying over the app to the build directory.
  * It skips any ignored paths/globs during the copy step
- *
- * TODO: When more drivers/adapters are added, this should be relocated
  */
 
-namespace Native\Electron\Traits;
+namespace Native\Support\Traits;
 
 use RecursiveCallbackFilterIterator;
 use RecursiveDirectoryIterator;
@@ -19,9 +17,9 @@ use function Laravel\Prompts\warning;
 
 trait CopiesToBuildDirectory
 {
-    abstract protected function buildPath(string $path = ''): string;
+    abstract public function buildPath(string $path = ''): string;
 
-    abstract protected function sourcePath(string $path = ''): string;
+    abstract public function sourcePath(string $path = ''): string;
 
     public function copyToBuildDirectory(): bool
     {

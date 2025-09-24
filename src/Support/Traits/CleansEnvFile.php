@@ -3,15 +3,13 @@
 /**
  * This trait is responsible for cleaning any sensitive information from the .env file
  * and also injects some defaults that need to be set as soon as possible.
- *
- * TODO: When more drivers/adapters are added, this should be relocated
  */
 
-namespace Native\Electron\Traits;
+namespace Native\Support\Traits;
 
 trait CleansEnvFile
 {
-    abstract protected function buildPath(string $path = ''): string;
+    abstract public function buildPath(string $path = ''): string;
 
     public array $overrideKeys = [
         'LOG_CHANNEL',

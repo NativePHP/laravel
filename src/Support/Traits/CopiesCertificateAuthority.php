@@ -1,22 +1,20 @@
 <?php
 
-namespace Native\Electron\Traits;
+namespace Native\Support\Traits;
 
 use Composer\InstalledVersions;
-use Native\Electron\ElectronServiceProvider;
 use Symfony\Component\Filesystem\Path;
 
 use function Laravel\Prompts\error;
-use function Laravel\Prompts\intro;
 use function Laravel\Prompts\warning;
 
 trait CopiesCertificateAuthority
 {
-    protected function copyCertificateAuthorityCertificate(): void
+    abstract public function buildPath(string $path = ''): string;
+
+    public function copyCertificateAuthority(string $path): void
     {
         try {
-            intro('Copying latest CA Certificate...');
-
             $vendorDirectory = realpath(InstalledVersions::getRootPackage()['install_path'].'/vendor');
             $phpBinaryDirectory = $vendorDirectory.'/nativephp/php-bin/';
 
@@ -31,7 +29,7 @@ trait CopiesCertificateAuthority
 
             $copied = copy(
                 $certFilePath,
-                Path::join(ElectronServiceProvider::ELECTRON_PATH, 'resources', $certificateFileName)
+                "{$path}/{$certificateFileName}"
             );
 
             if (! $copied) {

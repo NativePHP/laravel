@@ -4,11 +4,11 @@ namespace Native\Electron\Commands;
 
 use Illuminate\Console\Command;
 use Native\Electron\ElectronServiceProvider;
-use Native\Electron\Traits\CopiesCertificateAuthority;
 use Native\Electron\Traits\Developer;
 use Native\Electron\Traits\Installer;
 use Native\Electron\Traits\InstallsAppIcon;
 use Native\Electron\Traits\PatchesPackagesJson;
+use Native\Support\Bundler;
 use Symfony\Component\Console\Attribute\AsCommand;
 
 use function Laravel\Prompts\intro;
@@ -20,13 +20,18 @@ use function Laravel\Prompts\note;
 )]
 class DevelopCommand extends Command
 {
-    use CopiesCertificateAuthority;
     use Developer;
     use Installer;
     use InstallsAppIcon;
     use PatchesPackagesJson;
 
     protected $signature = 'native:serve {--no-queue} {--D|no-dependencies} {--installer=npm}';
+
+    public function __construct(
+        protected Bundler $bundler
+    ) {
+        parent::__construct();
+    }
 
     public function handle(): void
     {
@@ -52,7 +57,7 @@ class DevelopCommand extends Command
 
         $this->installIcon();
 
-        $this->copyCertificateAuthorityCertificate();
+        $this->bundler->copyCertificateAuthority(path: ElectronServiceProvider::ELECTRON_PATH.'/resources');
 
         $this->runDeveloper(
             installer: $this->option('installer'),

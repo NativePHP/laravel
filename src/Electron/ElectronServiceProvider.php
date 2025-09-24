@@ -10,6 +10,7 @@ use Native\Electron\Commands\InstallCommand;
 use Native\Electron\Commands\PublishCommand;
 use Native\Electron\Commands\ResetCommand;
 use Native\Electron\Updater\UpdaterManager;
+use Native\Support\Bundler;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -35,6 +36,12 @@ class ElectronServiceProvider extends PackageServiceProvider
     {
         $this->app->bind('nativephp.updater', function (Application $app) {
             return new UpdaterManager($app);
+        });
+
+        $this->app->bind(Bundler::class, function () {
+            return Bundler::make(
+                buildPath: self::ELECTRON_PATH.'/resources/app'
+            );
         });
     }
 
