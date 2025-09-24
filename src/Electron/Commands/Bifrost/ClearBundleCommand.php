@@ -20,7 +20,7 @@ class ClearBundleCommand extends Command
         intro('Clearing downloaded bundle...');
 
         $bundlePath = base_path('build/__nativephp_app_bundle');
-        $signaturePath = $bundlePath . '.asc';
+        $signaturePath = $bundlePath.'.asc';
 
         $bundleExists = file_exists($bundlePath);
         $signatureExists = file_exists($signaturePath);

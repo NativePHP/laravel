@@ -67,7 +67,7 @@ class DownloadBundleCommand extends Command
             // Download GPG signature if available
             $signaturePath = null;
             if (isset($buildData['data']['signature_url'])) {
-                $signaturePath = $bundlePath . '.asc';
+                $signaturePath = $bundlePath.'.asc';
                 if (! $this->downloadSignature($buildData['data']['signature_url'], $signaturePath)) {
                     $this->warn('Failed to download GPG signature file.');
                 }
