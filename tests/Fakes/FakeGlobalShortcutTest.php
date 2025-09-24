@@ -1,8 +1,8 @@
 <?php
 
-use Native\Laravel\Contracts\GlobalShortcut as GlobalShortcutContract;
-use Native\Laravel\Facades\GlobalShortcut;
-use Native\Laravel\Fakes\GlobalShortcutFake;
+use Native\Desktop\Contracts\GlobalShortcut as GlobalShortcutContract;
+use Native\Desktop\Facades\GlobalShortcut;
+use Native\Desktop\Fakes\GlobalShortcutFake;
 use PHPUnit\Framework\AssertionFailedError;
 
 use function Pest\Laravel\swap;

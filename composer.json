@@ -57,13 +57,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Native\\Laravel\\": "src/Laravel",
+            "Native\\Desktop\\": "src/Desktop",
             "Native\\Electron\\": "src/Electron"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Native\\Laravel\\Tests\\": "tests/"
+            "Native\\Desktop\\Tests\\": "tests/"
         }
     },
     "scripts": {
@@ -88,26 +88,26 @@
     "extra": {
         "laravel": {
             "providers": [
-              "Native\\Laravel\\NativeServiceProvider",
+              "Native\\Desktop\\NativeServiceProvider",
               "Native\\Electron\\ElectronServiceProvider"
             ],
             "aliases": {
-                "ChildProcess": "Native\\Laravel\\Facades\\ChildProcess",
-                "Clipboard": "Native\\Laravel\\Facades\\Clipboard",
-                "ContextMenu": "Native\\Laravel\\Facades\\ContextMenu",
-                "Dock": "Native\\Laravel\\Facades\\Dock",
-                "GlobalShortcut": "Native\\Laravel\\Facades\\GlobalShortcut",
-                "Menu": "Native\\Laravel\\Facades\\Menu",
-                "MenuBar": "Native\\Laravel\\Facades\\MenuBar",
-                "Notification": "Native\\Laravel\\Facades\\Notification",
-                "PowerMonitor": "Native\\Laravel\\Facades\\PowerMonitor",
-                "Process": "Native\\Laravel\\Facades\\Process",
-                "QueueWorker": "Native\\Laravel\\Facades\\QueueWorker",
-                "Screen": "Native\\Laravel\\Facades\\Screen",
-                "Settings": "Native\\Laravel\\Facades\\Settings",
-                "Shell": "Native\\Laravel\\Facades\\Shell",
-                "System": "Native\\Laravel\\Facades\\System",
-                "Window": "Native\\Laravel\\Facades\\Window",
+                "ChildProcess": "Native\\Desktop\\Facades\\ChildProcess",
+                "Clipboard": "Native\\Desktop\\Facades\\Clipboard",
+                "ContextMenu": "Native\\Desktop\\Facades\\ContextMenu",
+                "Dock": "Native\\Desktop\\Facades\\Dock",
+                "GlobalShortcut": "Native\\Desktop\\Facades\\GlobalShortcut",
+                "Menu": "Native\\Desktop\\Facades\\Menu",
+                "MenuBar": "Native\\Desktop\\Facades\\MenuBar",
+                "Notification": "Native\\Desktop\\Facades\\Notification",
+                "PowerMonitor": "Native\\Desktop\\Facades\\PowerMonitor",
+                "Process": "Native\\Desktop\\Facades\\Process",
+                "QueueWorker": "Native\\Desktop\\Facades\\QueueWorker",
+                "Screen": "Native\\Desktop\\Facades\\Screen",
+                "Settings": "Native\\Desktop\\Facades\\Settings",
+                "Shell": "Native\\Desktop\\Facades\\Shell",
+                "System": "Native\\Desktop\\Facades\\System",
+                "Window": "Native\\Desktop\\Facades\\Window",
                 "Updater": "Native\\Electron\\Facades\\Updater"
             }
         }

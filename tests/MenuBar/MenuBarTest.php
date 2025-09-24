@@ -1,7 +1,7 @@
 <?php
 
-use Native\Laravel\Facades\Menu;
-use Native\Laravel\Facades\MenuBar;
+use Native\Desktop\Facades\Menu;
+use Native\Desktop\Facades\MenuBar;
 
 it('menubar with create', function () {
     config()->set('nativephp-internal.api_url', 'https://jsonplaceholder.typicode.com/todos/1');

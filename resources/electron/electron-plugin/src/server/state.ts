@@ -9,7 +9,7 @@ settingsStore.onDidAnyChange((newValue, oldValue) => {
 
   changedKeys.forEach((key) => {
     notifyLaravel("events", {
-      event: "Native\\Laravel\\Events\\Settings\\SettingChanged",
+      event: "Native\\Desktop\\Events\\Settings\\SettingChanged",
       payload: {
         key,
           value: newValue[key] || null,

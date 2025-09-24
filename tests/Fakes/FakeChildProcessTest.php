@@ -1,8 +1,8 @@
 <?php
 
-use Native\Laravel\Contracts\ChildProcess as ChildProcessContract;
-use Native\Laravel\Facades\ChildProcess;
-use Native\Laravel\Fakes\ChildProcessFake;
+use Native\Desktop\Contracts\ChildProcess as ChildProcessContract;
+use Native\Desktop\Facades\ChildProcess;
+use Native\Desktop\Fakes\ChildProcessFake;
 use PHPUnit\Framework\AssertionFailedError;
 
 use function Pest\Laravel\swap;

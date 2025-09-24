@@ -1,7 +1,7 @@
 <?php
 
+use Native\Desktop\NativeServiceProvider;
 use Native\Electron\Traits\CleansEnvFile;
-use Native\Laravel\NativeServiceProvider;
 use Symfony\Component\Filesystem\Filesystem;
 
 /*

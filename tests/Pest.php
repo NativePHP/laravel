@@ -1,6 +1,6 @@
 <?php
 
-use Native\Laravel\Tests\TestCase;
+use Native\Desktop\Tests\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
 uses(TestCase::class)->in(__DIR__);

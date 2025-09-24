@@ -2,10 +2,10 @@
 
 use App\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
-use Native\Laravel\Http\Controllers\CreateSecurityCookieController;
-use Native\Laravel\Http\Controllers\DispatchEventFromAppController;
-use Native\Laravel\Http\Controllers\NativeAppBootedController;
-use Native\Laravel\Http\Middleware\PreventRegularBrowserAccess;
+use Native\Desktop\Http\Controllers\CreateSecurityCookieController;
+use Native\Desktop\Http\Controllers\DispatchEventFromAppController;
+use Native\Desktop\Http\Controllers\NativeAppBootedController;
+use Native\Desktop\Http\Middleware\PreventRegularBrowserAccess;
 
 Route::group(['middleware' => PreventRegularBrowserAccess::class], function () {
     Route::post('_native/api/booted', NativeAppBootedController::class);

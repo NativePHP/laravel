@@ -2,9 +2,9 @@
 
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
-use Native\Laravel\ChildProcess as ChildProcessImplement;
-use Native\Laravel\Client\Client;
-use Native\Laravel\Facades\ChildProcess;
+use Native\Desktop\ChildProcess as ChildProcessImplement;
+use Native\Desktop\Client\Client;
+use Native\Desktop\Facades\ChildProcess;
 
 beforeEach(function () {
     Http::fake();

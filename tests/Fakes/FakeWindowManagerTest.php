@@ -1,11 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Http;
-use Native\Laravel\Contracts\WindowManager as WindowManagerContract;
-use Native\Laravel\Facades\Window;
-use Native\Laravel\Fakes\WindowManagerFake;
-use Native\Laravel\Windows\PendingOpenWindow;
-use Native\Laravel\Windows\Window as WindowClass;
+use Native\Desktop\Contracts\WindowManager as WindowManagerContract;
+use Native\Desktop\Facades\Window;
+use Native\Desktop\Fakes\WindowManagerFake;
+use Native\Desktop\Windows\PendingOpenWindow;
+use Native\Desktop\Windows\Window as WindowClass;
 use PHPUnit\Framework\AssertionFailedError;
 use Webmozart\Assert\InvalidArgumentException;
 

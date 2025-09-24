@@ -1,8 +1,8 @@
 <?php
 
-use Native\Laravel\Contracts\PowerMonitor as PowerMonitorContract;
-use Native\Laravel\Facades\PowerMonitor;
-use Native\Laravel\Fakes\PowerMonitorFake;
+use Native\Desktop\Contracts\PowerMonitor as PowerMonitorContract;
+use Native\Desktop\Facades\PowerMonitor;
+use Native\Desktop\Fakes\PowerMonitorFake;
 use PHPUnit\Framework\AssertionFailedError;
 
 use function Pest\Laravel\swap;

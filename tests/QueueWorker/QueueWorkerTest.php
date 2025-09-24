@@ -1,8 +1,8 @@
 <?php
 
-use Native\Laravel\DTOs\QueueConfig;
-use Native\Laravel\Facades\ChildProcess;
-use Native\Laravel\Facades\QueueWorker;
+use Native\Desktop\DTOs\QueueConfig;
+use Native\Desktop\Facades\ChildProcess;
+use Native\Desktop\Facades\QueueWorker;
 
 it('hits the child process with relevant queue config to spin up a new queue worker', function () {
     ChildProcess::fake();

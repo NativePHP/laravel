@@ -22,7 +22,7 @@ router.post('/', (req, res) => {
         reference,
     } = req.body;
 
-    const eventName = customEvent ?? '\\Native\\Laravel\\Events\\Notifications\\NotificationClicked';
+    const eventName = customEvent ?? '\\Native\\Desktop\\Events\\Notifications\\NotificationClicked';
 
     const notificationReference = reference ?? (Date.now() + '.' + Math.random().toString(36).slice(2, 9));
 
@@ -44,7 +44,7 @@ router.post('/', (req, res) => {
 
     notification.on("click", (event) => {
         notifyLaravel('events', {
-            event: eventName || '\\Native\\Laravel\\Events\\Notifications\\NotificationClicked',
+            event: eventName || '\\Native\\Desktop\\Events\\Notifications\\NotificationClicked',
             payload: {
                 reference: notificationReference,
                 event: JSON.stringify(event),
@@ -54,7 +54,7 @@ router.post('/', (req, res) => {
 
     notification.on("action", (event, index) => {
         notifyLaravel('events', {
-            event: '\\Native\\Laravel\\Events\\Notifications\\NotificationActionClicked',
+            event: '\\Native\\Desktop\\Events\\Notifications\\NotificationActionClicked',
             payload: {
                 reference: notificationReference,
                 index,
@@ -65,7 +65,7 @@ router.post('/', (req, res) => {
 
     notification.on("reply", (event, reply) => {
         notifyLaravel('events', {
-            event: '\\Native\\Laravel\\Events\\Notifications\\NotificationReply',
+            event: '\\Native\\Desktop\\Events\\Notifications\\NotificationReply',
             payload: {
                 reference: notificationReference,
                 reply,
@@ -76,7 +76,7 @@ router.post('/', (req, res) => {
 
     notification.on("close", (event) => {
         notifyLaravel('events', {
-            event: '\\Native\\Laravel\\Events\\Notifications\\NotificationClosed',
+            event: '\\Native\\Desktop\\Events\\Notifications\\NotificationClosed',
             payload: {
                 reference: notificationReference,
                 event: JSON.stringify(event),

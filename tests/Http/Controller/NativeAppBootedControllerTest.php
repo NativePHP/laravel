@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Event;
-use Native\Laravel\Events\App\ApplicationBooted;
+use Native\Desktop\Events\App\ApplicationBooted;
 
 class TestProvider
 {

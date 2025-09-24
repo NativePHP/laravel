@@ -47,14 +47,14 @@ class NativePHP {
   private addEventListeners(app: Electron.CrossProcessExports.App) {
     app.on("open-url", (event, url) => {
       notifyLaravel("events", {
-        event: "\\Native\\Laravel\\Events\\App\\OpenedFromURL",
+        event: "\\Native\\Desktop\\Events\\App\\OpenedFromURL",
         payload: [url],
       });
     });
 
     app.on("open-file", (event, path) => {
       notifyLaravel("events", {
-        event: "\\Native\\Laravel\\Events\\App\\OpenFile",
+        event: "\\Native\\Desktop\\Events\\App\\OpenFile",
         payload: [path],
       });
     });
@@ -200,7 +200,7 @@ class NativePHP {
 
                             // the commandLine is array of strings in which last element is deep link url
                             notifyLaravel("events", {
-                                event: "\\Native\\Laravel\\Events\\App\\OpenedFromURL",
+                                event: "\\Native\\Desktop\\Events\\App\\OpenedFromURL",
                                 payload: {
                                     url: commandLine[commandLine.length - 1],
                                 },
