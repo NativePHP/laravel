@@ -31,6 +31,11 @@
             "role": "Developer"
         }
     ],
+    "conflict": {
+        "nativephp/mobile": "*",
+        "nativephp/laravel": "*",
+        "nativephp/electron": "*"
+    },
     "require": {
         "php": "^8.3",
         "illuminate/contracts": "^10.0|^11.0|^12.0",
