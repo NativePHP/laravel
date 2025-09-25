@@ -64,7 +64,7 @@ return [
         'GITHUB_*',
         'DO_SPACES_*',
         '*_SECRET',
-        'ZEPHPYR_*',
+        'BIFROST_*',
         'NATIVEPHP_UPDATER_PATH',
         'NATIVEPHP_APPLE_ID',
         'NATIVEPHP_APPLE_ID_PASS',

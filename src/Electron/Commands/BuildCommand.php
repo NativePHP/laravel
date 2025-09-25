@@ -7,12 +7,12 @@ use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Str;
 use Native\Electron\ElectronServiceProvider;
 use Native\Electron\Facades\Updater;
-use Native\Electron\Traits\CleansEnvFile;
 use Native\Electron\Traits\CopiesBundleToBuildDirectory;
 use Native\Electron\Traits\CopiesCertificateAuthority;
 use Native\Electron\Traits\HasPreAndPostProcessing;
 use Native\Electron\Traits\InstallsAppIcon;
 use Native\Electron\Traits\LocatesPhpBinary;
+use Native\Electron\Traits\ManagesEnvFile;
 use Native\Electron\Traits\OsAndArch;
 use Native\Electron\Traits\PatchesPackagesJson;
 use Native\Electron\Traits\PrunesVendorDirectory;
@@ -27,12 +27,12 @@ use function Laravel\Prompts\intro;
 )]
 class BuildCommand extends Command
 {
-    use CleansEnvFile;
     use CopiesBundleToBuildDirectory;
     use CopiesCertificateAuthority;
     use HasPreAndPostProcessing;
     use InstallsAppIcon;
     use LocatesPhpBinary;
+    use ManagesEnvFile;
     use OsAndArch;
     use PatchesPackagesJson;
     use PrunesVendorDirectory;
