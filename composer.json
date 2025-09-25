@@ -63,7 +63,6 @@
     "autoload": {
         "psr-4": {
             "Native\\Desktop\\": "src/Desktop",
-            "Native\\Electron\\": "src/Electron",
             "Native\\Support\\": "src/Support"
         }
     },
@@ -94,8 +93,7 @@
     "extra": {
         "laravel": {
             "providers": [
-              "Native\\Desktop\\NativeServiceProvider",
-              "Native\\Electron\\ElectronServiceProvider"
+              "Native\\Desktop\\NativeServiceProvider"
             ],
             "aliases": {
                 "ChildProcess": "Native\\Desktop\\Facades\\ChildProcess",

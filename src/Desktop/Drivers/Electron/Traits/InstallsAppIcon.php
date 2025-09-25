@@ -1,8 +1,8 @@
 <?php
 
-namespace Native\Electron\Traits;
+namespace Native\Desktop\Drivers\Electron\Traits;
 
-use Native\Electron\ElectronServiceProvider;
+use Native\Desktop\Drivers\Electron\ElectronServiceProvider;
 
 trait InstallsAppIcon
 {

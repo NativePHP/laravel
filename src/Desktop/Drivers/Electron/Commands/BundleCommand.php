@@ -1,6 +1,6 @@
 <?php
 
-namespace Native\Electron\Commands;
+namespace Native\Desktop\Drivers\Electron\Commands;
 
 use Carbon\CarbonInterface;
 use Illuminate\Console\Command;
@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Number;
 use Illuminate\Support\Str;
-use Native\Electron\Traits\HandlesZephpyr;
-use Native\Electron\Traits\InstallsAppIcon;
-use Native\Electron\Traits\PatchesPackagesJson;
+use Native\Desktop\Drivers\Electron\Traits\HandlesZephpyr;
+use Native\Desktop\Drivers\Electron\Traits\InstallsAppIcon;
+use Native\Desktop\Drivers\Electron\Traits\PatchesPackagesJson;
 use Native\Support\Bundler;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Finder\Finder;

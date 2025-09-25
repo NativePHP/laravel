@@ -1,9 +1,9 @@
 <?php
 
-namespace Native\Electron\Traits;
+namespace Native\Desktop\Drivers\Electron\Traits;
 
 use Illuminate\Support\Facades\Process;
-use Native\Electron\ElectronServiceProvider;
+use Native\Desktop\Drivers\Electron\ElectronServiceProvider;
 use Native\Support\Bundler;
 
 use function Laravel\Prompts\note;

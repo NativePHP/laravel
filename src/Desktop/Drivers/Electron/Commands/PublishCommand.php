@@ -1,10 +1,10 @@
 <?php
 
-namespace Native\Electron\Commands;
+namespace Native\Desktop\Drivers\Electron\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
-use Native\Electron\Traits\OsAndArch;
+use Native\Desktop\Drivers\Electron\Traits\OsAndArch;
 use Symfony\Component\Console\Attribute\AsCommand;
 
 #[AsCommand(

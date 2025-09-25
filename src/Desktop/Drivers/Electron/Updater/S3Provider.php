@@ -1,8 +1,8 @@
 <?php
 
-namespace Native\Electron\Updater;
+namespace Native\Desktop\Drivers\Electron\Updater;
 
-use Native\Electron\Updater\Contracts\Updater;
+use Native\Desktop\Drivers\Electron\Updater\Contracts\Updater;
 
 class S3Provider implements Updater
 {

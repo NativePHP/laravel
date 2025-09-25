@@ -1,6 +1,6 @@
 <?php
 
-namespace Native\Electron\Traits;
+namespace Native\Desktop\Drivers\Electron\Traits;
 
 use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\error;

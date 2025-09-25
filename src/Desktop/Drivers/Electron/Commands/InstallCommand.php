@@ -1,9 +1,9 @@
 <?php
 
-namespace Native\Electron\Commands;
+namespace Native\Desktop\Drivers\Electron\Commands;
 
 use Illuminate\Console\Command;
-use Native\Electron\Traits\Installer;
+use Native\Desktop\Drivers\Electron\Traits\Installer;
 use Native\Support\Composer;
 use Symfony\Component\Console\Attribute\AsCommand;
 

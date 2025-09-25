@@ -1,10 +1,10 @@
 <?php
 
-namespace Native\Electron\Commands;
+namespace Native\Desktop\Drivers\Electron\Commands;
 
 use Illuminate\Console\Command;
-use Native\Electron\ElectronServiceProvider;
-use Native\Electron\Traits\PatchesPackagesJson;
+use Native\Desktop\Drivers\Electron\ElectronServiceProvider;
+use Native\Desktop\Drivers\Electron\Traits\PatchesPackagesJson;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Filesystem\Filesystem;
 

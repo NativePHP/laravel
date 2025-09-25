@@ -21,6 +21,7 @@ use Native\Desktop\Contracts\GlobalShortcut as GlobalShortcutContract;
 use Native\Desktop\Contracts\PowerMonitor as PowerMonitorContract;
 use Native\Desktop\Contracts\QueueWorker as QueueWorkerContract;
 use Native\Desktop\Contracts\WindowManager as WindowManagerContract;
+use Native\Desktop\Drivers\Electron\ElectronServiceProvider;
 use Native\Desktop\DTOs\QueueConfig;
 use Native\Desktop\Events\EventWatcher;
 use Native\Desktop\Exceptions\Handler;
@@ -53,6 +54,8 @@ class NativeServiceProvider extends PackageServiceProvider
 
     public function packageRegistered()
     {
+        $this->app->register(ElectronServiceProvider::class);
+
         $this->mergeConfigFrom($this->package->basePath('../config/nativephp-internal.php'), 'nativephp-internal');
 
         $this->app->singleton(FreshCommand::class, function ($app) {

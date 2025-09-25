@@ -1,6 +1,6 @@
 <?php
 
-namespace Native\Electron\Traits;
+namespace Native\Desktop\Drivers\Electron\Traits;
 
 use Illuminate\Support\Facades\Http;
 

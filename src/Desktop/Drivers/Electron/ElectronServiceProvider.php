@@ -1,22 +1,22 @@
 <?php
 
-namespace Native\Electron;
+namespace Native\Desktop\Drivers\Electron;
 
 use Illuminate\Foundation\Application;
-use Native\Electron\Commands\BuildCommand;
-use Native\Electron\Commands\BundleCommand;
-use Native\Electron\Commands\DevelopCommand;
-use Native\Electron\Commands\InstallCommand;
-use Native\Electron\Commands\PublishCommand;
-use Native\Electron\Commands\ResetCommand;
-use Native\Electron\Updater\UpdaterManager;
+use Native\Desktop\Drivers\Electron\Commands\BuildCommand;
+use Native\Desktop\Drivers\Electron\Commands\BundleCommand;
+use Native\Desktop\Drivers\Electron\Commands\DevelopCommand;
+use Native\Desktop\Drivers\Electron\Commands\InstallCommand;
+use Native\Desktop\Drivers\Electron\Commands\PublishCommand;
+use Native\Desktop\Drivers\Electron\Commands\ResetCommand;
+use Native\Desktop\Drivers\Electron\Updater\UpdaterManager;
 use Native\Support\Bundler;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
 class ElectronServiceProvider extends PackageServiceProvider
 {
-    const ELECTRON_PATH = __DIR__.'/../../resources/electron';
+    const ELECTRON_PATH = __DIR__.'/../../../../resources/electron';
 
     public function configurePackage(Package $package): void
     {

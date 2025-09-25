@@ -1,13 +1,13 @@
 <?php
 
-namespace Native\Electron\Commands;
+namespace Native\Desktop\Drivers\Electron\Commands;
 
 use Illuminate\Console\Command;
-use Native\Electron\ElectronServiceProvider;
-use Native\Electron\Traits\Developer;
-use Native\Electron\Traits\Installer;
-use Native\Electron\Traits\InstallsAppIcon;
-use Native\Electron\Traits\PatchesPackagesJson;
+use Native\Desktop\Drivers\Electron\ElectronServiceProvider;
+use Native\Desktop\Drivers\Electron\Traits\Developer;
+use Native\Desktop\Drivers\Electron\Traits\Installer;
+use Native\Desktop\Drivers\Electron\Traits\InstallsAppIcon;
+use Native\Desktop\Drivers\Electron\Traits\PatchesPackagesJson;
 use Native\Support\Bundler;
 use Symfony\Component\Console\Attribute\AsCommand;
 

@@ -2,8 +2,8 @@
 
 namespace Native\Desktop\Tests;
 
+use Native\Desktop\Drivers\Electron\ElectronServiceProvider;
 use Native\Desktop\NativeServiceProvider;
-use Native\Electron\ElectronServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra

@@ -1,6 +1,6 @@
 <?php
 
-namespace Native\Electron\Facades;
+namespace Native\Desktop\Drivers\Electron\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Native\Electron\Updater\Contracts;
+namespace Native\Desktop\Drivers\Electron\Updater\Contracts;
 
 interface Updater
 {

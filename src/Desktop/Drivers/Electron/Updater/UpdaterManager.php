@@ -1,6 +1,6 @@
 <?php
 
-namespace Native\Electron\Updater;
+namespace Native\Desktop\Drivers\Electron\Updater;
 
 use InvalidArgumentException;
 
@@ -35,7 +35,7 @@ class UpdaterManager
      * Get a updater provider instance by name, wrapped in a repository.
      *
      * @param  string|null  $name
-     * @return \Native\Electron\Updater\Contracts\Updater
+     * @return \Native\Desktop\Drivers\Electron\Updater\Contracts\Updater
      */
     public function provider($name = null)
     {
@@ -48,7 +48,7 @@ class UpdaterManager
      * Get a updater provider instance.
      *
      * @param  string|null  $driver
-     * @return \Native\Electron\Updater\Contracts\Updater
+     * @return \Native\Desktop\Drivers\Electron\Updater\Contracts\Updater
      */
     public function driver($driver = null)
     {
@@ -59,7 +59,7 @@ class UpdaterManager
      * Resolve the given store.
      *
      * @param  string  $name
-     * @return \Native\Electron\Updater\Contracts\Updater
+     * @return \Native\Desktop\Drivers\Electron\Updater\Contracts\Updater
      *
      * @throws \InvalidArgumentException
      */
@@ -132,7 +132,7 @@ class UpdaterManager
     /**
      * Create an instance of the spaces updater driver.
      *
-     * @return \Native\Electron\Updater\Contracts\Updater
+     * @return \Native\Desktop\Drivers\Electron\Updater\Contracts\Updater
      */
     protected function createSpacesDriver(array $config)
     {
@@ -142,7 +142,7 @@ class UpdaterManager
     /**
      * Create an instance of the spaces updater driver.
      *
-     * @return \Native\Electron\Updater\Contracts\Updater
+     * @return \Native\Desktop\Drivers\Electron\Updater\Contracts\Updater
      */
     protected function createS3Driver(array $config)
     {
@@ -152,7 +152,7 @@ class UpdaterManager
     /**
      * Create an instance of the GitHub updater driver.
      *
-     * @return \Native\Electron\Updater\Contracts\Updater
+     * @return \Native\Desktop\Drivers\Electron\Updater\Contracts\Updater
      */
     protected function createGitHubDriver(array $config)
     {

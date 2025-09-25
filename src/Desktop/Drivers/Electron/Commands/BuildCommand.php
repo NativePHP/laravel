@@ -1,15 +1,15 @@
 <?php
 
-namespace Native\Electron\Commands;
+namespace Native\Desktop\Drivers\Electron\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Str;
-use Native\Electron\ElectronServiceProvider;
-use Native\Electron\Facades\Updater;
-use Native\Electron\Traits\InstallsAppIcon;
-use Native\Electron\Traits\OsAndArch;
-use Native\Electron\Traits\PatchesPackagesJson;
+use Native\Desktop\Drivers\Electron\ElectronServiceProvider;
+use Native\Desktop\Drivers\Electron\Facades\Updater;
+use Native\Desktop\Drivers\Electron\Traits\InstallsAppIcon;
+use Native\Desktop\Drivers\Electron\Traits\OsAndArch;
+use Native\Desktop\Drivers\Electron\Traits\PatchesPackagesJson;
 use Native\Support\Bundler;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Process\Process as SymfonyProcess;
