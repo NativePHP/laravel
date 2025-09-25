@@ -21,9 +21,9 @@ trait CopiesBundleToBuildDirectory
     {
         $filesystem = new Filesystem;
 
-        $this->line('Copying secure app bundle to build directory...');
-        $this->line('From: '.realpath(dirname($this->sourcePath(self::$bundlePath))));
-        $this->line('To: '.realpath(dirname($this->buildPath(self::$bundlePath))));
+        echo 'Copying secure app bundle to build directory...'.PHP_EOL;
+        echo 'From: '.realpath(dirname($this->sourcePath(self::$bundlePath))).PHP_EOL;
+        echo 'To: '.realpath(dirname($this->buildPath(self::$bundlePath))).PHP_EOL;
 
         // Clean and create build directory
         $filesystem->remove($this->buildPath());

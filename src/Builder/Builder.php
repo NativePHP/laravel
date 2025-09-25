@@ -45,6 +45,6 @@ class Builder
 
     public function sourcePath(string $path = ''): string
     {
-        return base_path($path);
+        return Path::join($this->sourcePath, $path);
     }
 }

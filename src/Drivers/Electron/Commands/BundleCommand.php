@@ -90,7 +90,7 @@ class BundleCommand extends Command
             return static::SUCCESS;
         }
 
-        $this->preProcess();
+        $this->builder->preProcess();
 
         $this->setAppNameAndVersion();
         intro('Copying App to build directory...');
@@ -373,7 +373,7 @@ class BundleCommand extends Command
 
     protected function cleanUp(): void
     {
-        $this->postProcess();
+        $this->builder->postProcess();
 
         if ($this->option('without-cleanup')) {
             return;
