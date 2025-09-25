@@ -5,7 +5,7 @@
  * It skips any ignored paths/globs during the copy step
  */
 
-namespace Native\Support\Traits;
+namespace Native\Desktop\Builder\Traits;
 
 use RecursiveCallbackFilterIterator;
 use RecursiveDirectoryIterator;

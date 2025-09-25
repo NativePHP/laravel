@@ -3,8 +3,8 @@
 namespace Native\Desktop\Drivers\Electron\Traits;
 
 use Illuminate\Support\Facades\Process;
+use Native\Desktop\Builder\Builder;
 use Native\Desktop\Drivers\Electron\ElectronServiceProvider;
-use Native\Support\Builder;
 
 use function Laravel\Prompts\note;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Native\Support\Traits;
+namespace Native\Desktop\Builder\Traits;
 
 trait LocatesPhpBinary
 {

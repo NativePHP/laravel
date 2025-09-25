@@ -4,7 +4,7 @@ namespace Native\Desktop\Drivers\Electron\Commands;
 
 use Illuminate\Console\Command;
 use Native\Desktop\Drivers\Electron\Traits\Installer;
-use Native\Support\Composer;
+use Native\Desktop\Support\Composer;
 use Symfony\Component\Console\Attribute\AsCommand;
 
 use function Laravel\Prompts\confirm;

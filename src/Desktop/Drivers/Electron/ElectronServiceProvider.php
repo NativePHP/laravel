@@ -3,6 +3,7 @@
 namespace Native\Desktop\Drivers\Electron;
 
 use Illuminate\Foundation\Application;
+use Native\Desktop\Builder\Builder;
 use Native\Desktop\Drivers\Electron\Commands\BuildCommand;
 use Native\Desktop\Drivers\Electron\Commands\BundleCommand;
 use Native\Desktop\Drivers\Electron\Commands\DevelopCommand;
@@ -10,7 +11,6 @@ use Native\Desktop\Drivers\Electron\Commands\InstallCommand;
 use Native\Desktop\Drivers\Electron\Commands\PublishCommand;
 use Native\Desktop\Drivers\Electron\Commands\ResetCommand;
 use Native\Desktop\Drivers\Electron\Updater\UpdaterManager;
-use Native\Support\Builder;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 

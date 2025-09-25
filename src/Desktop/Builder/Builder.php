@@ -1,14 +1,14 @@
 <?php
 
-namespace Native\Support;
+namespace Native\Desktop\Builder;
 
-use Native\Support\Traits\CleansEnvFile;
-use Native\Support\Traits\CopiesBundleToBuildDirectory;
-use Native\Support\Traits\CopiesCertificateAuthority;
-use Native\Support\Traits\CopiesToBuildDirectory;
-use Native\Support\Traits\HasPreAndPostProcessing;
-use Native\Support\Traits\LocatesPhpBinary;
-use Native\Support\Traits\PrunesVendorDirectory;
+use Native\Desktop\Builder\Traits\CleansEnvFile;
+use Native\Desktop\Builder\Traits\CopiesBundleToBuildDirectory;
+use Native\Desktop\Builder\Traits\CopiesCertificateAuthority;
+use Native\Desktop\Builder\Traits\CopiesToBuildDirectory;
+use Native\Desktop\Builder\Traits\HasPreAndPostProcessing;
+use Native\Desktop\Builder\Traits\LocatesPhpBinary;
+use Native\Desktop\Builder\Traits\PrunesVendorDirectory;
 use Symfony\Component\Filesystem\Path;
 
 class Builder

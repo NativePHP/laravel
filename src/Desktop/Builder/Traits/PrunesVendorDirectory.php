@@ -1,6 +1,6 @@
 <?php
 
-namespace Native\Support\Traits;
+namespace Native\Desktop\Builder\Traits;
 
 use Illuminate\Support\Facades\Process;
 use Symfony\Component\Filesystem\Filesystem;

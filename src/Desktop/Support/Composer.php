@@ -1,6 +1,6 @@
 <?php
 
-namespace Native\Support;
+namespace Native\Desktop\Support;
 
 use RuntimeException;
 

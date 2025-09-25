@@ -1,6 +1,6 @@
 <?php
 
-namespace Native\Support\Traits;
+namespace Native\Desktop\Builder\Traits;
 
 use Composer\InstalledVersions;
 use Symfony\Component\Filesystem\Path;

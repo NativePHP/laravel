@@ -1,6 +1,6 @@
 <?php
 
-namespace Native\Support\Traits;
+namespace Native\Desktop\Builder\Traits;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Process;
