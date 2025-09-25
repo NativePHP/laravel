@@ -5,7 +5,7 @@
  * and also injects some defaults that need to be set as soon as possible.
  */
 
-namespace Native\Desktop\Builder\Traits;
+namespace Native\Desktop\Builder\Concerns;
 
 trait CleansEnvFile
 {

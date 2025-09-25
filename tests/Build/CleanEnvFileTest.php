@@ -1,6 +1,6 @@
 <?php
 
-use Native\Desktop\Builder\Traits\CleansEnvFile;
+use Native\Desktop\Builder\Concerns\CleansEnvFile;
 use Native\Desktop\NativeServiceProvider;
 use Symfony\Component\Filesystem\Filesystem;
 

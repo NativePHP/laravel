@@ -1,6 +1,6 @@
 <?php
 
-namespace Native\Desktop\Builder\Traits;
+namespace Native\Desktop\Builder\Concerns;
 
 use Symfony\Component\Filesystem\Filesystem;
 

@@ -2,13 +2,13 @@
 
 namespace Native\Desktop\Builder;
 
-use Native\Desktop\Builder\Traits\CleansEnvFile;
-use Native\Desktop\Builder\Traits\CopiesBundleToBuildDirectory;
-use Native\Desktop\Builder\Traits\CopiesCertificateAuthority;
-use Native\Desktop\Builder\Traits\CopiesToBuildDirectory;
-use Native\Desktop\Builder\Traits\HasPreAndPostProcessing;
-use Native\Desktop\Builder\Traits\LocatesPhpBinary;
-use Native\Desktop\Builder\Traits\PrunesVendorDirectory;
+use Native\Desktop\Builder\Concerns\CleansEnvFile;
+use Native\Desktop\Builder\Concerns\CopiesBundleToBuildDirectory;
+use Native\Desktop\Builder\Concerns\CopiesCertificateAuthority;
+use Native\Desktop\Builder\Concerns\CopiesToBuildDirectory;
+use Native\Desktop\Builder\Concerns\HasPreAndPostProcessing;
+use Native\Desktop\Builder\Concerns\LocatesPhpBinary;
+use Native\Desktop\Builder\Concerns\PrunesVendorDirectory;
 use Symfony\Component\Filesystem\Path;
 
 class Builder

@@ -1,6 +1,6 @@
 <?php
 
-use Native\Desktop\Builder\Traits\CopiesToBuildDirectory;
+use Native\Desktop\Builder\Concerns\CopiesToBuildDirectory;
 use Symfony\Component\Filesystem\Filesystem;
 
 /*
