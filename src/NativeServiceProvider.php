@@ -247,9 +247,4 @@ class NativeServiceProvider extends PackageServiceProvider
             $this->app->make(QueueWorkerContract::class)->up($queueConfig);
         }
     }
-
-    protected function getPackageBaseDir(): string
-    {
-        return dirname(parent::getPackageBaseDir());
-    }
 }

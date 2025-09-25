@@ -16,7 +16,7 @@ use Spatie\LaravelPackageTools\PackageServiceProvider;
 
 class ElectronServiceProvider extends PackageServiceProvider
 {
-    const ELECTRON_PATH = __DIR__.'/../../../../resources/electron';
+    const ELECTRON_PATH = __DIR__.'/../../../resources/electron';
 
     public function configurePackage(Package $package): void
     {
@@ -43,10 +43,5 @@ class ElectronServiceProvider extends PackageServiceProvider
                 buildPath: self::ELECTRON_PATH.'/resources/app'
             );
         });
-    }
-
-    protected function getPackageBaseDir(): string
-    {
-        return dirname(parent::getPackageBaseDir());
     }
 }

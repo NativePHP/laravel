@@ -62,7 +62,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Native\\Desktop\\": "src/Desktop"
+            "Native\\Desktop\\": "src"
         }
     },
     "autoload-dev": {
