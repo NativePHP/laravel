@@ -11,7 +11,7 @@ use Native\Support\Traits\LocatesPhpBinary;
 use Native\Support\Traits\PrunesVendorDirectory;
 use Symfony\Component\Filesystem\Path;
 
-class Bundler
+class Builder
 {
     use CleansEnvFile;
     use CopiesBundleToBuildDirectory;

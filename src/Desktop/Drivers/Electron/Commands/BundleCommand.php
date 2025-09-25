@@ -12,7 +12,7 @@ use Illuminate\Support\Str;
 use Native\Desktop\Drivers\Electron\Traits\HandlesZephpyr;
 use Native\Desktop\Drivers\Electron\Traits\InstallsAppIcon;
 use Native\Desktop\Drivers\Electron\Traits\PatchesPackagesJson;
-use Native\Support\Bundler;
+use Native\Support\Builder;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Finder\Finder;
 use ZipArchive;
@@ -37,13 +37,13 @@ class BundleCommand extends Command
 
     private string $zipName;
 
-    private Bundler $bundler;
+    private Builder $builder;
 
     public function __construct()
     {
         parent::__construct();
 
-        $this->bundler = Bundler::make(
+        $this->builder = Builder::make(
             buildPath: base_path('build/app/')
         );
     }
@@ -96,11 +96,11 @@ class BundleCommand extends Command
         intro('Copying App to build directory...');
 
         // We update composer.json later,
-        $this->bundler->copyToBuildDirectory();
+        $this->builder->copyToBuildDirectory();
 
         $this->newLine();
         intro('Cleaning .env file...');
-        $this->bundler->cleanEnvFile();
+        $this->builder->cleanEnvFile();
 
         $this->newLine();
         intro('Copying app icons...');
@@ -108,7 +108,7 @@ class BundleCommand extends Command
 
         $this->newLine();
         intro('Pruning vendor directory');
-        $this->bundler->pruneVendorDirectory();
+        $this->builder->pruneVendorDirectory();
 
         // Check composer.json for symlinked or private packages
         if (! $this->checkComposerJson()) {
@@ -161,7 +161,7 @@ class BundleCommand extends Command
 
     private function checkComposerJson(): bool
     {
-        $composerJson = json_decode(file_get_contents($this->bundler->buildPath('composer.json')), true);
+        $composerJson = json_decode(file_get_contents($this->builder->buildPath('composer.json')), true);
 
         // // Fail if there is symlinked packages
         // foreach ($composerJson['repositories'] ?? [] as $repository) {
@@ -194,10 +194,10 @@ class BundleCommand extends Command
 
             if (count($filteredRepo) !== count($composerJson['repositories'])) {
                 $composerJson['repositories'] = $filteredRepo;
-                file_put_contents($this->bundler->buildPath('composer.json'),
+                file_put_contents($this->builder->buildPath('composer.json'),
                     json_encode($composerJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 
-                // Process::path($this->bundler->buildPath())
+                // Process::path($this->builder->buildPath())
                 //     ->run('composer install --no-dev', function (string $type, string $output) {
                 //         echo $output;
                 //     });
@@ -228,7 +228,7 @@ class BundleCommand extends Command
         $finder = (new Finder)->files()
             ->followLinks()
             // ->ignoreVCSIgnored(true) // TODO: Make our own list of ignored files
-            ->in($this->bundler->buildPath())
+            ->in($this->builder->buildPath())
             ->exclude([
                 // We add those a few lines below and they are ignored by most .gitignore anyway
                 'vendor',
@@ -246,22 +246,22 @@ class BundleCommand extends Command
         $this->finderToZip($finder, $zip);
 
         // Why do I have to force this? please someone explain.
-        if (file_exists($this->bundler->buildPath('public/build'))) {
+        if (file_exists($this->builder->buildPath('public/build'))) {
             $this->finderToZip(
                 (new Finder)->files()
                     ->followLinks()
-                    ->in($this->bundler->buildPath('public/build')), $zip, 'public/build');
+                    ->in($this->builder->buildPath('public/build')), $zip, 'public/build');
         }
 
         // Add .env file manually because Finder ignores VCS and dot files
-        $zip->addFile($this->bundler->buildPath('.env'), '.env');
+        $zip->addFile($this->builder->buildPath('.env'), '.env');
 
         // Add auth.json file to support private packages
         // WARNING: Only for testing purposes, don't uncomment this
-        // $zip->addFile($this->bundler->buildPath('auth.json'), 'auth.json');
+        // $zip->addFile($this->builder->buildPath('auth.json'), 'auth.json');
 
         // Custom binaries
-        $binaryPath = Str::replaceStart($this->bundler->buildPath('vendor'), '', config('nativephp.binary_path'));
+        $binaryPath = Str::replaceStart($this->builder->buildPath('vendor'), '', config('nativephp.binary_path'));
 
         // Add composer dependencies without unnecessary files
         $vendor = (new Finder)->files()
@@ -271,14 +271,14 @@ class BundleCommand extends Command
                 '*/*/vendor', // Exclude sub-vendor directories
                 $binaryPath,
             ]))
-            ->in($this->bundler->buildPath('vendor'));
+            ->in($this->builder->buildPath('vendor'));
 
         $this->finderToZip($vendor, $zip, 'vendor');
 
         // Add javascript dependencies
-        if (file_exists($this->bundler->buildPath('node_modules'))) {
+        if (file_exists($this->builder->buildPath('node_modules'))) {
             $nodeModules = (new Finder)->files()
-                ->in($this->bundler->buildPath('node_modules'));
+                ->in($this->builder->buildPath('node_modules'));
 
             $this->finderToZip($nodeModules, $zip, 'node_modules');
         }

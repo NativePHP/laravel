@@ -10,7 +10,7 @@ use Native\Desktop\Drivers\Electron\Facades\Updater;
 use Native\Desktop\Drivers\Electron\Traits\InstallsAppIcon;
 use Native\Desktop\Drivers\Electron\Traits\OsAndArch;
 use Native\Desktop\Drivers\Electron\Traits\PatchesPackagesJson;
-use Native\Support\Bundler;
+use Native\Support\Builder;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Process\Process as SymfonyProcess;
 
@@ -38,7 +38,7 @@ class BuildCommand extends Command
     private string $buildOS;
 
     public function __construct(
-        protected Bundler $bundler
+        protected Builder $builder
     ) {
         parent::__construct();
     }
@@ -58,17 +58,17 @@ class BuildCommand extends Command
             $this->buildCommand = 'publish';
         }
 
-        if ($this->bundler->hasBundled()) {
+        if ($this->builder->hasBundled()) {
             $this->buildBundle();
         } else {
-            $this->bundler->warnUnsecureBuild();
+            $this->builder->warnUnsecureBuild();
             $this->buildUnsecure();
         }
     }
 
     private function buildBundle(): void
     {
-        $this->bundler->preProcess();
+        $this->builder->preProcess();
 
         $this->setAppNameAndVersion();
 
@@ -76,11 +76,11 @@ class BuildCommand extends Command
 
         $this->newLine();
         intro('Copying Bundle to build directory...');
-        $this->bundler->copyBundleToBuildDirectory();
+        $this->builder->copyBundleToBuildDirectory();
 
         $this->newLine();
         intro('Copying latest CA Certificate...');
-        $this->bundler->copyCertificateAuthority(path: ElectronServiceProvider::ELECTRON_PATH.'/resources');
+        $this->builder->copyCertificateAuthority(path: ElectronServiceProvider::ELECTRON_PATH.'/resources');
 
         $this->newLine();
         intro('Copying app icons...');
@@ -88,12 +88,12 @@ class BuildCommand extends Command
 
         $this->buildOrPublish();
 
-        $this->bundler->postProcess();
+        $this->builder->postProcess();
     }
 
     private function buildUnsecure(): void
     {
-        $this->bundler->preProcess();
+        $this->builder->preProcess();
 
         $this->setAppNameAndVersion();
 
@@ -101,15 +101,15 @@ class BuildCommand extends Command
 
         $this->newLine();
         intro('Copying App to build directory...');
-        $this->bundler->copyToBuildDirectory();
+        $this->builder->copyToBuildDirectory();
 
         $this->newLine();
         intro('Copying latest CA Certificate...');
-        $this->bundler->copyCertificateAuthority(path: ElectronServiceProvider::ELECTRON_PATH.'/resources');
+        $this->builder->copyCertificateAuthority(path: ElectronServiceProvider::ELECTRON_PATH.'/resources');
 
         $this->newLine();
         intro('Cleaning .env file...');
-        $this->bundler->cleanEnvFile();
+        $this->builder->cleanEnvFile();
 
         $this->newLine();
         intro('Copying app icons...');
@@ -117,22 +117,22 @@ class BuildCommand extends Command
 
         $this->newLine();
         intro('Pruning vendor directory');
-        $this->bundler->pruneVendorDirectory();
+        $this->builder->pruneVendorDirectory();
 
         $this->buildOrPublish();
 
-        $this->bundler->postProcess();
+        $this->builder->postProcess();
     }
 
     protected function getEnvironmentVariables(): array
     {
         return array_merge(
             [
-                'APP_PATH' => $this->bundler->sourcePath(),
+                'APP_PATH' => $this->builder->sourcePath(),
                 'APP_URL' => config('app.url'),
                 'NATIVEPHP_BUILDING' => true,
                 'NATIVEPHP_PHP_BINARY_VERSION' => PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION,
-                'NATIVEPHP_PHP_BINARY_PATH' => $this->bundler->phpBinaryPath(),
+                'NATIVEPHP_PHP_BINARY_PATH' => $this->builder->phpBinaryPath(),
                 'NATIVEPHP_APP_NAME' => config('app.name'),
                 'NATIVEPHP_APP_ID' => config('nativephp.app_id'),
                 'NATIVEPHP_APP_VERSION' => config('nativephp.version'),

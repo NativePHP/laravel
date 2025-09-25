@@ -1,7 +1,7 @@
 <?php
 
 use Native\Desktop\Drivers\Electron\ElectronServiceProvider;
-use Native\Support\Bundler;
+use Native\Support\Builder;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
 
@@ -12,7 +12,7 @@ it('can copy the default CA certificate from php-bin', function () {
 
     expect($certificatePath)->not->toBeFile();
 
-    resolve(Bundler::class)->copyCertificateAuthority(path: ElectronServiceProvider::ELECTRON_PATH.'/resources');
+    resolve(Builder::class)->copyCertificateAuthority(path: ElectronServiceProvider::ELECTRON_PATH.'/resources');
 
     expect($certificatePath)->toBeFile();
 

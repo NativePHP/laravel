@@ -8,7 +8,7 @@ use Native\Desktop\Drivers\Electron\Traits\Developer;
 use Native\Desktop\Drivers\Electron\Traits\Installer;
 use Native\Desktop\Drivers\Electron\Traits\InstallsAppIcon;
 use Native\Desktop\Drivers\Electron\Traits\PatchesPackagesJson;
-use Native\Support\Bundler;
+use Native\Support\Builder;
 use Symfony\Component\Console\Attribute\AsCommand;
 
 use function Laravel\Prompts\intro;
@@ -28,7 +28,7 @@ class DevelopCommand extends Command
     protected $signature = 'native:serve {--no-queue} {--D|no-dependencies} {--installer=npm}';
 
     public function __construct(
-        protected Bundler $bundler
+        protected Builder $builder
     ) {
         parent::__construct();
     }
@@ -57,7 +57,7 @@ class DevelopCommand extends Command
 
         $this->installIcon();
 
-        $this->bundler->copyCertificateAuthority(path: ElectronServiceProvider::ELECTRON_PATH.'/resources');
+        $this->builder->copyCertificateAuthority(path: ElectronServiceProvider::ELECTRON_PATH.'/resources');
 
         $this->runDeveloper(
             installer: $this->option('installer'),
