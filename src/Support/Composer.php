@@ -2,12 +2,31 @@
 
 namespace Native\Desktop\Support;
 
+use Composer\InstalledVersions;
 use RuntimeException;
+use Symfony\Component\Filesystem\Path;
 
 use function Laravel\Prompts\note;
 
 class Composer
 {
+    public static function desktopPackagePath(string $path = '')
+    {
+        return self::vendorPath("nativephp/desktop/{$path}");
+    }
+
+    public static function phpPackagePath(string $path = '')
+    {
+        return self::vendorPath("nativephp/php-bin/{$path}");
+    }
+
+    public static function vendorPath(string $path = '')
+    {
+        $vendorPath = realpath(InstalledVersions::getRootPackage()['install_path'].'/vendor');
+
+        return Path::join($vendorPath, $path);
+    }
+
     public static function installScripts()
     {
         $composer = json_decode(file_get_contents(base_path('composer.json')));

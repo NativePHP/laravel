@@ -2,8 +2,7 @@
 
 namespace Native\Desktop\Builder\Concerns;
 
-use Composer\InstalledVersions;
-use Symfony\Component\Filesystem\Path;
+use Native\Desktop\Support\Composer;
 
 use function Laravel\Prompts\error;
 use function Laravel\Prompts\warning;
@@ -15,11 +14,7 @@ trait CopiesCertificateAuthority
     public function copyCertificateAuthority(string $path): void
     {
         try {
-            $vendorDirectory = realpath(InstalledVersions::getRootPackage()['install_path'].'/vendor');
-            $phpBinaryDirectory = $vendorDirectory.'/nativephp/php-bin/';
-
-            $certificateFileName = 'cacert.pem';
-            $certFilePath = Path::join($phpBinaryDirectory, $certificateFileName);
+            $certFilePath = Composer::phpPackagePath('cacert.pem');
 
             if (! file_exists($certFilePath)) {
                 warning('CA Certificate not found at '.$certFilePath.'. Skipping copy.');
@@ -29,7 +24,7 @@ trait CopiesCertificateAuthority
 
             $copied = copy(
                 $certFilePath,
-                "{$path}/{$certificateFileName}"
+                "{$path}/cacert.pem"
             );
 
             if (! $copied) {
