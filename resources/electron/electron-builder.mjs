@@ -65,9 +65,6 @@ export default {
         '!{.eslintignore,.eslintrc.cjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}',
         '!{.env,.env.*,.npmrc,pnpm-lock.yaml}',
     ],
-    asarUnpack: [
-        'resources/**',
-    ],
     beforePack: async (context) => {
         let arch = {
             1: 'x64',
