@@ -138,7 +138,8 @@ export default {
             from: process.env.NATIVEPHP_BUILD_PATH,
             to: 'build',
             filter: [
-                '**/*'
+                '**/*',
+                '!{.git}',
             ]
         }
     ],
