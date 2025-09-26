@@ -1,6 +1,6 @@
 <?php
 
-use Native\Desktop\DTOs\QueueConfig;
+use Native\Desktop\DataObjects\QueueConfig;
 use Native\Desktop\Facades\ChildProcess;
 use Native\Desktop\Facades\QueueWorker;
 

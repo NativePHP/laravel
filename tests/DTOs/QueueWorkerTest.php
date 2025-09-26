@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Arr;
-use Native\Desktop\DTOs\QueueConfig;
+use Native\Desktop\DataObjects\QueueConfig;
 
 test('the factory method generates an array of config objects for several formats', function (array $config) {
     $configObject = QueueConfig::fromConfigArray($config);

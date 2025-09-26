@@ -1,6 +1,6 @@
 <?php
 
-use Native\Electron\Traits\CopiesToBuildDirectory;
+use Native\Desktop\Builder\Concerns\CopiesToBuildDirectory;
 use Symfony\Component\Filesystem\Filesystem;
 
 /*
@@ -37,12 +37,12 @@ $command = new class($sourcePath, $buildPath)
         public $buildPath
     ) {}
 
-    protected function sourcePath(string $path = ''): string
+    public function sourcePath(string $path = ''): string
     {
         return app()->joinPaths($this->sourcePath, $path);
     }
 
-    protected function buildPath(string $path = ''): string
+    public function buildPath(string $path = ''): string
     {
         return app()->joinPaths($this->buildPath, $path);
     }

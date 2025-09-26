@@ -18,4 +18,4 @@ parameters:
 
 
     excludePaths:
-        - ./src/Desktop/NativeServiceProvider.php
+        - ./src/NativeServiceProvider.php

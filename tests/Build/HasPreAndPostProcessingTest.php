@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Config;
-use Native\Electron\Traits\HasPreAndPostProcessing;
+use Native\Desktop\Builder\Concerns\HasPreAndPostProcessing;
 
 it('can run pre and post processing from config', function (object $mock) {
     $tmpDir = sys_get_temp_dir();

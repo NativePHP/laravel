@@ -1,7 +1,7 @@
 <?php
 
 use Native\Desktop\Contracts\QueueWorker as QueueWorkerContract;
-use Native\Desktop\DTOs\QueueConfig;
+use Native\Desktop\DataObjects\QueueConfig;
 use Native\Desktop\Facades\QueueWorker;
 use Native\Desktop\Fakes\QueueWorkerFake;
 use PHPUnit\Framework\AssertionFailedError;
