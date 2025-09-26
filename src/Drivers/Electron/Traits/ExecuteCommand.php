@@ -35,7 +35,7 @@ trait ExecuteCommand
 
         note('Fetching latest dependencies…');
 
-        Process::path(ElectronServiceProvider::ELECTRON_PATH)
+        Process::path(ElectronServiceProvider::electronPath())
             ->env($envs[$type])
             ->forever()
             ->tty(! $withoutInteraction && PHP_OS_FAMILY != 'Windows')

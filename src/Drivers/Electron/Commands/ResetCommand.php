@@ -27,7 +27,7 @@ class ResetCommand extends Command
         $filesystem = new Filesystem;
 
         // Removing and recreating the native serve resource path
-        $nativeServeResourcePath = realpath(ElectronServiceProvider::ELECTRON_PATH.'/resources/app/');
+        $nativeServeResourcePath = realpath(ElectronServiceProvider::buildPath('app'));
         if ($filesystem->exists($nativeServeResourcePath)) {
             $this->line('Clearing: '.$nativeServeResourcePath);
             $filesystem->remove($nativeServeResourcePath);

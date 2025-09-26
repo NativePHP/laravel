@@ -1,6 +1,5 @@
 .idea
 .phpunit.cache
-build
 composer.lock
 coverage
 docs
@@ -8,5 +7,5 @@ phpunit.xml
 testbench.yaml
 vendor
 node_modules
+/build
 .DS_Store
-!tests/Build

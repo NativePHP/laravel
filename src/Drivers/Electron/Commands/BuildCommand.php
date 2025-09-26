@@ -80,7 +80,7 @@ class BuildCommand extends Command
 
         $this->newLine();
         intro('Copying latest CA Certificate...');
-        $this->builder->copyCertificateAuthority(path: ElectronServiceProvider::ELECTRON_PATH.'/resources');
+        $this->builder->copyCertificateAuthority(path: ElectronServiceProvider::electronPath().'/resources');
 
         $this->newLine();
         intro('Copying app icons...');
@@ -105,7 +105,7 @@ class BuildCommand extends Command
 
         $this->newLine();
         intro('Copying latest CA Certificate...');
-        $this->builder->copyCertificateAuthority(path: ElectronServiceProvider::ELECTRON_PATH.'/resources');
+        $this->builder->copyCertificateAuthority(path: ElectronServiceProvider::buildPath());
 
         $this->newLine();
         intro('Cleaning .env file...');
@@ -162,7 +162,7 @@ class BuildCommand extends Command
     {
         $this->newLine();
         intro('Updating Electron dependencies...');
-        Process::path(ElectronServiceProvider::ELECTRON_PATH)
+        Process::path(ElectronServiceProvider::electronPath())
             ->env($this->getEnvironmentVariables())
             ->forever()
             ->run('npm ci', function (string $type, string $output) {
@@ -174,7 +174,7 @@ class BuildCommand extends Command
     {
         $this->newLine();
         intro((($this->buildCommand == 'publish') ? 'Publishing' : 'Building')." for {$this->buildOS}");
-        Process::path(ElectronServiceProvider::ELECTRON_PATH)
+        Process::path(ElectronServiceProvider::electronPath())
             ->env($this->getEnvironmentVariables())
             ->forever()
             ->tty(SymfonyProcess::isTtySupported() && ! $this->option('no-interaction'))

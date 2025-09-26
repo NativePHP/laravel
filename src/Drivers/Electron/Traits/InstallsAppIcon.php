@@ -8,13 +8,17 @@ trait InstallsAppIcon
 {
     public function installIcon()
     {
-        @copy(public_path('icon.png'), ElectronServiceProvider::ELECTRON_PATH.'/build/icon.png');
-        @copy(public_path('icon.png'), ElectronServiceProvider::ELECTRON_PATH.'/resources/icon.png');
-        @copy(public_path('icon.ico'), ElectronServiceProvider::ELECTRON_PATH.'/build/icon.ico');
-        @copy(public_path('icon.ico'), ElectronServiceProvider::ELECTRON_PATH.'/resources/icon.ico');
-        @copy(public_path('icon.icns'), ElectronServiceProvider::ELECTRON_PATH.'/build/icon.icns');
-        @copy(public_path('icon.icns'), ElectronServiceProvider::ELECTRON_PATH.'/resources/icon.icns');
-        @copy(public_path('IconTemplate.png'), ElectronServiceProvider::ELECTRON_PATH.'/resources/IconTemplate.png');
-        @copy(public_path('IconTemplate@2x.png'), ElectronServiceProvider::ELECTRON_PATH.'/resources/IconTemplate@2x.png');
+        // Copy to Electron project
+        @copy(public_path('icon.png'), ElectronServiceProvider::electronPath('build/icon.png'));
+        @copy(public_path('icon.ico'), ElectronServiceProvider::electronPath('build/icon.ico'));
+        @copy(public_path('icon.icns'), ElectronServiceProvider::electronPath('build/icon.icns'));
+
+        // Copy to asar archive
+        @copy(public_path('icon.png'), ElectronServiceProvider::buildPath('icon.png'));
+        @copy(public_path('icon.ico'), ElectronServiceProvider::buildPath('icon.ico'));
+        @copy(public_path('icon.icns'), ElectronServiceProvider::buildPath('icon.icns'));
+
+        @copy(public_path('IconTemplate.png'), ElectronServiceProvider::buildPath('IconTemplate.png'));
+        @copy(public_path('IconTemplate@2x.png'), ElectronServiceProvider::buildPath('IconTemplate@2x.png'));
     }
 }

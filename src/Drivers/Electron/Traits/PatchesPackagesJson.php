@@ -8,7 +8,7 @@ trait PatchesPackagesJson
 {
     protected function setAppNameAndVersion($developmentMode = false): string
     {
-        $packageJsonPath = ElectronServiceProvider::ELECTRON_PATH.'/package.json';
+        $packageJsonPath = ElectronServiceProvider::electronPath('package.json');
         $packageJson = json_decode(file_get_contents($packageJsonPath), true);
 
         $name = str(config('app.name'))->slug();

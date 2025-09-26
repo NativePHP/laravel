@@ -57,7 +57,7 @@ class DevelopCommand extends Command
 
         $this->installIcon();
 
-        $this->builder->copyCertificateAuthority(path: ElectronServiceProvider::ELECTRON_PATH.'/resources');
+        $this->builder->copyCertificateAuthority(path: ElectronServiceProvider::buildPath());
 
         $this->runDeveloper(
             installer: $this->option('installer'),
@@ -72,7 +72,7 @@ class DevelopCommand extends Command
      */
     protected function patchPlist(): void
     {
-        $pList = file_get_contents(ElectronServiceProvider::ELECTRON_PATH.'/node_modules/electron/dist/Electron.app/Contents/Info.plist');
+        $pList = file_get_contents(ElectronServiceProvider::electronPath('node_modules/electron/dist/Electron.app/Contents/Info.plist'));
 
         // Change the CFBundleName to the correct app name
         $pattern = '/(<key>CFBundleName<\/key>\s+<string>)(.*?)(<\/string>)/m';
@@ -81,6 +81,6 @@ class DevelopCommand extends Command
         $pattern = '/(<key>CFBundleDisplayName<\/key>\s+<string>)(.*?)(<\/string>)/m';
         $pList = preg_replace($pattern, '$1'.config('app.name').'$3', $pList);
 
-        file_put_contents(ElectronServiceProvider::ELECTRON_PATH.'/node_modules/electron/dist/Electron.app/Contents/Info.plist', $pList);
+        file_put_contents(ElectronServiceProvider::electronPath('node_modules/electron/dist/Electron.app/Contents/Info.plist'), $pList);
     }
 }
