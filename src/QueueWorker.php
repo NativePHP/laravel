@@ -4,7 +4,7 @@ namespace Native\Desktop;
 
 use Native\Desktop\Contracts\ChildProcess as ChildProcessContract;
 use Native\Desktop\Contracts\QueueWorker as QueueWorkerContract;
-use Native\Desktop\DTOs\QueueConfig;
+use Native\Desktop\DataObjects\QueueConfig;
 
 class QueueWorker implements QueueWorkerContract
 {

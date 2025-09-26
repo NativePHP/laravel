@@ -4,7 +4,7 @@ namespace Native\Desktop\Fakes;
 
 use Closure;
 use Native\Desktop\Contracts\QueueWorker as QueueWorkerContract;
-use Native\Desktop\DTOs\QueueConfig;
+use Native\Desktop\DataObjects\QueueConfig;
 use PHPUnit\Framework\Assert as PHPUnit;
 
 class QueueWorkerFake implements QueueWorkerContract

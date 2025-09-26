@@ -4,7 +4,7 @@ namespace Native\Desktop\Facades;
 
 use Illuminate\Support\Facades\Facade;
 use Native\Desktop\Contracts\QueueWorker as QueueWorkerContract;
-use Native\Desktop\DTOs\QueueConfig;
+use Native\Desktop\DataObjects\QueueConfig;
 use Native\Desktop\Fakes\QueueWorkerFake;
 
 /**

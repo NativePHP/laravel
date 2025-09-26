@@ -1,6 +1,6 @@
 <?php
 
-namespace Native\Desktop\DTOs;
+namespace Native\Desktop\DataObjects;
 
 class QueueConfig
 {

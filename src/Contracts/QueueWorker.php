@@ -2,7 +2,7 @@
 
 namespace Native\Desktop\Contracts;
 
-use Native\Desktop\DTOs\QueueConfig;
+use Native\Desktop\DataObjects\QueueConfig;
 
 interface QueueWorker
 {
