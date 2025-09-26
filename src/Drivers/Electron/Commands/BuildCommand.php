@@ -133,6 +133,8 @@ class BuildCommand extends Command
                 'NATIVEPHP_BUILDING' => true,
                 'NATIVEPHP_PHP_BINARY_VERSION' => PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION,
                 'NATIVEPHP_PHP_BINARY_PATH' => $this->builder->phpBinaryPath(),
+                'NATIVEPHP_ELECTRON_PATH' => ElectronServiceProvider::electronPath(),
+                'NATIVEPHP_BUILD_PATH' => ElectronServiceProvider::buildPath(),
                 'NATIVEPHP_APP_NAME' => config('app.name'),
                 'NATIVEPHP_APP_ID' => config('nativephp.app_id'),
                 'NATIVEPHP_APP_VERSION' => config('nativephp.version'),

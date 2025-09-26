@@ -136,6 +136,15 @@ export default {
         version: appVersion,
         author: appAuthor,
     },
+    extraResources: [
+        {
+            from: process.env.NATIVEPHP_BUILD_PATH,
+            to: 'build',
+            filter: [
+                '**/*'
+            ]
+        }
+    ],
     extraFiles: [
         {
             from: join(process.env.APP_PATH, 'extras'),

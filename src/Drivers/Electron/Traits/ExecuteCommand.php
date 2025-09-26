@@ -30,6 +30,8 @@ trait ExecuteCommand
                 'NATIVEPHP_PHP_BINARY_PATH' => $builder->phpBinaryPath(),
                 'NATIVE_PHP_SKIP_QUEUE' => $skip_queue,
                 'NATIVEPHP_BUILDING' => false,
+                'NATIVEPHP_ELECTRON_PATH' => ElectronServiceProvider::electronPath(),
+                'NATIVEPHP_BUILD_PATH' => ElectronServiceProvider::buildPath(),
             ],
         ];
 

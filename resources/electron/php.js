@@ -52,7 +52,7 @@ if (isBuilding) {
 
 const phpVersionZip = 'php-' + phpVersion + '.zip';
 const binarySrcDir = join(phpBinaryPath, platform.os, platform.arch, phpVersionZip);
-const binaryDestDir = join(import.meta.dirname, 'resources/php');
+const binaryDestDir = join(process.env.NATIVEPHP_BUILD_PATH, 'php');
 
 console.log('Binary Source: ', binarySrcDir);
 console.log('Binary Filename: ', platform.phpBinary);
