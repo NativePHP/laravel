@@ -24,7 +24,8 @@ trait CopiesToBuildDirectory
     public function copyToBuildDirectory(): bool
     {
         $sourcePath = $this->sourcePath();
-        $buildPath = $this->buildPath();
+        $buildPath = $this->buildPath('app');
+
         $filesystem = new Filesystem;
 
         $patterns = array_merge(
@@ -96,7 +97,7 @@ trait CopiesToBuildDirectory
         // Electron build removes empty folders, so we have to create dummy files
         // dotfiles unfortunately don't work.
         $filesystem = new Filesystem;
-        $buildPath = $this->buildPath();
+        $buildPath = $this->buildPath('app');
 
         $filesystem->dumpFile("{$buildPath}/storage/framework/cache/_native.json", '{}');
         $filesystem->dumpFile("{$buildPath}/storage/framework/sessions/_native.json", '{}');

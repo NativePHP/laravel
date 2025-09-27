@@ -2,6 +2,7 @@
 
 namespace Native\Desktop\Builder\Concerns;
 
+use Native\Desktop\Drivers\Electron\ElectronServiceProvider;
 use Native\Desktop\Support\Composer;
 
 use function Laravel\Prompts\error;
@@ -11,20 +12,21 @@ trait CopiesCertificateAuthority
 {
     abstract public function buildPath(string $path = ''): string;
 
-    public function copyCertificateAuthority(string $path): void
+    public function copyCertificateAuthority(): void
     {
         try {
-            $certFilePath = Composer::phpPackagePath('cacert.pem');
+            $srcPath = Composer::phpPackagePath('cacert.pem');
+            $destPath = ElectronServiceProvider::buildPath();
 
-            if (! file_exists($certFilePath)) {
-                warning('CA Certificate not found at '.$certFilePath.'. Skipping copy.');
+            if (! file_exists($srcPath)) {
+                warning('CA Certificate not found at '.$srcPath.'. Skipping copy.');
 
                 return;
             }
 
             $copied = copy(
-                $certFilePath,
-                "{$path}/cacert.pem"
+                $srcPath,
+                "{$destPath}/cacert.pem"
             );
 
             if (! $copied) {

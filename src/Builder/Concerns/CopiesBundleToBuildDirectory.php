@@ -23,18 +23,18 @@ trait CopiesBundleToBuildDirectory
 
         echo 'Copying secure app bundle to build directory...'.PHP_EOL;
         echo 'From: '.realpath(dirname($this->sourcePath(self::$bundlePath))).PHP_EOL;
-        echo 'To: '.realpath(dirname($this->buildPath(self::$bundlePath))).PHP_EOL;
+        echo 'To: '.realpath(dirname($this->buildPath('app/'.self::$bundlePath))).PHP_EOL;
 
         // Clean and create build directory
-        $filesystem->remove($this->buildPath());
-        $filesystem->mkdir($this->buildPath());
+        $filesystem->remove($this->buildPath('app'));
+        $filesystem->mkdir($this->buildPath('app'));
 
         $filesToCopy = [
             self::$bundlePath,
             // '.env',
         ];
         foreach ($filesToCopy as $file) {
-            $filesystem->copy($this->sourcePath($file), $this->buildPath($file), true);
+            $filesystem->copy($this->sourcePath($file), $this->buildPath('app/'.$file), true);
         }
         $this->keepRequiredDirectories();
 

@@ -19,14 +19,14 @@ trait PrunesVendorDirectory
 
         $filesystem = new Filesystem;
         $filesystem->remove([
-            $this->buildPath('/vendor/bin'),
-            $this->buildPath('/vendor/nativephp/php-bin'),
+            $this->buildPath('app/vendor/bin'),
+            $this->buildPath('app/vendor/nativephp/php-bin'),
         ]);
 
         // Remove custom php binary package directory
         $binaryPackageDirectory = $this->binaryPackageDirectory();
         if (! empty($binaryPackageDirectory) && $filesystem->exists($this->buildPath($binaryPackageDirectory))) {
-            $filesystem->remove($this->buildPath($binaryPackageDirectory));
+            $filesystem->remove($this->buildPath('app', $binaryPackageDirectory));
         }
     }
 }

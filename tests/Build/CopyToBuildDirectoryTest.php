@@ -55,13 +55,13 @@ $command = new class($sourcePath, $buildPath)
 */
 it('will remove the build directory by default before copying', function () use ($buildPath, $command) {
 
-    createFiles("$buildPath/test.txt");
+    createFiles("$buildPath/app/test.txt");
 
-    expect("$buildPath/test.txt")->toBeFile();
+    expect("$buildPath/app/test.txt")->toBeFile();
 
     $command->copyToBuildDirectory();
 
-    expect("$buildPath/test.txt")->not->toBeFile();
+    expect("$buildPath/app/test.txt")->not->toBeFile();
 });
 
 it('copies included files and directories', function () use ($sourcePath, $buildPath, $command) {
@@ -74,8 +74,8 @@ it('copies included files and directories', function () use ($sourcePath, $build
     $command->copyToBuildDirectory();
 
     expect([
-        "$buildPath/do-not-delete.txt",
-        "$buildPath/foo-bar/do-not-delete.json",
+        "$buildPath/app/do-not-delete.txt",
+        "$buildPath/app/foo-bar/do-not-delete.json",
     ])->each->toBeFile();
 });
 
@@ -88,7 +88,8 @@ it('skips directories by path', function () use ($sourcePath, $buildPath, $comma
 
     $command->copyToBuildDirectory();
 
-    expect("$buildPath/foo-bar")->not->toBeDirectory();
+    expect("$buildPath/app/foo-bar")->not->toBeDirectory();
+    expect("$buildPath/app/foo-bar")->not->toBeDirectory();
 });
 
 it('skips files by path', function () use ($sourcePath, $buildPath, $command) {
@@ -100,8 +101,8 @@ it('skips files by path', function () use ($sourcePath, $buildPath, $command) {
 
     $command->copyToBuildDirectory();
 
-    expect("$buildPath/foo-bar")->toBeDirectory();
-    expect("$buildPath/foo-bar/delete-me.json")->not->toBeFile();
+    expect("$buildPath/app/foo-bar")->toBeDirectory();
+    expect("$buildPath/app/foo-bar/delete-me.json")->not->toBeFile();
 });
 
 it('skips directories by wildcard path', function () use ($sourcePath, $buildPath, $command) {
@@ -116,9 +117,9 @@ it('skips directories by wildcard path', function () use ($sourcePath, $buildPat
 
     $command->copyToBuildDirectory();
 
-    expect("$buildPath/dont-delete")->toBeDirectory();
-    expect("$buildPath/do")->toBeDirectory();
-    expect("$buildPath/do/delete")->not->toBeDirectory();
+    expect("$buildPath/app/dont-delete")->toBeDirectory();
+    expect("$buildPath/app/do")->toBeDirectory();
+    expect("$buildPath/app/do/delete")->not->toBeDirectory();
 });
 
 it('skips files by wildcard path', function () use ($sourcePath, $buildPath, $command) {
@@ -134,9 +135,9 @@ it('skips files by wildcard path', function () use ($sourcePath, $buildPath, $co
 
     $command->copyToBuildDirectory();
 
-    expect("$buildPath/foo/remove.json")->not->toBeFile();
-    expect("$buildPath/bar/remove.json")->not->toBeFile();
-    expect("$buildPath/foo/dont-remove.php")->toBeFile();
+    expect("$buildPath/app/foo/remove.json")->not->toBeFile();
+    expect("$buildPath/app/bar/remove.json")->not->toBeFile();
+    expect("$buildPath/app/foo/dont-remove.php")->toBeFile();
 });
 
 it('skips matches on any number of subdirectories', function () use ($sourcePath, $buildPath, $command) {
@@ -152,9 +153,9 @@ it('skips matches on any number of subdirectories', function () use ($sourcePath
 
     $command->copyToBuildDirectory();
 
-    expect("$buildPath/matches/subdir/remove.json")->not->toBeFile();
-    expect("$buildPath/matches/any/subdir/remove.json")->not->toBeFile();
-    expect("$buildPath/matches/any/subdir/dont-remove.php")->toBeFile();
+    expect("$buildPath/app/matches/subdir/remove.json")->not->toBeFile();
+    expect("$buildPath/app/matches/any/subdir/remove.json")->not->toBeFile();
+    expect("$buildPath/app/matches/any/subdir/dont-remove.php")->toBeFile();
 });
 
 it('will never include files that may contain sensitive information', function () use ($sourcePath, $buildPath, $command) {
@@ -176,28 +177,28 @@ it('will never include files that may contain sensitive information', function (
     $command->copyToBuildDirectory();
 
     expect([
-        "$buildPath/database/wildcard.sqlite",
-        "$buildPath/database/wildcard.sqlite-shm",
-        "$buildPath/database/wildcard.sqlite-wal",
-        "$buildPath/storage/framework/sessions/wildcard.txt",
-        "$buildPath/storage/framework/testing/wildcard.txt",
-        "$buildPath/storage/framework/cache/wildcard.txt",
-        "$buildPath/storage/framework/views/wildcard.txt",
-        "$buildPath/storage/logs/wildcard.log",
+        "$buildPath/app/database/wildcard.sqlite",
+        "$buildPath/app/database/wildcard.sqlite-shm",
+        "$buildPath/app/database/wildcard.sqlite-wal",
+        "$buildPath/app/storage/framework/sessions/wildcard.txt",
+        "$buildPath/app/storage/framework/testing/wildcard.txt",
+        "$buildPath/app/storage/framework/cache/wildcard.txt",
+        "$buildPath/app/storage/framework/views/wildcard.txt",
+        "$buildPath/app/storage/logs/wildcard.log",
     ])->each->not->toBeFile();
 
-    expect("$buildPath/do-not-delete.txt")->toBeFile();
+    expect("$buildPath/app/do-not-delete.txt")->toBeFile();
 });
 
 it('makes sure required folders are not empty', function () use ($buildPath, $command) {
 
     $required = [
-        "{$buildPath}/storage/framework/cache/_native.json",
-        "{$buildPath}/storage/framework/sessions/_native.json",
-        "{$buildPath}/storage/framework/testing/_native.json",
-        "{$buildPath}/storage/framework/views/_native.json",
-        "{$buildPath}/storage/app/public/_native.json",
-        "{$buildPath}/storage/logs/_native.json",
+        "{$buildPath}/app/storage/framework/cache/_native.json",
+        "{$buildPath}/app/storage/framework/sessions/_native.json",
+        "{$buildPath}/app/storage/framework/testing/_native.json",
+        "{$buildPath}/app/storage/framework/views/_native.json",
+        "{$buildPath}/app/storage/app/public/_native.json",
+        "{$buildPath}/app/storage/logs/_native.json",
     ];
 
     expect($required)->each->not->toBeFile();
@@ -216,5 +217,5 @@ it('preserves file permissions', function () use ($sourcePath, $buildPath, $comm
 
     $command->copyToBuildDirectory();
 
-    expect(fileperms("$buildPath/file-under-test.txt"))->toBe($originalPermissions);
+    expect(fileperms("$buildPath/app/file-under-test.txt"))->toBe($originalPermissions);
 });

@@ -22,7 +22,7 @@ trait CleansEnvFile
     {
         $cleanUpKeys = array_merge($this->overrideKeys, config('nativephp.cleanup_env_keys', []));
 
-        $envFile = $this->buildPath(app()->environmentFile());
+        $envFile = $this->buildPath('app/' . app()->environmentFile());
 
         $contents = collect(file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES))
             // Remove cleanup keys

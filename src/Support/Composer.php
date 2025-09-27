@@ -12,7 +12,9 @@ class Composer
 {
     public static function desktopPackagePath(string $path = '')
     {
-        return self::vendorPath("nativephp/desktop/{$path}");
+        return Path::join(__DIR__, '../../', $path);
+
+        // return self::vendorPath("nativephp/desktop/{$path}");
     }
 
     public static function phpPackagePath(string $path = '')
@@ -22,9 +24,9 @@ class Composer
 
     public static function vendorPath(string $path = '')
     {
-        $vendorPath = realpath(InstalledVersions::getRootPackage()['install_path'].'/vendor');
+        $rootPath = realpath(InstalledVersions::getRootPackage()['install_path']);
 
-        return Path::join($vendorPath, $path);
+        return Path::join($rootPath, 'vendor', $path);
     }
 
     public static function installScripts()

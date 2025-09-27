@@ -54,7 +54,7 @@ class ElectronServiceProvider extends PackageServiceProvider
 
         $this->app->bind(Builder::class, function () {
             return Builder::make(
-                buildPath: self::buildPath('app')
+                buildPath: self::buildPath()
             );
         });
     }

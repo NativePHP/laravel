@@ -46,7 +46,7 @@ $command = new class($buildPath)
 */
 it('cleans configured keys', function () use ($buildPath, $command) {
 
-    (new Filesystem)->dumpFile("{$buildPath}/.env", <<<'TXT'
+    (new Filesystem)->dumpFile("{$buildPath}/app/.env", <<<'TXT'
     FOO=BAR
     BAZ=ZAH
     TXT);
@@ -57,34 +57,34 @@ it('cleans configured keys', function () use ($buildPath, $command) {
 
     $command->cleanEnvFile();
 
-    expect(file_get_contents("{$buildPath}/.env"))
+    expect(file_get_contents("{$buildPath}/app/.env"))
         ->not->toContain('FOO')
         ->toContain('BAZ');
 });
 
 it('removes comments', function () use ($buildPath, $command) {
 
-    (new Filesystem)->dumpFile("{$buildPath}/.env", <<<'TXT'
+    (new Filesystem)->dumpFile("{$buildPath}/app/.env", <<<'TXT'
     KEEP_ME=hello
     # REMOVE_ME=hello
     TXT);
 
     $command->cleanEnvFile();
 
-    expect(file_get_contents("{$buildPath}/.env"))
+    expect(file_get_contents("{$buildPath}/app/.env"))
         ->not->toContain('REMOVE_ME')
         ->toContain('KEEP_ME');
 });
 
 it('injects defaults', function () use ($buildPath, $command) {
-    (new Filesystem)->dumpFile("{$buildPath}/.env", <<<'TXT'
+    (new Filesystem)->dumpFile("{$buildPath}/app/.env", <<<'TXT'
     LOG_CHANNEL=test
     LOG_STACK=test
     TXT);
 
     $command->cleanEnvFile();
 
-    expect(file_get_contents("{$buildPath}/.env"))
+    expect(file_get_contents("{$buildPath}/app/.env"))
         ->not->toContain('LOG_CHANNEL=test')
         ->not->toContain('LOG_STACK=test')
         ->toContain('LOG_CHANNEL=stack')
@@ -95,7 +95,7 @@ it('injects defaults', function () use ($buildPath, $command) {
 it('cleans default cleanup keys', function () use ($buildPath, $command) {
 
     // NOTE: This checks the default cleanup_env_keys are cleaned. So we can sleep at night.
-    (new Filesystem)->dumpFile("{$buildPath}/.env", <<<'TXT'
+    (new Filesystem)->dumpFile("{$buildPath}/app/.env", <<<'TXT'
     SAFE_VARIABLE=test
     AWS_WILDCARD=test
     GITHUB_WILDCARD=test
@@ -109,7 +109,7 @@ it('cleans default cleanup keys', function () use ($buildPath, $command) {
 
     $command->cleanEnvFile();
 
-    expect(file_get_contents("{$buildPath}/.env"))
+    expect(file_get_contents("{$buildPath}/app/.env"))
         ->toContain('SAFE_VARIABLE=test')
         ->not->toContain('AWS_WILDCARD')
         ->not->toContain('GITHUB_WILDCARD')

@@ -57,7 +57,7 @@ class DevelopCommand extends Command
 
         $this->installIcon();
 
-        $this->builder->copyCertificateAuthority(path: ElectronServiceProvider::buildPath());
+        $this->builder->copyCertificateAuthority();
 
         $this->runDeveloper(
             installer: $this->option('installer'),

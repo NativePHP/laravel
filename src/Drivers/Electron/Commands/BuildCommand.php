@@ -80,7 +80,7 @@ class BuildCommand extends Command
 
         $this->newLine();
         intro('Copying latest CA Certificate...');
-        $this->builder->copyCertificateAuthority(path: ElectronServiceProvider::buildPath());
+        $this->builder->copyCertificateAuthority();
 
         $this->newLine();
         intro('Copying app icons...');
@@ -105,7 +105,7 @@ class BuildCommand extends Command
 
         $this->newLine();
         intro('Copying latest CA Certificate...');
-        $this->builder->copyCertificateAuthority(path: ElectronServiceProvider::buildPath());
+        $this->builder->copyCertificateAuthority();
 
         $this->newLine();
         intro('Cleaning .env file...');
